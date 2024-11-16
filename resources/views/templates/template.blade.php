@@ -134,6 +134,25 @@
                                 </p>
                             </a>
                         </li>
+                        {{-- <li class="nav-header">MCU</li> --}}
+                        <li class="nav-item menu-closed">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-stethoscope"></i>
+                                <p>
+                                    MCU
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ url('/mcu/program-mcu') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Program MCU</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
                     </ul>
                 </nav>
                 <!-- /.sidebar-menu -->
@@ -141,7 +160,6 @@
             <!-- /.sidebar -->
         </aside>
         <div class="content-wrapper">
-            @yield('content')
             <!-- jQuery -->
             <script src="{{ asset('templates/adminlte-3.2.0/plugins/jquery/jquery.min.js') }}"></script>
             <!-- jQuery UI 1.11.4 -->
@@ -194,7 +212,7 @@
             <script src="{{ asset('templates/adminlte-3.2.0/plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
             <script src="{{ asset('templates/adminlte-3.2.0/plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
             <script src="{{ asset('templates/adminlte-3.2.0/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
-
+            @yield('content')
         </div>
     </div>
 </body>
