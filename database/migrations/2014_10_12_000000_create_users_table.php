@@ -17,8 +17,10 @@ return new class extends Migration
             $table->string('email', 100)->unique();
             $table->string('phone_number', 15)->nullable();
             $table->string('password', 100);
-            $table->string('otp', 6);
-            $table->string('otp_expired', 6);
+            $table->string('otp', 6)->nullable();
+            $table->string('otp_expired', 6)->nullable();
+            $table->integer('id_role', 1);
+            $table->integer('id_company', 5)->nullable();
             $table->softDeletes();
             $table->rememberToken();
             $table->timestamps();
