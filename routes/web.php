@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Dashboard\DashboardController;
+use App\Http\Controllers\Mcu\ProgramMcuController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,3 +21,4 @@ Route::post('/login-check', [AuthController::class, 'check'])->name('login.check
 Route::post('/login-otp', [AuthController::class, 'otp'])->name('login.otp');
 
 Route::get('/', [DashboardController::class, 'index'])->name('index');
+Route::get('/mcu/program-mcu', [ProgramMcuController::class, 'index'])->name('program-mcu');
