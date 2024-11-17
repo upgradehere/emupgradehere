@@ -22,3 +22,4 @@ Route::post('/login-otp', [AuthController::class, 'otp'])->name('login.otp');
 
 Route::get('/', [DashboardController::class, 'index'])->name('index');
 Route::get('/mcu/program-mcu', [ProgramMcuController::class, 'index'])->name('program-mcu');
+Route::get('/mcu/program-mcu/detail', [ProgramMcuController::class, 'detailProgramMcu'])->name('detail-program-mcu');

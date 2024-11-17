@@ -13,6 +13,10 @@
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="{{ asset('templates/adminlte-3.2.0/plugins/fontawesome-free/css/all.min.css') }}">
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="{{ asset('templates/adminlte-3.2.0/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
+    <!-- Toastr -->
+    <link rel="stylesheet" href="{{ asset('templates/adminlte-3.2.0/plugins/toastr/toastr.min.css') }}">
     <!-- Ionicons -->
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <!-- Tempusdominus Bootstrap 4 -->
@@ -40,6 +44,7 @@
     <link rel="stylesheet"
         href="{{ asset('templates/adminlte-3.2.0/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
 </head>
+
 <body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed">
     <div class="wrapper">
 
@@ -63,13 +68,15 @@
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item dropdown user-menu">
                     <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
-                        <img src="{{ asset('templates/adminlte-3.2.0/dist/img/user2-160x160.jpg') }}" class="user-image img-circle elevation-2" alt="User Image">
+                        <img src="{{ asset('templates/adminlte-3.2.0/dist/img/user2-160x160.jpg') }}"
+                            class="user-image img-circle elevation-2" alt="User Image">
                         <span class="d-none d-md-inline">Admin</span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                         <!-- User image -->
                         <li class="user-header bg-primary">
-                            <img src="{{ asset('templates/adminlte-3.2.0/dist/img/user2-160x160.jpg') }}" class="img-circle elevation-2" alt="User Image">
+                            <img src="{{ asset('templates/adminlte-3.2.0/dist/img/user2-160x160.jpg') }}"
+                                class="img-circle elevation-2" alt="User Image">
                             <p>Admin</p>
                         </li>
                         <!-- Menu Body -->
@@ -141,7 +148,7 @@
                                 <li class="nav-item">
                                     <a href="{{ url('/mcu/program-mcu') }}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Program MCU</p>
+                                        <p>Informasi MCU</p>
                                     </a>
                                 </li>
                             </ul>
@@ -164,6 +171,10 @@
             </script>
             <!-- Bootstrap 4 -->
             <script src="{{ asset('templates/adminlte-3.2.0/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+            <!-- SweetAlert2 -->
+            <script src="{{ asset('templates/adminlte-3.2.0/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
+            <!-- Toastr -->
+            <script src="{{ asset('templates/adminlte-3.2.0/plugins/toastr/toastr.min.js') }}"></script>
             <!-- ChartJS -->
             <script src="{{ asset('templates/adminlte-3.2.0/plugins/chart.js/Chart.min.js') }}"></script>
             <!-- Sparkline -->
@@ -212,4 +223,5 @@
 </body>
 
 <!-- /.content-wrapper -->
+
 </html>
