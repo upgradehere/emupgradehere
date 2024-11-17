@@ -47,7 +47,7 @@
     </section>
     <script>
         $(function() {
-            $("#mcuProgramTable").DataTable({
+            let table = $("#mcuProgramTable").DataTable({
                 responsive: true,
                 lengthChange: true,
                 autoWidth: false,
@@ -92,14 +92,34 @@
                         orderable: false,
                         searchable: false,
                         render: function(data, type, row) {
-                            return `<button class="btn btn-primary btn-sm"><i class="fas fa-eye"></i></button>
-                        <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>`;
+                            let companyId = row.company_id;
+                            let mcuProgramId = row.mcu_program_id;
+                            return `<a class="btn btn-primary btn-sm action-detail" href="/mcu/program-mcu/detail?company_id=${companyId}&mcu_program_id=${mcuProgramId}"><i class="fas fa-eye"></i></a>
+                        <a class="btn btn-danger btn-sm action-delete"><i class="fas fa-trash"></i></a>`;
                         }
                     }
                 ],
                 order: [
                     [1, 'asc']
                 ],
+            });
+
+            $('#mcuProgramTable tbody').on('click', '.action-delete', function() {
+                Swal.fire({
+                    title: "Apakah anda akan menghapus data?",
+                    showDenyButton: true,
+                    confirmButtonText: "Ya",
+                    denyButtonText: "Tidak"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire("Berhasil menghapus data!", "", "success");
+                        table.ajax.reload();
+                    }
+                });
+            });
+
+            $('#mcuProgramTable tbody').on('click', '.action-detail', function() {
+
             });
         });
     </script>
