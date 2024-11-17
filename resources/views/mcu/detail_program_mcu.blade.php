@@ -50,7 +50,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
+            {{-- <div class="row">
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
@@ -60,26 +60,26 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-2">
-                                    <button type="button" class="btn btn-block bg-gradient-primary">Input Manual Hasil MCU</button>
+                                    <button type="button" class="btn btn-block bg-gradient-primary p-3">Input Manual Hasil MCU</button>
                                 </div>
                                 <div class="col-2">
-                                    <button type="button" class="btn btn-block bg-gradient-primary">Upload Data & Rekap Hasil MCU</button>
+                                    <button type="button" class="btn btn-block bg-gradient-primary p-3">Upload Data & Rekap Hasil MCU</button>
                                 </div>
                                 <div class="col-2">
-                                    <button type="button" class="btn btn-block bg-gradient-primary">Upload Foto Pemeriksaan MCU</button>
+                                    <button type="button" class="btn btn-block bg-gradient-primary p-3">Upload Foto Pemeriksaan MCU</button>
                                 </div>
                                 <div class="col-2">
-                                    <button type="button" class="btn btn-block bg-gradient-primary">Upload Foto Peserta MCU</button>
+                                    <button type="button" class="btn btn-block bg-gradient-primary p-3">Upload Foto Peserta MCU</button>
                                 </div>
                                 <div class="col-2">
-                                    <button type="button" class="btn btn-block bg-gradient-primary">Edit Kesimpulan & Saran</button>
+                                    <button type="button" class="btn btn-block bg-gradient-primary p-3">Edit Kesimpulan & Saran</button>
                                 </div>
                             </div>
                         </div>
                         <!-- /.card-body -->
                     </div>
                 </div>
-            </div>
+            </div> --}}
             <div class="row">
                 <div class="col-12">
                     <div class="card">
@@ -90,7 +90,22 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-2">
-                                    <button type="button" class="btn btn-block bg-gradient-primary">Export</button>
+                                    <a href="/mcu/program-mcu/detail/input-manual-mcu?company_id={{$company_id}}&mcu_program_id={{$mcu_program_id}}" class="btn btn-block bg-gradient-primary auto-size-btn"><i class="fas fa-edit"></i>&nbsp;&nbsp;Input Manual</a>
+                                </div>
+                                <div class="col-2">
+                                    <a class="btn btn-block bg-gradient-primary auto-size-btn"><i class="fas fa-upload"></i>&nbsp;&nbsp;Upload Rekap</a>
+                                </div>
+                                <div class="col-2">
+                                    <a class="btn btn-block bg-gradient-primary auto-size-btn"><i class="fas fa-upload"></i>&nbsp;&nbsp;Upload Foto Pemeriksaan</a>
+                                </div>
+                                <div class="col-2">
+                                    <a class="btn btn-block bg-gradient-primary auto-size-btn"><i class="fas fa-upload"></i>&nbsp;&nbsp;Upload Foto Peserta</a>
+                                </div>
+                                <div class="col-2">
+                                    <a class="btn btn-block bg-gradient-primary auto-size-btn"><i class="fas fa-edit"></i>&nbsp;&nbsp;Kesimpulan & Saran</a>
+                                </div>
+                                <div class="col-2">
+                                    <a class="btn btn-block bg-gradient-primary auto-size-btn"><i class="far fa-file-pdf"></i>&nbsp;&nbsp;Export</a>
                                 </div>
                             </div>
                             <br>
@@ -107,7 +122,7 @@
                                                 <th>Jenis Kelamin</th>
                                                 <th>Umur</th>
                                                 <th>Tanggal MCU</th>
-                                                <th style="width: 80px;">Aksi</th>
+                                                <th style="width: 100px;">Aksi</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -127,8 +142,6 @@
         $(function() {
             let companyId = "{{ $company_id }}";
             let mcuProgramId = "{{ $mcu_program_id }}";
-            console.log(companyId);
-
             let table = $("#mcuEmployeeTable").DataTable({
                 responsive: true,
                 lengthChange: true,
@@ -208,7 +221,8 @@
                         searchable: false,
                         render: function(data, type, row) {
                             return `<button class="btn btn-primary btn-sm action-detail"><i class="fas fa-eye"></i></button>
-                        <button class="btn btn-danger btn-sm action-delete"><i class="fas fa-trash"></i></button>`;
+                                    <button class="btn btn-success btn-sm action-export"><i class="fas fa-file-pdf"></i></button>
+                                    <button class="btn btn-danger btn-sm action-delete"><i class="fas fa-trash"></i></button>`;
                         }
                     }
                 ],

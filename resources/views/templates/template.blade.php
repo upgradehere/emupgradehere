@@ -22,6 +22,9 @@
     <!-- Tempusdominus Bootstrap 4 -->
     <link rel="stylesheet"
         href="{{ asset('templates/adminlte-3.2.0/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css') }}">
+    <!-- Select2 -->
+    <link rel="stylesheet" href="{{ asset('templates/adminlte-3.2.0/plugins/select2/css/select2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('templates/adminlte-3.2.0//plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
     <!-- iCheck -->
     <link rel="stylesheet"
         href="{{ asset('templates/adminlte-3.2.0/plugins/icheck-bootstrap/icheck-bootstrap.min.css') }}">
@@ -43,6 +46,18 @@
         href="{{ asset('templates/adminlte-3.2.0/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
     <link rel="stylesheet"
         href="{{ asset('templates/adminlte-3.2.0/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
+    <style>
+        .auto-size-btn {
+            height: 40px;
+            line-height: 40px;
+            padding: 0 15px;
+            font-size: 14px;
+            white-space: nowrap;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed">
@@ -171,6 +186,8 @@
             </script>
             <!-- Bootstrap 4 -->
             <script src="{{ asset('templates/adminlte-3.2.0/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+            <!-- Select2 -->
+            <script src="{{ asset('templates/adminlte-3.2.0/plugins/select2/js/select2.full.min.js') }}"></script>
             <!-- SweetAlert2 -->
             <script src="{{ asset('templates/adminlte-3.2.0/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
             <!-- Toastr -->

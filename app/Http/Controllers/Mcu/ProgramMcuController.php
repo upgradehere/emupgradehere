@@ -4,11 +4,13 @@ namespace App\Http\Controllers\Mcu;
 
 use App\Http\Controllers\Controller;
 use App\Models\CompanyM;
+use App\Models\EmployeeM;
 use App\Models\McuCompanyV;
 use App\Models\McuEmployeeV;
 use App\Models\McuProgramM;
 use App\Models\McuT;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ProgramMcuController extends Controller
 {
@@ -82,12 +84,15 @@ class ProgramMcuController extends Controller
             $model = new McuEmployeeV();
             $query = $model->select();
             $query = $query->where('company_id', $company_id)->where('mcu_program_id', $mcu_program_id);
+            $totalRecords = $query->count();
 
             if ($request->has('search') && !empty($request->search['value'])) {
                 $searchValue = $request->search['value'];
                 $query = $query->where(function ($q) use ($searchValue) {
                     $q->where('employee_name', 'ilike', '%' . $searchValue . '%')
-                        ->orWhere('departement_name', 'ilike', '%' . $searchValue . '%');
+                        ->orWhere('departement_name', 'ilike', '%' . $searchValue . '%')
+                        ->orWhere('mcu_code', 'ilike', '%' . $searchValue . '%')
+                        ->orWhere('nik', 'ilike', '%' . $searchValue . '%');
                 });
             }
 
@@ -104,7 +109,6 @@ class ProgramMcuController extends Controller
             $length = $request->length ?? 10;
 
             $data = $query->offset($start)->limit($length)->get();
-            $totalRecords = $model->count();
             $filteredRecords = $query->count();
 
             return response()->json([
@@ -117,6 +121,32 @@ class ProgramMcuController extends Controller
             return response()->json([
                 'error' => $e->getMessage()
             ]);
+        }
+    }
+
+    public function insertManualMcu(Request $request)
+    {
+        $company_id = $request->get('company_id');
+        $mcu_program_id = $request->get('mcu_program_id');
+        $employees = EmployeeM::select('employee_id', 'employee_code', 'employee_name')->where('company_id', $company_id)->get();
+        return view('/mcu/insert_manual_mcu', get_defined_vars());
+    }
+
+    public function actionInsertManualMcu(Request $request)
+    {
+        try {
+            $post = $request->post();
+            $company_id = $post['company_id'];
+            $mcu_program_id = $post['mcu_program_id'];
+            DB::beginTransaction();
+            $model = new McuT();
+            $model->create($post);
+            DB::commit();
+
+            return redirect('/mcu/program-mcu/detail?company_id='.$company_id.'&mcu_program_id='.$mcu_program_id)->with('success', 'Form submitted successfully!');
+        } catch (\Exception $e) {
+            DB::rollback();
+            return $e;
         }
     }
 }
