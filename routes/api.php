@@ -22,5 +22,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::group(['prefix' => 'mcu'], function () {
     Route::group(['prefix' => 'program-mcu'], function () {
         Route::get('get-data-mcu-program-company',  [ProgramMcuController::class, 'getDataMcuProgramCompany']);
+        Route::get('get-data-mcu-employee',  [ProgramMcuController::class, 'getDataMcuEmployee']);
     });
 });
