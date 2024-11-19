@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\Role;
+use App\Models\CompanyM;
 
 class User extends Authenticatable
 {
@@ -44,4 +46,14 @@ class User extends Authenticatable
         // 'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function role()
+    {
+        return $this->hasOne(Role::class, 'id', 'id_role');
+    }
+
+    public function company()
+    {
+        return $this->hasOne(Company::class, 'id', 'id_company');
+    }
 }

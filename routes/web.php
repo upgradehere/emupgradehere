@@ -16,12 +16,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 // Authenticaton
-Route::get('/login', [AuthController::class, 'index']);
+Route::get('/login', [AuthController::class, 'index'])->name('login');
 Route::post('/login-check', [AuthController::class, 'check'])->name('login.check');
 Route::post('/login-otp', [AuthController::class, 'otp'])->name('login.otp');
+Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
-Route::get('/', [DashboardController::class, 'index'])->name('index');
-Route::get('/mcu/program-mcu', [ProgramMcuController::class, 'index'])->name('program-mcu');
-Route::get('/mcu/program-mcu/detail', [ProgramMcuController::class, 'detailProgramMcu'])->name('detail-program-mcu');
-Route::get('/mcu/program-mcu/detail/input-manual-mcu', [ProgramMcuController::class, 'insertManualMcu'])->name('input-manual-mcu');
-Route::post('/mcu/program-mcu/detail/input-manual-mcu/save-input-manual-mcu', [ProgramMcuController::class, 'actionInsertManualMcu'])->name('save-input-manual-mcu');
+Route::group(['middleware' => ['auth', 'role:1,2']], function () {
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/mcu/program-mcu', [ProgramMcuController::class, 'index'])->name('program-mcu');
+    Route::get('/mcu/program-mcu/detail', [ProgramMcuController::class, 'detailProgramMcu'])->name('detail-program-mcu');
+    Route::get('/mcu/program-mcu/detail/input-manual-mcu', [ProgramMcuController::class, 'insertManualMcu'])->name('input-manual-mcu');
+    Route::post('/mcu/program-mcu/detail/input-manual-mcu/save-input-manual-mcu', [ProgramMcuController::class, 'actionInsertManualMcu'])->name('save-input-manual-mcu');
+});
