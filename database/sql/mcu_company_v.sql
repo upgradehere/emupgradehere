@@ -1,25 +1,15 @@
--- public.mcu_employee_v source
+-- public.mcu_company_v source
 
-CREATE OR REPLACE VIEW public.mcu_employee_v
-AS SELECT mcu_t.mcu_id,
-    mcu_t.mcu_code,
-    mcu_t.mcu_date,
-    mcu_t.employee_id,
-    employee_m.employee_code,
-    employee_m.employee_name,
-    departement_m.departement_id,
-    departement_m.departement_code,
-    departement_m.departement_name,
+CREATE OR REPLACE VIEW public.mcu_company_v
+AS SELECT mp.mcu_program_id,
+    mp.mcu_program_code,
+    mp.mcu_program_name,
     company_m.company_id,
-    mcu_program_m.mcu_program_id,
-    lookup_c.lookup_name,
-    employee_m.dob,
-    date_part('year'::text, age(employee_m.dob)) || ' years old'::text AS age,
-    mcu_t.additional_data
-   FROM mcu_t
-     LEFT JOIN employee_m ON employee_m.employee_id = mcu_t.employee_id
-     LEFT JOIN departement_m ON departement_m.departement_id = employee_m.departement_id
-     LEFT JOIN company_m ON company_m.company_id = mcu_t.company_id
-     LEFT JOIN mcu_program_m ON mcu_program_m.mcu_program_id = mcu_t.mcu_program_id
-     LEFT JOIN lookup_c ON employee_m.sex = lookup_c.lookup_id
-  GROUP BY mcu_t.mcu_id, mcu_t.mcu_code, mcu_t.mcu_date, mcu_t.employee_id, employee_m.employee_code, employee_m.employee_name, departement_m.departement_id, departement_m.departement_code, departement_m.departement_name, company_m.company_id, mcu_program_m.mcu_program_id, lookup_c.lookup_name, employee_m.dob, mcu_t.additional_data;
+    company_m.company_code,
+    company_m.company_name,
+    count(mcu_t.mcu_program_id) AS mcu_sum
+   FROM mcu_program_m mp
+     LEFT JOIN company_m ON company_m.company_id = mp.company_id
+     LEFT JOIN mcu_t ON mcu_t.mcu_program_id = mp.mcu_program_id AND mcu_t.company_id = company_m.company_id
+  WHERE mcu_t.deleted_at IS NULL AND mp.deleted_at IS NULL AND company_m.deleted_at IS NULL
+  GROUP BY mp.mcu_program_id, mp.mcu_program_code, mp.mcu_program_name, company_m.company_id, company_m.company_code, company_m.company_name;

@@ -12,16 +12,6 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::dropIfExists('lookup_c');
-        Schema::create('lookup_c', function (Blueprint $table) {
-            $table->smallInteger('lookup_id')->unsigned()->primary();
-            $table->string('lookup_code', 16)->nullable();
-            $table->string('lookup_type', 16)->nullable();
-            $table->string('lookup_name', 100)->nullable();
-            $table->text('additional_data')->nullable();
-            $table->softDeletes();
-            $table->timestamps();
-        });
         $sql = file_get_contents(database_path('sql/mcu_company_v.sql'));
         DB::unprepared($sql);
     }
@@ -31,7 +21,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('lookup_c');
         DB::statement("DROP VIEW IF EXISTS mcu_company_v");
     }
 };
