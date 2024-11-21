@@ -2,15 +2,19 @@
 
 namespace App\Http\Controllers\Mcu;
 
+use App\Helpers\ConstantsHelper;
 use App\Http\Controllers\Controller;
+use App\Imports\McuAnamnesisImport;
 use App\Models\CompanyM;
 use App\Models\EmployeeM;
+use App\Models\LookupC;
 use App\Models\McuCompanyV;
 use App\Models\McuEmployeeV;
 use App\Models\McuProgramM;
 use App\Models\McuT;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ProgramMcuController extends Controller
 {
@@ -72,6 +76,13 @@ class ProgramMcuController extends Controller
         $mcu_sum = McuT::where('company_id', $company_id)
             ->where('mcu_program_id', $mcu_program_id)
             ->count();
+
+        $employee_sum = McuT::where('company_id', 1)
+            ->where('mcu_program_id', 4)
+            ->distinct('employee_id')
+            ->count('employee_id');
+
+        $examination_type = LookupC::select('lookup_id as examination_type_id', 'lookup_name as examination_type_name')->where('lookup_type', ConstantsHelper::LOOKUP_EXAMINATION_TYPE)->get();
 
         return view('/mcu/detail_program_mcu', get_defined_vars());
     }
@@ -148,5 +159,18 @@ class ProgramMcuController extends Controller
             DB::rollback();
             return $e;
         }
+    }
+
+    public function importExcelAnamnesa(Request $request)
+    {
+        $request->validate([
+            'import_file' => [
+                'required',
+                'file'
+            ],
+        ]);
+
+        Excel::import(new McuAnamnesisImport, $request->file('import_file'));
+        return redirect()->back()->with('status', 'Imported Successfully');
     }
 }
