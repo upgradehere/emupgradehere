@@ -12,6 +12,7 @@
                         <li class="breadcrumb-item active">MCU</li>
                         <li class="breadcrumb-item active">Informasi MCU</li>
                         <li class="breadcrumb-item active">Detail</li>
+                        <li class="breadcrumb-item active">Pemeriksaan</li>
                     </ol>
                 </div><!-- /.col -->
             </div><!-- /.row -->
@@ -113,78 +114,1030 @@
                             <br>
                             <div class="card">
                                 <div class="card-header">
-                                    <h3 class="card-title">Pemeriksaan Fisik</h3>
+                                    <h3 class="card-title">Pemeriksaan Anamnesa</h3>
                                 </div>
-                                <!-- /.card-header -->
                                 <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group row align-items-center mb-3">
-                                                <label class="col-sm-4 col-form-label">Sistol</label>
-                                                <div class="col-sm-8">
-                                                    <input type="text" style="width: 300px;" class="form-control" id="mcuCode" name="mcu_code" placeholder="">
-                                                </div>
-                                            </div>
-                                            <div class="form-group row align-items-center mb-3">
-                                                <label class="col-sm-4 col-form-label">Diastol</label>
-                                                <div class="col-sm-8">
-                                                    <input type="text" class="form-control" id="mcuCode" name="mcu_code" placeholder="">
-                                                </div>
-                                            </div>
-                                            <div class="form-group row align-items-center mb-3">
-                                                <label class="col-sm-4 col-form-label">Denyut Nadi</label>
-                                                <div class="col-sm-8">
-                                                    <input type="text" class="form-control" id="mcuCode" name="mcu_code" placeholder="">
-                                                </div>
-                                            </div>
-                                            <div class="form-group row align-items-center mb-3">
-                                                <label class="col-sm-4 col-form-label">Nafas</label>
-                                                <div class="col-sm-8">
-                                                    <input type="text" class="form-control" id="mcuCode" name="mcu_code" placeholder="">
-                                                </div>
-                                            </div>
-                                            <div class="form-group row align-items-center mb-3">
-                                                <label class="col-sm-4 col-form-label">Tinggi Badan</label>
-                                                <div class="col-sm-8">
-                                                    <input type="text" class="form-control" id="mcuCode" name="mcu_code" placeholder="">
-                                                </div>
-                                            </div>
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h3 class="card-title">Riwayat Penyakit Sebelumnya</h3>
                                         </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group row align-items-center mb-3">
-                                                <label class="col-sm-4 col-form-label">Berat Badan</label>
-                                                <div class="col-sm-8">
-                                                    <input type="text" class="form-control" id="mcuCode" name="mcu_code" placeholder="">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Asma</label>
+                                                        <div class="col-sm-8">
+                                                            <select class="form-control" id="exampleFormControlSelect1">
+                                                                <option value="0">Tidak</option>
+                                                                <option value="1">Ya</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Kencing Manis</label>
+                                                        <div class="col-sm-8">
+                                                            <select class="form-control" id="exampleFormControlSelect1">
+                                                                <option value="0">Tidak</option>
+                                                                <option value="1">Ya</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Kejang - Kejang Berulang</label>
+                                                        <div class="col-sm-8">
+                                                            <select class="form-control" id="exampleFormControlSelect1">
+                                                                <option value="0">Tidak</option>
+                                                                <option value="1">Ya</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Penyakit Jantung</label>
+                                                        <div class="col-sm-8">
+                                                            <select class="form-control" id="exampleFormControlSelect1">
+                                                                <option value="0">Tidak</option>
+                                                                <option value="1">Ya</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Batuk Disertai Dahak Berdarah</label>
+                                                        <div class="col-sm-8">
+                                                            <select class="form-control" id="exampleFormControlSelect1">
+                                                                <option value="0">Tidak</option>
+                                                                <option value="1">Ya</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Rheumatik</label>
+                                                        <div class="col-sm-8">
+                                                            <select class="form-control" id="exampleFormControlSelect1">
+                                                                <option value="0">Tidak</option>
+                                                                <option value="1">Ya</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Tekanan Darah Tinggi</label>
+                                                        <div class="col-sm-8">
+                                                            <select class="form-control" id="exampleFormControlSelect1">
+                                                                <option value="0">Tidak</option>
+                                                                <option value="1">Ya</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Tekanan Darah Rendah</label>
+                                                        <div class="col-sm-8">
+                                                            <select class="form-control" id="exampleFormControlSelect1">
+                                                                <option value="0">Tidak</option>
+                                                                <option value="1">Ya</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Sering Bengkak di Wajah/Kaki</label>
+                                                        <div class="col-sm-8">
+                                                            <select class="form-control" id="exampleFormControlSelect1">
+                                                                <option value="0">Tidak</option>
+                                                                <option value="1">Ya</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Riwayat Operasi</label>
+                                                        <div class="col-sm-8">
+                                                            <select class="form-control" id="exampleFormControlSelect1">
+                                                                <option value="0">Tidak</option>
+                                                                <option value="1">Ya</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Jika Ya, Jenis Operasi Apa</label>
+                                                        <div class="col-sm-8">
+                                                            <input type="text" class="form-control" id="mcuCode" name="mcu_code" placeholder="">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Apakah anda pernah/sekarang menggunakan obat tertentu secara terus menerus</label>
+                                                        <div class="col-sm-8">
+                                                            <select class="form-control" id="exampleFormControlSelect1">
+                                                                <option value="0">Tidak</option>
+                                                                <option value="1">Ya</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="form-group row align-items-center mb-3">
-                                                <label class="col-sm-4 col-form-label">BMI</label>
-                                                <div class="col-sm-8">
-                                                    <input type="text" class="form-control" id="mcuCode" name="mcu_code" placeholder="">
-                                                </div>
-                                            </div>
-                                            <div class="form-group row align-items-center mb-3">
-                                                <label class="col-sm-4 col-form-label">Anjuran BB</label>
-                                                <div class="col-sm-8">
-                                                    <input type="text" class="form-control" id="mcuCode" name="mcu_code" placeholder="">
-                                                </div>
-                                            </div>
-                                            <div class="form-group row align-items-center mb-3">
-                                                <label class="col-sm-4 col-form-label">Suhu Badan</label>
-                                                <div class="col-sm-8">
-                                                    <input type="text" class="form-control" id="mcuCode" name="mcu_code" placeholder="">
-                                                </div>
-                                            </div>
-                                            <div class="form-group row align-items-center mb-3">
-                                                <label class="col-sm-4 col-form-label">Kesan BMI</label>
-                                                <div class="col-sm-8">
-                                                    <input type="text" class="form-control" id="mcuCode" name="mcu_code" placeholder="">
+                                                <div class="col-md-6">
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Alergi</label>
+                                                        <div class="col-sm-8">
+                                                            <select class="form-control" id="exampleFormControlSelect1">
+                                                                <option value="0">Tidak</option>
+                                                                <option value="1">Ya</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Sakit Kuning / Hepatitis</label>
+                                                        <div class="col-sm-8">
+                                                            <select class="form-control" id="exampleFormControlSelect1">
+                                                                <option value="0">Tidak</option>
+                                                                <option value="1">Ya</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Kecanduan Obat-Obatan</label>
+                                                        <div class="col-sm-8">
+                                                            <select class="form-control" id="exampleFormControlSelect1">
+                                                                <option value="0">Tidak</option>
+                                                                <option value="1">Ya</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Patah Tulang</label>
+                                                        <div class="col-sm-8">
+                                                            <select class="form-control" id="exampleFormControlSelect1">
+                                                                <option value="0">Tidak</option>
+                                                                <option value="1">Ya</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Gangguan Pendengaran</label>
+                                                        <div class="col-sm-8">
+                                                            <select class="form-control" id="exampleFormControlSelect1">
+                                                                <option value="0">Tidak</option>
+                                                                <option value="1">Ya</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Apakah Anda Perokok</label>
+                                                        <div class="col-sm-8">
+                                                            <select class="form-control" id="exampleFormControlSelect1">
+                                                                <option value="0">Tidak</option>
+                                                                <option value="1">Ya</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Apakah Anda Rutin Berolahraga</label>
+                                                        <div class="col-sm-8">
+                                                            <select class="form-control" id="exampleFormControlSelect1">
+                                                                <option value="0">Tidak</option>
+                                                                <option value="1">Ya</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Nyeri Saat Buang Air Kecil</label>
+                                                        <div class="col-sm-8">
+                                                            <select class="form-control" id="exampleFormControlSelect1">
+                                                                <option value="0">Tidak</option>
+                                                                <option value="1">Ya</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Sering Keputihan (Wanita)</label>
+                                                        <div class="col-sm-8">
+                                                            <select class="form-control" id="exampleFormControlSelect1">
+                                                                <option value="0">Tidak</option>
+                                                                <option value="1">Ya</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Epilepsi</label>
+                                                        <div class="col-sm-8">
+                                                            <select class="form-control" id="exampleFormControlSelect1">
+                                                                <option value="0">Tidak</option>
+                                                                <option value="1">Ya</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Jika Ya, Catatan Epilepsi</label>
+                                                        <div class="col-sm-8">
+                                                            <input type="text" style="width: 300px;" class="form-control" id="mcuCode" name="mcu_code" placeholder="">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Keluhan Utama Saat Ini</label>
+                                                        <div class="col-sm-8">
+                                                            <input type="text" style="width: 300px;" class="form-control" id="mcuCode" name="mcu_code" placeholder="">
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <!-- /.card-body -->
+                            </div>
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title">Pemeriksaan Fisik</h3>
+                                </div>
+                                <div class="card-body">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h3 class="card-title">Pemeriksaan Umum</h3>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Sistol</label>
+                                                        <div class="col-sm-6">
+                                                            <input type="text" class="form-control" id="mcuCode" name="mcu_code" placeholder="">
+                                                        </div>
+                                                        <div class="col-sm-2">
+                                                            mmHg
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Diastol</label>
+                                                        <div class="col-sm-6">
+                                                            <input type="text" class="form-control" id="mcuCode" name="mcu_code" placeholder="">
+                                                        </div>
+                                                        <div class="col-sm-2">
+                                                            mmHg
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Denyut Nadi</label>
+                                                        <div class="col-sm-6">
+                                                            <input type="text" class="form-control" id="mcuCode" name="mcu_code" placeholder="">
+                                                        </div>
+                                                        <div class="col-sm-2">
+                                                            x/menit
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Nafas</label>
+                                                        <div class="col-sm-6">
+                                                            <input type="text" class="form-control" id="mcuCode" name="mcu_code" placeholder="">
+                                                        </div>
+                                                        <div class="col-sm-2">
+                                                            x/menit
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Tinggi Badan</label>
+                                                        <div class="col-sm-6">
+                                                            <input type="text" class="form-control" id="mcuCode" name="mcu_code" placeholder="">
+                                                        </div>
+                                                        <div class="col-sm-2">
+                                                            cm
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Berat Badan</label>
+                                                        <div class="col-sm-6">
+                                                            <input type="text" class="form-control" id="mcuCode" name="mcu_code" placeholder="">
+                                                        </div>
+                                                        <div class="col-sm-2">
+                                                            kg
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">BMI</label>
+                                                        <div class="col-sm-6">
+                                                            <input type="text" class="form-control" id="mcuCode" name="mcu_code" placeholder="">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Anjuran BB</label>
+                                                        <div class="col-sm-6">
+                                                            <input type="text" class="form-control" id="mcuCode" name="mcu_code" placeholder="">
+                                                        </div>
+                                                        <div class="col-sm-2">
+                                                            kg
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Suhu Badan</label>
+                                                        <div class="col-sm-6">
+                                                            <input type="text" class="form-control" id="mcuCode" name="mcu_code" placeholder="">
+                                                        </div>
+                                                        <div class="col-sm-2">
+                                                            <span>&#8451;</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Kesan BMI</label>
+                                                        <div class="col-sm-6">
+                                                            <input type="text" class="form-control" id="mcuCode" name="mcu_code" placeholder="">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h3 class="card-title">Keadaan Kulit</h3>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-2 col-form-label">Keadaan Kulit</label>
+                                                        <div class="col-sm-10">
+                                                            <input type="text" class="form-control" id="mcuCode" name="mcu_code" placeholder="">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h3 class="card-title">Mata</h3>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Buta Warna</label>
+                                                        <div class="col-sm-8">
+                                                            <select class="form-control" id="exampleFormControlSelect1">
+                                                                <option value="0">Tidak</option>
+                                                                <option value="1">Ya</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Kaca Mata</label>
+                                                        <div class="col-sm-8">
+                                                            <select class="form-control" id="exampleFormControlSelect1">
+                                                                <option value="0">Tidak</option>
+                                                                <option value="1">Ya</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">OS</label>
+                                                        <div class="col-sm-8">
+                                                            <input type="text" class="form-control" id="mcuCode" name="mcu_code" placeholder="">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">OD</label>
+                                                        <div class="col-sm-8">
+                                                            <input type="text" class="form-control" id="mcuCode" name="mcu_code" placeholder="">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Kelainan Visus</label>
+                                                        <div class="col-sm-8">
+                                                            <select class="form-control" id="exampleFormControlSelect1">
+                                                                <option value="0">Tidak</option>
+                                                                <option value="1">Ya</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">OD</label>
+                                                        <div class="col-sm-8">
+                                                            <input type="text" class="form-control" id="mcuCode" name="mcu_code" placeholder="">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">OS</label>
+                                                        <div class="col-sm-8">
+                                                            <input type="text" class="form-control" id="mcuCode" name="mcu_code" placeholder="">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Strabismus</label>
+                                                        <div class="col-sm-8">
+                                                            <select class="form-control" id="exampleFormControlSelect1">
+                                                                <option value="0">Tidak</option>
+                                                                <option value="1">Ya</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Konjungtiva Anemis</label>
+                                                        <div class="col-sm-8">
+                                                            <select class="form-control" id="exampleFormControlSelect1">
+                                                                <option value="0">Tidak</option>
+                                                                <option value="1">Ya</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Sklera Ikterik</label>
+                                                        <div class="col-sm-8">
+                                                            <select class="form-control" id="exampleFormControlSelect1">
+                                                                <option value="0">Tidak</option>
+                                                                <option value="1">Ya</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Reflek Pupil</label>
+                                                        <div class="col-sm-8">
+                                                            <select class="form-control" id="exampleFormControlSelect1">
+                                                                <option value="0">Tidak</option>
+                                                                <option value="1">Ya</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Kelainan Kelenjar Mata</label>
+                                                        <div class="col-sm-8">
+                                                            <select class="form-control" id="exampleFormControlSelect1">
+                                                                <option value="0">Tidak</option>
+                                                                <option value="1">Ya</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Catatan Kelainan Kelenjar Mata</label>
+                                                        <div class="col-sm-8">
+                                                            <input type="text" class="form-control" id="mcuCode" name="mcu_code" placeholder="">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Exohalmus</label>
+                                                        <div class="col-sm-8">
+                                                            <select class="form-control" id="exampleFormControlSelect1">
+                                                                <option value="0">Tidak</option>
+                                                                <option value="1">Ya</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Lain - lain</label>
+                                                        <div class="col-sm-8">
+                                                            <input type="text" class="form-control" id="mcuCode" name="mcu_code" placeholder="">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h3 class="card-title">Telinga</h3>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Penurunan Kualitas Dengar</label>
+                                                        <div class="col-sm-8">
+                                                            <select class="form-control" id="exampleFormControlSelect1">
+                                                                <option value="0">Tidak</option>
+                                                                <option value="1">Ya</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Kelainan Bentuk Telinga</label>
+                                                        <div class="col-sm-8">
+                                                            <select class="form-control" id="exampleFormControlSelect1">
+                                                                <option value="0">Tidak</option>
+                                                                <option value="1">Ya</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Perforasi Membran Timpani</label>
+                                                        <div class="col-sm-8">
+                                                            <select class="form-control" id="exampleFormControlSelect1">
+                                                                <option value="0">Tidak</option>
+                                                                <option value="1">Ya</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Lain - lain</label>
+                                                        <div class="col-sm-8">
+                                                            <input type="text" class="form-control" id="mcuCode" name="mcu_code" placeholder="">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h3 class="card-title">Hidung</h3>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Septum Deviasi</label>
+                                                        <div class="col-sm-8">
+                                                            <select class="form-control" id="exampleFormControlSelect1">
+                                                                <option value="0">Tidak</option>
+                                                                <option value="1">Ya</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Sekret</label>
+                                                        <div class="col-sm-8">
+                                                            <select class="form-control" id="exampleFormControlSelect1">
+                                                                <option value="0">Tidak</option>
+                                                                <option value="1">Ya</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Lain - lain</label>
+                                                        <div class="col-sm-8">
+                                                            <input type="text" class="form-control" id="mcuCode" name="mcu_code" placeholder="">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h3 class="card-title">Rongga Mulut</h3>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Laboi Palatoschizis</label>
+                                                        <div class="col-sm-8">
+                                                            <select class="form-control" id="exampleFormControlSelect1">
+                                                                <option value="0">Tidak</option>
+                                                                <option value="1">Ya</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Kelainan Faring</label>
+                                                        <div class="col-sm-8">
+                                                            <select class="form-control" id="exampleFormControlSelect1">
+                                                                <option value="0">Tidak</option>
+                                                                <option value="1">Ya</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Pembesaran Tonsil</label>
+                                                        <div class="col-sm-8">
+                                                            <select class="form-control" id="exampleFormControlSelect1">
+                                                                <option value="0">Tidak</option>
+                                                                <option value="1">Ya</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Lain - lain</label>
+                                                        <div class="col-sm-8">
+                                                            <input type="text" class="form-control" id="mcuCode" name="mcu_code" placeholder="">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h3 class="card-title">Gigi</h3>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Carries Dentis</label>
+                                                        <div class="col-sm-8">
+                                                            <select class="form-control" id="exampleFormControlSelect1">
+                                                                <option value="0">Tidak</option>
+                                                                <option value="1">Ya</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Gangren Radix</label>
+                                                        <div class="col-sm-8">
+                                                            <select class="form-control" id="exampleFormControlSelect1">
+                                                                <option value="0">Tidak</option>
+                                                                <option value="1">Ya</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Gangren Pulpa</label>
+                                                        <div class="col-sm-8">
+                                                            <select class="form-control" id="exampleFormControlSelect1">
+                                                                <option value="0">Tidak</option>
+                                                                <option value="1">Ya</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Calculus Dentis</label>
+                                                        <div class="col-sm-8">
+                                                            <select class="form-control" id="exampleFormControlSelect1">
+                                                                <option value="0">Tidak</option>
+                                                                <option value="1">Ya</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Gigi Palsu</label>
+                                                        <div class="col-sm-8">
+                                                            <select class="form-control" id="exampleFormControlSelect1">
+                                                                <option value="0">Tidak</option>
+                                                                <option value="1">Ya</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Lain - lain</label>
+                                                        <div class="col-sm-8">
+                                                            <input type="text" class="form-control" id="mcuCode" name="mcu_code" placeholder="">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h3 class="card-title">Leher</h3>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Struma</label>
+                                                        <div class="col-sm-8">
+                                                            <select class="form-control" id="exampleFormControlSelect1">
+                                                                <option value="0">Tidak</option>
+                                                                <option value="1">Ya</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Limfadenopati</label>
+                                                        <div class="col-sm-8">
+                                                            <select class="form-control" id="exampleFormControlSelect1">
+                                                                <option value="0">Tidak</option>
+                                                                <option value="1">Ya</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Lain - lain</label>
+                                                        <div class="col-sm-8">
+                                                            <input type="text" class="form-control" id="mcuCode" name="mcu_code" placeholder="">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h3 class="card-title">Thorax</h3>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Simetris</label>
+                                                        <div class="col-sm-8">
+                                                            <select class="form-control" id="exampleFormControlSelect1">
+                                                                <option value="0">Tidak</option>
+                                                                <option value="1">Ya</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Kelainan Paru</label>
+                                                        <div class="col-sm-8">
+                                                            <select class="form-control" id="exampleFormControlSelect1">
+                                                                <option value="0">Tidak</option>
+                                                                <option value="1">Ya</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Catatan Kelainan Paru</label>
+                                                        <div class="col-sm-8">
+                                                            <input type="text" class="form-control" id="mcuCode" name="mcu_code" placeholder="">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Kelainan Jantung</label>
+                                                        <div class="col-sm-8">
+                                                            <select class="form-control" id="exampleFormControlSelect1">
+                                                                <option value="0">Tidak</option>
+                                                                <option value="1">Ya</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Catatan Kelainan Jantung</label>
+                                                        <div class="col-sm-8">
+                                                            <input type="text" class="form-control" id="mcuCode" name="mcu_code" placeholder="">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Lain - lain</label>
+                                                        <div class="col-sm-8">
+                                                            <input type="text" class="form-control" id="mcuCode" name="mcu_code" placeholder="">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h3 class="card-title">Abdomen</h3>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Kelainan Bentuk Abdomen</label>
+                                                        <div class="col-sm-8">
+                                                            <select class="form-control" id="exampleFormControlSelect1">
+                                                                <option value="0">Tidak</option>
+                                                                <option value="1">Ya</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Bekas Operasi</label>
+                                                        <div class="col-sm-8">
+                                                            <select class="form-control" id="exampleFormControlSelect1">
+                                                                <option value="0">Tidak</option>
+                                                                <option value="1">Ya</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Catatan Bekas Operasi</label>
+                                                        <div class="col-sm-8">
+                                                            <input type="text" class="form-control" id="mcuCode" name="mcu_code" placeholder="">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Hepatomegali</label>
+                                                        <div class="col-sm-8">
+                                                            <select class="form-control" id="exampleFormControlSelect1">
+                                                                <option value="0">Tidak</option>
+                                                                <option value="1">Ya</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Splenomegali</label>
+                                                        <div class="col-sm-8">
+                                                            <select class="form-control" id="exampleFormControlSelect1">
+                                                                <option value="0">Tidak</option>
+                                                                <option value="1">Ya</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Nyeri Tekan Epigastrium</label>
+                                                        <div class="col-sm-8">
+                                                            <select class="form-control" id="exampleFormControlSelect1">
+                                                                <option value="0">Tidak</option>
+                                                                <option value="1">Ya</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Nyeri Tekan Titik McBurney</label>
+                                                        <div class="col-sm-8">
+                                                            <select class="form-control" id="exampleFormControlSelect1">
+                                                                <option value="0">Tidak</option>
+                                                                <option value="1">Ya</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Striae</label>
+                                                        <div class="col-sm-8">
+                                                            <select class="form-control" id="exampleFormControlSelect1">
+                                                                <option value="0">Tidak</option>
+                                                                <option value="1">Ya</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Teraba Tumor</label>
+                                                        <div class="col-sm-8">
+                                                            <select class="form-control" id="exampleFormControlSelect1">
+                                                                <option value="0">Tidak</option>
+                                                                <option value="1">Ya</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Lain - lain</label>
+                                                        <div class="col-sm-8">
+                                                            <input type="text" class="form-control" id="mcuCode" name="mcu_code" placeholder="">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h3 class="card-title">Tulang Belakang</h3>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Skoliosis / Lordosis / Kyposis</label>
+                                                        <div class="col-sm-8">
+                                                            <select class="form-control" id="exampleFormControlSelect1">
+                                                                <option value="0">Tidak</option>
+                                                                <option value="1">Ya</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Lain - lain</label>
+                                                        <div class="col-sm-8">
+                                                            <input type="text" class="form-control" id="mcuCode" name="mcu_code" placeholder="">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h3 class="card-title">Ekstremitas Atas</h3>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Kelainan Bentuk Ekstremitas Atas</label>
+                                                        <div class="col-sm-8">
+                                                            <select class="form-control" id="exampleFormControlSelect1">
+                                                                <option value="0">Tidak</option>
+                                                                <option value="1">Ya</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Hemiporasis Ekstremitas Atas</label>
+                                                        <div class="col-sm-8">
+                                                            <select class="form-control" id="exampleFormControlSelect1">
+                                                                <option value="0">Tidak</option>
+                                                                <option value="1">Ya</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Pembengkakan Sendi Ekstremitas Atas</label>
+                                                        <div class="col-sm-8">
+                                                            <select class="form-control" id="exampleFormControlSelect1">
+                                                                <option value="0">Tidak</option>
+                                                                <option value="1">Ya</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Lain - lain</label>
+                                                        <div class="col-sm-8">
+                                                            <input type="text" class="form-control" id="mcuCode" name="mcu_code" placeholder="">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h3 class="card-title">Ekstremitas Bawah</h3>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Kelainan Bentuk Ekstremitas Bawah</label>
+                                                        <div class="col-sm-8">
+                                                            <select class="form-control" id="exampleFormControlSelect1">
+                                                                <option value="0">Tidak</option>
+                                                                <option value="1">Ya</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Varises</label>
+                                                        <div class="col-sm-8">
+                                                            <select class="form-control" id="exampleFormControlSelect1">
+                                                                <option value="0">Tidak</option>
+                                                                <option value="1">Ya</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Polio</label>
+                                                        <div class="col-sm-8">
+                                                            <select class="form-control" id="exampleFormControlSelect1">
+                                                                <option value="0">Tidak</option>
+                                                                <option value="1">Ya</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Hemiparesis Ekstremitas Bawah</label>
+                                                        <div class="col-sm-8">
+                                                            <select class="form-control" id="exampleFormControlSelect1">
+                                                                <option value="0">Tidak</option>
+                                                                <option value="1">Ya</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Pembengkakan Sendi Ekstremitas Bawah</label>
+                                                        <div class="col-sm-8">
+                                                            <select class="form-control" id="exampleFormControlSelect1">
+                                                                <option value="0">Tidak</option>
+                                                                <option value="1">Ya</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-4 col-form-label">Lain - lain</label>
+                                                        <div class="col-sm-8">
+                                                            <input type="text" class="form-control" id="mcuCode" name="mcu_code" placeholder="">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h3 class="card-title">Catatan</h3>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group row align-items-center mb-3">
+                                                        <label class="col-sm-2 col-form-label">Catatan</label>
+                                                        <div class="col-sm-10">
+                                                            <input type="text" class="form-control" id="mcuCode" name="mcu_code" placeholder="">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex justify-content-end">
+                                        <button type="submit" class="btn btn-danger action-export">
+                                            <i class="fas fa-trash"></i>&nbsp;&nbsp;Hapus
+                                        </button>
+                                        &nbsp;&nbsp;
+                                        <button type="submit" class="btn btn-success action-export">
+                                            <i class="fas fa-save"></i>&nbsp;&nbsp;Simpan
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="tab-pane fade" id="custom-content-below-profile" role="tabpanel" aria-labelledby="custom-content-below-profile-tab">
