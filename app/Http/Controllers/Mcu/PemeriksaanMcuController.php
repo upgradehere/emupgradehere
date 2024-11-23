@@ -12,12 +12,15 @@ use App\Models\McuCompanyV;
 use App\Models\McuEmployeeV;
 use App\Models\McuProgramM;
 use App\Models\McuT;
+use App\Traits\AnamnesisTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 
 class PemeriksaanMcuController extends Controller
 {
+    use AnamnesisTrait;
+
     public function index(Request $request)
     {
         $mcu_id = $request->get('mcu_id');
@@ -30,6 +33,7 @@ class PemeriksaanMcuController extends Controller
 
         $mcu_date = McuT::select('mcu_date')->where('mcu_id', $mcu_id)->first();
         $mcu_date = !empty($mcu_date) ? $mcu_date['mcu_date'] : '-';
+        $data_anamnesis = self::getDataAnamnesis($mcu_id);
 
         return view('/mcu/pemeriksaan/index_pemeriksaan', get_defined_vars());
     }

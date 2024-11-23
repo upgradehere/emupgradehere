@@ -12,6 +12,7 @@
                         <li class="breadcrumb-item active">MCU</li>
                         <li class="breadcrumb-item active">Informasi MCU</li>
                         <li class="breadcrumb-item active">Detail</li>
+                        <li class="breadcrumb-item active">Pemeriksaan</li>
                     </ol>
                 </div><!-- /.col -->
             </div><!-- /.row -->
@@ -58,19 +59,19 @@
                 <div class="col-12">
                     <ul class="nav nav-tabs" id="custom-content-below-tab" role="tablist">
                         <li class="nav-item">
-                            <a class="nav-link active" id="custom-content-below-home-tab" data-toggle="pill"
-                                href="#custom-content-below-home" role="tab"
-                                aria-controls="custom-content-below-home" aria-selected="true">Fisik & Anamnesa</a>
+                            <a class="nav-link active" id="tab-anamnesis-tab" data-toggle="pill"
+                                href="#tab-anamnesis" role="tab"
+                                aria-controls="tab-anamnesis" aria-selected="true">Fisik & Anamnesa</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" id="custom-content-below-profile-tab" data-toggle="pill"
-                                href="#custom-content-below-profile" role="tab"
-                                aria-controls="custom-content-below-profile" aria-selected="false">Refraksi / Trial Lens</a>
+                            <a class="nav-link" id="tab-refraction-tab" data-toggle="pill"
+                                href="#tab-refraction" role="tab"
+                                aria-controls="tab-refraction" aria-selected="false">Refraksi / Trial Lens</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" id="custom-content-below-messages-tab" data-toggle="pill"
-                                href="#custom-content-below-messages" role="tab"
-                                aria-controls="custom-content-below-messages" aria-selected="false">Laboratorium</a>
+                            <a class="nav-link" id="tab-lab-tab" data-toggle="pill"
+                                href="#tab-lab" role="tab"
+                                aria-controls="tab-lab" aria-selected="false">Laboratorium</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" id="custom-content-below-settings-tab" data-toggle="pill"
@@ -109,89 +110,14 @@
                         </li>
                     </ul>
                     <div class="tab-content" id="custom-content-below-tabContent">
-                        <div class="tab-pane fade show active" id="custom-content-below-home" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
-                            <br>
-                            <div class="card">
-                                <div class="card-header">
-                                    <h3 class="card-title">Pemeriksaan Fisik</h3>
-                                </div>
-                                <!-- /.card-header -->
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group row align-items-center mb-3">
-                                                <label class="col-sm-4 col-form-label">Sistol</label>
-                                                <div class="col-sm-8">
-                                                    <input type="text" style="width: 300px;" class="form-control" id="mcuCode" name="mcu_code" placeholder="">
-                                                </div>
-                                            </div>
-                                            <div class="form-group row align-items-center mb-3">
-                                                <label class="col-sm-4 col-form-label">Diastol</label>
-                                                <div class="col-sm-8">
-                                                    <input type="text" class="form-control" id="mcuCode" name="mcu_code" placeholder="">
-                                                </div>
-                                            </div>
-                                            <div class="form-group row align-items-center mb-3">
-                                                <label class="col-sm-4 col-form-label">Denyut Nadi</label>
-                                                <div class="col-sm-8">
-                                                    <input type="text" class="form-control" id="mcuCode" name="mcu_code" placeholder="">
-                                                </div>
-                                            </div>
-                                            <div class="form-group row align-items-center mb-3">
-                                                <label class="col-sm-4 col-form-label">Nafas</label>
-                                                <div class="col-sm-8">
-                                                    <input type="text" class="form-control" id="mcuCode" name="mcu_code" placeholder="">
-                                                </div>
-                                            </div>
-                                            <div class="form-group row align-items-center mb-3">
-                                                <label class="col-sm-4 col-form-label">Tinggi Badan</label>
-                                                <div class="col-sm-8">
-                                                    <input type="text" class="form-control" id="mcuCode" name="mcu_code" placeholder="">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group row align-items-center mb-3">
-                                                <label class="col-sm-4 col-form-label">Berat Badan</label>
-                                                <div class="col-sm-8">
-                                                    <input type="text" class="form-control" id="mcuCode" name="mcu_code" placeholder="">
-                                                </div>
-                                            </div>
-                                            <div class="form-group row align-items-center mb-3">
-                                                <label class="col-sm-4 col-form-label">BMI</label>
-                                                <div class="col-sm-8">
-                                                    <input type="text" class="form-control" id="mcuCode" name="mcu_code" placeholder="">
-                                                </div>
-                                            </div>
-                                            <div class="form-group row align-items-center mb-3">
-                                                <label class="col-sm-4 col-form-label">Anjuran BB</label>
-                                                <div class="col-sm-8">
-                                                    <input type="text" class="form-control" id="mcuCode" name="mcu_code" placeholder="">
-                                                </div>
-                                            </div>
-                                            <div class="form-group row align-items-center mb-3">
-                                                <label class="col-sm-4 col-form-label">Suhu Badan</label>
-                                                <div class="col-sm-8">
-                                                    <input type="text" class="form-control" id="mcuCode" name="mcu_code" placeholder="">
-                                                </div>
-                                            </div>
-                                            <div class="form-group row align-items-center mb-3">
-                                                <label class="col-sm-4 col-form-label">Kesan BMI</label>
-                                                <div class="col-sm-8">
-                                                    <input type="text" class="form-control" id="mcuCode" name="mcu_code" placeholder="">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- /.card-body -->
-                            </div>
+                        <div class="tab-pane fade show active" id="tab-anamnesis" role="tabpanel" aria-labelledby="tab-anamnesis-tab"><br>
+                            @include('mcu.pemeriksaan.partials.anamnesis')
                         </div>
-                        <div class="tab-pane fade" id="custom-content-below-profile" role="tabpanel" aria-labelledby="custom-content-below-profile-tab">
-
+                        <div class="tab-pane fade" id="tab-refraction" role="tabpanel" aria-labelledby="tab-refraction-tab"><br>
+                            @include('mcu.pemeriksaan.partials.refraction')
                         </div>
-                        <div class="tab-pane fade" id="custom-content-below-messages" role="tabpanel" aria-labelledby="custom-content-below-messages-tab">
-
+                        <div class="tab-pane fade" id="tab-lab" role="tabpanel" aria-labelledby="tab-lab-tab"><br>
+                            @include('mcu.pemeriksaan.partials.laboratorium')
                         </div>
                         <div class="tab-pane fade" id="custom-content-below-settings" role="tabpanel" aria-labelledby="custom-content-below-settings-tab">
 
