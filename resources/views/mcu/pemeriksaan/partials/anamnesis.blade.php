@@ -35,8 +35,8 @@
                                 <label class="col-sm-4 col-form-label">Kejang - Kejang Berulang</label>
                                 <div class="col-sm-8">
                                     <select class="form-control" id="recurrent_seizures" name="medical_history[recurrent_seizures]">
-                                        <option value="0" {{ isset($data_anamnesis->medical_history->recurrent_seizure) && $data_anamnesis->medical_history->recurrent_seizures == 0 ? 'selected' : '' }}>Tidak</option>
-                                        <option value="1" {{ isset($data_anamnesis->medical_history->recurrent_seizure) && $data_anamnesis->medical_history->recurrent_seizures == 1 ? 'selected' : '' }}>Ya</option>
+                                        <option value="0" {{ isset($data_anamnesis->medical_history->recurrent_seizures) && $data_anamnesis->medical_history->recurrent_seizures == 0 ? 'selected' : '' }}>Tidak</option>
+                                        <option value="1" {{ isset($data_anamnesis->medical_history->recurrent_seizures) && $data_anamnesis->medical_history->recurrent_seizures == 1 ? 'selected' : '' }}>Ya</option>
                                     </select>
                                 </div>
                             </div>
@@ -219,7 +219,7 @@
                             <div class="form-group row align-items-center mb-3">
                                 <label class="col-sm-4 col-form-label">Keluhan Utama Saat Ini</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="main_complaint" name="medical_history[main_complaint]" value="{{ isset($data_anamnesis->medical_history->main_complaint) ? $data_anamnesis->medical_history->epilepsy_notes : '' }}" placeholder="">
+                                    <input type="text" class="form-control" id="main_complaint" name="medical_history[main_complaint]" value="{{ isset($data_anamnesis->medical_history->main_complaint) ? $data_anamnesis->medical_history->main_complaint : '' }}" placeholder="">
                                 </div>
                             </div>
                         </div>
@@ -793,7 +793,7 @@
                             <div class="form-group row align-items-center mb-3">
                                 <label class="col-sm-4 col-form-label">Catatan Bekas Operasi</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="surgical_scar_notes" name="abdomen[surgical_scar]" value="{{ isset($data_anamnesis->abdomen->surgical_scar) ? $data_anamnesis->abdomen->surgical_scar : '' }}" placeholder="">
+                                    <input type="text" class="form-control" id="surgical_scar_notes" name="abdomen[surgical_scar_notes]" value="{{ isset($data_anamnesis->abdomen->surgical_scar_notes) ? $data_anamnesis->abdomen->surgical_scar_notes : '' }}" placeholder="">
                                 </div>
                             </div>
                             <div class="form-group row align-items-center mb-3">
@@ -809,8 +809,8 @@
                                 <label class="col-sm-4 col-form-label">Splenomegali</label>
                                 <div class="col-sm-8">
                                     <select class="form-control" id="splenomegaly" name="abdomen[splenomegaly]">
-                                        <option value="0" {{ isset($data_anamnesis->abdomen->drug_continously) && $data_anamnesis->abdomen->splenomegaly == 0 ? 'selected' : '' }}>Tidak</option>
-                                        <option value="1" {{ isset($data_anamnesis->abdomen->drug_continously) && $data_anamnesis->abdomen->splenomegaly == 1 ? 'selected' : '' }}>Ya</option>
+                                        <option value="0" {{ isset($data_anamnesis->abdomen->splenomegaly) && $data_anamnesis->abdomen->splenomegaly == 0 ? 'selected' : '' }}>Tidak</option>
+                                        <option value="1" {{ isset($data_anamnesis->abdomen->splenomegaly) && $data_anamnesis->abdomen->splenomegaly == 1 ? 'selected' : '' }}>Ya</option>
                                     </select>
                                 </div>
                             </div>
@@ -820,8 +820,8 @@
                                 <label class="col-sm-4 col-form-label">Nyeri Tekan Epigastrium</label>
                                 <div class="col-sm-8">
                                     <select class="form-control" id="epigastric_pain" name="abdomen[epigastric_pain]">
-                                        <option value="0" {{ isset($data_anamnesis->abdomen->drug_continously) && $data_anamnesis->abdomen->epigastric_pain == 0 ? 'selected' : '' }}>Tidak</option>
-                                        <option value="1" {{ isset($data_anamnesis->abdomen->drug_continously) && $data_anamnesis->abdomen->epigastric_pain == 1 ? 'selected' : '' }}>Ya</option>
+                                        <option value="0" {{ isset($data_anamnesis->abdomen->epigastric_pain) && $data_anamnesis->abdomen->epigastric_pain == 0 ? 'selected' : '' }}>Tidak</option>
+                                        <option value="1" {{ isset($data_anamnesis->abdomen->epigastric_pain) && $data_anamnesis->abdomen->epigastric_pain == 1 ? 'selected' : '' }}>Ya</option>
                                     </select>
                                 </div>
                             </div>
@@ -829,8 +829,8 @@
                                 <label class="col-sm-4 col-form-label">Nyeri Tekan Titik McBurney</label>
                                 <div class="col-sm-8">
                                     <select class="form-control" id="mcburney_point_tenderness" name="abdomen[mcburney_point_tenderness]">
-                                        <option value="0" {{ isset($data_anamnesis->abdomen->drug_continously) && $data_anamnesis->abdomen->mcburney_point_tenderness == 0 ? 'selected' : '' }}>Tidak</option>
-                                        <option value="1" {{ isset($data_anamnesis->abdomen->drug_continously) && $data_anamnesis->abdomen->mcburney_point_tenderness == 1 ? 'selected' : '' }}>Ya</option>
+                                        <option value="0" {{ isset($data_anamnesis->abdomen->mcburney_point_tenderness) && $data_anamnesis->abdomen->mcburney_point_tenderness == 0 ? 'selected' : '' }}>Tidak</option>
+                                        <option value="1" {{ isset($data_anamnesis->abdomen->mcburney_point_tenderness) && $data_anamnesis->abdomen->mcburney_point_tenderness == 1 ? 'selected' : '' }}>Ya</option>
                                     </select>
                                 </div>
                             </div>
