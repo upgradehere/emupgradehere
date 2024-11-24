@@ -14,6 +14,7 @@ use App\Models\McuProgramM;
 use App\Models\McuT;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ProgramMcuController extends Controller
@@ -149,6 +150,7 @@ class ProgramMcuController extends Controller
             $post = $request->post();
             $company_id = $post['company_id'];
             $mcu_program_id = $post['mcu_program_id'];
+            unset($post['mcu_code']);
             DB::beginTransaction();
             $model = new McuT();
             $model->create($post);
@@ -163,14 +165,56 @@ class ProgramMcuController extends Controller
 
     public function importExcelAnamnesa(Request $request)
     {
-        $request->validate([
-            'import_file' => [
-                'required',
-                'file'
-            ],
-        ]);
+        try{
+            $post = $request->post();
+            $request->validate([
+                'examination_type' => 'required',
+                'import_file' => [
+                    'required',
+                    'file',
+                    'mimes:xls,xlsx',
+                ],
+                'mcu_date' => 'required',
+                'company_id' => 'required',
+                'mcu_program_id' => 'required',
+            ], [
+                'examination_type.required' => 'Jenis Pemeriksaan Tidak Boleh Kosong.',
+                'import_file.required' => 'File Excel Tidak Boleh Kosong.',
+                'import_file.file' => 'File Excel Tidak Valid.',
+                'import_file.mimes' => 'File Excel Tidak Sesuai, Silahakn Upload File Berupa xls atau xlsx',
+                'mcu_date.required' => 'Tanggal MCU Tidak Boleh Kosong.',
+                'company_id.required' => 'ID Perusahaan Tidak Boleh Kosong.',
+                'mcu_program_id.required' => 'ID Program MCU Tidak Boleh Kosong.',
+            ]);
 
-        Excel::import(new McuAnamnesisImport, $request->file('import_file'));
-        return redirect()->back()->with('status', 'Imported Successfully');
+            $import_model = null;
+            switch ($request->post('examination_type')) {
+                case ConstantsHelper::LOOKUP_EXAMINATION_TYPE_ANAMNESIS:
+                    $import_model = new McuAnamnesisImport($post['mcu_date'], $post['company_id'], $post['mcu_program_id']);
+                    break;
+                case ConstantsHelper::LOOKUP_EXAMINATION_TYPE_REFRACTION:
+                case ConstantsHelper::LOOKUP_EXAMINATION_TYPE_LAB:
+                case ConstantsHelper::LOOKUP_EXAMINATION_TYPE_RONTGEN:
+                case ConstantsHelper::LOOKUP_EXAMINATION_TYPE_AUDIOMETRY:
+                case ConstantsHelper::LOOKUP_EXAMINATION_TYPE_SPIROMETRY:
+                case ConstantsHelper::LOOKUP_EXAMINATION_TYPE_EKG:
+                case ConstantsHelper::LOOKUP_EXAMINATION_TYPE_USG:
+                case ConstantsHelper::LOOKUP_EXAMINATION_TYPE_TREADMILL:
+                    return redirect()->back()->with('error', 'Belum Tersedia!');
+                default:
+                    return redirect()->back()->with('error', 'Jenis Pemeriksaan Salah!');
+            }
+
+            if ($import_model == null) {
+                throw new \Exception('Terjadi Kesalahan!');
+            }
+
+            Excel::import($import_model, $request->file('import_file'));
+            return redirect()->back()->with('success', 'Imported Successfully');
+        } catch (ValidationException $e) {
+            return redirect()->back()->with('error', $e->getMessage());
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', $e->getMessage());
+        }
     }
 }

@@ -22,7 +22,7 @@ Route::post('/login-check', [AuthController::class, 'check'])->name('login.check
 Route::post('/login-otp', [AuthController::class, 'otp'])->name('login.otp');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
-Route::group(['middleware' => ['auth', 'role:1,2']], function () {
+// Route::group(['middleware' => ['auth', 'role:1,2']], function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/mcu/program-mcu', [ProgramMcuController::class, 'index'])->name('program-mcu');
     Route::get('/mcu/program-mcu/detail', [ProgramMcuController::class, 'detailProgramMcu'])->name('detail-program-mcu');
@@ -31,4 +31,4 @@ Route::group(['middleware' => ['auth', 'role:1,2']], function () {
     Route::post('/mcu/program-mcu/detail/import-excel-anamnesa', [ProgramMcuController::class, 'importExcelAnamnesa']);
     Route::get('/mcu/program-mcu/detail/pemeriksaan', [PemeriksaanMcuController::class, 'index']);
     Route::post('/mcu/program-mcu/detail/pemeriksaan/save-anamnesis', [PemeriksaanMcuController::class, 'saveAnamnesis']);
-});
+// });

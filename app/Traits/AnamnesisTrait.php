@@ -1,6 +1,7 @@
 <?php
 namespace App\Traits;
 
+use App\Helpers\ConstantsHelper;
 use App\Models\AnamnesisT;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -35,13 +36,20 @@ trait AnamnesisTrait
     {
         try {
             $post = $request->post();
+            $action = $request->input('action');
+            $anamnesis_id = isset($post['anamnesis_id']) ? $post['anamnesis_id'] : null;
+            if ($action == 'delete') {
+                return self::actionDeleteAnamnesis($anamnesis_id);
+            }
             DB::beginTransaction();
             $model = new AnamnesisT();
             if (empty($post['mcu_id'])) {
-                return redirect()->back()->with('status', 'Gagal!');
+                return redirect()->back()->with([
+                    'error' => ConstantsHelper::MESSAGE_ERROR_SAVE
+                ]);
             }
             $payload = [
-                'anamnesis_code' => 'ANM0001',
+                'anamnesis_code' => '-',
                 'anamnesis_date' => date('Y-m-d H:i:s'),
                 'mcu_id' => $post['mcu_id'],
                 'systolic' => $post['systolic'],
@@ -70,21 +78,54 @@ trait AnamnesisTrait
                 'additional_data' => null,
                 'notes' => $post['notes'],
             ];
-            $query = $model->select('anamnesis_id')->where('mcu_id', $payload['mcu_id'])->first();
-            $anamnesis_id = $query['anamnesis_id'];
-            if ($anamnesis_id != null) {
-                $model = $model->find($anamnesis_id);
+            if (!empty($anamnesis_id)) {
+                $query = $model->find($anamnesis_id);
+                if ($query != null) {
+                    $model = $model->find($anamnesis_id);
+                    $payload['anamnesis_id'] = $anamnesis_id;
+                }
             }
             $model->attributes = $payload;
-            if ($model->save()) {
-                DB::commit();
-                return redirect()->back()->with('status', 'Imported Successfully');
+            if ($model->validate() === true) {
+                if ($model->save()) {
+                    DB::commit();
+                    return redirect()->back()->with([
+                        'success' => ConstantsHelper::MESSAGE_SUCCESS_SAVE
+                    ]);
+                }
+            } else {
+                DB::rollback();
+                return redirect()->back()->with([
+                    'error' => $model->validate()
+                ]);
             }
         } catch (\Exception $e) {
             DB::rollback();
-            return $e;
+            return redirect()->back()->with([
+                'error' => ConstantsHelper::MESSAGE_ERROR_SAVE
+            ]);
         }
     }
 
+    private function actionDeleteAnamnesis ($anamnesis_id)
+    {
+        try {
+            if (empty($anamnesis_id)){
+                return redirect()->back()->with([
+                    'error' => ConstantsHelper::MESSAGE_ERROR_DELETE
+                ]);
+            }
+            $model = AnamnesisT::find($anamnesis_id);
+            $model->delete();
+            return redirect()->back()->with([
+                'success' => ConstantsHelper::MESSAGE_SUCCESS_DELETE
+            ]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect()->back()->with([
+                'error' => ConstantsHelper::MESSAGE_ERROR_DELETE
+            ]);
+        }
+    }
 
 }

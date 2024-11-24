@@ -192,6 +192,23 @@
             <script src="{{ asset('templates/adminlte-3.2.0/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
             <!-- Toastr -->
             <script src="{{ asset('templates/adminlte-3.2.0/plugins/toastr/toastr.min.js') }}"></script>
+            <script>
+                var Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000
+                });
+                const messages = {
+                    success: @json(session('success')),
+                    error: @json(session('error'))
+                };
+                @if (session('success'))
+                    toastr.success(messages.success);
+                @elseif (session('error'))
+                    toastr.error(messages.error);
+                @endif
+            </script>
             <!-- ChartJS -->
             <script src="{{ asset('templates/adminlte-3.2.0/plugins/chart.js/Chart.min.js') }}"></script>
             <!-- Sparkline -->

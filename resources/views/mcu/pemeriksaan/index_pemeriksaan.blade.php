@@ -19,9 +19,6 @@
         </div><!-- /.container-fluid -->
     </div>
     <section class="content">
-        @if (session('status'))
-            <div class="alert alert-success">{{ session('status') }}</div>
-        @endif
         <div class="container-fluid">
             <div class="row">
                 <div class="col-12">
@@ -128,123 +125,8 @@
         </div>
     </section>
     <script>
-        // $(function() {
-        //     let table = $("#mcuEmployeeTable").DataTable({
-        //         responsive: true,
-        //         lengthChange: true,
-        //         autoWidth: false,
-        //         searching: true,
-        //         processing: true,
-        //         serverSide: true,
-        //         ajax: {
-        //             url: '/api/mcu/program-mcu/get-data-mcu-employee',
-        //             type: 'GET',
-        //             data: function(d) {
-        //             }
-        //         },
-        //         columns: [{
-        //                 data: null,
-        //                 orderable: false,
-        //                 searchable: false,
-        //                 render: function(data, type, row, meta) {
-        //                     return meta.row + 1;
-        //                 }
-        //             },
-        //             {
-        //                 data: 'mcu_code',
-        //                 name: 'mcu_code',
-        //                 searchable: true,
-        //                 orderable: true
-        //             },
-        //             {
-        //                 data: 'nik',
-        //                 name: 'nik',
-        //                 searchable: true,
-        //                 orderable: true
-        //             },
-        //             {
-        //                 data: 'employee_name',
-        //                 name: 'employee_name',
-        //                 searchable: true,
-        //                 orderable: true
-        //             },
-        //             {
-        //                 data: 'departement_name',
-        //                 name: 'departement_name',
-        //                 searchable: true,
-        //                 orderable: true
-        //             },
-        //             {
-        //                 data: 'sex',
-        //                 name: 'sex',
-        //                 searchable: true,
-        //                 orderable: true
-        //             },
-        //             {
-        //                 data: 'age',
-        //                 name: 'age',
-        //                 searchable: true,
-        //                 orderable: true
-        //             },
-        //             {
-        //                 data: 'mcu_date',
-        //                 name: 'mcu_date',
-        //                 searchable: true,
-        //                 orderable: true,
-        //                 render: function(data, type, row) {
-        //                     if (data) {
-        //                         var date = new Date(data);
-        //                         var formattedDate = date.getFullYear() + '/' + (date.getMonth() + 1)
-        //                             .toString().padStart(2, '0') + '/' + date.getDate().toString()
-        //                             .padStart(2, '0');
-        //                         return formattedDate;
-        //                     }
-        //                     return '';
-        //                 }
-        //             },
-        //             {
-        //                 data: null,
-        //                 orderable: false,
-        //                 searchable: false,
-        //                 render: function(data, type, row) {
-        //                     return `<button class="btn btn-primary btn-sm action-detail"><i class="fas fa-eye"></i></button>
-    //                             <button class="btn btn-success btn-sm action-export"><i class="fas fa-file-pdf"></i></button>
-    //                             <button class="btn btn-danger btn-sm action-delete"><i class="fas fa-trash"></i></button>`;
-        //                 }
-        //             }
-        //         ],
-        //         order: [
-        //             [1, 'asc']
-        //         ],
-        //     });
+        $(function() {
 
-        //     $('#mcuEmployeeTable tbody').on('click', '.action-delete', function() {
-        //         Swal.fire({
-        //             title: "Apakah anda akan menghapus data?",
-        //             showDenyButton: true,
-        //             confirmButtonText: "Ya",
-        //             denyButtonText: "Tidak"
-        //         }).then((result) => {
-        //             if (result.isConfirmed) {
-        //                 Swal.fire("Berhasil menghapus data!", "", "success");
-        //                 table.ajax.reload();
-        //             }
-        //         });
-        //     });
-
-        //     $('#reservationdatetime').datetimepicker({
-        //         format: 'YYYY-MM-DD HH:mm:ss',
-        //         icons: {
-        //             time: 'far fa-clock'
-        //         }
-        //     });
-
-        //     $('.selectJenisPemeriksaan').select2();
-
-        //     $(".custom-file-input").on("change", function() {
-        //         var fileName = $(this).val().split("\\").pop();
-        //         $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
-        //     });
-        // });
+        });
     </script>
 @endsection
