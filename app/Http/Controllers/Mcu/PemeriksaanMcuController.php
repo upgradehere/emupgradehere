@@ -16,6 +16,8 @@ use App\Traits\AnamnesisTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
+use PDF;
+
 
 class PemeriksaanMcuController extends Controller
 {
@@ -31,10 +33,29 @@ class PemeriksaanMcuController extends Controller
             ->select('nik', 'employee_name', 'lookup_c.lookup_name as sex')
             ->first();
 
-        $mcu_date = McuT::select('mcu_date')->where('mcu_id', $mcu_id)->first();
-        $mcu_date = !empty($mcu_date) ? $mcu_date['mcu_date'] : '-';
+        $mcu_model = McuT::select('mcu_date', 'mcu_code')->where('mcu_id', $mcu_id)->first();
+        $mcu_date = !empty($mcu_date) ? $mcu_model['mcu_date'] : '-';
+        $mcu_code = !empty($mcu_date) ? $mcu_model['mcu_code'] : '-';
         $data_anamnesis = self::getDataAnamnesis($mcu_id);
 
         return view('/mcu/pemeriksaan/index_pemeriksaan', get_defined_vars());
+    }
+
+    public function cetakPemeriksaanMcu (Request $request)
+    {
+        $mcu_id = $request->get('mcu_id');
+        $mcu_model = McuT::find($mcu_id);
+        $employee_model = EmployeeM::select('*')->where('employee_id', $mcu_model->employee_id)->first();
+        $anamnesis = self::getDataPrintAnamnesis($mcu_id);
+        $data = [
+            'nik' => $employee_model->nik,
+            'employee_name' => $employee_model->employee_name,
+            'mcu_date' => date('Y/m/d', strtotime($mcu_model->mcu_date)),
+            'mcu_code' => $mcu_model->mcu_code,
+            'anamnesis' => $anamnesis
+        ];
+
+        $pdf = PDF::loadView('mcu.pemeriksaan.print.cetak_pemeriksaan', $data)->setPaper('a4', 'portrait');
+        return $pdf->stream('itsolutionstuff.pdf');
     }
 }
