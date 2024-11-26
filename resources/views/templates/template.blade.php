@@ -106,7 +106,7 @@
                         <!-- Menu Footer-->
                         <li class="user-footer">
                             <a href="#" class="btn btn-default btn-flat">Profil</a>
-                            <a href="#" class="btn btn-default btn-flat float-right">Keluar</a>
+                            <a href="{{ route('logout') }}" class="btn btn-default btn-flat float-right">Keluar</a>
                         </li>
                     </ul>
                 </li>
@@ -257,5 +257,12 @@
 </body>
 
 <!-- /.content-wrapper -->
-
+<script>
+    $(document).ready(function(){
+        var login_success = @json(session('login_success', ''));
+        if (login_success) {
+            toastr.success(login_success);
+        }
+    });
+</script>
 </html>

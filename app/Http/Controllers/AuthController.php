@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Twilio\Rest\Client;
 
 class AuthController extends Controller
 {
@@ -49,21 +50,32 @@ class AuthController extends Controller
 
         if ($user) {
             if (Hash::check($password, $user->password)) {
-                // SEND OTP
-
                 $update = User::find($user->id);
                 $update->otp = rand(000001,999999); 
                 $update->otp_expired = Carbon::now()->addMinutes(2); 
                 $update->save();
 
                 if ($update) {
-                    $data = [
-                        'status' => 'success',
-                        'message' => 'Credential check success',
-                        'data' => '',
-                    ];
-    
-                    return response()->json($data, 200);
+                    // SEND OTP
+                    $sendOtp = $this->sendOtp($update);
+
+                    if ($sendOtp['status'] == 200) {
+                        $data = [
+                            'status' => 'success',
+                            'message' => 'Credential check success',
+                            'data' => '',
+                        ];
+        
+                        return response()->json($data, 200);
+                    } else {
+                        $data = [
+                            'status' => 'error',
+                            'message' => 'OTP send failed',
+                            'data' => 'Kesalahan terjadi, OTP gagal terkirim, harap hubungi Admin kami',
+                        ];
+        
+                        return response()->json($data, 200);
+                    }
                 } else {
                     $data = [
                         'status' => 'error',
@@ -146,6 +158,8 @@ class AuthController extends Controller
                             'message' => 'Login success',
                             'data' => '',
                         ];
+
+                        Session::flash('login_success', 'Selamat datang '.$user->name); 
                     } else {
                         $data = [
                             'status' => 'error',
@@ -191,5 +205,30 @@ class AuthController extends Controller
         Auth::logout();
         Session::flush();
         return redirect()->route('login');
+    }
+
+    public function sendOtp($data)
+    {
+        $sid    = env('TWILIO_SID');
+        $token  = env('TWILIO_AUTH_TOKEN');
+        $twilio = new Client($sid, $token);
+        
+        if (substr($data->phone_number, 0, 1) === '0') {
+            $data->phone_number = '+62' . substr($data->phone_number, 1);
+        }
+
+        $message = $twilio->messages
+            ->create("whatsapp:$data->phone_number",
+                array(
+                "from" => "whatsapp:+14155238886",
+                "body" => "*$data->otp* adalah kode OTP login EM Health Anda, jika anda tidak merasa melakukan login, abaikan pesan ini dan jangan bagikan kode OTP yang terlampir. Kode OTP akan kadaluarsa dalam 2 menit."
+                )
+            );
+            
+        if ($message->sid) {
+            return ['status' => 200];
+        } else {
+            return ['status' => 500];
+        }
     }
 }
