@@ -199,7 +199,7 @@
                             let mcuId = row.mcu_id;
                             let employeeId = row.employee_id;
                             return `<a class="btn btn-primary btn-sm action-detail" href="/mcu/program-mcu/detail/pemeriksaan?mcu_id=${mcuId}&employee_id=${employeeId}"><i class="fas fa-eye"></i></a>
-                                    <button class="btn btn-success btn-sm action-export"><i class="fas fa-file-pdf"></i></button>
+                                    <a class="btn btn-success btn-sm action-export" href="/mcu/program-mcu/detail/pemeriksaan/cetak-pemeriksaan?mcu_id=${mcuId}" target="_blank"><i class="fas fa-file-pdf"></i></a>
                                     <button class="btn btn-danger btn-sm action-delete"><i class="fas fa-trash"></i></button>`;
                         }
                     }

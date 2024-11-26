@@ -29,20 +29,25 @@
                         <!-- /.card-header -->
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-3">
+                                <div class="col-2">
                                     <h6>NIK Peserta</h6>
                                     <h5>{{ !empty($employee_data['nik']) ? $employee_data['nik'] : '-' }}</h5>
                                 </div>
-                                <div class="col-3">
+                                <div class="col-2">
                                     <h6>Nama Peserta</h6>
                                     <h5>{{ !empty($employee_data['employee_name']) ? $employee_data['employee_name'] : '-' }}
                                     </h5>
                                 </div>
-                                <div class="col-3">
+                                <div class="col-2">
+                                    <h6>No. MCU</h6>
+                                    <h5>{{ $mcu_code }}
+                                    </h5>
+                                </div>
+                                <div class="col-2">
                                     <h6>Jenis Kelamin</h6>
                                     <h5>{{ !empty($employee_data['sex']) ? $employee_data['sex'] : '-' }}</h5>
                                 </div>
-                                <div class="col-3">
+                                <div class="col-2">
                                     <h6>Tanggal MCU</h6>
                                     <h5>{{ $mcu_date }}</h5>
                                 </div>
