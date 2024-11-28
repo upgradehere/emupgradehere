@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use App\Helpers\GlobalHelper;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class AnamnesisT extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
     protected $table = 'anamnesis_t';
     protected $primaryKey = 'anamnesis_id';
     protected $fillable = [
@@ -54,7 +56,7 @@ class AnamnesisT extends Model
     public $customMessages = [
         'mcu_id.required' => 'Mcu ID tidak boleh kosong..',
         'anamnesis_code.required' => 'Kode Anamnesis tidak boleh kosong.',
-        'anamnesis_code.required' => 'Tanggal Anamnesis tidak boleh kosong.',
+        'anamnesis_date.required' => 'Tanggal Anamnesis tidak boleh kosong.',
     ];
 
     public $attributes = [
@@ -86,10 +88,11 @@ class AnamnesisT extends Model
         'upper_extremities' => 'Upper Extremities',
         'lower_extremities' => 'Lower Extremities',
         'additional_data' => 'Additional Data',
-        'notes' => 'Notes',
-        // 'deleted_at' => 'Deleted At',
-        // 'created_at' => 'Created At',
-        // 'updated_at' => 'Updated At',
+        'notes' => 'Notes'
     ];
+
+    public function validate(){
+        return GlobalHelper::validation($this->toArray(), $this->rules, $this->customMessages);
+    }
 
 }

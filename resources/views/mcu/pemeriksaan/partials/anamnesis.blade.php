@@ -1,5 +1,6 @@
 <form action="/mcu/program-mcu/detail/pemeriksaan/save-anamnesis" method="POST">
     @csrf
+    <input type="hidden" name="anamnesis_id" value="{{ isset($data_anamnesis->anamnesis_id) ? $data_anamnesis->anamnesis_id : null }}">
     <input type="hidden" name="mcu_id" value="{{ $mcu_id }}">
     <div class="card">
         <div class="card-header">
@@ -663,7 +664,7 @@
                             <div class="form-group row align-items-center mb-3">
                                 <label class="col-sm-4 col-form-label">Lain - lain</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="teeth_other" name="teeth[teeth_other]" value="{{ isset($data_anamnesis->medical_history->drug_continously) ? $data_anamnesis->teeth->teeth_other : '' }}" placeholder="">
+                                    <input type="text" class="form-control" id="teeth_other" name="teeth[teeth_other]" value="{{ isset($data_anamnesis->teeth->teeth_other) ? $data_anamnesis->teeth->teeth_other : '' }}" placeholder="">
                                 </div>
                             </div>
                         </div>
@@ -1018,11 +1019,11 @@
                 </div>
             </div>
             <div class="d-flex justify-content-end">
-                <button type="submit" class="btn btn-danger action-export">
+                <button type="submit" name="action" value="delete" class="btn btn-danger action-delete">
                     <i class="fas fa-trash"></i>&nbsp;&nbsp;Hapus
                 </button>
                 &nbsp;&nbsp;
-                <button type="submit" class="btn btn-success action-export">
+                <button type="submit" class="btn btn-success action-save">
                     <i class="fas fa-save"></i>&nbsp;&nbsp;Simpan
                 </button>
             </div>
@@ -1031,6 +1032,23 @@
 </form>
 <script>
     $(function() {
-        // console.log($('#asma').val());
+        $('.action-save').on('click', function(e) {
+            e.preventDefault();
+            let form = $(this).closest('form');
+            Swal.fire({
+                title: 'Perhatian!',
+                text: "Apakah anda akan menyimpan data?",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Simpan',
+                cancelButtonText: "Batal"
+            }).then((result) => {
+                if (result.value) {
+                    form.submit();
+                }
+            });
+        });
     });
 </script>

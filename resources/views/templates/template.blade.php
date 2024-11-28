@@ -106,7 +106,7 @@
                         <!-- Menu Footer-->
                         <li class="user-footer">
                             <a href="#" class="btn btn-default btn-flat">Profil</a>
-                            <a href="#" class="btn btn-default btn-flat float-right">Keluar</a>
+                            <a href="{{ route('logout') }}" class="btn btn-default btn-flat float-right">Keluar</a>
                         </li>
                     </ul>
                 </li>
@@ -192,6 +192,23 @@
             <script src="{{ asset('templates/adminlte-3.2.0/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
             <!-- Toastr -->
             <script src="{{ asset('templates/adminlte-3.2.0/plugins/toastr/toastr.min.js') }}"></script>
+            <script>
+                var Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000
+                });
+                const messages = {
+                    success: @json(session('success')),
+                    error: @json(session('error'))
+                };
+                @if (session('success'))
+                    toastr.success(messages.success);
+                @elseif (session('error'))
+                    toastr.error(messages.error);
+                @endif
+            </script>
             <!-- ChartJS -->
             <script src="{{ asset('templates/adminlte-3.2.0/plugins/chart.js/Chart.min.js') }}"></script>
             <!-- Sparkline -->
@@ -240,5 +257,12 @@
 </body>
 
 <!-- /.content-wrapper -->
-
+<script>
+    $(document).ready(function(){
+        var login_success = @json(session('login_success', ''));
+        if (login_success) {
+            toastr.success(login_success);
+        }
+    });
+</script>
 </html>
