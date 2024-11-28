@@ -76,39 +76,44 @@
                                 aria-controls="tab-lab" aria-selected="false">Laboratorium</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" id="custom-content-below-settings-tab" data-toggle="pill"
-                                href="#custom-content-below-settings" role="tab"
-                                aria-controls="custom-content-below-settings" aria-selected="false">Rontgen</a>
+                            <a class="nav-link" id="tab-rontgen-tab" data-toggle="pill"
+                                href="#tab-rontgen" role="tab"
+                                aria-controls="tab-rontgen" aria-selected="false">Rontgen</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" id="custom-content-below-settings-tab" data-toggle="pill"
-                                href="#custom-content-below-settings" role="tab"
-                                aria-controls="custom-content-below-settings" aria-selected="false">Audiometri</a>
+                            <a class="nav-link" id="tab-audiometri-tab" data-toggle="pill"
+                                href="#tab-audiometri" role="tab"
+                                aria-controls="tab-audiometri" aria-selected="false">Audiometri</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" id="custom-content-below-settings-tab" data-toggle="pill"
-                                href="#custom-content-below-settings" role="tab"
-                                aria-controls="custom-content-below-settings" aria-selected="false">Spirometri</a>
+                            <a class="nav-link" id="tab-spirometri-tab" data-toggle="pill"
+                                href="#tab-spirometri" role="tab"
+                                aria-controls="tab-spirometri" aria-selected="false">Spirometri</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" id="custom-content-below-settings-tab" data-toggle="pill"
-                                href="#custom-content-below-settings" role="tab"
-                                aria-controls="custom-content-below-settings" aria-selected="false">EKG</a>
+                            <a class="nav-link" id="tab-ekg-tab" data-toggle="pill"
+                                href="#tab-ekg" role="tab"
+                                aria-controls="tab-ekg" aria-selected="false">EKG</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" id="custom-content-below-settings-tab" data-toggle="pill"
-                                href="#custom-content-below-settings" role="tab"
-                                aria-controls="custom-content-below-settings" aria-selected="false">USG</a>
+                            <a class="nav-link" id="tab-usg-tab" data-toggle="pill"
+                                href="#tab-usg" role="tab"
+                                aria-controls="tab-usg" aria-selected="false">USG</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" id="custom-content-below-settings-tab" data-toggle="pill"
-                                href="#custom-content-below-settings" role="tab"
-                                aria-controls="custom-content-below-settings" aria-selected="false">Treadmill</a>
+                            <a class="nav-link" id="tab-treadmill-tab" data-toggle="pill"
+                                href="#tab-treadmill" role="tab"
+                                aria-controls="tab-treadmill" aria-selected="false">Treadmill</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" id="custom-content-below-settings-tab" data-toggle="pill"
-                                href="#custom-content-below-settings" role="tab"
-                                aria-controls="custom-content-below-settings" aria-selected="false">Resume MCU</a>
+                            <a class="nav-link" id="tab-papsmear-tab" data-toggle="pill"
+                                href="#tab-papsmear" role="tab"
+                                aria-controls="tab-papsmear" aria-selected="false">Papsmear</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="tab-resume-tab" data-toggle="pill"
+                                href="#tab-resume" role="tab"
+                                aria-controls="tab-resume" aria-selected="false">Resume MCU</a>
                         </li>
                     </ul>
                     <div class="tab-content" id="custom-content-below-tabContent">
@@ -121,8 +126,29 @@
                         <div class="tab-pane fade" id="tab-lab" role="tabpanel" aria-labelledby="tab-lab-tab"><br>
                             @include('mcu.pemeriksaan.partials.laboratorium')
                         </div>
-                        <div class="tab-pane fade" id="custom-content-below-settings" role="tabpanel" aria-labelledby="custom-content-below-settings-tab">
-
+                        <div class="tab-pane fade" id="tab-rontgen" role="tabpanel" aria-labelledby="tab-rontgen-tab"><br>
+                            @include('mcu.pemeriksaan.partials.rontgen')
+                        </div>
+                        <div class="tab-pane fade" id="tab-audiometri" role="tabpanel" aria-labelledby="tab-audiometri-tab"><br>
+                            @include('mcu.pemeriksaan.partials.audiometri')
+                        </div>
+                        <div class="tab-pane fade" id="tab-spirometri" role="tabpanel" aria-labelledby="tab-spirometri-tab"><br>
+                            @include('mcu.pemeriksaan.partials.spirometri')
+                        </div>
+                        <div class="tab-pane fade" id="tab-ekg" role="tabpanel" aria-labelledby="tab-ekg-tab"><br>
+                            @include('mcu.pemeriksaan.partials.ekg')
+                        </div>
+                        <div class="tab-pane fade" id="tab-usg" role="tabpanel" aria-labelledby="tab-usg-tab"><br>
+                            @include('mcu.pemeriksaan.partials.usg')
+                        </div>
+                        <div class="tab-pane fade" id="tab-treadmill" role="tabpanel" aria-labelledby="tab-treadmill-tab"><br>
+                            @include('mcu.pemeriksaan.partials.treadmill')
+                        </div>
+                        <div class="tab-pane fade" id="tab-papsmear" role="tabpanel" aria-labelledby="tab-papsmear-tab"><br>
+                            @include('mcu.pemeriksaan.partials.papsmear')
+                        </div>
+                        <div class="tab-pane fade" id="tab-resume" role="tabpanel" aria-labelledby="tab-resume-tab"><br>
+                            @include('mcu.pemeriksaan.partials.resume')
                         </div>
                     </div>
                 </div>
