@@ -14,7 +14,8 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="{{ asset('templates/adminlte-3.2.0/plugins/fontawesome-free/css/all.min.css') }}">
     <!-- SweetAlert2 -->
-    <link rel="stylesheet" href="{{ asset('templates/adminlte-3.2.0/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
+    <link rel="stylesheet"
+        href="{{ asset('templates/adminlte-3.2.0/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
     <!-- Toastr -->
     <link rel="stylesheet" href="{{ asset('templates/adminlte-3.2.0/plugins/toastr/toastr.min.css') }}">
     <!-- Ionicons -->
@@ -24,7 +25,8 @@
         href="{{ asset('templates/adminlte-3.2.0/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css') }}">
     <!-- Select2 -->
     <link rel="stylesheet" href="{{ asset('templates/adminlte-3.2.0/plugins/select2/css/select2.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('templates/adminlte-3.2.0//plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
+    <link rel="stylesheet"
+        href="{{ asset('templates/adminlte-3.2.0//plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
     <!-- iCheck -->
     <link rel="stylesheet"
         href="{{ asset('templates/adminlte-3.2.0/plugins/icheck-bootstrap/icheck-bootstrap.min.css') }}">
@@ -85,20 +87,20 @@
                     <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
                         <img src="{{ asset('templates/adminlte-3.2.0/dist/img/user2-160x160.jpg') }}"
                             class="user-image img-circle elevation-2" alt="User Image">
-                        <span class="d-none d-md-inline">Admin</span>
+                        <span class="d-none d-md-inline">{{ Auth::user()->name }}</span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                         <!-- User image -->
                         <li class="user-header bg-primary">
                             <img src="{{ asset('templates/adminlte-3.2.0/dist/img/user2-160x160.jpg') }}"
                                 class="img-circle elevation-2" alt="User Image">
-                            <p>Admin</p>
+                            <p>{{ Auth::user()->name }}</p>
                         </li>
                         <!-- Menu Body -->
                         <li class="user-body">
                             <div class="row">
                                 <div class="col-12 text-center">
-                                    <p>Admin</p>
+                                    <p>{{ Auth::user()->id_role == 1 ? 'Admin' : 'Company' }}</p>
                                 </div>
                             </div>
                             <!-- /.row -->
@@ -120,7 +122,7 @@
             <a href="index3.html" class="brand-link">
                 <img src="{{ asset('templates/adminlte-3.2.0/dist/img/AdminLTELogo.png') }}" alt="AdminLTE Logo"
                     class="brand-image img-circle elevation-3" style="opacity: .8">
-                <span class="brand-text font-weight-light">EMHEALTH</span>
+                <span class="brand-text font-weight-light">Em Health</span>
             </a>
 
             <!-- Sidebar -->
@@ -212,10 +214,10 @@
             <!-- ChartJS -->
             <script src="{{ asset('templates/adminlte-3.2.0/plugins/chart.js/Chart.min.js') }}"></script>
             <!-- Sparkline -->
-            <script src="{{ asset('templates/adminlte-3.2.0/plugins/sparklines/sparkline.js') }}"></script>
+            {{-- <script src="{{ asset('templates/adminlte-3.2.0/plugins/sparklines/sparkline.js') }}"></script> --}}
             <!-- JQVMap -->
-            <script src="{{ asset('templates/adminlte-3.2.0/plugins/jqvmap/jquery.vmap.min.js') }}"></script>
-            <script src="{{ asset('templates/adminlte-3.2.0/plugins/jqvmap/maps/jquery.vmap.usa.js') }}"></script>
+            {{-- <script src="{{ asset('templates/adminlte-3.2.0/plugins/jqvmap/jquery.vmap.min.js') }}"></script>
+            <script src="{{ asset('templates/adminlte-3.2.0/plugins/jqvmap/maps/jquery.vmap.usa.js') }}"></script> --}}
             <!-- jQuery Knob Chart -->
             <script src="{{ asset('templates/adminlte-3.2.0/plugins/jquery-knob/jquery.knob.min.js') }}"></script>
             <!-- daterangepicker -->
@@ -258,11 +260,12 @@
 
 <!-- /.content-wrapper -->
 <script>
-    $(document).ready(function(){
+    $(document).ready(function() {
         var login_success = @json(session('login_success', ''));
         if (login_success) {
             toastr.success(login_success);
         }
     });
 </script>
+
 </html>

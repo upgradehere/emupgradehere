@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\EmployeeM;
 
 class McuT extends Model
 {
@@ -22,4 +23,9 @@ class McuT extends Model
         'created_at',
         'updated_at',
     ];
+    
+    public function employee()
+    {
+        return $this->hasOne(EmployeeM::class, 'employee_id', 'employee_id');
+    }
 }
