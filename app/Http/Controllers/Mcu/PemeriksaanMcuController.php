@@ -14,6 +14,7 @@ use App\Models\McuProgramM;
 use App\Models\McuT;
 use App\Traits\AnamnesisTrait;
 use App\Traits\LaboratoriumTrait;
+use App\Traits\RefractionTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
@@ -24,6 +25,7 @@ class PemeriksaanMcuController extends Controller
 {
     use AnamnesisTrait;
     use LaboratoriumTrait;
+    use RefractionTrait;
 
     public function index(Request $request)
     {
@@ -40,7 +42,8 @@ class PemeriksaanMcuController extends Controller
         $mcu_code = !empty($mcu_date) ? $mcu_model['mcu_code'] : '-';
         $data_anamnesis = self::getDataAnamnesis($mcu_id);
         $form_lab = self::getFormLab($mcu_id);
-        // return $form_lab;
+        $data_refraction = self::getDataRefraction($mcu_id);
+        // return $data_refraction;
 
         return view('/mcu/pemeriksaan/index_pemeriksaan', get_defined_vars());
     }
