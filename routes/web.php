@@ -22,11 +22,11 @@ Route::post('/login-check', [AuthController::class, 'check'])->name('login.check
 Route::post('/login-otp', [AuthController::class, 'otp'])->name('login.otp');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
-// Route::group(['middleware' => ['auth', 'role:1,2']], function () {
+Route::group(['middleware' => ['auth', 'role:1,2']], function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::get('/dashboard/get-chart-data/{id_program}', [DashboardController::class, 'getChartData'])->name('get-chart-data');
-    
+
     Route::get('/mcu/program-mcu', [ProgramMcuController::class, 'index'])->name('program-mcu');
     Route::get('/mcu/program-mcu/detail', [ProgramMcuController::class, 'detailProgramMcu'])->name('detail-program-mcu');
     Route::get('/mcu/program-mcu/detail/input-manual-mcu', [ProgramMcuController::class, 'insertManualMcu'])->name('input-manual-mcu');
@@ -37,4 +37,4 @@ Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::post('/mcu/program-mcu/detail/pemeriksaan/save-anamnesis', [PemeriksaanMcuController::class, 'saveAnamnesis']);
     Route::post('/mcu/program-mcu/detail/pemeriksaan/save-lab', [PemeriksaanMcuController::class, 'saveLab']);
     Route::post('/mcu/program-mcu/detail/pemeriksaan/save-refraction', [PemeriksaanMcuController::class, 'saveRefraction']);
-// });
+});
