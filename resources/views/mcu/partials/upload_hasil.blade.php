@@ -1,12 +1,12 @@
-<div class="modal fade" id="modal-upload-rekap">
+<div class="modal fade" id="modal-upload-hasil">
     <div class="modal-dialog modal-lg">
-        <form action="/mcu/program-mcu/detail/import-excel-anamnesa" method="POST" enctype="multipart/form-data">
+        <form action="/mcu/program-mcu/detail/upload-hasil" method="POST" enctype="multipart/form-data">
             @csrf
             <input type="hidden" name="company_id" value="{{ $company_id }}">
             <input type="hidden" name="mcu_program_id" value="{{ $mcu_program_id }}">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Import Pemeriksaan MCU</h4>
+                    <h4 class="modal-title">Upload Hasil MCU</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -24,7 +24,7 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label>File Excel MCU</label>
+                        <label>Hasil pemeriksaan, dalam bentuk zip berisi file berbentuk JPG, JPEG dan PNG</label>
                         <div class="custom-file">
                             <input type="file" class="custom-file-input" name="import_file" id="customFile">
                             <label class="custom-file-label" for="customFile">File Excel</label>

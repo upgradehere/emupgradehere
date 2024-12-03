@@ -12,10 +12,16 @@ use App\Models\McuCompanyV;
 use App\Models\McuEmployeeV;
 use App\Models\McuProgramM;
 use App\Models\McuT;
+use App\Models\RefractionT;
+use App\Models\RontgenT;
+use App\Models\SpirometryT;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 use Maatwebsite\Excel\Facades\Excel;
+use ZipArchive;
 
 class ProgramMcuController extends Controller
 {
@@ -216,5 +222,115 @@ class ProgramMcuController extends Controller
         } catch (\Exception $e) {
             return redirect()->back()->with('error', $e->getMessage());
         }
+    }
+
+    public function uploadHasil(Request $request)
+    {
+        // try{
+            $post = $request->post();
+            $request->validate([
+                'examination_type' => 'required',
+                'import_file' => [
+                    'required',
+                    'file',
+                    'mimes:zip',
+                ],
+                'mcu_date' => 'required',
+                'company_id' => 'required',
+                'mcu_program_id' => 'required',
+            ], [
+                'examination_type.required' => 'Jenis Pemeriksaan Tidak Boleh Kosong.',
+                'import_file.required' => 'File ZIP Tidak Boleh Kosong.',
+                'import_file.file' => 'File ZIP Tidak Valid.',
+                'import_file.mimes' => 'File ZIP Tidak Sesuai, Silahakn Upload File Berupa ZIP',
+                'mcu_date.required' => 'Tanggal MCU Tidak Boleh Kosong.',
+                'company_id.required' => 'ID Perusahaan Tidak Boleh Kosong.',
+                'mcu_program_id.required' => 'ID Program MCU Tidak Boleh Kosong.',
+            ]);
+
+            $zipFile = $request->file('import_file');
+            // return $zipFile;
+            $zipPath = $zipFile->store('temp'); // Store temporarily
+            $extractPath = null;
+            $model = null;
+            switch ($request->post('examination_type')) {
+                case ConstantsHelper::LOOKUP_EXAMINATION_TYPE_REFRACTION:
+                    $model = new RefractionT();
+                    $extractPath = 'uploads/refraction/';
+                    $date = 'refraction_date';
+                    break;
+                case ConstantsHelper::LOOKUP_EXAMINATION_TYPE_RONTGEN:
+                    $model = new RontgenT();
+                    $extractPath = 'uploads/rontgen/';
+                    $date = 'rontgen_date';
+                    break;
+                case ConstantsHelper::LOOKUP_EXAMINATION_TYPE_AUDIOMETRY:
+
+                    break;
+                case ConstantsHelper::LOOKUP_EXAMINATION_TYPE_SPIROMETRY:
+                    $model = new SpirometryT();
+                    $extractPath = 'uploads/refraction/';
+                    $date = 'spirometry_date';
+                    break;
+                case ConstantsHelper::LOOKUP_EXAMINATION_TYPE_EKG:
+
+                    break;
+                case ConstantsHelper::LOOKUP_EXAMINATION_TYPE_USG:
+
+                    break;
+                case ConstantsHelper::LOOKUP_EXAMINATION_TYPE_TREADMILL:
+
+                    break;
+                default:
+                    return redirect()->back()->with('error', 'Jenis Pemeriksaan Salah!');
+            }
+
+            $zip = new ZipArchive;
+            if ($zip->open(storage_path('app/' . $zipPath)) === true) {
+                $zip->extractTo($extractPath);
+                $zip->close();
+            } else {
+                throw new \Exception('Terjadi Kesalahan!');
+            }
+
+            $files = scandir($extractPath);
+            $allowedExtensions = ['jpg', 'jpeg', 'png'];
+
+            Log::info($files);
+
+            foreach ($files as $file) {
+                $filePath = $extractPath . '/' . $file;
+                $extension = pathinfo($filePath, PATHINFO_EXTENSION);
+
+                if (in_array(strtolower($extension), $allowedExtensions) && is_file($filePath)) {
+                    $filename = basename($filePath);
+                    $storedPath = $extractPath . $filename;
+
+                    // Move image to the public storage directory
+                    Storage::disk('public')->put($storedPath, file_get_contents($filePath));
+
+                    // Save record in the database
+                    $payload = [
+                        'mcu_id' => 62,
+                        $date => '2024-12-02 17:39:55',
+                        'image_file' => $filename,
+                    ];
+                    $model->attributes = $payload;
+                    $model->save();
+                }
+            }
+            return $files;
+
+
+
+            // if ($upload == false) {
+            //     throw new \Exception('Terjadi Kesalahan!');
+            // }
+            return redirect()->back()->with('success', 'Imported Successfully');
+        // } catch (ValidationException $e) {
+        //     return redirect()->back()->with('error', $e->getMessage());
+        // } catch (\Exception $e) {
+        //     return redirect()->back()->with('error', $e->getMessage());
+        // }
     }
 }

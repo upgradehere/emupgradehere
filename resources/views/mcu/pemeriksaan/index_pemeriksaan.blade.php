@@ -60,63 +60,21 @@
             <div class="row">
                 <div class="col-12">
                     <ul class="nav nav-tabs" id="custom-content-below-tab" role="tablist">
-                        <li class="nav-item">
-                            <a class="nav-link active" id="tab-anamnesis-tab" data-toggle="pill"
-                                href="#tab-anamnesis" role="tab"
-                                aria-controls="tab-anamnesis" aria-selected="true">Fisik & Anamnesa</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="tab-refraction-tab" data-toggle="pill"
-                                href="#tab-refraction" role="tab"
-                                aria-controls="tab-refraction" aria-selected="false">Refraksi / Trial Lens</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="tab-lab-tab" data-toggle="pill"
-                                href="#tab-lab" role="tab"
-                                aria-controls="tab-lab" aria-selected="false">Laboratorium</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="tab-rontgen-tab" data-toggle="pill"
-                                href="#tab-rontgen" role="tab"
-                                aria-controls="tab-rontgen" aria-selected="false">Rontgen</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="tab-audiometri-tab" data-toggle="pill"
-                                href="#tab-audiometri" role="tab"
-                                aria-controls="tab-audiometri" aria-selected="false">Audiometri</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="tab-spirometri-tab" data-toggle="pill"
-                                href="#tab-spirometri" role="tab"
-                                aria-controls="tab-spirometri" aria-selected="false">Spirometri</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="tab-ekg-tab" data-toggle="pill"
-                                href="#tab-ekg" role="tab"
-                                aria-controls="tab-ekg" aria-selected="false">EKG</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="tab-usg-tab" data-toggle="pill"
-                                href="#tab-usg" role="tab"
-                                aria-controls="tab-usg" aria-selected="false">USG</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="tab-treadmill-tab" data-toggle="pill"
-                                href="#tab-treadmill" role="tab"
-                                aria-controls="tab-treadmill" aria-selected="false">Treadmill</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="tab-papsmear-tab" data-toggle="pill"
-                                href="#tab-papsmear" role="tab"
-                                aria-controls="tab-papsmear" aria-selected="false">Papsmear</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="tab-resume-tab" data-toggle="pill"
-                                href="#tab-resume" role="tab"
-                                aria-controls="tab-resume" aria-selected="false">Resume MCU</a>
-                        </li>
+                        @foreach ($examinations as $key => $examination)
+                            <li class="nav-item">
+                                <a class="nav-link {{ $key === 0 ? 'active' : '' }}"
+                                id="{{ $examination['tab_name'] }}-tab"
+                                data-toggle="pill"
+                                href="#{{ $examination['tab_name'] }}"
+                                role="tab"
+                                aria-controls="{{ $examination['tab_name'] }}"
+                                aria-selected="{{ $key === 0 ? 'true' : 'false' }}">
+                                    {{ $examination['lookup_name'] }}
+                                </a>
+                            </li>
+                        @endforeach
                     </ul>
-                    <div class="tab-content" id="custom-content-below-tabContent">
+                    <div class="tab-content" id="tab-anamnesis-tab">
                         <div class="tab-pane fade show active" id="tab-anamnesis" role="tabpanel" aria-labelledby="tab-anamnesis-tab"><br>
                             @include('mcu.pemeriksaan.partials.anamnesis')
                         </div>

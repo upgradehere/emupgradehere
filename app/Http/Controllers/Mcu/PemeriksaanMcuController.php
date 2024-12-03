@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Mcu;
 
 use App\Helpers\ConstantsHelper;
+use App\Helpers\GlobalHelper;
 use App\Http\Controllers\Controller;
 use App\Imports\McuAnamnesisImport;
 use App\Models\CompanyM;
@@ -13,8 +14,16 @@ use App\Models\McuEmployeeV;
 use App\Models\McuProgramM;
 use App\Models\McuT;
 use App\Traits\AnamnesisTrait;
+use App\Traits\AudiometriTrait;
+use App\Traits\EkgTrait;
 use App\Traits\LaboratoriumTrait;
+use App\Traits\PapsmearTrait;
 use App\Traits\RefractionTrait;
+use App\Traits\ResumeMcuTrait;
+use App\Traits\RontgenTrait;
+use App\Traits\SpirometriTrait;
+use App\Traits\TreadmillTrait;
+use App\Traits\UsgTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
@@ -26,6 +35,23 @@ class PemeriksaanMcuController extends Controller
     use AnamnesisTrait;
     use LaboratoriumTrait;
     use RefractionTrait;
+    use RontgenTrait;
+    use SpirometriTrait;
+    use AudiometriTrait;
+    use EkgTrait;
+    use UsgTrait;
+    use TreadmillTrait;
+    use PapsmearTrait;
+    use ResumeMcuTrait;
+
+    private $test = null;
+    private $examination_package = [];
+
+    public function __construct()
+    {
+        $this->test = 'test';
+        $this->examination_package = GlobalHelper::getMcuPackage(1);
+    }
 
     public function index(Request $request)
     {
@@ -37,13 +63,17 @@ class PemeriksaanMcuController extends Controller
             ->select('nik', 'employee_name', 'lookup_c.lookup_name as sex')
             ->first();
 
+        $examinations = $this->examination_package['examinations'];;
         $mcu_model = McuT::select('mcu_date', 'mcu_code')->where('mcu_id', $mcu_id)->first();
         $mcu_date = !empty($mcu_date) ? $mcu_model['mcu_date'] : '-';
         $mcu_code = !empty($mcu_date) ? $mcu_model['mcu_code'] : '-';
         $data_anamnesis = self::getDataAnamnesis($mcu_id);
-        $form_lab = self::getFormLab($mcu_id);
+        $laboratory_examintaions = !empty($this->examination_package['laboratory_examinations']) ? $this->examination_package['laboratory_examinations'] : [];
+        $form_lab = self::getFormLab($mcu_id, $laboratory_examintaions);
         $data_refraction = self::getDataRefraction($mcu_id);
-        // return $data_refraction;
+        $data_rontgen = self::getDataRontgen($mcu_id);
+        $data_spirometry = self::getDataSpirometry($mcu_id);
+        // return $data_rontgen;
 
         return view('/mcu/pemeriksaan/index_pemeriksaan', get_defined_vars());
     }
