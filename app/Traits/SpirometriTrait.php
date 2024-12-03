@@ -22,10 +22,9 @@ trait SpirometriTrait
             $post = $request->post();
             $action = $request->input('action');
             $spirometry_id = isset($post['spirometry_id']) ? $post['spirometry_id'] : null;
-            // if ($action == 'delete') {
-            //     return self::actionDeleteAnamnesis($refraction_id);
-            // }
-            // return $request->file('image_file')->getMimeType();
+            if ($action == 'delete') {
+                return self::actionDeleteSpirometry($spirometry_id);
+            }
             $request->validate(
                 [
                     'image_file' => [
@@ -87,6 +86,27 @@ trait SpirometriTrait
             DB::rollback();
             return redirect()->back()->with([
                 'error' => ConstantsHelper::MESSAGE_ERROR_SAVE.' '.$e->getMessage()
+            ]);
+        }
+    }
+
+    private function actionDeleteSpirometry ($spirometry_id)
+    {
+        try {
+            if (empty($spirometry_id)){
+                return redirect()->back()->with([
+                    'error' => ConstantsHelper::MESSAGE_ERROR_DELETE
+                ]);
+            }
+            $model = SpirometryT::find($spirometry_id);
+            $model->delete();
+            return redirect()->back()->with([
+                'success' => ConstantsHelper::MESSAGE_SUCCESS_DELETE
+            ]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect()->back()->with([
+                'error' => ConstantsHelper::MESSAGE_ERROR_DELETE
             ]);
         }
     }

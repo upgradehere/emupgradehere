@@ -23,10 +23,9 @@ trait RontgenTrait
             $post = $request->post();
             $action = $request->input('action');
             $rontgen_id = isset($post['rontgen_id']) ? $post['rontgen_id'] : null;
-            // if ($action == 'delete') {
-            //     return self::actionDeleteAnamnesis($refraction_id);
-            // }
-            // return $request->file('image_file')->getMimeType();
+            if ($action == 'delete') {
+                return self::actionDeleteRontgen($rontgen_id);
+            }
             $request->validate(
                 [
                     'image_file' => [
@@ -92,26 +91,26 @@ trait RontgenTrait
         }
     }
 
-    // private function actionDeleteAnamnesis ($anamnesis_id)
-    // {
-    //     try {
-    //         if (empty($anamnesis_id)){
-    //             return redirect()->back()->with([
-    //                 'error' => ConstantsHelper::MESSAGE_ERROR_DELETE
-    //             ]);
-    //         }
-    //         $model = AnamnesisT::find($anamnesis_id);
-    //         $model->delete();
-    //         return redirect()->back()->with([
-    //             'success' => ConstantsHelper::MESSAGE_SUCCESS_DELETE
-    //         ]);
-    //     } catch (\Exception $e) {
-    //         DB::rollback();
-    //         return redirect()->back()->with([
-    //             'error' => ConstantsHelper::MESSAGE_ERROR_DELETE
-    //         ]);
-    //     }
-    // }
+    private function actionDeleteRontgen ($rontgen_id)
+    {
+        try {
+            if (empty($rontgen_id)){
+                return redirect()->back()->with([
+                    'error' => ConstantsHelper::MESSAGE_ERROR_DELETE
+                ]);
+            }
+            $model = RontgenT::find($rontgen_id);
+            $model->delete();
+            return redirect()->back()->with([
+                'success' => ConstantsHelper::MESSAGE_SUCCESS_DELETE
+            ]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect()->back()->with([
+                'error' => ConstantsHelper::MESSAGE_ERROR_DELETE
+            ]);
+        }
+    }
 
     // private function getDataPrintAnamnesis($mcu_id)
     // {

@@ -51,6 +51,10 @@
                                     <h6>Tanggal MCU</h6>
                                     <h5>{{ $mcu_date }}</h5>
                                 </div>
+                                <div class="col-2">
+                                    <h6>Paket MCU</h6>
+                                    <h5>{{ $mcu_package_name }}</h5>
+                                </div>
                             </div>
                         </div>
                         <!-- /.card-body -->

@@ -141,7 +141,7 @@
                 </div>
             </div>
             <div class="d-flex justify-content-end">
-                <button type="button" class="btn btn-danger action-export">
+                <button type="submit" class="btn btn-danger action-delete" {{ empty($data_spirometry) ? 'disabled' : '' }}>
                     <i class="fas fa-trash"></i>&nbsp;&nbsp;Hapus
                 </button>
                 &nbsp;&nbsp;
@@ -155,27 +155,9 @@
 <script>
     $(function() {
         $('.selectDoctor').select2();
-    });
-    $('.action-save').on('click', function(e) {
-            e.preventDefault();
-            let form = $(this).closest('form');
-            Swal.fire({
-                title: 'Perhatian!',
-                text: "Apakah anda akan menyimpan data?",
-                type: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Simpan',
-                cancelButtonText: "Batal"
-            }).then((result) => {
-                if (result.value) {
-                    form.submit();
-                }
-            });
-        });
         $(".custom-file-input").on("change", function() {
             var fileName = $(this).val().split("\\").pop();
             $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
         });
+    });
 </script>
