@@ -32,9 +32,18 @@ Route::group(['middleware' => ['auth', 'role:1,2']], function () {
     Route::get('/mcu/program-mcu/detail/input-manual-mcu', [ProgramMcuController::class, 'insertManualMcu'])->name('input-manual-mcu');
     Route::post('/mcu/program-mcu/detail/input-manual-mcu/save-input-manual-mcu', [ProgramMcuController::class, 'actionInsertManualMcu'])->name('save-input-manual-mcu');
     Route::post('/mcu/program-mcu/detail/import-excel-anamnesa', [ProgramMcuController::class, 'importExcelAnamnesa']);
+    Route::post('/mcu/program-mcu/detail/upload-hasil', [ProgramMcuController::class, 'uploadHasil']);
     Route::get('/mcu/program-mcu/detail/pemeriksaan', [PemeriksaanMcuController::class, 'index']);
     Route::get('/mcu/program-mcu/detail/pemeriksaan/cetak-pemeriksaan', [PemeriksaanMcuController::class, 'cetakPemeriksaanMcu']);
     Route::post('/mcu/program-mcu/detail/pemeriksaan/save-anamnesis', [PemeriksaanMcuController::class, 'saveAnamnesis']);
     Route::post('/mcu/program-mcu/detail/pemeriksaan/save-lab', [PemeriksaanMcuController::class, 'saveLab']);
     Route::post('/mcu/program-mcu/detail/pemeriksaan/save-refraction', [PemeriksaanMcuController::class, 'saveRefraction']);
+    Route::post('/mcu/program-mcu/detail/pemeriksaan/save-rontgen', [PemeriksaanMcuController::class, 'saveRontgen']);
+    Route::post('/mcu/program-mcu/detail/pemeriksaan/save-spirometry', [PemeriksaanMcuController::class, 'saveSpirometry']);
+    Route::post('/mcu/program-mcu/detail/pemeriksaan/save-audiometry', [PemeriksaanMcuController::class, 'saveAudiometry']);
+    Route::post('/mcu/program-mcu/detail/pemeriksaan/save-ekg', [PemeriksaanMcuController::class, 'saveEkg']);
+    Route::post('/mcu/program-mcu/detail/pemeriksaan/save-usg', [PemeriksaanMcuController::class, 'saveUsg']);
+    Route::post('/mcu/program-mcu/detail/pemeriksaan/save-treadmill', [PemeriksaanMcuController::class, 'saveTreadmill']);
+    Route::post('/mcu/program-mcu/detail/pemeriksaan/save-papsmear', [PemeriksaanMcuController::class, 'savePapsmear']);
+    Route::post('/mcu/program-mcu/detail/pemeriksaan/save-resume-mcu', [PemeriksaanMcuController::class, 'saveResumeMcu']);
 });

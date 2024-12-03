@@ -88,43 +88,43 @@
                             <div class="form-group row align-items-center mb-3">
                                 <label class="col-sm-4 col-form-label">Spheris Kanan</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="mcuCode" name="right_spherical" placeholder="">
+                                    <input type="text" class="form-control" id="mcuCode" name="right_spherical" value="{{ !empty($data_refraction->right_spherical) ? $data_refraction->right_spherical : '' }}" placeholder="">
                                 </div>
                             </div>
                             <div class="form-group row align-items-center mb-3">
                                 <label class="col-sm-4 col-form-label">Cylinder Kanan</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="mcuCode" name="right_cylinder" placeholder="">
+                                    <input type="text" class="form-control" id="mcuCode" name="right_cylinder" value="{{ !empty($data_refraction->right_cylinder) ? $data_refraction->right_cylinder : '' }}" placeholder="">
                                 </div>
                             </div>
                             <div class="form-group row align-items-center mb-3">
                                 <label class="col-sm-4 col-form-label">Axis Kanan</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="mcuCode" name="right_axis" placeholder="">
+                                    <input type="text" class="form-control" id="mcuCode" name="right_axis" value="{{ !empty($data_refraction->right_axis) ? $data_refraction->right_axis : '' }}" placeholder="">
                                 </div>
                             </div>
                             <div class="form-group row align-items-center mb-3">
                                 <label class="col-sm-4 col-form-label">ADD Kanan</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="mcuCode" name="right_add" placeholder="">
+                                    <input type="text" class="form-control" id="mcuCode" name="right_add" value="{{ !empty($data_refraction->right_add) ? $data_refraction->right_add : '' }}" placeholder="">
                                 </div>
                             </div>
                             <div class="form-group row align-items-center mb-3">
                                 <label class="col-sm-4 col-form-label">PD Kanan</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="mcuCode" name="right_pd" placeholder="">
+                                    <input type="text" class="form-control" id="mcuCode" name="right_pd" value="{{ !empty($data_refraction->right_pd) ? $data_refraction->right_pd : '' }}" placeholder="">
                                 </div>
                             </div>
                             <div class="form-group row align-items-center mb-3">
                                 <label class="col-sm-4 col-form-label">Visus Tanpa Koreksi, OD Kanan</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="mcuCode" name="uncorrected_vision_right_od" placeholder="">
+                                    <input type="text" class="form-control" id="mcuCode" name="uncorrected_vision_right_od" value="{{ !empty($data_refraction->uncorrected_vision_right_od) ? $data_refraction->uncorrected_vision_right_od : '' }}" placeholder="">
                                 </div>
                             </div>
                             <div class="form-group row align-items-center mb-3">
                                 <label class="col-sm-4 col-form-label">Visus Tanpa Koreksi, OS Kanan</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="mcuCode" name="uncorrected_vision_right_os" placeholder="">
+                                    <input type="text" class="form-control" id="mcuCode" name="uncorrected_vision_right_os" value="{{ !empty($data_refraction->uncorrected_vision_right_os) ? $data_refraction->uncorrected_vision_right_os : '' }}" placeholder="">
                                 </div>
                             </div>
                         </div>
@@ -141,7 +141,7 @@
                             <div class="form-group row align-items-center mb-3">
                                 <label class="col-sm-2 col-form-label">Terapi Hasil Refraksi</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="mcuCode" name="refraction_therapy_result" placeholder="">
+                                    <input type="text" class="form-control" id="mcuCode" name="refraction_therapy_result" value="{{ !empty($data_refraction->refraction_therapy_result) ? $data_refraction->refraction_therapy_result : '' }}" placeholder="">
                                 </div>
                             </div>
                         </div>
@@ -149,7 +149,7 @@
                             <div class="form-group row align-items-center mb-3">
                                 <label class="col-sm-2 col-form-label">Kesimpulan & Saran</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="mcuCode" name="conclusion" placeholder="">
+                                    <input type="text" class="form-control" id="mcuCode" name="conclusion" value="{{ !empty($data_refraction->conclusion) ? $data_refraction->conclusion : '' }}" placeholder="">
                                 </div>
                             </div>
                         </div>
@@ -157,7 +157,7 @@
                             <div class="form-group row align-items-center mb-3">
                                 <label class="col-sm-2 col-form-label">Catatan</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="mcuCode" name="notes" placeholder="">
+                                    <input type="text" class="form-control" id="mcuCode" name="notes" value="{{ !empty($data_refraction->notes) ? $data_refraction->notes : '' }}" placeholder="">
                                 </div>
                             </div>
                         </div>
