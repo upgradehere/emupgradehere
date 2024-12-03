@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Mcu\ProgramMcuController;
+use App\Http\Controllers\PackageController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -24,4 +25,8 @@ Route::group(['prefix' => 'mcu'], function () {
         Route::get('get-data-mcu-program-company',  [ProgramMcuController::class, 'getDataMcuProgramCompany']);
         Route::get('get-data-mcu-employee',  [ProgramMcuController::class, 'getDataMcuEmployee']);
     });
+});
+
+Route::group(['prefix' => 'package'], function () {
+    Route::get('get-data-package',  [PackageController::class, 'getDataPackage']);
 });

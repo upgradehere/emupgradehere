@@ -170,6 +170,14 @@
                                 </li>
                             </ul>
                         </li>
+                        <li class="nav-item">
+                            <a href="{{ route('package') }}" class="nav-link active">
+                                <i class="nav-icon fas fa-box"></i>
+                                <p>
+                                    Paket
+                                </p>
+                            </a>
+                        </li>
 
                     </ul>
                 </nav>
@@ -208,7 +216,13 @@
                 @if (session('success'))
                     toastr.success(messages.success);
                 @elseif (session('error'))
-                    toastr.error(messages.error);
+                    if (Array.isArray(messages.error)) {
+                        $.each(messages.error, function(index, value) {
+                            toastr.error(value)
+                        })
+                    } else {
+                        toastr.error(messages.error)
+                    }
                 @endif
             </script>
             <!-- ChartJS -->
