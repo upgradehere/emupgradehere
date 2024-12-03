@@ -10,11 +10,12 @@ use App\Models\LaboratoryExaminationTypeM;
 use App\Models\LaboratoryT;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 trait LaboratoriumTrait
 {
 
-    private function getFormLab ($mcu_id = null)
+    private function getFormLab ($mcu_id, $laboratory_examintaions)
     {
         $labT = LaboratoryT::select('laboratory_t.laboratory_id')
         ->where('mcu_id', $mcu_id)
@@ -35,6 +36,7 @@ trait LaboratoriumTrait
                     )
                     ->leftJoin('laboratory_reference_value_m', 'laboratory_reference_value_m.laboratory_examination_id', '=', 'laboratory_examination_m.laboratory_examination_id')
                     ->where('laboratory_examination_type_id', $type->laboratory_examination_type_id)
+                    ->whereIn('laboratory_examination_m.laboratory_examination_id', $laboratory_examintaions)
                     ->get();
                 }
             }
@@ -55,11 +57,20 @@ trait LaboratoriumTrait
                     ->leftJoin('laboratory_detail_t', 'laboratory_detail_t.laboratory_examination_id', '=', 'laboratory_examination_m.laboratory_examination_id')
                     ->leftJoin('laboratory_t', 'laboratory_t.laboratory_id', '=', 'laboratory_detail_t.laboratory_id')
                     ->where('laboratory_examination_type_id', $type->laboratory_examination_type_id)
-                    ->where(function ($query) use ($mcu_id) {
-                        $query->whereNull('laboratory_t.laboratory_id')
-                            ->orWhere('laboratory_t.mcu_id', $mcu_id);
-                    })
-                    ->get();
+                    ->whereIn('laboratory_examination_m.laboratory_examination_id', $laboratory_examintaions);
+
+
+                    $labDetailT = LaboratoryDetailT::select('*')->where('laboratory_id', $labT->laboratory_id)->first();
+                    if (!empty($labDetailT)) {
+                        $type->examinations->where(function ($query) use ($mcu_id) {
+                            $query->whereNull('laboratory_t.laboratory_id')
+                                ->orWhere('laboratory_t.mcu_id', $mcu_id);
+                        });
+                    }
+                    $type->examinations = $type->examinations->get();
+                    // $type->examinations = $type->examinations;
+                    $type->examinations->result = 1;
+                    Log::info($type->examinations);
                 }
             }
             $data['laboratory_id'] = $labT->laboratory_id;

@@ -73,6 +73,11 @@
                                             class="fas fa-file-import"></i>&nbsp;&nbsp;Import Pemeriksaan</a>
                                 </div>
                                 <div class="col-2">
+                                    <a class="btn btn-block bg-gradient-primary auto-size-btn" data-toggle="modal"
+                                        data-target="#modal-upload-hasil"><i
+                                            class="fas fa-images"></i>&nbsp;&nbsp;Upload Hasil</a>
+                                </div>
+                                <div class="col-2">
                                     <a class="btn btn-block bg-gradient-primary auto-size-btn"><i
                                             class="fas fa-edit"></i>&nbsp;&nbsp;Kesimpulan & Saran</a>
                                 </div>
@@ -112,6 +117,7 @@
         </div>
     </section>
     @include('mcu.partials.import_file_excel');
+    @include('mcu.partials.upload_hasil');
     <script>
         $(function() {
             let companyId = "{{ $company_id }}";
@@ -221,13 +227,6 @@
                         table.ajax.reload();
                     }
                 });
-            });
-
-            $('#reservationdatetime').datetimepicker({
-                format: 'YYYY-MM-DD HH:mm:ss',
-                icons: {
-                    time: 'far fa-clock'
-                }
             });
         });
     </script>
