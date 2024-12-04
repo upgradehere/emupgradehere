@@ -17,9 +17,11 @@
                         <select class="form-control select2 selectJenisPemeriksaan" name="examination_type" style="width: 100%;">
                             <option selected="selected" value="">- Pilih Jenis Pemeriksaan -</option>
                             @foreach ($examination_type as $e)
-                                <option value="{{ $e->examination_type_id }}">
-                                    {{ $e->examination_type_name }}
-                                </option>
+                                @if (!in_array($e->examination_type_id, [20, 22, 29, 30]))
+                                    <option value="{{ $e->examination_type_id }}">
+                                        {{ $e->examination_type_name }}
+                                    </option>
+                                @endif
                             @endforeach
                         </select>
                     </div>
@@ -27,17 +29,7 @@
                         <label>Hasil pemeriksaan, dalam bentuk zip berisi file berbentuk JPG, JPEG dan PNG</label>
                         <div class="custom-file">
                             <input type="file" class="custom-file-input" name="import_file" id="customFile">
-                            <label class="custom-file-label" for="customFile">File Excel</label>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label>Tanggal MCU</label>
-                        <div class="input-group date" id="reservationdatetime" data-target-input="nearest">
-                            <input type="text" class="form-control datetimepicker-input" name="mcu_date"
-                                data-target="#reservationdatetime" />
-                            <div class="input-group-append" data-target="#reservationdatetime" data-toggle="datetimepicker">
-                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                            </div>
+                            <label class="custom-file-label" for="customFile">Zip File</label>
                         </div>
                     </div>
                 </div>
@@ -62,11 +54,9 @@
             $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
         });
 
-        $('#reservationdatetime').datetimepicker({
+        $('#tglMcuUpload').datetimepicker({
             format: 'YYYY-MM-DD HH:mm:ss',
-            icons: {
-                time: 'far fa-clock'
-            }
+            icons: { time: 'far fa-clock' }
         });
     });
 </script>

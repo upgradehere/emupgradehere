@@ -5,6 +5,7 @@ namespace App\Imports;
 use App\Models\AnamnesisT;
 use App\Models\EmployeeM;
 use App\Models\McuT;
+use App\Models\PackageM;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -187,16 +188,21 @@ class McuAnamnesisImport implements ToCollection, WithHeadingRow
             }
 
             $employeeModel = EmployeeM::select('employee_id')->where('nik', $row['nik'])->first();
+            $packageModel = PackageM::select('id')->where('package_code', $row['kode_paket'])->first();
 
             if ($employeeModel == null) {
-                DB::rollBack();
-                throw new \Exception('Terjadi Kesalahan! Peserta Tidak Ditemukan!');
+                throw new \Exception('Terjadi Kesalahan! Peserta dengan nik '.$row['nik'].' Tidak Ditemukan!');
+            }
+            if ($packageModel == null) {
+                throw new \Exception('Terjadi Kesalahan! Kode paket '.$row['kode_paket'].' Tidak Ditemukan!');
             }
             $modelMcu = McuT::select('mcu_id')
                 ->where('employee_id', $employeeModel->employee_id)
                 ->where('company_id', $this->companyId)
                 ->where('mcu_program_id', $this->mcuProgramId)
-                ->where('is_import', true)->first();
+                ->where('is_import', true)
+                ->where('package_id', $packageModel->id)
+                ->first();
 
             if ($modelMcu != null) {
                 $mcu_id = $modelMcu->mcu_id;
@@ -324,7 +330,7 @@ class McuAnamnesisImport implements ToCollection, WithHeadingRow
                 'strabismus',
                 'anemis_konjungtiva',
                 'sklera_ikterik',
-                'relfek_pupil',
+                'reflek_pupil',
                 'kelainan_kelenjar_mata',
                 'catatan_kelainan_kelenjar_mata',
                 'exohalmus',
@@ -372,6 +378,7 @@ class McuAnamnesisImport implements ToCollection, WithHeadingRow
             'id' => [
                 'septum_deviasi',
                 'sekret',
+                'lain_lain'
             ],
             'en' => [
                 'septal_deviation',

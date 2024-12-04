@@ -309,6 +309,7 @@
             e.preventDefault();
             let form = $(this).closest('form');
             Swal.fire({
+                icon: 'warning',
                 title: 'Perhatian!',
                 text: "Apakah anda akan menghapus data?",
                 type: 'warning',

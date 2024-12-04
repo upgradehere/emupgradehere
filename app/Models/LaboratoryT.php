@@ -13,7 +13,7 @@ class LaboratoryT extends Model
     protected $table = 'laboratory_t';
     protected $primaryKey = 'laboratory_id';
     protected $fillable = [
-        'laboratory_id',
+        // 'laboratory_id',
         'mcu_id',
         'laboratory_date',
         'image_file',
@@ -34,7 +34,7 @@ class LaboratoryT extends Model
     ];
 
     public $attributes = [
-        'laboratory_id' => 'Lab ID',
+        // 'laboratory_id' => 'Lab ID',
         'mcu_id' => 'MCU ID',
         'laboratory_date' => 'Lab Date'
     ];

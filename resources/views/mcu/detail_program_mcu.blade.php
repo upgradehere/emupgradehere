@@ -5,7 +5,7 @@
             <div class="row mb-2">
                 <div class="col-sm-6">
                     <h1 class="m-0">Detail Program MCU</h1>
-                </div><!-- /.col -->
+                </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
@@ -13,14 +13,11 @@
                         <li class="breadcrumb-item active">Informasi MCU</li>
                         <li class="breadcrumb-item active">Detail</li>
                     </ol>
-                </div><!-- /.col -->
-            </div><!-- /.row -->
-        </div><!-- /.container-fluid -->
+                </div>
+            </div>
+        </div>
     </div>
     <section class="content">
-        {{-- @if (session('status'))
-            <div class="alert alert-success">{{ session('status') }}</div>
-        @endif --}}
         <div class="container-fluid">
             <div class="row">
                 <div class="col-12">
@@ -28,7 +25,6 @@
                         <div class="card-header">
                             <h3 class="card-title">Data Perusahaan</h3>
                         </div>
-                        <!-- /.card-header -->
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-3">
@@ -49,7 +45,6 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- /.card-body -->
                     </div>
                 </div>
             </div>
@@ -59,12 +54,11 @@
                         <div class="card-header">
                             <h3 class="card-title">Pemeriksaan MCU Peserta</h3>
                         </div>
-                        <!-- /.card-header -->
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-2">
-                                    <a href="/mcu/program-mcu/detail/input-manual-mcu?company_id={{ $company_id }}&mcu_program_id={{ $mcu_program_id }}"
-                                        class="btn btn-block bg-gradient-primary auto-size-btn"><i
+                                    <a class="btn btn-block bg-gradient-primary auto-size-btn" data-toggle="modal"
+                                        data-target="#modal-insert-manual"><i
                                             class="fas fa-edit"></i>&nbsp;&nbsp;Input Manual</a>
                                 </div>
                                 <div class="col-2">
@@ -80,10 +74,6 @@
                                 <div class="col-2">
                                     <a class="btn btn-block bg-gradient-primary auto-size-btn"><i
                                             class="fas fa-edit"></i>&nbsp;&nbsp;Kesimpulan & Saran</a>
-                                </div>
-                                <div class="col-2">
-                                    <a class="btn btn-block bg-gradient-primary auto-size-btn"><i
-                                            class="far fa-file-pdf"></i>&nbsp;&nbsp;Export</a>
                                 </div>
                             </div>
                             <br>
@@ -110,14 +100,14 @@
                             </div>
 
                         </div>
-                        <!-- /.card-body -->
                     </div>
                 </div>
             </div>
         </div>
     </section>
-    @include('mcu.partials.import_file_excel');
-    @include('mcu.partials.upload_hasil');
+    @include('mcu.partials.insert_manual')
+    @include('mcu.partials.import_file_excel')
+    @include('mcu.partials.upload_hasil')
     <script>
         $(function() {
             let companyId = "{{ $company_id }}";
@@ -206,7 +196,7 @@
                             let employeeId = row.employee_id;
                             return `<a class="btn btn-primary btn-sm action-detail" href="/mcu/program-mcu/detail/pemeriksaan?mcu_id=${mcuId}&employee_id=${employeeId}"><i class="fas fa-eye"></i></a>
                                     <a class="btn btn-success btn-sm action-export" href="/mcu/program-mcu/detail/pemeriksaan/cetak-pemeriksaan?mcu_id=${mcuId}" target="_blank"><i class="fas fa-file-pdf"></i></a>
-                                    <button class="btn btn-danger btn-sm action-delete"><i class="fas fa-trash"></i></button>`;
+                                    <a class="btn btn-danger btn-sm action-delete-mcu" data-mcu-id="${mcuId}"><i class="fas fa-trash"></i></a>`;
                         }
                     }
                 ],
@@ -215,16 +205,37 @@
                 ],
             });
 
-            $('#mcuEmployeeTable tbody').on('click', '.action-delete', function() {
+            $('#mcuEmployeeTable tbody').on('click', '.action-delete-mcu', function () {
+                let button = $(this);
+                let mcuId = button.data('mcu-id');
+
                 Swal.fire({
-                    title: "Apakah anda akan menghapus data?",
-                    showDenyButton: true,
-                    confirmButtonText: "Ya",
-                    denyButtonText: "Tidak"
+                    icon: 'warning',
+                    title: 'Perhatian!',
+                    text: "Apakah anda akan menghapus data?",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Hapus',
+                    cancelButtonText: "Batal"
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        Swal.fire("Berhasil menghapus data!", "", "success");
-                        table.ajax.reload();
+                        $.ajax({
+                            url: `/mcu/program-mcu/detail/pemeriksaan/delete-pemeriksaan?mcu_id=${mcuId}`,
+                            type: 'POST',
+                            data: {
+                                _token: '{{ csrf_token() }}',
+                                _method: 'DELETE'
+                            },
+                            success: function (response) {
+                                Swal.fire("Berhasil!", "Data telah dihapus.", "success");
+                                table.ajax.reload();
+                            },
+                            error: function () {
+                                Swal.fire("Gagal!", "Terjadi kesalahan saat menghapus data.", "error");
+                            }
+                        });
                     }
                 });
             });

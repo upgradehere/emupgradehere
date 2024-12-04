@@ -84,6 +84,27 @@ class PemeriksaanMcuController extends Controller
         return view('/mcu/pemeriksaan/index_pemeriksaan', get_defined_vars());
     }
 
+    public function deletePemeriksaanMcu(Request $request)
+    {
+        try {
+            $mcu_id = $request->get('mcu_id');
+            if (empty($mcu_id)){
+                return redirect()->back()->with([
+                    'error' => ConstantsHelper::MESSAGE_ERROR_DELETE
+                ]);
+            }
+            $model = McuT::find($mcu_id);
+            $model->delete();
+            return redirect()->back()->with([
+                'success' => ConstantsHelper::MESSAGE_SUCCESS_DELETE
+            ]);
+        } catch (\Exception $e) {
+            return redirect()->back()->with([
+                'error' => ConstantsHelper::MESSAGE_ERROR_DELETE
+            ]);
+        }
+    }
+
     public function cetakPemeriksaanMcu (Request $request)
     {
         $mcu_id = $request->get('mcu_id');
