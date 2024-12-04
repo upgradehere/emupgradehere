@@ -39,7 +39,7 @@ class GlobalHelper {
         });
 
         $examinations_examinations = LaboratoryExaminationM::select('laboratory_examination_id', 'laboratory_examination_type_id', 'laboratory_examination_code')
-        ->whereIn('laboratory_examination_id', [1,2,3,20,21,22,58])
+        // ->whereIn('laboratory_examination_id', [1,2,3,20,21,22,58])
         ->pluck('laboratory_examination_id')
         ->toArray();
 

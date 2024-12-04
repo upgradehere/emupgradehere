@@ -5,6 +5,16 @@ namespace App\Http\Controllers\Mcu;
 use App\Helpers\ConstantsHelper;
 use App\Http\Controllers\Controller;
 use App\Imports\McuAnamnesisImport;
+use App\Imports\McuAudiometryImport;
+use App\Imports\McuEkgImport;
+use App\Imports\McuLaboratoryImport;
+use App\Imports\McuPapsmearImport;
+use App\Imports\McuRefractionImport;
+use App\Imports\McuResumeMcuImport;
+use App\Imports\McuRontgenImport;
+use App\Imports\McuSpirometryImport;
+use App\Imports\McuTreadmillImport;
+use App\Imports\McuUsgImport;
 use App\Models\CompanyM;
 use App\Models\EmployeeM;
 use App\Models\LookupC;
@@ -12,6 +22,7 @@ use App\Models\McuCompanyV;
 use App\Models\McuEmployeeV;
 use App\Models\McuProgramM;
 use App\Models\McuT;
+use App\Models\PackageM;
 use App\Models\RefractionT;
 use App\Models\RontgenT;
 use App\Models\SpirometryT;
@@ -77,6 +88,8 @@ class ProgramMcuController extends Controller
     {
         $company_id = $request->get('company_id');
         $mcu_program_id = $request->get('mcu_program_id');
+        $employees = EmployeeM::select('employee_id', 'employee_code', 'employee_name')->where('company_id', $company_id)->get();
+        $packages = PackageM::select('id', 'package_code', 'package_name')->get();
 
         $company_name = CompanyM::where('company_id', $company_id)->value('company_name');
         $mcu_program_name = McuProgramM::where('mcu_program_id', $mcu_program_id)->value('mcu_program_name');
@@ -101,7 +114,7 @@ class ProgramMcuController extends Controller
             $mcu_program_id = $request->get('mcu_program_id');
             $model = new McuEmployeeV();
             $query = $model->select();
-            $query = $query->where('company_id', $company_id)->where('mcu_program_id', $mcu_program_id);
+            $query = $query->where('company_id', $company_id)->where('mcu_program_id', $mcu_program_id)->where('deleted_at', null);
             $totalRecords = $query->count();
 
             if ($request->has('search') && !empty($request->search['value'])) {
@@ -156,11 +169,23 @@ class ProgramMcuController extends Controller
             $post = $request->post();
             $company_id = $post['company_id'];
             $mcu_program_id = $post['mcu_program_id'];
-            unset($post['mcu_code']);
             DB::beginTransaction();
             $model = new McuT();
-            $model->create($post);
-            DB::commit();
+            unset($post['_token']);
+            $model->attributes = $post;
+            if ($model->validate() === true) {
+                if ($model->save()) {
+                    DB::commit();
+                    return redirect()->back()->with([
+                        'success' => ConstantsHelper::MESSAGE_SUCCESS_SAVE
+                    ]);
+                }
+            } else {
+                DB::rollback();
+                return redirect()->back()->with([
+                    'error' => $model->validate()
+                ]);
+            }
 
             return redirect('/mcu/program-mcu/detail?company_id='.$company_id.'&mcu_program_id='.$mcu_program_id)->with('success', 'Form submitted successfully!');
         } catch (\Exception $e) {
@@ -199,14 +224,35 @@ class ProgramMcuController extends Controller
                     $import_model = new McuAnamnesisImport($post['mcu_date'], $post['company_id'], $post['mcu_program_id']);
                     break;
                 case ConstantsHelper::LOOKUP_EXAMINATION_TYPE_REFRACTION:
+                    $import_model = new McuRefractionImport($post['mcu_date'], $post['company_id'], $post['mcu_program_id']);
+                    break;
                 case ConstantsHelper::LOOKUP_EXAMINATION_TYPE_LAB:
+                    $import_model = new McuLaboratoryImport($post['mcu_date'], $post['company_id'], $post['mcu_program_id']);
+                    break;
                 case ConstantsHelper::LOOKUP_EXAMINATION_TYPE_RONTGEN:
+                    $import_model = new McuRontgenImport($post['mcu_date'], $post['company_id'], $post['mcu_program_id']);
+                    break;
                 case ConstantsHelper::LOOKUP_EXAMINATION_TYPE_AUDIOMETRY:
+                    $import_model = new McuAudiometryImport($post['mcu_date'], $post['company_id'], $post['mcu_program_id']);
+                    break;
                 case ConstantsHelper::LOOKUP_EXAMINATION_TYPE_SPIROMETRY:
+                    $import_model = new McuSpirometryImport($post['mcu_date'], $post['company_id'], $post['mcu_program_id']);
+                    break;
                 case ConstantsHelper::LOOKUP_EXAMINATION_TYPE_EKG:
+                    $import_model = new McuEkgImport($post['mcu_date'], $post['company_id'], $post['mcu_program_id']);
+                    break;
                 case ConstantsHelper::LOOKUP_EXAMINATION_TYPE_USG:
+                    $import_model = new McuUsgImport($post['mcu_date'], $post['company_id'], $post['mcu_program_id']);
+                    break;
                 case ConstantsHelper::LOOKUP_EXAMINATION_TYPE_TREADMILL:
-                    return redirect()->back()->with('error', 'Belum Tersedia!');
+                    $import_model = new McuTreadmillImport($post['mcu_date'], $post['company_id'], $post['mcu_program_id']);
+                    break;
+                case ConstantsHelper::LOOKUP_EXAMINATION_TYPE_PAPSMEAR:
+                    $import_model = new McuPapsmearImport($post['mcu_date'], $post['company_id'], $post['mcu_program_id']);
+                    break;
+                case ConstantsHelper::LOOKUP_EXAMINATION_TYPE_RESUME_MCU:
+                    $import_model = new McuResumeMcuImport($post['mcu_date'], $post['company_id'], $post['mcu_program_id']);
+                    break;
                 default:
                     return redirect()->back()->with('error', 'Jenis Pemeriksaan Salah!');
             }
@@ -216,7 +262,7 @@ class ProgramMcuController extends Controller
             }
 
             Excel::import($import_model, $request->file('import_file'));
-            return redirect()->back()->with('success', 'Imported Successfully');
+            return redirect()->back()->with('success', 'Import Excel Berhasil');
         } catch (ValidationException $e) {
             return redirect()->back()->with('error', $e->getMessage());
         } catch (\Exception $e) {

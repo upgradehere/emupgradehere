@@ -36,6 +36,7 @@ Route::group(['middleware' => ['auth', 'role:1,2']], function () {
     Route::post('/mcu/program-mcu/detail/upload-hasil', [ProgramMcuController::class, 'uploadHasil']);
     Route::get('/mcu/program-mcu/detail/pemeriksaan', [PemeriksaanMcuController::class, 'index']);
     Route::get('/mcu/program-mcu/detail/pemeriksaan/cetak-pemeriksaan', [PemeriksaanMcuController::class, 'cetakPemeriksaanMcu']);
+    Route::delete('/mcu/program-mcu/detail/pemeriksaan/delete-pemeriksaan', [PemeriksaanMcuController::class, 'deletePemeriksaanMcu']);
     Route::post('/mcu/program-mcu/detail/pemeriksaan/save-anamnesis', [PemeriksaanMcuController::class, 'saveAnamnesis']);
     Route::post('/mcu/program-mcu/detail/pemeriksaan/save-lab', [PemeriksaanMcuController::class, 'saveLab']);
     Route::post('/mcu/program-mcu/detail/pemeriksaan/save-refraction', [PemeriksaanMcuController::class, 'saveRefraction']);

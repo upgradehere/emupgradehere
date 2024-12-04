@@ -87,6 +87,10 @@ trait LaboratoriumTrait
             $action = $request->input('action');
             $laboratory_id = isset($post['laboratory_id']) ? $post['laboratory_id'] : null;
 
+            if ($action == 'delete') {
+                return self::actionDeleteLab($laboratory_id);
+            }
+
             DB::beginTransaction();
             $model = new LaboratoryT();
             if (empty($post['mcu_id'])) {
@@ -132,6 +136,30 @@ trait LaboratoriumTrait
             DB::rollback();
             return redirect()->back()->with([
                 'error' => ConstantsHelper::MESSAGE_ERROR_SAVE
+            ]);
+        }
+    }
+
+    private function actionDeleteLab ($laboratory_id)
+    {
+        try {
+            if (empty($laboratory_id)){
+                return redirect()->back()->with([
+                    'error' => ConstantsHelper::MESSAGE_ERROR_DELETE
+                ]);
+            }
+            DB::beginTransaction();
+            $model = LaboratoryT::find($laboratory_id);
+            $model->delete();
+            LaboratoryDetailT::where('laboratory_id', $laboratory_id)->delete();
+            DB::commit();
+            return redirect()->back()->with([
+                'success' => ConstantsHelper::MESSAGE_SUCCESS_DELETE
+            ]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect()->back()->with([
+                'error' => ConstantsHelper::MESSAGE_ERROR_DELETE
             ]);
         }
     }
