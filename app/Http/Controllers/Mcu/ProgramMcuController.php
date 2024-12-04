@@ -15,7 +15,9 @@ use App\Imports\McuRontgenImport;
 use App\Imports\McuSpirometryImport;
 use App\Imports\McuTreadmillImport;
 use App\Imports\McuUsgImport;
+use App\Models\AudiometryT;
 use App\Models\CompanyM;
+use App\Models\EkgT;
 use App\Models\EmployeeM;
 use App\Models\LookupC;
 use App\Models\McuCompanyV;
@@ -26,8 +28,11 @@ use App\Models\PackageM;
 use App\Models\RefractionT;
 use App\Models\RontgenT;
 use App\Models\SpirometryT;
+use App\Models\TreadmillT;
+use App\Models\UsgT;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
@@ -272,7 +277,7 @@ class ProgramMcuController extends Controller
 
     public function uploadHasil(Request $request)
     {
-        // try{
+        try{
             $post = $request->post();
             $request->validate([
                 'examination_type' => 'required',
@@ -295,37 +300,50 @@ class ProgramMcuController extends Controller
             ]);
 
             $zipFile = $request->file('import_file');
-            // return $zipFile;
-            $zipPath = $zipFile->store('temp'); // Store temporarily
+            $zipPath = $zipFile->store('temp');
             $extractPath = null;
             $model = null;
             switch ($request->post('examination_type')) {
                 case ConstantsHelper::LOOKUP_EXAMINATION_TYPE_REFRACTION:
                     $model = new RefractionT();
-                    $extractPath = 'uploads/refraction/';
-                    $date = 'refraction_date';
+                    $extractPath = 'uploads/refraction/extract/';
+                    $imagePath = 'uploads/refraction/';
+                    $category = 'refraksi';
                     break;
                 case ConstantsHelper::LOOKUP_EXAMINATION_TYPE_RONTGEN:
                     $model = new RontgenT();
-                    $extractPath = 'uploads/rontgen/';
-                    $date = 'rontgen_date';
+                    $extractPath = 'uploads/rontgen/extract/';
+                    $imagePath = 'uploads/rontgen/';
+                    $category = 'rontgen';
                     break;
                 case ConstantsHelper::LOOKUP_EXAMINATION_TYPE_AUDIOMETRY:
-
+                    $model = new AudiometryT();
+                    $extractPath = 'uploads/audiometry/extract/';
+                    $imagePath = 'uploads/audiometry/';
+                    $category = 'audiometry';
                     break;
                 case ConstantsHelper::LOOKUP_EXAMINATION_TYPE_SPIROMETRY:
                     $model = new SpirometryT();
-                    $extractPath = 'uploads/refraction/';
-                    $date = 'spirometry_date';
+                    $extractPath = 'uploads/spirometry/extract/';
+                    $imagePath = 'uploads/epirometry/';
+                    $category = 'spirometry';
                     break;
                 case ConstantsHelper::LOOKUP_EXAMINATION_TYPE_EKG:
-
+                    $model = new EkgT();
+                    $extractPath = 'uploads/ekg/extract/';
+                    $imagePath = 'uploads/ekg/';
+                    $category = 'ekg';
                     break;
                 case ConstantsHelper::LOOKUP_EXAMINATION_TYPE_USG:
-
+                    $model = new UsgT();
+                    $extractPath = 'uploads/usg/extract/';
+                    $imagePath = 'uploads/usg/';
+                    $category = 'usg';
                     break;
                 case ConstantsHelper::LOOKUP_EXAMINATION_TYPE_TREADMILL:
-
+                    $model = new TreadmillT();
+                    $extractPath = 'uploads/treadmill/';
+                    $category = 'treadmill';
                     break;
                 default:
                     return redirect()->back()->with('error', 'Jenis Pemeriksaan Salah!');
@@ -342,41 +360,85 @@ class ProgramMcuController extends Controller
             $files = scandir($extractPath);
             $allowedExtensions = ['jpg', 'jpeg', 'png'];
 
-            Log::info($files);
-
-            foreach ($files as $file) {
+            foreach ($files as $key => $file) {
                 $filePath = $extractPath . '/' . $file;
-                $extension = pathinfo($filePath, PATHINFO_EXTENSION);
-
-                if (in_array(strtolower($extension), $allowedExtensions) && is_file($filePath)) {
-                    $filename = basename($filePath);
-                    $storedPath = $extractPath . $filename;
-
-                    // Move image to the public storage directory
-                    Storage::disk('public')->put($storedPath, file_get_contents($filePath));
-
-                    // Save record in the database
-                    $payload = [
-                        'mcu_id' => 62,
-                        $date => '2024-12-02 17:39:55',
-                        'image_file' => $filename,
-                    ];
-                    $model->attributes = $payload;
-                    $model->save();
+                $extension = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+                if (!in_array($extension, $allowedExtensions) || !is_file($filePath)) {
+                    unset($files[$key]);
                 }
             }
-            return $files;
 
+            foreach ($files as $file) {
+                $filePath = $extractPath . $file;
+                if ($file == '.' || $file == '..') {
+                    continue;
+                }
 
+                if (in_array($file, ['.DS_Store', '.git', 'Thumbs.db'])) {
+                    unset($files[$file]);
+                    continue;
+                }
 
-            // if ($upload == false) {
-            //     throw new \Exception('Terjadi Kesalahan!');
-            // }
-            return redirect()->back()->with('success', 'Imported Successfully');
-        // } catch (ValidationException $e) {
-        //     return redirect()->back()->with('error', $e->getMessage());
-        // } catch (\Exception $e) {
-        //     return redirect()->back()->with('error', $e->getMessage());
-        // }
+                $extension = pathinfo($filePath, PATHINFO_EXTENSION);
+                $fileName = pathinfo($file, PATHINFO_FILENAME);
+                $pattern = '/^\d+_[A-Za-z0-9]+_' . preg_quote($category, '/') . '$/i';
+                if (in_array(strtolower($extension), $allowedExtensions) && is_file($filePath) && preg_match($pattern, $fileName)) {
+
+                    $filename = $fileName . '.' . $extension;
+                    $storedPath = $imagePath . $filename;
+
+                    $fileNameWithoutExtension = pathinfo($file, PATHINFO_FILENAME);  // Get the filename without extension
+                    $nik = explode('_', $fileNameWithoutExtension)[0];
+                    $packageCode = explode('_', $fileNameWithoutExtension)[1];
+
+                    $employeeModel = EmployeeM::select('employee_id')->where('nik', $nik)->first();
+                    $packageModel = PackageM::select('id')->where('package_code', $packageCode)->first();
+
+                    if ($employeeModel == null) {
+                        throw new \Exception('Terjadi Kesalahan! Peserta dengan nik '.$nik.' Tidak Ditemukan!');
+                    }
+                    if ($packageModel == null) {
+                        throw new \Exception('Terjadi Kesalahan! Kode paket '.$packageCode.' Tidak Ditemukan!');
+                    }
+
+                    if (!is_dir($imagePath)) {
+                        mkdir($imagePath, 0755, true);
+                    }
+                    File::move($extractPath.$file, $imagePath . $filename);
+
+                    $modelMcu = McuT::select('mcu_id')
+                        ->where('employee_id', $employeeModel->employee_id)
+                        ->where('company_id', $post['company_id'])
+                        ->where('mcu_program_id', $post['mcu_program_id'])
+                        ->where('is_import', true)
+                        ->where('package_id', $packageModel->id)
+                        ->first();
+                    Log::info($modelMcu);
+
+                    if ($modelMcu == null) {
+                        throw new \Exception('Peserta dengan nik '.$nik.' dan kode paket '.$packageCode.' belum memiliki mcu, silahkan input mcu terlebih dahulu atau melalui import excel!');
+                    }
+
+                    $payload = [
+                        'mcu_id' => $modelMcu->mcu_id,
+                        'image_file' => $filename,
+                    ];
+                    $existingRecord = $model->where('mcu_id', $payload['mcu_id'])->first();
+                    if ($existingRecord) {
+                        $existingRecord->update($payload);
+                    } else {
+                        throw new \Exception('Peserta dengan nik '.$nik.' dan kode paket '.$packageCode.' belum memiliki pemeriksaan '.$category.', silahkan input terlebih dahulu atau melalui import excel!');
+                    }
+                } else {
+                    throw new \Exception('Nama file tidak sesuai!');
+                }
+            }
+            Storage::delete($zipPath);
+            return redirect()->back()->with('success', 'Upload Hasil Skses');
+        } catch (ValidationException $e) {
+            return redirect()->back()->with('error', $e->getMessage());
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', $e->getMessage());
+        }
     }
 }

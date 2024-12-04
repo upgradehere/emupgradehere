@@ -70,7 +70,7 @@ trait LaboratoriumTrait
                     $type->examinations = $type->examinations->get();
                     // $type->examinations = $type->examinations;
                     $type->examinations->result = 1;
-                    Log::info($type->examinations);
+                    // Log::info($type->examinations);
                 }
             }
             $data['laboratory_id'] = $labT->laboratory_id;
