@@ -4,12 +4,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">Paket</h1>
+                    <h1 class="m-0">Perusahaan</h1>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Beranda</a></li>
-                        <li class="breadcrumb-item active">Paket</li>
+                        <li class="breadcrumb-item active">Perusahaan</li>
                     </ol>
                 </div><!-- /.col -->
             </div><!-- /.row -->
@@ -21,21 +21,22 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">Daftar Paket</h3> <br>
+                            <h3 class="card-title">Daftar Perusahaan</h3> <br>
                         </div>
                         <div class="card-header">
                             <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#modal-add">+ Tambah
-                                Paket Baru</button>
+                                Perusahaan Baru</button>
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
-                            <table id="packageTable" class="table table-bordered table-striped">
+                            <table id="companyTable" class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
                                         <th style="width: 30px;">No</th>
-                                        <th>Nama Paket</th>
-                                        <th>Kode Paket</th>
-                                        <th>Harga</th>
+                                        <th>Nama Perusahaan</th>
+                                        <th>Kode Perusahaan</th>
+                                        <th>Jumlah Program</th>
+                                        <th>Jumlah MCU</th>
                                         <th style="width: 80px;"><i class="fas fa-cogs"></i></th>
                                     </tr>
                                 </thead>
@@ -52,74 +53,41 @@
             <div class="modal-dialog modal-xl">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">Tambah Paket Baru</h4>
+                        <h4 class="modal-title">Tambah Perusahaan Baru</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form action="{{ route('package.store') }}" method="POST">
+                        <form action="{{ route('company.store') }}" method="POST">
                             @csrf
                             <div class="form-group">
-                                <label for="">Nama Paket</label>
-                                <input type="text" required name="package_name" class="form-control">
+                                <label for="">Nama Perusahaan</label>
+                                <input type="text" required name="company_name" class="form-control">
                             </div>
                             <div class="form-group">
-                                <label for="">Kode Paket</label>
-                                <input type="text" required name="package_code" class="form-control">
+                                <label for="">Kode Perusahaan</label>
+                                <input type="text" required name="company_code" class="form-control">
                             </div>
                             <div class="form-group">
-                                <label for="">Harga</label>
-                                <input type="text" required name="price" class="form-control">
+                                <label for="">NPWP Perusahaan</label>
+                                <input type="text" required name="npwp_company_number" class="form-control">
                             </div>
                             <div class="form-group">
-                                <label for="">Deskripsi</label>
-                                <textarea required name="desc" id="" class="form-control" cols="30" rows="10"></textarea>
+                                <label for="">PIC Perusahaan</label>
+                                <input type="text" required name="pic_name" class="form-control">
                             </div>
-
-                            <label for="">Pemeriksaan</label>
-                            <hr>
-                            <div class="form-check">
-                                @foreach ($treatment as $t)
-                                    <input type="checkbox" name="treatment[]" id="" class="form-check-input"
-                                        value="{{ $t->lookup_code }}"
-                                        {{ $t->lookup_code == 'resume' ? 'checked readonly' : '' }}>
-                                    <label class="form-check-label" for="">{{ $t->lookup_name }}</label><br>
-                                @endforeach
+                            <div class="form-group">
+                                <label for="">Email PIC Perusahaan</label>
+                                <input type="email" required name="pic_email" class="form-control">
                             </div>
-
-                            <br>
-                            <label for="">Laboratorium</label>
-                            <hr>
-                            <div class="row">
-                                <div class="col-6">
-                                    <div class="form-check">
-                                        @foreach ($laboratorium as $k => $l)
-                                            <label for="">{{ $k }}</label><br>
-                                            <select name="" id="select_laboratorium_{{ $k }}"
-                                                class="select_laboratorium form-control">
-                                                <option value="">-- Pilih Item --</option>
-                                                @foreach ($l as $ll)
-                                                    <option value="{{ $ll->laboratory_examination_id }}">
-                                                        {{ $ll->laboratory_examination_name }}</option>
-                                                @endforeach
-                                            </select><br>
-                                        @endforeach
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th>ID Item</th>
-                                                <th>Item</th>
-                                                <th>Hapus</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="tbody_item">
-                                        </tbody>
-                                    </table>
-                                </div>
+                            <div class="form-group">
+                                <label for="">No Telp PIC Perusahaan</label>
+                                <input type="text" required name="pic_phone_number" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="">Alamat Perusahaan</label>
+                                <textarea required name="company_address" id="" class="form-control" cols="30" rows="10"></textarea>
                             </div>
 
                             <div class="modal-footer justify-content-between">
@@ -142,7 +110,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        Apakah Anda yakin ingin menghapus paket ini?
+                        Apakah Anda yakin ingin menghapus perusahaan ini?
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
@@ -154,7 +122,7 @@
     </section>
     <script>
         $(function() {
-            let table = $("#packageTable").DataTable({
+            let table = $("#companyTable").DataTable({
                 responsive: true,
                 lengthChange: true,
                 autoWidth: false,
@@ -162,7 +130,7 @@
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: 'api/package/get-data-package',
+                    url: 'api/company/get-data-company',
                     type: 'GET',
                     data: function(d) {
 
@@ -177,20 +145,26 @@
                         }
                     },
                     {
-                        data: 'package_name',
-                        name: 'package_name',
+                        data: 'company_name',
+                        name: 'company_name',
                         searchable: true,
                         orderable: true
                     },
                     {
-                        data: 'package_code',
-                        name: 'package_code',
+                        data: 'company_code',
+                        name: 'company_code',
                         searchable: true,
                         orderable: true
                     },
                     {
-                        data: 'price',
-                        name: 'price',
+                        data: 'total_program',
+                        name: 'total_program',
+                        searchable: true,
+                        orderable: true
+                    },
+                    {
+                        data: 'total_mcu',
+                        name: 'total_mcu',
                         searchable: true,
                         orderable: true
                     },
@@ -199,10 +173,10 @@
                         orderable: false,
                         searchable: false,
                         render: function(data, type, row) {
-                            var package_id = row.id;
-                            var delete_url = "{{ route('package.delete', ['id' => '__id__']) }}";
-                            delete_url = delete_url.replace('__id__', package_id);
-                            return `<a class="btn btn-primary btn-sm action-detail" href="/package/detail/${package_id}"><i class="fas fa-eye"></i></a>
+                            var company_id = row.company_id;
+                            var delete_url = "{{ route('company.delete', ['id' => '__id__']) }}";
+                            delete_url = delete_url.replace('__id__', company_id);
+                            return `<a class="btn btn-primary btn-sm action-detail" href="/company/detail/${company_id}"><i class="fas fa-eye"></i></a>
                                     <a class="btn btn-danger btn-sm action-delete" data-url="${delete_url}"><i class="fas fa-trash"></i></a>`;
                         }
                     }
@@ -212,7 +186,7 @@
                 ],
             });
 
-            $('#packageTable tbody').on('click', '.action-delete', function() {
+            $('#companyTable tbody').on('click', '.action-delete', function() {
                 Swal.fire({
                     title: "Apakah anda akan menghapus data?",
                     showDenyButton: true,
@@ -246,47 +220,6 @@
                         });
                     }
                 });
-            });
-
-            $(document).on("change", ".select_laboratorium", function() {
-                var value = $(this).val();
-                var text = $(this).find('option:selected').text();
-                var input = $(".laboratory_item");
-                var findSame = 0;
-
-                if (value != "") {
-                    $.each(input, function(i, v) {
-                        console.log(v)
-                        if (findSame == 0) {
-                            if ($(v).val() == value) {
-                                findSame = 1;
-                            }
-                        }
-                    });
-
-                    if (findSame == 0) {
-                        $('#tbody_item').append(`
-                            <tr>
-                                <td><input type='text' name='laboratory_item[]' class="laboratory_item" readonly value='${value}'></td>
-                                <td>${text}</td>
-                                <td><button class="btn btn-danger btn-sm delete_item" type="button" data-id='${value}'>Hapus</button></td>
-                            </tr>
-                        `);
-                    }
-
-                    $(this).val("");
-                }
-            });
-
-            $(document).on("click", ".delete_item", function() {
-                var id = $(this).attr("data-id");
-                $('#tbody_item tr').filter(function() {
-                    return $(this).find('td:first input').val() === id;
-                }).remove();
-            });
-
-            $('#packageTable tbody').on('click', '.action-detail', function() {
-
             });
         });
     </script>

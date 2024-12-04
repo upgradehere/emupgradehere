@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Mcu\ProgramMcuController;
 use App\Http\Controllers\PackageController;
+use App\Http\Controllers\CompanyController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -29,4 +30,8 @@ Route::group(['prefix' => 'mcu'], function () {
 
 Route::group(['prefix' => 'package'], function () {
     Route::get('get-data-package',  [PackageController::class, 'getDataPackage']);
+});
+
+Route::group(['prefix' => 'company'], function () {
+    Route::get('get-data-company',  [CompanyController::class, 'getDataCompany']);
 });

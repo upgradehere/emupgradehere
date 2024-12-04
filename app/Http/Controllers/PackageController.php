@@ -128,7 +128,7 @@ class PackageController extends Controller
 
         $package->save();
 
-        session()->flash('success', 'Paket beru telah disimpan');
+        session()->flash('success', 'Paket baru telah disimpan');
         return redirect()->route('package');
     }
 

@@ -5,6 +5,7 @@ use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Mcu\PemeriksaanMcuController;
 use App\Http\Controllers\Mcu\ProgramMcuController;
 use App\Http\Controllers\PackageController;
+use App\Http\Controllers\CompanyController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -55,4 +56,10 @@ Route::group(['middleware' => ['auth', 'role:1']], function () {
     Route::get('/package/delete/{id}', [PackageController::class, 'delete'])->name('package.delete');
     Route::get('/package/detail/{id}', [PackageController::class, 'detail'])->name('package.detail');
     Route::post('/package/update', [PackageController::class, 'update'])->name('package.update');
+
+    Route::get('/company', [CompanyController::class, 'index'])->name('company');
+    Route::post('/company/store', [CompanyController::class, 'store'])->name('company.store');
+    Route::get('/company/delete/{id}', [CompanyController::class, 'delete'])->name('company.delete');
+    Route::get('/company/detail/{id}', [CompanyController::class, 'detail'])->name('company.detail');
+    Route::post('/company/update', [CompanyController::class, 'update'])->name('company.update');
 });

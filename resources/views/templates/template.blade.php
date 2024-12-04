@@ -162,15 +162,28 @@
                                 </li>
                             </ul>
                         </li>
-                        <li class="nav-item">
-                            <a href="{{ route('package') }}"
-                                class="nav-link {{ Route::is('package.*') || Route::is('package') ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-box"></i>
-                                <p>
-                                    Paket
-                                </p>
-                            </a>
-                        </li>
+                        @if (Auth::user()->id_role == 1)
+                            <li class="nav-item">
+                                <a href="{{ route('package') }}"
+                                    class="nav-link {{ Route::is('package.*') || Route::is('package') ? 'active' : '' }}">
+                                    <i class="nav-icon fas fa-box"></i>
+                                    <p>
+                                        Paket
+                                    </p>
+                                </a>
+                            </li>
+                        @endif
+                        @if (Auth::user()->id_role == 1)
+                            <li class="nav-item">
+                                <a href="{{ route('company') }}"
+                                    class="nav-link {{ Route::is('company.*') || Route::is('company') ? 'active' : '' }}">
+                                    <i class="nav-icon fas fa-building"></i>
+                                    <p>
+                                        Perusahaan
+                                    </p>
+                                </a>
+                            </li>
+                        @endif
 
                     </ul>
                 </nav>
