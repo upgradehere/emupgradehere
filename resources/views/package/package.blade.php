@@ -21,11 +21,11 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">List Package</h3> <br>
+                            <h3 class="card-title">Daftar Paket</h3> <br>
                         </div>
                         <div class="card-header">
-                            <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#modal-add">+ Add New
-                                Package</button>
+                            <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#modal-add">+ Tambah
+                                Paket Baru</button>
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
@@ -33,9 +33,10 @@
                                 <thead>
                                     <tr>
                                         <th style="width: 30px;">No</th>
-                                        <th>Package Name</th>
-                                        <th>Price</th>
-                                        <th style="width: 80px;">Action</th>
+                                        <th>Nama Paket</th>
+                                        <th>Kode Paket</th>
+                                        <th>Harga</th>
+                                        <th style="width: 80px;"><i class="fas fa-cogs"></i></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -48,10 +49,10 @@
             </div>
         </div>
         <div class="modal fade" id="modal-add">
-            <div class="modal-dialog modal-lg">
+            <div class="modal-dialog modal-xl">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">Add New Package</h4>
+                        <h4 class="modal-title">+ Tambah Paket Baru</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -64,6 +65,10 @@
                                 <input type="text" required name="package_name" class="form-control">
                             </div>
                             <div class="form-group">
+                                <label for="">Kode Paket</label>
+                                <input type="text" required name="package_code" class="form-control">
+                            </div>
+                            <div class="form-group">
                                 <label for="">Harga</label>
                                 <input type="text" required name="price" class="form-control">
                             </div>
@@ -71,6 +76,52 @@
                                 <label for="">Deskripsi</label>
                                 <textarea required name="desc" id="" class="form-control" cols="30" rows="10"></textarea>
                             </div>
+
+                            <label for="">Pemeriksaan</label>
+                            <hr>
+                            <div class="form-check">
+                                @foreach ($treatment as $t)
+                                    <input type="checkbox" name="treatment[]" id="" class="form-check-input"
+                                        value="{{ $t->lookup_code }}"
+                                        {{ $t->lookup_code == 'resume' ? 'checked readonly' : '' }}>
+                                    <label class="form-check-label" for="">{{ $t->lookup_name }}</label><br>
+                                @endforeach
+                            </div>
+
+                            <br>
+                            <label for="">Laboratorium</label>
+                            <hr>
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="form-check">
+                                        @foreach ($laboratorium as $k => $l)
+                                            <label for="">{{ $k }}</label><br>
+                                            <select name="" id="select_laboratorium_{{ $k }}"
+                                                class="select_laboratorium form-control">
+                                                <option value="">-- Pilih Item --</option>
+                                                @foreach ($l as $ll)
+                                                    <option value="{{ $ll->laboratory_examination_id }}">
+                                                        {{ $ll->laboratory_examination_name }}</option>
+                                                @endforeach
+                                            </select><br>
+                                        @endforeach
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>ID Item</th>
+                                                <th>Item</th>
+                                                <th>Hapus</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tbody_item">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
                             <div class="modal-footer justify-content-between">
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
                                 <button type="submit" class="btn btn-primary">Simpan</button>
@@ -132,6 +183,12 @@
                         orderable: true
                     },
                     {
+                        data: 'package_code',
+                        name: 'package_code',
+                        searchable: true,
+                        orderable: true
+                    },
+                    {
                         data: 'price',
                         name: 'price',
                         searchable: true,
@@ -189,6 +246,43 @@
                         });
                     }
                 });
+            });
+
+            $(document).on("change", ".select_laboratorium", function() {
+                var value = $(this).val();
+                var text = $(this).find('option:selected').text();
+                var input = $(".laboratory_item");
+                var findSame = 0;
+
+                if (value != "") {
+                    $.each(input, function(i, v) {
+                        console.log(v)
+                        if (findSame == 0) {
+                            if ($(v).val() == value) {
+                                findSame = 1;
+                            }
+                        }
+                    });
+
+                    if (findSame == 0) {
+                        $('#tbody_item').append(`
+                            <tr>
+                                <td><input type='text' name='laboratory_item[]' class="laboratory_item" readonly value='${value}'></td>
+                                <td>${text}</td>
+                                <td><button class="btn btn-danger btn-sm delete_item" type="button" data-id='${value}'>Hapus</button></td>
+                            </tr>
+                        `);
+                    }
+
+                    $(this).val("");
+                }
+            });
+
+            $(document).on("click", ".delete_item", function() {
+                var id = $(this).attr("data-id");
+                $('#tbody_item tr').filter(function() {
+                    return $(this).find('td:first input').val() === id;
+                }).remove();
             });
 
             $('#packageTable tbody').on('click', '.action-detail', function() {

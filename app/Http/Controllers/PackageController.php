@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\PackageM;
+use App\Models\LookupC;
+use App\Models\LaboratoryExaminationGroupM;
+use App\Models\LaboratoryExaminationM;
 use Validator;
 use Session;
 
@@ -11,7 +14,25 @@ class PackageController extends Controller
 {
     public function index(Request $request)
     {
-        return view('package/package');
+        $data = [];
+
+        $treatment = LookupC::where("lookup_type", "examination_type")
+                                ->get();
+
+        $lab_group = LaboratoryExaminationGroupM::all();
+
+        $laboratorium = [];
+
+        foreach ($lab_group as $lb) {
+            $lab_item = LaboratoryExaminationM::where('laboratory_examination_type_id', $lb->laboratory_examination_group_id)
+                                                ->get();
+            $laboratorium[$lb->laboratory_examination_group_name] = $lab_item;
+        }
+
+        $data['treatment'] = $treatment;
+        $data['laboratorium'] = $laboratorium;
+
+        return view('package/package', $data);
     }
 
     public function getDataPackage(Request $request)
@@ -60,12 +81,14 @@ class PackageController extends Controller
     {
         $rules = [
             'package_name' => 'required',
+            'package_code' => 'required',
             'price' => 'required|numeric',
             'desc' => 'required',
         ];
 
         $messages = [
             'package_name.required' => 'Nama Paket wajib diisi',
+            'package_code.required' => 'Kode Paket wajib diisi',
             'price.required' => 'Harga wajib diisi',
             'price.numeric' => 'Harga harus berupa angka',
             'desc.required' => 'Deskripsi Paket wajib diisi',
@@ -82,8 +105,26 @@ class PackageController extends Controller
 
         $package = new PackageM;
         $package->package_name = $request->package_name;
+        $package->package_code = $request->package_code;
         $package->price = $request->price;
         $package->desc = $request->desc;
+
+        if (isset($request->treatment)) {
+            foreach ($request->treatment as $t) {
+                $package->$t = 1;
+            }
+        }
+
+        $lab_id = [];
+        if (isset($request->laboratory_item)) {
+            foreach ($request->laboratory_item as $l) {
+                array_push($lab_id, $l);
+            }
+        }
+
+        $lab_id = json_encode($lab_id);
+
+        $package->lab = $lab_id;
 
         $package->save();
 
@@ -121,6 +162,27 @@ class PackageController extends Controller
         if ($package) {
             $data['package'] = $package;
             
+            $treatment = LookupC::where("lookup_type", "examination_type")
+                                ->get();
+
+            $lab_group = LaboratoryExaminationGroupM::all();
+
+            $laboratorium = [];
+
+            foreach ($lab_group as $lb) {
+                $lab_item = LaboratoryExaminationM::where('laboratory_examination_type_id', $lb->laboratory_examination_group_id)
+                                                    ->get();
+                $laboratorium[$lb->laboratory_examination_group_name] = $lab_item;
+            }
+
+            $data['treatment'] = $treatment;
+            $data['laboratorium'] = $laboratorium;
+
+            $lab_ids = json_decode($package->lab);
+            $lab_item_current = LaboratoryExaminationM::whereIn('laboratory_examination_id', $lab_ids)->get();
+
+            $data['laboratorium_current'] = $lab_item_current;
+
             return view('package/detail', $data);
         } else {
             return view('errors/404');
@@ -131,12 +193,14 @@ class PackageController extends Controller
     {
         $rules = [
             'package_name' => 'required',
+            'package_code' => 'required',
             'price' => 'required|numeric',
             'desc' => 'required',
         ];
 
         $messages = [
             'package_name.required' => 'Nama Paket wajib diisi',
+            'package_code.required' => 'Kode Paket wajib diisi',
             'price.required' => 'Harga wajib diisi',
             'price.numeric' => 'Harga harus berupa angka',
             'desc.required' => 'Deskripsi Paket wajib diisi',
@@ -158,6 +222,35 @@ class PackageController extends Controller
         $package->package_name = $request->package_name;
         $package->price = $request->price;
         $package->desc = $request->desc;
+
+        $package->anamnesis = 0;
+        $package->rontgen = 0;
+        $package->audiometry = 0;
+        $package->spirometry = 0;
+        $package->ekg = 0;
+        $package->usg = 0;
+        $package->treadmill = 0;
+        $package->papsmear = 0;
+        $package->resume = 0;
+        $package->refraction = 0;
+        $package->lab = "[]";
+
+        if (isset($request->treatment)) {
+            foreach ($request->treatment as $t) {
+                $package->$t = 1;
+            }
+        }
+
+        $lab_id = [];
+        if (isset($request->laboratory_item)) {
+            foreach ($request->laboratory_item as $l) {
+                array_push($lab_id, $l);
+            }
+        }
+
+        $lab_id = json_encode($lab_id);
+
+        $package->lab = $lab_id;
 
         $package->save();
 

@@ -4,7 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Mcu\PemeriksaanMcuController;
 use App\Http\Controllers\Mcu\ProgramMcuController;
-use App\Http\Controllers\Mcu\PackageController;
+use App\Http\Controllers\PackageController;
 use Illuminate\Support\Facades\Route;
 
 /*

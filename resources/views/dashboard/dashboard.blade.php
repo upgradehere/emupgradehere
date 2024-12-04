@@ -7,18 +7,14 @@
                 <div class="col-sm-4">
                     <h1>Dashboard</h1>
                 </div>
-                <div class="col-sm-4">
+                <div class="col-sm-4 text-center">
+                    <label for="">Pilih Program</label>
                     <select class="form-control" name="program_id" id="program_id">
                         @foreach ($programs as $key => $program)
                             <option {{ $key == 0 ? 'selected' : '' }} value="{{ $program->mcu_program_id }}">
                                 {{ $program->mcu_program_name }}</option>
                         @endforeach
                     </select>
-                </div>
-                <div class="col-sm-4">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
-                    </ol>
                 </div>
             </div>
         </div>
