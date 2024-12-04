@@ -1019,7 +1019,7 @@
                 </div>
             </div>
             <div class="d-flex justify-content-end">
-                <button type="submit" name="action" value="delete" class="btn btn-danger action-delete">
+                <button type="submit" name="action" value="delete" class="btn btn-danger action-delete" {{ empty($data_anamnesis) ? 'disabled' : '' }}>
                     <i class="fas fa-trash"></i>&nbsp;&nbsp;Hapus
                 </button>
                 &nbsp;&nbsp;
@@ -1032,23 +1032,6 @@
 </form>
 <script>
     $(function() {
-        $('.action-save').on('click', function(e) {
-            e.preventDefault();
-            let form = $(this).closest('form');
-            Swal.fire({
-                title: 'Perhatian!',
-                text: "Apakah anda akan menyimpan data?",
-                type: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Simpan',
-                cancelButtonText: "Batal"
-            }).then((result) => {
-                if (result.value) {
-                    form.submit();
-                }
-            });
-        });
+
     });
 </script>

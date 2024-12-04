@@ -63,17 +63,23 @@ class PemeriksaanMcuController extends Controller
             ->select('nik', 'employee_name', 'lookup_c.lookup_name as sex')
             ->first();
 
-        $examinations = $this->examination_package['examinations'];;
+        $examinations = $this->examination_package['examinations'];
         $mcu_model = McuT::select('mcu_date', 'mcu_code')->where('mcu_id', $mcu_id)->first();
-        $mcu_date = !empty($mcu_date) ? $mcu_model['mcu_date'] : '-';
-        $mcu_code = !empty($mcu_date) ? $mcu_model['mcu_code'] : '-';
+        $mcu_date = !empty($mcu_model['mcu_date']) ? date('Y-m-d', strtotime($mcu_model['mcu_date'])) : '-';
+        $mcu_code = !empty($mcu_model['mcu_code']) ? $mcu_model['mcu_code'] : '-';
+        $mcu_package_name = 'Paket Lengkap';
         $data_anamnesis = self::getDataAnamnesis($mcu_id);
         $laboratory_examintaions = !empty($this->examination_package['laboratory_examinations']) ? $this->examination_package['laboratory_examinations'] : [];
         $form_lab = self::getFormLab($mcu_id, $laboratory_examintaions);
         $data_refraction = self::getDataRefraction($mcu_id);
         $data_rontgen = self::getDataRontgen($mcu_id);
         $data_spirometry = self::getDataSpirometry($mcu_id);
-        // return $data_rontgen;
+        $data_ekg = self::getDataEkg($mcu_id);
+        $data_usg = self::getDataUsg($mcu_id);
+        $data_treadmill = self::getDataTreadmill($mcu_id);
+        $data_papsmear = self::getDataPapsmear($mcu_id);
+        $data_resume_mcu = self::getDataResumeMcu($mcu_id);
+        $data_audiometry = self::getDataAudiometry($mcu_id);
 
         return view('/mcu/pemeriksaan/index_pemeriksaan', get_defined_vars());
     }
