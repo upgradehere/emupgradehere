@@ -1,5 +1,56 @@
 @extends('templates/template')
 @section('content')
+<style>
+    .auto-size-btn {
+        height: 40px;
+        line-height: 40px;
+        padding: 0 15px;
+        font-size: 14px;
+        white-space: nowrap;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+      color: #333;
+      -webkit-font-smoothing: antialiased;
+    }
+    p {
+      line-height: 1.6;
+      padding: 0 20px;
+    }
+    h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+      font-weight: 700;
+      line-height: 1.2;
+      letter-spacing: 0.8px;
+    }
+    .card {
+      box-shadow: none;
+    }
+    .gender-number {
+        font-size: 25px;
+        font-weight: 700;
+        color: #495057;
+        margin-bottom: 0px;
+    }
+    .gender-label {
+        font-weight: 700;
+        font-size: 22px; /* Memperbesar ukuran font label */
+        color: #495057;
+        margin-bottom: 0px; /* Menambahkan margin bawah untuk jarak dengan penjelasan */
+    }
+    .gender-description {
+        font-size: 14px;
+        color: #6c757d;
+        margin-bottom: 10px;
+        padding: 0px;
+    }
+</style>
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <div class="container-fluid">
@@ -28,92 +79,54 @@
     <section class="content">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-lg-3">
-                     <div class="card">
-                          <div class="card-header border-0">
-                            <div class="d-flex justify-content-between">
-                              <h3 class="card-title" style="font-weight: 700;">Total</h3>
-                            </div>
-                          </div>
-                      <div class="card-body pt-2 pb-2">
-                        <div class="small-box" style="background: linear-gradient(135deg, #17a2b8, #0c7a8d);box-shadow: none !important;">
-                            <div class="inner text-white">
-                                <p class="pl-0 mb-0">Pria</p>
-                                <h3 id="male_total">150 / 150</h3>
-                                <small>Peserta yang mengikuti Medical Check-Up</small>
-                            </div>
-                            <div class="icon">
-                                <i class="fas fa-mars"></i>
+                <div class="col-md-8">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-body text-left" style="padding: 20px;">
+                                    <div class="gender-label">Pria</div>
+                                    <h3 class="gender-number" id="male_total">0/0</h3> <!-- Menampilkan total peserta pria -->
+                                    <p class="gender-description">Peserta yang mengikuti medical cek up</p>
+                                </div>
                             </div>
                         </div>
-                        <div class="small-box" style="background: linear-gradient(135deg, #e83e8c, #d6336c);box-shadow: none !important;">
-                            <div class="inner text-white">
-                                <p class="pl-0 mb-0">Wanita</p>
-                                <h3 id="female_total">53 / 100</h3>
-                                <small>Peserta yang mengikuti Medical Check-Up</small>
-                            </div>
-                            <div class="icon">
-                                <i class="fas fa-venus"></i>
+
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-body text-left" style="padding: 20px;">
+                                    <div class="gender-label">Wanita</div>
+                                    <h3 class="gender-number" id="female_total">0/0</h3>
+                                    <p class="gender-description">Peserta yang mengikuti medical cek up</p>
+                                </div>
                             </div>
                         </div>
-                      </div>
                     </div>
-                </div>
-                <div class="col-md-5">
                     <!-- AREA CHART -->
                     <div class="card">
                       <div class="card-header border-0">
                         <div class="d-flex justify-content-between">
                           <h3 class="card-title" style="font-weight: 700;">Demografi Peserta</h3>
-                          <a href="javascript:void(0);">View</a>
+                          <a href="javascript:void(0);" class="text-dark"><i class="fas fa-external-link-alt"></i></a>
                         </div>
                       </div>
                       <div class="card-body">
-                        <div id="chart_peserta" style="width: 100%; height: 260px;"></div>
+                        <div id="chart_peserta" style="width: 100%; height: 200px;"></div>
                       </div>
                     </div>
                     <!-- /.card -->
-                </div>
-                <div class="col-md-4">
                     <!-- AREA CHART -->
                     <div class="card">
                       <div class="card-header border-0">
                         <div class="d-flex justify-content-between">
                           <h3 class="card-title" style="font-weight: 700;">Demografi Usia</h3>
-                          <a href="javascript:void(0);">View</a>
+                          <a href="javascript:void(0);" class="text-dark"><i class="fas fa-external-link-alt"></i></a>
                         </div>
                       </div>
                       <div class="card-body">
-                        <div id="chart_usia" style="width: 100%; height: 260px;"></div>
+                        <div id="chart_usia" style="width: 100%; height: 200px;"></div>
                       </div>
                     </div>
                     <!-- /.card -->
-                </div>
-                <div class="col-md-8">
-                    <div class="w-100">
-                        <div class="card">
-                          <div class="card-header border-0">
-                            <div class="d-flex justify-content-between">
-                              <h3 class="card-title" style="font-weight: 700;">10 Diagnosa Lab Terbanyak</h3>
-                            </div>
-                          </div>
-                          <div class="card-body">
-                            <div id="chart_riwayat_diagnosa_lab" style="width: 100%; height: 260px;"></div>
-                          </div>
-                        </div>
-                    </div>
-                    <div class="w-100">
-                        <div class="card">
-                          <div class="card-header border-0">
-                            <div class="d-flex justify-content-between">
-                              <h3 class="card-title" style="font-weight: 700;">10 Diagnosa Non Lab Terbanyak</h3>
-                            </div>
-                          </div>
-                          <div class="card-body">
-                            <div id="chart_riwayat_diagnosa_non_lab" style="width: 100%; height: 260px;"></div>
-                          </div>
-                        </div>
-                    </div>
                 </div>
                 <div class="col-md-4">
                     <div class="w-100">
@@ -121,10 +134,41 @@
                           <div class="card-header border-0">
                             <div class="d-flex justify-content-between">
                               <h3 class="card-title" style="font-weight: 700;">10 Riwayat Penyakit Terbanyak</h3>
+                              <a href="javascript:void(0);" class="text-dark"><i class="fas fa-external-link-alt"></i></a>
                             </div>
                           </div>
                           <div class="card-body">
-                            <div id="chart_riwayat_penyakit" style="width: 100%; height: 620px;"></div>
+                            <div id="chart_riwayat_penyakit" style="width: 100%; height: 703px;"></div>
+                          </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="w-100">
+                        <div class="card">
+                          <div class="card-header border-0">
+                            <div class="d-flex justify-content-between">
+                              <h3 class="card-title" style="font-weight: 700;">10 Diagnosa Lab Terbanyak</h3>
+                              <a href="javascript:void(0);" class="text-dark"><i class="fas fa-external-link-alt"></i></a>
+                            </div>
+                          </div>
+                          <div class="card-body">
+                            <div id="chart_riwayat_diagnosa_lab" style="width: 100%; height: 260px;"></div>
+                          </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="w-100">
+                        <div class="card">
+                          <div class="card-header border-0">
+                            <div class="d-flex justify-content-between">
+                              <h3 class="card-title" style="font-weight: 700;">10 Diagnosa Non Lab Terbanyak</h3>
+                              <a href="javascript:void(0);" class="text-dark"><i class="fas fa-external-link-alt"></i></a>
+                            </div>
+                          </div>
+                          <div class="card-body">
+                            <div id="chart_riwayat_diagnosa_non_lab" style="width: 100%; height: 260px;"></div>
                           </div>
                         </div>
                     </div>
@@ -134,6 +178,7 @@
                       <div class="card-header border-0">
                         <div class="d-flex justify-content-between">
                           <h3 class="card-title" style="font-weight: 700;">Kategori Kesehatan Peserta</h3>
+                          <a href="javascript:void(0);" class="text-dark"><i class="fas fa-external-link-alt"></i></a>
                         </div>
                       </div>
                       <div class="card-body">
@@ -145,7 +190,8 @@
                     <div class="card">
                       <div class="card-header border-0">
                         <div class="d-flex justify-content-between">
-                          <h3 class="card-title" style="font-weight: 700;">Kategori Kesehatan Peserta</h3>
+                          <h3 class="card-title" style="font-weight: 700;">Peserta Sindrom Metabolik</h3>
+                          <a href="javascript:void(0);" class="text-dark"><i class="fas fa-external-link-alt"></i></a>
                         </div>
                       </div>
                       <div class="card-body">
@@ -159,6 +205,7 @@
                           <div class="card-header border-0">
                             <div class="d-flex justify-content-between">
                               <h3 class="card-title" style="font-weight: 700;">Indikator Gejala Sindrom Metabolik</h3>
+                              <a href="javascript:void(0);" class="text-dark"><i class="fas fa-external-link-alt"></i></a>
                             </div>
                           </div>
                           <div class="card-body">
@@ -175,13 +222,7 @@
                               <h3 class="card-title" style="font-weight: 700;">Kesimpulan</h3>
                             </div>
                           </div>
-                          <div class="card-body">
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                            cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-                            proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                          <div class="card-body" id="conclusion">Belum terdapat kesimpulan!
                           </div>
                         </div>
                     </div>
@@ -194,13 +235,7 @@
                               <h3 class="card-title" style="font-weight: 700;">Saran</h3>
                             </div>
                           </div>
-                          <div class="card-body">
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                            cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-                            proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                          <div class="card-body" id="recommendation">Belum terdapat saran!
                           </div>
                         </div>
                     </div>
@@ -215,196 +250,43 @@
 
     <script>
         $(document).ready(function() {
-            var dataPeserta = [
-                { name: 'Pemeriksaan Jantung', pria: 120, wanita: 150 },
-                { name: 'Pemeriksaan Mata', pria: 132, wanita: 182 },
-                { name: 'Vaksinasi', pria: 101, wanita: 180 },
-                { name: 'Pemeriksaan Gigi', pria: 134, wanita: 210 },
-                { name: 'Konsultasi Kesehatan', pria: 90, wanita: 240 },
-                { name: 'Pemeriksaan Kulit', pria: 230, wanita: 270 },
-                { name: 'Cek Kolesterol', pria: 210, wanita: 230 },
-                { name: 'Pemeriksaan Darah', pria: 100, wanita: 170 },
-                { name: 'Tes Diabetes', pria: 80, wanita: 160 },
-                { name: 'Tes COVID-19', pria: 110, wanita: 200 },
-                { name: 'Pemeriksaan Paru-paru', pria: 95, wanita: 220 },
-                { name: 'Cek Tekanan Darah', pria: 160, wanita: 250 },
-                { name: 'Pemeriksaan Telinga', pria: 135, wanita: 245 },
-                { name: 'Tes Kolesterol', pria: 125, wanita: 165 },
-                { name: 'Pemeriksaan Ginjal', pria: 140, wanita: 180 },
-                { name: 'Cek Mata', pria: 150, wanita: 210 },
-                { name: 'Pemeriksaan THT', pria: 110, wanita: 190 },
-                { name: 'Tes Fungsi Hati', pria: 115, wanita: 160 },
-                { name: 'Pemeriksaan Stamina', pria: 180, wanita: 210 },
-                { name: 'Vaksinasi Flu', pria: 160, wanita: 220 },
-                { name: 'Pemeriksaan Kesehatan Mental', pria: 100, wanita: 160 },
-                { name: 'Cek Kesehatan Jantung', pria: 200, wanita: 250 },
-                { name: 'Pemeriksaan Endokrin', pria: 105, wanita: 190 },
-                { name: 'Tes COVID-19 Rapid', pria: 130, wanita: 210 },
-                { name: 'Pemeriksaan Diet', pria: 95, wanita: 170 },
-                { name: 'Pemeriksaan Kesehatan Reproduksi', pria: 90, wanita: 220 },
-                { name: 'Cek Gula Darah', pria: 145, wanita: 200 },
-                { name: 'Pemeriksaan Gizi', pria: 120, wanita: 180 },
-                { name: 'Pemeriksaan Imunisasi', pria: 105, wanita: 145 },
-                { name: 'Cek Kesehatan Gigi', pria: 110, wanita: 185 }
-            ];
-
-
-            var chartDom = document.getElementById('chart_peserta');
-            buildChartPeserta(chartDom, dataPeserta);
-
-
-            var dataUsia = [
-                { name: "<25", pria: 40, wanita: 60 },
-                { name: "26-35", pria: 70, wanita: 90 },
-                { name: "36-45", pria: 50, wanita: 80 },
-                { name: "46-55", pria: 30, wanita: 50 },
-                { name: ">55", pria: 20, wanita: 40 }
-            ];
-
-            var chartDom = document.getElementById('chart_usia');
-            buildChartUsia(chartDom, dataUsia);
-
-
-            var data = [
-                { value: 1048, name: 'Fit with Note' },
-                { value: 735, name: 'Fit to Work' },
-                { value: 580, name: 'Temporary Unfit' },
-                { value: 484, name: 'nan' }
-            ];
-
-            var chartDom = document.getElementById('chart_kategori_kesehatan');
-            buildChartKategoryKesehatan(chartDom, data);
-
-            var data = {
-                normal: 70,  // Jumlah peserta yang normal
-                abnormal: 30  // Jumlah peserta yang abnormal
-            };
-
-            var chartDom = document.getElementById('chart_kategori_sindrom_metabolik');
-            buildChartSindromMetabolik(chartDom, data);
-
-            var data = [
-                { name: 'Diabetes Mellitus', jumlah_diagnosa: 150 },
-                { name: 'Hipertensi', jumlah_diagnosa: 200 },
-                { name: 'Jantung', jumlah_diagnosa: 120 },
-                { name: 'Gastritis', jumlah_diagnosa: 90 },
-                { name: 'Asma', jumlah_diagnosa: 85 },
-                { name: 'Pneumonia', jumlah_diagnosa: 75 },
-                { name: 'Stroke', jumlah_diagnosa: 110 },
-                { name: 'Kanker Paru-paru', jumlah_diagnosa: 50 },
-                { name: 'Penyakit Ginjal', jumlah_diagnosa: 60 },
-                { name: 'Infeksi Saluran Pernafasan', jumlah_diagnosa: 140 }
-            ];
-
-            var chartDom = document.getElementById('chart_riwayat_penyakit');
-            buildChartRiwayatPenyakit(chartDom, data);
-
-
-            var data = [
-                { name: 'Darah Lengkap', pria: 150, wanita: 120 },
-                { name: 'Fungsi Hati', pria: 80, wanita: 70 },
-                { name: 'Kolesterol', pria: 110, wanita: 90 },
-                { name: 'Gula Darah', pria: 130, wanita: 100 },
-                { name: 'Fungsi Ginjal', pria: 95, wanita: 85 },
-                { name: 'Hepatitis', pria: 60, wanita: 50 },
-                { name: 'Urine', pria: 140, wanita: 110 },
-                { name: 'Kanker', pria: 70, wanita: 60 },
-                { name: 'HIV', pria: 40, wanita: 35 },
-                { name: 'TBC', pria: 55, wanita: 45 }
-            ];
-
-
-            var chartDom = document.getElementById('chart_riwayat_diagnosa_lab');
-            buildChartDiagnosaLab(chartDom, data);
-
-            var data = [
-                { name: 'Tes Fungsi Kardiovaskular', abnormal: 150 },
-                { name: 'Tes Fungsi Hati Metabolik', abnormal: 50 },
-                { name: 'Tes Profil Lipid Kompleks', abnormal: 90 },
-                { name: 'Tes Gula Darah Puasa', abnormal: 120 },
-                { name: 'Tes Fungsi Ginjal Dinamis', abnormal: 70 },
-                { name: 'Tes Hepatitis B & C', abnormal: 30 },
-                { name: 'Tes Urinalisis Lengkap', abnormal: 110 },
-                { name: 'Tes Onkologi: Kanker Genetik', abnormal: 40 },
-                { name: 'Tes HIV dan Imunologi', abnormal: 15 },
-                { name: 'Tes Screening TBC', abnormal: 20 }
-            ];
-            var chartDom = document.getElementById('chart_riwayat_diagnosa_non_lab');
-            buildChartDiagnosaNonLab(chartDom, data);
-
-            var data = [
-              {
-                disease: 'Diabetes',
-                diagnoses: {
-                  'Diagnosis Awal': 320,
-                  'Pemeriksaan Lanjutan': 120,
-                  'Rekomendasi Pengobatan': 220
-                }
-              },
-              {
-                disease: 'Hipertensi',
-                diagnoses: {
-                  'Diagnosis Awal': 302,
-                  'Pemeriksaan Lanjutan': 132,
-                  'Rekomendasi Pengobatan': 182,
-                  'Tindak Lanjut': 212
-                }
-              },
-              {
-                disease: 'Asma',
-                diagnoses: {
-                  'Diagnosis Awal': 301,
-                  'Pemeriksaan Lanjutan': 101
-                }
-              },
-              {
-                disease: 'Penyakit Jantung',
-                diagnoses: {
-                  'Diagnosis Awal': 334,
-                  'Pemeriksaan Lanjutan': 134,
-                  'Rekomendasi Pengobatan': 234,
-                  'Tindak Lanjut': 154,
-                  'Saran Diet': 934
-                }
-              },
-              {
-                disease: 'Kanker',
-                diagnoses: {
-                  'Diagnosis Awal': 390,
-                  'Pemeriksaan Lanjutan': 90,
-                  'Rekomendasi Pengobatan': 290
-                }
-              },
-              {
-                disease: 'Stroke',
-                diagnoses: {
-                  'Diagnosis Awal': 330,
-                  'Pemeriksaan Lanjutan': 230,
-                  'Rekomendasi Pengobatan': 330,
-                  'Tindak Lanjut': 330
-                }
-              },
-              {
-                disease: 'Penyakit Ginjal',
-                diagnoses: {
-                  'Diagnosis Awal': 320,
-                  'Pemeriksaan Lanjutan': 210,
-                  'Rekomendasi Pengobatan': 310,
-                  'Tindak Lanjut': 410,
-                  'Saran Diet': 1320
-                }
-              }
-            ];
-
-            var chartDom = document.getElementById('chart_gejala');
-            buildChartGejala(chartDom, data);
+            var dataParticipant = [];
+            var dataAge = [];
+            var dataDiseaseHistory = [];
+            var dataDiagnosis = [];
+            var dataNonLabDiagnosis = [];
+            var dataHealthCategory = [];
+            var dataMetabolicSyndrome = {};
+            var dataSymptoms = [];
         })
 
+        //temporary
+        getGender();
+        getAge()
+        getParticipant()
+        getDiseaseHistory()
+        getLabDiagnosis()
+        getNonLabDiagnosis()
+        getHealthCategory()
+        getMetabolicSyndrome()
+        getSymptoms()
+        getConclusionAndRecommendation()
+
         $(document).on("change", "#program_id", function() {
-            getChartData();
+            getGender();
+            getAge()
+            getParticipant()
+            getDiseaseHistory()
+            getLabDiagnosis()
+            getNonLabDiagnosis()
+            getHealthCategory()
+            getMetabolicSyndrome()
+            getSymptoms()
+            getConclusionAndRecommendation()
         });
 
-        function buildChartPeserta(chartDom, data) {
+        function buildChartParticipant(chartDom, data) {
+            chartDom = document.getElementById(chartDom)
             var myChart = echarts.init(chartDom);
             var option = {
                 tooltip: {
@@ -446,7 +328,7 @@
                         stack: 'Gender',
                         emphasis: {
                             itemStyle: {
-                                color: '#17a2b8'  // Warna saat hover untuk Pria
+                                color: '#0F3B99'  // Warna saat hover untuk Pria
                             }
                         },
                         label: {
@@ -458,9 +340,9 @@
                             color: '#fff'  // Pastikan warna label tetap putih
                         },
                         itemStyle: {
-                            color: '#17a2b8'  // Warna untuk batang Pria
+                            color: '#0F3B99'  // Warna untuk batang Pria
                         },
-                        data: data.map(item => item.pria)  // Ambil data pria dari data
+                        data: data.map(item => item.male)  // Ambil data male dari data
                     },
                     {
                         name: 'Wanita',
@@ -468,7 +350,7 @@
                         stack: 'Gender',
                         emphasis: {
                             itemStyle: {
-                                color: '#e83e8c'  // Warna saat hover untuk Wanita
+                                color: '#A1D6FC'  // Warna saat hover untuk Wanita
                             }
                         },
                         label: {
@@ -480,9 +362,9 @@
                             color: '#fff'  // Pastikan warna label tetap putih
                         },
                         itemStyle: {
-                            color: '#e83e8c'  // Warna untuk batang Wanita
+                            color: '#A1D6FC'  // Warna untuk batang Wanita
                         },
-                        data: data.map(item => item.wanita)  // Ambil data wanita dari data
+                        data: data.map(item => item.female)  // Ambil data female dari data
                     }
                 ],
                 dataZoom: [
@@ -502,36 +384,56 @@
             myChart.setOption(option);
         }
 
-        function buildChartUsia(chartDom, data) {
+        function buildChartAge(chartDom, dataUsia) {
+            var chartDom = document.getElementById(chartDom);
+            // Menyiapkan data untuk chart
+            var usiaKategori = dataUsia.map(item => item.name); // Kategori usia
+            var maleData = dataUsia.map(item => item.male); // Data male
+            var femaleData = dataUsia.map(item => item.female); // Data female
+
             var myChart = echarts.init(chartDom);
+
             var option = {
+                color: ['#0F3B99', '#A1D6FC'], // Warna solid untuk male dan female
                 tooltip: {
                     trigger: 'axis',
                     axisPointer: {
-                        type: 'shadow'
+                        type: 'cross',
+                        label: {
+                            backgroundColor: '#6a7985'
+                        }
+                    }
+                },
+                legend: {
+                    data: ['Pria', 'Wanita'],
+                    bottom: '0%',  // Menempatkan legend lebih rendah di bawah sumbu X
+                    orient: 'horizontal',  // Legend horizontal
+                    itemWidth: 15,  // Lebar item legend
+                    itemHeight: 15,  // Tinggi item legend
+                    itemStyle: {
+                        borderRadius: '50%',  // Membuat item legend bulat
+                        borderWidth: 0  // Menghilangkan border item legend
+                    },
+                    textStyle: {
+                        fontSize: 14, // Ukuran font legend
+                        fontWeight: 'bold' // Tebalkan font legend
                     }
                 },
                 grid: {
-                    left: '1%',
-                    right: '1%',
-                    top  : '1%',
-                    bottom: '10%',  // Memberikan ruang lebih di bawah untuk legend
+                    left: '3%',
+                    right: '4%',
+                    top: '3%',
+                    bottom: '17%',
                     containLabel: true
                 },
-                yAxis: [
+                xAxis: [
                     {
                         type: 'category',
-                        data: data.map(item => item.name),  // Ambil nama dari data
-                        axisLabel: {
-                            rotate: 0,
-                            interval: 0,
-                            formatter: function (value) {
-                                return value.length > 10 ? value.slice(0, 5) + '...' : value;
-                            }
-                        }
+                        boundaryGap: false,
+                        data: usiaKategori
                     }
                 ],
-                xAxis: [
+                yAxis: [
                     {
                         type: 'value'
                     }
@@ -539,175 +441,58 @@
                 series: [
                     {
                         name: 'Pria',
-                        type: 'bar',
-                        stack: 'Gender',
+                        type: 'line',
+                        stack: 'total',
+                        smooth: true,
+                        lineStyle: {
+                            width: 0
+                        },
+                        showSymbol: false,
+                        areaStyle: {
+                            opacity: 1,  // Mengurangi transparansi (jadi solid)
+                            color: '#0F3B99'  // Warna solid untuk male
+                        },
                         emphasis: {
-                            itemStyle: {
-                                color: '#17a2b8'
-                            }
+                            focus: 'series'
                         },
+                        data: maleData,
                         label: {
-                            show: true,
-                            position: 'inside',
-                            formatter: function(params) {
-                                return params.value;
-                            },
-                            color: '#fff'
-                        },
-                        itemStyle: {
-                            color: '#17a2b8'
-                        },
-                        barWidth: 20,  // Mengatur lebar batang untuk "Pria"
-                        data: data.map(item => item.pria)
+                            show: true,  // Menampilkan label
+                            position: 'top',  // Posisi label di atas titik
+                            formatter: '{c}'  // Format label untuk menampilkan nilai
+                        }
                     },
                     {
                         name: 'Wanita',
-                        type: 'bar',
-                        stack: 'Gender',
-                        emphasis: {
-                            itemStyle: {
-                                color: '#e83e8c'
-                            }
+                        type: 'line',
+                        stack: 'total',
+                        smooth: true,
+                        lineStyle: {
+                            width: 0
                         },
-                        label: {
-                            show: true,
-                            position: 'inside',
-                            formatter: function(params) {
-                                return params.value;
-                            },
-                            color: '#fff'
-                        },
-                        itemStyle: {
-                            color: '#e83e8c'
-                        },
-                        barWidth: 20,  // Mengatur lebar batang untuk "Wanita"
-                        data: data.map(item => item.wanita)
-                    }
-                ],
-                legend: {
-                    data: ['Pria', 'Wanita'],  // Menambahkan label untuk "Pria" dan "Wanita"
-                    bottom: '0',  // Menempatkan legend di bagian bawah
-                    left: 'center',  // Menempatkan legend di tengah horizontal
-                    textStyle: {
-                        fontSize: 14,  // Ukuran font untuk legend
-                        color: '#333'  // Warna font legend
-                    },
-                    itemWidth: 10,  // Lebar item legend
-                    itemHeight: 10, // Tinggi item legend
-                    itemStyle: {
-                        borderRadius: '50%'  // Membuat item legend berbentuk bulat
-                    }
-                }
-            };
-
-            // Set opsi dan tampilkan grafik
-            myChart.setOption(option);
-        }
-
-        function buildChartKategoryKesehatan(chartDom, data) {
-            var myChart = echarts.init(chartDom);
-            
-            var option = {
-                tooltip: {
-                    trigger: 'item'  // Tipe tooltip yang muncul ketika item dipilih
-                },
-                legend: {
-                    bottom: '0%',
-                    left: 'center',
-                    orient: 'horizontal',  // Orientasi horizontal
-                    itemWidth: 10,  // Menentukan lebar ikon legend
-                    itemHeight: 10,  // Menentukan tinggi ikon legend
-                    textStyle: {
-                        fontSize: 14  // Ukuran font untuk teks legenda
-                    }
-                },
-                series: [
-                    {
-                        name: 'Kesehatan Peserta',
-                        type: 'pie',  // Tipe grafik pie
-                        radius: ['40%', '70%'],  // Mengatur jari-jari bagian dalam dan luar pie chart
-                        avoidLabelOverlap: false,
-                        label: {
-                            show: true,  // Menampilkan label di dalam pie
-                            position: 'inside',  // Menempatkan label di dalam potongan
-                            formatter: '{c}',  // Hanya menampilkan nilai (angka)
-                            fontSize: 14,  // Ukuran font untuk label
-                            color: '#fff'  // Warna font label
+                        showSymbol: false,
+                        areaStyle: {
+                            opacity: 1,  // Mengurangi transparansi (jadi solid)
+                            color: '#A1D6FC'  // Warna solid untuk female
                         },
                         emphasis: {
-                            label: {
-                                show: true,
-                                fontSize: 14,  // Ukuran font label saat dipilih
-                                fontWeight: 'bold'  // Menebalkan font saat dipilih
-                            }
+                            focus: 'series'
                         },
-                        labelLine: {
-                            show: false  // Menyembunyikan garis label
-                        },
-                        data: data,
-                        bottom: '20px'
+                        data: femaleData,
+                        label: {
+                            show: true,  // Menampilkan label
+                            position: 'top',  // Posisi label di atas titik
+                            formatter: '{c}'  // Format label untuk menampilkan nilai
+                        }
                     }
                 ]
             };
 
-            // Menetapkan opsi chart dan menampilkan grafik
             myChart.setOption(option);
         }
 
-        function buildChartSindromMetabolik(chartDom, data) {
-            var myChart = echarts.init(chartDom);
-            
-            var option = {
-                tooltip: {
-                    trigger: 'item'  // Tipe tooltip yang muncul ketika item dipilih
-                },
-                legend: {
-                    bottom: '0%',
-                    left: 'center',
-                    orient: 'horizontal',  // Orientasi horizontal
-                    itemWidth: 10,  // Menentukan lebar ikon legend
-                    itemHeight: 10,  // Menentukan tinggi ikon legend
-                    textStyle: {
-                        fontSize: 14  // Ukuran font untuk teks legenda
-                    }
-                },
-                series: [
-                    {
-                        name: 'Kesehatan Peserta',
-                        type: 'pie',  // Tipe grafik pie
-                        radius: ['40%', '70%'],  // Mengatur jari-jari bagian dalam dan luar pie chart
-                        avoidLabelOverlap: false,
-                        label: {
-                            show: true,  // Menampilkan label di dalam pie
-                            position: 'inside',  // Menempatkan label di dalam potongan
-                            formatter: '{c}',  // Hanya menampilkan nilai (angka)
-                            fontSize: 14,  // Ukuran font untuk label
-                            color: '#fff'  // Warna font label
-                        },
-                        emphasis: {
-                            label: {
-                                show: true,
-                                fontSize: 14,  // Ukuran font label saat dipilih
-                                fontWeight: 'bold'  // Menebalkan font saat dipilih
-                            }
-                        },
-                        labelLine: {
-                            show: false  // Menyembunyikan garis label
-                        },
-                        data: [
-                            { value: data.normal, name: 'Normal' },  // Data untuk kategori Normal
-                            { value: data.abnormal, name: 'Abnormal' }  // Data untuk kategori Abnormal
-                        ],
-                        bottom: '20px'  // Menempatkan pie chart lebih dekat ke bawah
-                    }
-                ]
-            };
-
-            // Menetapkan opsi chart dan menampilkan grafik
-            myChart.setOption(option);
-        }
-
-        function buildChartRiwayatPenyakit(chartDom, data) {
+        function buildChartDiseaseHistory(chartDom, data) {
+            chartDom = document.getElementById(chartDom);
             var myChart = echarts.init(chartDom);
             
             var option = {
@@ -723,26 +508,26 @@
                         type: 'shadow'  // Show the shadow pointer on bars
                     },
                     formatter: function (params) {
-                        // Custom tooltip formatter to display the name and jumlah_diagnosa
+                        // Custom tooltip formatter to display the name and diagnosis_count
                         var data = params[0].data;
-                        return `${data.name}<br/>Jumlah Diagnosa: ${data.jumlah_diagnosa}`;
+                        return `${data.name}<br/>Jumlah Diagnosa: ${data.diagnosis_count}`;
                     }
                 },
                 dataset: [
                     {
-                        dimensions: ['name', 'jumlah_diagnosa'],
+                        dimensions: ['name', 'diagnosis_count'],
                         source: data  // Using the passed data as parameter
                     },
                     {
                         transform: {
                             type: 'sort',
-                            config: { dimension: 'jumlah_diagnosa', order: 'asc' }
+                            config: { dimension: 'diagnosis_count', order: 'asc' }
                         }
                     }
                 ],
                 
                 xAxis: {
-                    type: 'value', // Change to value to represent the jumlah_diagnosa on the X-axis
+                    type: 'value', // Change to value to represent the diagnosis_count on the X-axis
                     axisLabel: {
                         formatter: function (value) {
                             return value;  // Show the diagnosis count on the X-axis
@@ -761,25 +546,20 @@
                 },
                 series: {
                     type: 'bar',
-                    encode: { x: 'jumlah_diagnosa', y: 'name' }, // Swap x and y encoding for horizontal chart
+                    encode: { x: 'diagnosis_count', y: 'name' }, // Swap x and y encoding for horizontal chart
                     datasetIndex: 1,
                     itemStyle: {
-                        // Gradient effect using a darker color at the top and lighter color at the bottom
-                        color: new echarts.graphic.LinearGradient(
-                            0, 0, 1, 0, // Horizontal gradient (from left to right)
-                            [
-                                { offset: 0, color: '#084c54' },  // Darker color at the left
-                                { offset: 1, color: '#0c7a8d' }   // Lighter color at the right
-                            ]
-                        )
+                        // Solid color for bars with a dark blue shade
+                        color: '#0F3B99'  // Dark blue color
                     },
                     label: {
                         show: true,
                         position: 'inside',  // Position the label inside the bar
                         formatter: function (params) {
-                            return params.data.jumlah_diagnosa;  // Show the diagnosis count inside the bar
+                            return params.data.diagnosis_count;  // Show the diagnosis count inside the bar
                         },
                         fontSize: 14,  // Font size for the label
+                        fontWeight: 'bold',  // Make the label text bold
                         color: '#fff'  // Color of the label
                     }
                 }
@@ -789,8 +569,12 @@
             myChart.setOption(option);
         }
 
-        function buildChartDiagnosaLab(chartDom, data) {
+        function buildChartLabDiagnosis(chartDom, data) {
+            chartDom = document.getElementById(chartDom);
             var myChart = echarts.init(chartDom);
+
+            // Menambahkan sorting pada data sebelum dimasukkan ke dalam dataset
+            data.sort((a, b) => (b.male + b.female) - (a.male + a.female));  // Mengurutkan berdasarkan total (pria + wanita)
 
             var option = {
                 grid: {
@@ -808,27 +592,21 @@
                         var data = params[0].data;
                         return `
                             <strong>${data.name}</strong><br/>
-                            Pria: ${data.pria}<br/>
-                            Wanita: ${data.wanita}<br/>
+                            Pria: ${data.male}<br/>
+                            Wanita: ${data.female}<br/>
                             <strong>Total: ${data.total}</strong>
                         `;
                     }
                 },
                 dataset: [
                     {
-                        dimensions: ['name', 'pria', 'wanita', 'total'],
+                        dimensions: ['name', 'male', 'female', 'total'],
                         source: data.map(item => ({
                             name: item.name,
-                            pria: item.pria,
-                            wanita: item.wanita,
-                            total: item.pria + item.wanita  // Menambahkan kolom total yang merupakan jumlah pria + wanita
+                            male: item.male,
+                            female: item.female,
+                            total: item.male + item.female  // Menambahkan kolom total yang merupakan jumlah male + female
                         }))
-                    },
-                    {
-                        transform: {
-                            type: 'sort',
-                            config: { dimension: 'total', order: 'desc' }  // Mengurutkan berdasarkan total diagnosa
-                        }
                     }
                 ],
                 xAxis: {
@@ -852,20 +630,11 @@
                 },
                 series: [
                     {
-                        name: 'Total',  // Series untuk jumlah total (pria + wanita)
+                        name: 'Total',  // Series untuk jumlah total (male + female)
                         type: 'bar',
                         encode: { x: 'name', y: 'total' },
                         itemStyle: {
-                            // Gradient color for bars (from yellow to dark yellow)
-                            color: {
-                                type: 'linear',
-                                x: 0, y: 0, x2: 0, y2: 1,  // Gradient goes vertically from top to bottom
-                                colorStops: [
-                                    { offset: 0, color: '#fac858' },  // Light yellow at the top
-                                    { offset: 1, color: '#f39c12' }   // Dark yellow at the bottom
-                                ],
-                                global: false  // Local gradient
-                            }
+                            color: '#0F3B99'  // Mengganti warna batang menjadi biru tua
                         },
                         label: {
                             show: true,
@@ -874,6 +643,7 @@
                                 return params.data.total;  // Menampilkan jumlah total diagnosa di dalam batang
                             },
                             fontSize: 14,
+                            fontWeight: 'bold',
                             color: '#fff'
                         }
                     }
@@ -884,8 +654,12 @@
             myChart.setOption(option);
         }
 
-        function buildChartDiagnosaNonLab(chartDom, data) {
+        function buildChartNonLabDiagnosis(chartDom, data) {
+            chartDom = document.getElementById(chartDom);
             var myChart = echarts.init(chartDom);
+
+            // Menambahkan sorting pada data sebelum dimasukkan ke dalam dataset
+            data.sort((a, b) => b.abnormal - a.abnormal);  // Mengurutkan berdasarkan abnormal secara menurun
 
             var option = {
                 grid: {
@@ -911,12 +685,6 @@
                             name: item.name,
                             abnormal: item.abnormal
                         }))
-                    },
-                    {
-                        transform: {
-                            type: 'sort',
-                            config: { dimension: 'abnormal', order: 'desc' }
-                        }
                     }
                 ],
                 xAxis: {
@@ -943,14 +711,7 @@
                         type: 'bar',
                         encode: { x: 'name', y: 'abnormal' },
                         itemStyle: {
-                            color: {
-                                type: 'linear',
-                                x: 0, y: 0, x2: 0, y2: 1,
-                                colorStops: [
-                                    { offset: 0, color: '#478A3D' },  // Darker green at the top
-                                    { offset: 1, color: '#91cc75' }   // Lighter green at the bottom
-                                ]
-                            }
+                            color: '#A1D6FC'  // Solid blue color for the bars
                         },
                         label: {
                             show: true,
@@ -959,6 +720,7 @@
                                 return params.data.abnormal;
                             },
                             fontSize: 14,
+                            fontWeight: 'bold', // Tebalkan font legend
                             color: '#fff'
                         }
                     }
@@ -968,7 +730,128 @@
             myChart.setOption(option);
         }
 
-        function buildChartGejala(chartDom, data) {
+        function buildChartHealthCategory(chartDom, data) {
+            var chartDom = document.getElementById(chartDom);
+            var myChart = echarts.init(chartDom);
+            
+            var option = {
+                tooltip: {
+                    trigger: 'item'  // Tipe tooltip yang muncul ketika item dipilih
+                },
+                legend: {
+                    bottom: '0%',
+                    left: 'center',
+                    orient: 'horizontal',  // Orientasi horizontal
+                    itemWidth: 10,  // Menentukan lebar ikon legend
+                    itemHeight: 10,  // Menentukan tinggi ikon legend
+                    textStyle: {
+                        fontSize: 14  // Ukuran font untuk teks legenda
+                    }
+                },
+                color: ['#0F3B99', '#5886E9', '#FF9800', '#F44336', '#37CDC1'],  // Menentukan warna untuk sektor chart
+                series: [
+                    {
+                        name: 'Kesehatan Peserta',
+                        type: 'pie',  // Tipe grafik pie
+                        radius: ['40%', '82%'],  // Mengatur jari-jari bagian dalam dan luar pie chart
+                        avoidLabelOverlap: false,
+                        label: {
+                            show: true,  // Menampilkan label di dalam pie
+                            position: 'inside',  // Menempatkan label di dalam potongan
+                            formatter: '{c}',  // Hanya menampilkan nilai (angka)
+                            fontSize: 14,  // Ukuran font untuk label
+                            fontWeight: 'bold', // Menebalkan font saat dipilih
+                            color: '#fff'  // Warna font label
+                        },
+                        emphasis: {
+                            label: {
+                                show: true,
+                                fontSize: 14,  // Ukuran font label saat dipilih
+                                fontWeight: 'bold'  // Menebalkan font saat dipilih
+                            }
+                        },
+                        labelLine: {
+                            show: false  // Menyembunyikan garis label
+                        },
+                        data: data,  // Data untuk chart
+                        bottom: '60px'
+                    }
+                ]
+            };
+
+            // Menetapkan opsi chart dan menampilkan grafik
+            myChart.setOption(option);
+        }
+
+        function buildChartMetabolicSyndrome(chartDom, data) {
+            chartDom = document.getElementById(chartDom);
+            var myChart = echarts.init(chartDom);
+            
+            var option = {
+                tooltip: {
+                    trigger: 'item'  // Tipe tooltip yang muncul ketika item dipilih
+                },
+                legend: {
+                    bottom: '0%',
+                    left: 'center',
+                    orient: 'horizontal',  // Orientasi horizontal
+                    itemWidth: 10,  // Menentukan lebar ikon legend
+                    itemHeight: 10,  // Menentukan tinggi ikon legend
+                    textStyle: {
+                        fontSize: 14  // Ukuran font untuk teks legenda
+                    }
+                },
+                series: [
+                    {
+                        name: 'Kesehatan Peserta',
+                        type: 'pie',  // Tipe grafik pie
+                        radius: ['40%', '82%'],  // Mengatur jari-jari bagian dalam dan luar pie chart
+                        avoidLabelOverlap: false,
+                        label: {
+                            show: true,  // Menampilkan label di dalam pie
+                            position: 'inside',  // Menempatkan label di dalam potongan
+                            formatter: '{c}',  // Hanya menampilkan nilai (angka)
+                            fontSize: 14,  // Ukuran font untuk label
+                            color: '#fff',  // Warna font label
+                            fontWeight: 'bold' // Menebalkan font saat dipilih
+                        },
+                        emphasis: {
+                            label: {
+                                show: true,
+                                fontSize: 14,  // Ukuran font label saat dipilih
+                                fontWeight: 'bold'  // Menebalkan font saat dipilih
+                            }
+                        },
+                        labelLine: {
+                            show: false  // Menyembunyikan garis label
+                        },
+                        data: [
+                            { 
+                                value: data.normal, 
+                                name: 'Normal', 
+                                itemStyle: {
+                                    color: '#0F3B99'  // Warna biru tua untuk kategori Normal
+                                }
+                            },  // Data untuk kategori Normal
+                            { 
+                                value: data.abnormal, 
+                                name: 'Abnormal', 
+                                itemStyle: {
+                                    color: '#5886E9'  // Warna biru muda untuk kategori Abnormal
+                                }
+                            }  // Data untuk kategori Abnormal
+                        ],
+                        bottom: '60px'  // Menempatkan pie chart lebih dekat ke bawah
+                    }
+                ]
+            };
+
+            // Menetapkan opsi chart dan menampilkan grafik
+            myChart.setOption(option);
+        }
+
+        function buildChartSymptoms(chartDom, data) {
+            var chartDom = document.getElementById('chart_gejala');
             var myChart = echarts.init(chartDom);
 
             // Ambil semua nama diagnosa yang ada
@@ -976,23 +859,21 @@
 
             // Mengurutkan data berdasarkan total diagnosa secara menurun
             data.forEach(item => {
-              // Menambahkan properti total untuk menghitung total dari semua diagnosa pada penyakit ini
               item.totalDiagnoses = Object.values(item.diagnoses).reduce((acc, value) => acc + value, 0);
             });
 
-            // Mengurutkan data berdasarkan total diagnosa secara menurun
             data.sort((a, b) => b.totalDiagnoses - a.totalDiagnoses);
 
             var option = {
               tooltip: {
                 trigger: 'axis',
                 axisPointer: {
-                  type: 'shadow' // 'shadow' as default; can also be 'line' or 'shadow'
+                  type: 'shadow'
                 },
                 formatter: (params) => {
-                  let tooltipText = `${params[0].name}<br>`; // Menampilkan nama penyakit (xAxis)
+                  let tooltipText = `${params[0].name}<br>`;
                   params.forEach(item => {
-                    if (item.value > 0) { // Menampilkan tooltip hanya jika nilai > 0
+                    if (item.value > 0) {
                       tooltipText += `${item.marker} ${item.seriesName}: ${item.value}<br>`;
                     }
                   });
@@ -1007,51 +888,52 @@
                 containLabel: true
               },
               xAxis: {
-                type: 'category', // Mengubah xAxis menjadi kategori (yAxis sebelumnya)
-                data: data.map(item => item.disease), // Nama penyakit sebagai kategori di sumbu X
+                type: 'category',
+                data: data.map(item => item.disease),
                 axisLabel: {
-                  rotate: 45,  // Rotasi label agar tidak terpotong
+                  rotate: 45,
                   fontSize: 12,
                   formatter: function (value) {
-                    // Potong label jika panjangnya lebih dari 10 karakter
                     if (value.length > 10) {
-                      return value.substring(0, 10) + '...'; // Potong dan tambahkan elipsis
+                      return value.substring(0, 10) + '...';
                     }
                     return value;
                   }
                 }
               },
               yAxis: {
-                type: 'value' // Mengubah yAxis menjadi nilai (sebelumnya kategori)
+                type: 'value'
               },
-              series: allDiagnoses.map((diagnosisName) => ({
+              series: allDiagnoses.map((diagnosisName, index) => ({
                 name: diagnosisName,
                 type: 'bar',
                 stack: 'total',
                 label: {
                   show: true,
-                  position: 'inside', // Menempatkan label di dalam bar (dalam stack bar)
+                  position: 'inside',
                   formatter: (params) => {
-                    // Menampilkan total di tengah bar
                     let total = params.value;
                     if (total > 0) {
-                      return total; // Tampilkan nilai total di dalam bar
+                      return total;
                     }
-                    return ''; // Tidak menampilkan label jika tidak ada nilai
+                    return '';
                   },
-                  fontSize: 12, // Atur ukuran font agar lebih kecil jika diperlukan
-                  color: '#fff' // Ubah warna label menjadi putih agar terlihat jelas di dalam bar
+                  fontSize: 12,
+                  color: '#fff'
                 },
                 emphasis: { focus: 'series' },
+                itemStyle: {
+                  color: ['#0F3B99', '#5886E9', '#FF9800', '#F44336', '#37CDC1'][index % 5]  // Warna berdasarkan urutan
+                },
                 data: data.map(item => item.diagnoses[diagnosisName] || 0)
               }))
             };
 
             myChart.setOption(option);
-          }
+        }
 
-        function getChartData() {
-            var url = "{{ route('get-chart-data', ':program_id') }}";
+        function getGender() {
+            var url = "{{ route('get-gender', ':program_id') }}";
             var program_id = $("#program_id").val();
             url = url.replace(":program_id", program_id);
 
@@ -1071,5 +953,213 @@
                 }
             });
         }
+
+        function getParticipant() {
+            var url = "{{ route('get-participant', ':program_id') }}";
+            var program_id = $("#program_id").val();
+            url = url.replace(":program_id", program_id);
+
+            $.ajax({
+                url: url,
+                method: 'GET',
+                success: function(response) {
+                    if (response.status == 'error') {
+                        // handle error
+                    } else if (response.status == 'success') {
+                        dataPeserta = response.data;
+                        buildChartParticipant('chart_peserta', dataPeserta);
+                    }
+                },
+                error: function(response) {
+                    toastr.error('Kesalahan terjadi, harap hubungi Admin kami');
+                }
+            });
+        }
+
+        function getAge() {
+            var url = "{{ route('get-age', ':program_id') }}";
+            var program_id = $("#program_id").val();
+            url = url.replace(":program_id", program_id);
+
+            $.ajax({
+                url: url,
+                method: 'GET',
+                success: function(response) {
+                    if (response.status == 'error') {
+                        // handle error
+                    } else if (response.status == 'success') {
+                        dataUsia = response.data;
+                        buildChartAge('chart_usia', dataUsia);
+                    }
+                },
+                error: function(response) {
+                    toastr.error('Kesalahan terjadi, harap hubungi Admin kami');
+                }
+            });
+        }
+
+        function getDiseaseHistory() {
+            var program_id = $("#program_id").val();
+            var url = "{{ route('get-disease-history', ':program_id') }}";
+            url = url.replace(":program_id", program_id);
+
+            $.ajax({
+                url: url,
+                method: 'GET',
+                success: function(response) {
+                    if (response.status == 'error') {
+                        // handle error
+                    } else if (response.status == 'success') {
+                        dataDiseaseHistory = response.data;
+                        buildChartDiseaseHistory('chart_riwayat_penyakit', dataDiseaseHistory);
+                    }
+                },
+                error: function(response) {
+                    toastr.error('Kesalahan terjadi, harap hubungi Admin kami');
+                }
+            });
+        }
+
+        function getLabDiagnosis() {
+            var url = "{{ route('get-lab-diagnosis', ':program_id') }}";
+            var program_id = $("#program_id").val();
+            url = url.replace(":program_id", program_id);
+
+            $.ajax({
+                url: url,
+                method: 'GET',
+                success: function(response) {
+                    if (response.status == 'error') {
+                        // handle error
+                    } else if (response.status == 'success') {
+                        // handle success, use response.data
+                        dataLabDiagnosis = response.data;
+                        buildChartLabDiagnosis('chart_riwayat_diagnosa_lab', dataLabDiagnosis);
+                    }
+                },
+                error: function(response) {
+                    toastr.error('Kesalahan terjadi, harap hubungi Admin kami');
+                }
+            });
+        }
+
+        function getNonLabDiagnosis() {
+            var url = "{{ route('get-non-lab-diagnosis', ':program_id') }}";
+            var program_id = $("#program_id").val();
+            url = url.replace(":program_id", program_id);
+
+            $.ajax({
+                url: url,
+                method: 'GET',
+                success: function(response) {
+                    if (response.status == 'error') {
+                        // handle error
+                    } else if (response.status == 'success') {
+                        // handle success, use response.data
+                        dataNonLabDiagnosis = response.data;
+                        buildChartNonLabDiagnosis('chart_riwayat_diagnosa_non_lab', dataNonLabDiagnosis);
+                    }
+                },
+                error: function(response) {
+                    toastr.error('Kesalahan terjadi, harap hubungi Admin kami');
+                }
+            });
+        }
+
+        function getHealthCategory() {
+            var url = "{{ route('get-health-category', ':program_id') }}";
+            var program_id = $("#program_id").val();
+            url = url.replace(":program_id", program_id);
+
+            $.ajax({
+                url: url,
+                method: 'GET',
+                success: function(response) {
+                    if (response.status == 'error') {
+                        // handle error
+                    } else if (response.status == 'success') {
+                        dataHealthCategory = response.data;
+                        buildChartHealthCategory('chart_kategori_kesehatan',dataHealthCategory);
+                    }
+                },
+                error: function(response) {
+                    toastr.error('Kesalahan terjadi, harap hubungi Admin kami');
+                }
+            });
+        }
+
+        function getMetabolicSyndrome() {
+            var url = "{{ route('get-metabolic-syndrome', ':program_id') }}";
+            var program_id = $("#program_id").val();
+            url = url.replace(":program_id", program_id);
+
+            $.ajax({
+                url: url,
+                method: 'GET',
+                success: function(response) {
+                    if (response.status == 'error') {
+                        // handle error
+                    } else if (response.status == 'success') {
+                        dataMetabolicSyndrome = response.data;
+                        buildChartMetabolicSyndrome('chart_kategori_sindrom_metabolik',dataMetabolicSyndrome);
+                    }
+                },
+                error: function(response) {
+                    toastr.error('Kesalahan terjadi, harap hubungi Admin kami');
+                }
+            });
+        }
+
+        function getSymptoms() {
+            var url = "{{ route('get-symptoms', ':program_id') }}";
+            var program_id = $("#program_id").val();
+            url = url.replace(":program_id", program_id);
+
+            $.ajax({
+                url: url,
+                method: 'GET',
+                success: function(response) {
+                    if (response.status == 'error') {
+                        // handle error
+                    } else if (response.status == 'success') {
+                        // handle success, use response.data
+                        dataSymptoms = response.data;
+                        console.log(dataSymptoms)
+                        buildChartSymptoms('chart_gejala', dataSymptoms);
+                    }
+                },
+                error: function(response) {
+                    toastr.error('Kesalahan terjadi, harap hubungi Admin kami');
+                }
+            });
+        }
+
+        function getConclusionAndRecommendation() {
+            var url = "{{ route('get-conclusion-recommendation', ':program_id') }}";
+            var program_id = $("#program_id").val();
+            url = url.replace(":program_id", program_id);
+
+            $.ajax({
+                url: url,
+                method: 'GET',
+                success: function(response) {
+                    if (response.status == 'error') {
+                        // handle error
+                    } else if (response.status == 'success') {
+                        // handle success, use response.data
+                        var conclusion =  response.data.conclusion;
+                        var recommendation =  response.data.recommendation;
+                        $('#conclusion').empty();
+                        $('#recommendation').empty();
+                        $('#conclusion').append(conclusion)
+                        $('#recommendation').append(recommendation)
+                    }
+                },
+                error: function(response) {
+                    toastr.error('Kesalahan terjadi, harap hubungi Admin kami');
+                }
+            });
+        }
+
     </script>
 @endsection
