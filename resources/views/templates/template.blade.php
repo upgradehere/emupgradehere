@@ -48,6 +48,7 @@
         href="{{ asset('templates/adminlte-3.2.0/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
     <link rel="stylesheet"
         href="{{ asset('templates/adminlte-3.2.0/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         .auto-size-btn {
             height: 40px;
@@ -232,7 +233,7 @@
                 @endif
             </script>
             <!-- ChartJS -->
-            <script src="{{ asset('templates/adminlte-3.2.0/plugins/chart.js/Chart.min.js') }}"></script>
+            {{-- <script src="{{ asset('templates/adminlte-3.2.0/plugins/chart.js/Chart.min.js') }}"></script> --}}
             <!-- Sparkline -->
             {{-- <script src="{{ asset('templates/adminlte-3.2.0/plugins/sparklines/sparkline.js') }}"></script> --}}
             <!-- JQVMap -->
@@ -257,7 +258,7 @@
             <!-- AdminLTE for demo purposes -->
             {{-- <script src="{{ asset('templates/adminlte-3.2.0/dist/js/demo.js') }}"></script> --}}
             <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-            <script src="{{ asset('templates/adminlte-3.2.0/dist/js/pages/dashboard.js') }}"></script>
+            {{-- <script src="{{ asset('templates/adminlte-3.2.0/dist/js/pages/dashboard.js') }}"></script> --}}
             <!-- DataTables  & Plugins -->
             <script src="{{ asset('templates/adminlte-3.2.0/plugins/datatables/jquery.dataTables.min.js') }}"></script>
             <script src="{{ asset('templates/adminlte-3.2.0/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
@@ -273,6 +274,7 @@
             <script src="{{ asset('templates/adminlte-3.2.0/plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
             <script src="{{ asset('templates/adminlte-3.2.0/plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
             <script src="{{ asset('templates/adminlte-3.2.0/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
+              <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
             @yield('content')
         </div>
     </div>
