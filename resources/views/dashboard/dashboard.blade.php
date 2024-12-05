@@ -100,28 +100,7 @@
         <div id="main"></div>
         <div class="container-fluid">
             <div class="row">
-                <div class="col-md-8">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="card">
-                                <div class="card-body text-left pt-3">
-                                    <div class="gender-label">Pria</div>
-                                    <h3 class="gender-number" id="male_total">0/0</h3> <!-- Menampilkan total peserta pria -->
-                                    <p class="gender-description">Peserta yang mengikuti medical cek up</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="card">
-                                <div class="card-body text-left pt-3">
-                                    <div class="gender-label">Wanita</div>
-                                    <h3 class="gender-number" id="female_total">0/0</h3>
-                                    <p class="gender-description">Peserta yang mengikuti medical cek up</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="col-md-7">
                     <!-- AREA CHART -->
                     <div class="card">
                       <div class="card-header border-0">
@@ -149,7 +128,26 @@
                     </div>
                     <!-- /.card -->
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-5">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-body text-left pt-3">
+                                    <div class="gender-label">Pria</div>
+                                    <div id="chart_male" style="width:100%; height: 121px;"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-body text-left pt-3">
+                                    <div class="gender-label">Wanita</div>
+                                    <div id="chart_female" style="width:100%; height: 121px;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="w-100">
                         <div class="card">
                           <div class="card-header border-0">
@@ -159,7 +157,7 @@
                             </div>
                           </div>
                           <div class="card-body">
-                            <div id="chart_riwayat_penyakit" style="width: 100%; height: 652px;"></div>
+                            <div id="chart_riwayat_penyakit" style="width: 100%; height: 300px;"></div>
                           </div>
                         </div>
                     </div>
@@ -310,6 +308,152 @@
             getSymptoms()
             getConclusionAndRecommendation()
         });
+
+        function buildChartMale(chartDom, male, total) {
+            var data = [
+                { value: total, name: 'Total', itemStyle: { color: '#DADFE9' } },
+                { value: male, name: 'Pria', itemStyle: { color: '#0F3B99' } }
+            ];
+
+            // Inisialisasi chart
+            var chartDom = document.getElementById(chartDom);
+            var myChart = echarts.init(chartDom);
+
+            // Cari total untuk "Pria" secara dinamis
+            var priaTotal = data.find(item => item.name === 'Pria').value;
+            var totalValue = data.find(item => item.name === 'Total').value;
+
+            var option = {
+                tooltip: {
+                    trigger: 'item'
+                },
+                legend: {
+                    show: true,  // Tampilkan legend
+                    bottom: '0%',  // Tempatkan legend di bawah chart
+                    left: 'center',  // Letakkan legend di tengah secara horizontal
+                    itemWidth: 20,  // Lebar item di legend
+                    itemHeight: 14,  // Tinggi item di legend
+                    textStyle: {
+                        fontSize: 14,  // Ukuran font untuk teks legend
+                        color: '#333'  // Warna teks legend
+                    },
+                    formatter: function(name) {
+                        // Format teks legend dengan menambahkan value di dalam kurung
+                        if (name === 'Total') {
+                            return name + ' (' + totalValue + ')';
+                        } else if (name === 'Pria') {
+                            return name + ' (' + priaTotal + ')';
+                        }
+                        return name;
+                    }
+                },
+                series: [
+                    {
+                        name: 'Peserta',
+                        type: 'pie',
+                        radius: ['40%', '70%'],
+                        center: ['50%', '35%'],  // Menyesuaikan posisi chart ke tengah atas
+                        avoidLabelOverlap: false,
+                        label: {
+                            show: false,  // Sembunyikan label pada segmen
+                        },
+                        labelLine: {
+                            show: false  // Sembunyikan garis label
+                        },
+                        data: data
+                    }
+                ],
+                graphic: [
+                    {
+                        type: 'text',
+                        left: 'center',
+                        top: '27%',  // Geser teks lebih tinggi dari posisi tengah
+                        style: {
+                            text: priaTotal.toString(),  // Tampilkan nilai total untuk "Pria"
+                            textAlign: 'center',
+                            font: 'bold 20px sans-serif',
+                            fill: '#0F3B99' // Set warna teks sesuai dengan warna "Pria"
+                        }
+                    }
+                ]
+            };
+
+            // Setel opsi chart
+            myChart.setOption(option);
+        }
+
+        function buildChartFemale(chartDom, male, total) {
+            var data = [
+                { value: total, name: 'Total', itemStyle: { color: '#DADFE9' } },
+                { value: male, name: 'Wanita', itemStyle: { color: '#A1D6FC' } }
+            ];
+
+            // Inisialisasi chart
+            var chartDom = document.getElementById(chartDom);
+            var myChart = echarts.init(chartDom);
+
+            // Cari total untuk "Wanita" secara dinamis
+            var wanitaTotal = data.find(item => item.name === 'Wanita').value;
+            var totalValue = data.find(item => item.name === 'Total').value;
+
+            var option = {
+                tooltip: {
+                    trigger: 'item'
+                },
+                legend: {
+                    show: true,  // Tampilkan legend
+                    bottom: '0%',  // Tempatkan legend di bawah chart
+                    left: 'center',  // Letakkan legend di tengah secara horizontal
+                    itemWidth: 20,  // Lebar item di legend
+                    itemHeight: 14,  // Tinggi item di legend
+                    textStyle: {
+                        fontSize: 14,  // Ukuran font untuk teks legend
+                        color: '#333'  // Warna teks legend
+                    },
+                    formatter: function(name) {
+                        // Format teks legend dengan menambahkan value di dalam kurung
+                        if (name === 'Total') {
+                            return name + ' (' + totalValue + ')';
+                        } else if (name === 'Wanita') {
+                            return name + ' (' + wanitaTotal + ')';
+                        }
+                        return name;
+                    }
+                },
+                series: [
+                    {
+                        name: 'Peserta',
+                        type: 'pie',
+                        radius: ['40%', '70%'],
+                        center: ['50%', '35%'],  // Menyesuaikan posisi chart ke tengah atas
+                        avoidLabelOverlap: false,
+                        label: {
+                            show: false,  // Sembunyikan label pada segmen
+                        },
+                        labelLine: {
+                            show: false  // Sembunyikan garis label
+                        },
+                        data: data
+                    }
+                ],
+                graphic: [
+                    {
+                        type: 'text',
+                        left: 'center',
+                        top: '27%',  // Geser teks lebih tinggi dari posisi tengah
+                        style: {
+                            text: wanitaTotal.toString(),  // Tampilkan nilai total untuk "Pria"
+                            textAlign: 'center',
+                            font: 'bold 20px sans-serif',
+                            fill: '#0F3B99' // Set warna teks sesuai dengan warna "Pria"
+                        }
+                    }
+                ]
+            };
+
+            // Setel opsi chart
+            myChart.setOption(option);
+        }
 
         function buildChartParticipant(chartDom, data) {
             chartDom = document.getElementById(chartDom)
@@ -522,76 +666,48 @@
             var myChart = echarts.init(chartDom);
             
             var option = {
-                grid: {
-                    left: '20%',  // Remove left margin
-                    right: '5%', // Remove right margin
-                    top: '1%',   // Remove top margin
-                    bottom: '5%' // Remove bottom margin
-                },
                 tooltip: {
-                    trigger: 'axis',  // Trigger tooltip on axis
-                    axisPointer: {
-                        type: 'shadow'  // Show the shadow pointer on bars
-                    },
-                    formatter: function (params) {
-                        // Custom tooltip formatter to display the name and diagnosis_count
-                        var data = params[0].data;
-                        return `${data.name}<br/>Jumlah Diagnosa: ${data.diagnosis_count}`;
-                    }
+                    trigger: 'item',
+                    formatter: '{b}<br/>Jumlah Diagnosa: {c} ({d}%)'
                 },
-                dataset: [
+                legend: {
+                    orient: 'horizontal',  // Display the legend horizontally
+                    bottom: '0%',          // Position the legend at the bottom of the chart
+                    left: 'center',        // Center the legend horizontally
+                    data: data.map(item => item.name)  // Use disease names as legend items
+                },
+                series: [
                     {
-                        dimensions: ['name', 'diagnosis_count'],
-                        source: data  // Using the passed data as parameter
-                    },
-                    {
-                        transform: {
-                            type: 'sort',
-                            config: { dimension: 'diagnosis_count', order: 'asc' }
+                        name: 'Diseases',
+                        type: 'pie',
+                        radius: ['40%', '70%'],  // Donut effect
+                        center: ['50%', '35%'],
+                        data: data.map(item => ({
+                            name: item.name,
+                            value: item.diagnosis_count
+                        })),
+                        label: {
+                            show: true,          // Show labels inside the chart
+                            position: 'inside',  // Position the labels inside the donut
+                            formatter: '{c}',
+                            fontSize: 14,
+                            fontWeight: 'bold',
+                            color: '#fff'
+                        },
+                        labelLine: {
+                            show: false // Hides the label lines (arrows)
+                        },
+                        itemStyle: {
+                            color: function(params) {
+                                // Use a color array to give each slice a different color
+                                const colors = ['#0F3B99', '#5886E9', '#FFC505', '#FF9705', '#A1D6FC', '#37CDC1', '#DC3545', '#3D3D3D', '#51CD37', '#FF5005' ];
+                                return colors[params.dataIndex % colors.length];
+                            }
                         }
                     }
-                ],
-                
-                xAxis: {
-                    type: 'value', // Change to value to represent the diagnosis_count on the X-axis
-                    axisLabel: {
-                        formatter: function (value) {
-                            return value;  // Show the diagnosis count on the X-axis
-                        }
-                    }
-                },
-                yAxis: {
-                    type: 'category', // Change to category to represent disease names on the Y-axis
-                    axisLabel: {
-                        interval: 0,  // Show all y-axis labels
-                        formatter: function (value) {
-                            // Truncate label text if it is too long and add ellipsis
-                            return value.length > 8 ? value.slice(0, 8) + '...' : value;
-                        },
-                    }
-                },
-                series: {
-                    type: 'bar',
-                    encode: { x: 'diagnosis_count', y: 'name' }, // Swap x and y encoding for horizontal chart
-                    datasetIndex: 1,
-                    itemStyle: {
-                        // Solid color for bars with a dark blue shade
-                        color: '#0F3B99'  // Dark blue color
-                    },
-                    label: {
-                        show: true,
-                        position: 'inside',  // Position the label inside the bar
-                        formatter: function (params) {
-                            return params.data.diagnosis_count;  // Show the diagnosis count inside the bar
-                        },
-                        fontSize: 14,  // Font size for the label
-                        fontWeight: 'bold',  // Make the label text bold
-                        color: '#fff'  // Color of the label
-                    }
-                }
+                ]
             };
 
-            // Set options and render the chart
             myChart.setOption(option);
         }
 
@@ -970,8 +1086,8 @@
                     if (response.status == 'error') {
 
                     } else if (response.status == 'success') {
-                        $("#male_total").html(response.data.male + " <span class='gender-total'>/ " + response.data.total + "</span>")
-                        $("#female_total").html(response.data.female + " <span class='gender-total'>/  " + response.data.total + "</span>")
+                        buildChartMale("chart_male",response.data.male, response.data.total)
+                        buildChartFemale("chart_female",response.data.female, response.data.total)
                     }
                 },
                 error: function(response) {
