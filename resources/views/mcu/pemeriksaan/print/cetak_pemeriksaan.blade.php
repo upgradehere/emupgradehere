@@ -91,6 +91,48 @@
         </tbody>
     </table>
     <h3><center>Hasil Pemeriksaan MCU</center></h3>
+    @if (!empty($anamnesis))
     @include('mcu.pemeriksaan.print.partials.cetak_anamnesis')
+    @endif
+
+    @if (!empty($laboratorium))
+    @include('mcu.pemeriksaan.print.partials.cetak_lab')
+    @endif
+
+    @if (!empty($refraksi))
+    @include('mcu.pemeriksaan.print.partials.cetak_refraksi')
+    @endif
+
+    @if (!empty($rontgen))
+    @include('mcu.pemeriksaan.print.partials.cetak_rontgen')
+    @endif
+
+    @if (!empty($audiometri))
+    @include('mcu.pemeriksaan.print.partials.cetak_audiometri')
+    @endif
+
+    @if (!empty($spirometri))
+    @include('mcu.pemeriksaan.print.partials.cetak_spirometri')
+    @endif
+
+    @if (!empty($ekg))
+    @include('mcu.pemeriksaan.print.partials.cetak_ekg')
+    @endif
+
+    @if (!empty($usg))
+    @include('mcu.pemeriksaan.print.partials.cetak_usg')
+    @endif
+
+    @if (!empty($treadmill))
+    @include('mcu.pemeriksaan.print.partials.cetak_treadmill')
+    @endif
+
+    @if (!empty($papsmear))
+    @include('mcu.pemeriksaan.print.partials.cetak_papsmear')
+    @endif
+
+    @if (!empty($resume))
+    @include('mcu.pemeriksaan.print.partials.cetak_resume')
+    @endif
 </body>
 </html>

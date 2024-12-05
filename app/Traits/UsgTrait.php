@@ -111,30 +111,9 @@ trait UsgTrait
         }
     }
 
-    // private function getDataPrintAnamnesis($mcu_id)
-    // {
-    //     $model = AnamnesisT::select('*')->where('mcu_id', $mcu_id)->first();
-    //     $data = $model;
-    //     if (!empty($model->medical_history)) {
-    //         $data['medical_history'] = $this->mappingJsonData(
-    //             ['surgical_history_notes', 'epilepsy_notes', 'main_complaint'],
-    //             json_decode($model->medical_history, true)
-    //         );
-    //     } else {
-    //         $data['medical_history'] = null;
-    //     }
-    //     return $data;
-    // }
-
-    // private function mappingJsonData($skip = [], $data) {
-    //     $mappedData = [];
-    //     foreach ($data as $key => $value) {
-    //         if (!in_array($key, $skip)) {
-    //             $mappedData[$key] = ($value == 0) ? 'Tidak' : (($value == 1) ? 'Ya' : $value);
-    //         } else {
-    //             $mappedData[$key] = $value;
-    //         }
-    //     }
-    //     return $mappedData;
-    // }
+    private function getDataPrintUsg($mcu_id)
+    {
+        $model = UsgT::select('*')->where('mcu_id', $mcu_id)->first();
+        return $model;
+    }
 }
