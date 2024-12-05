@@ -10,11 +10,12 @@ use App\Models\LaboratoryExaminationTypeM;
 use App\Models\LaboratoryT;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 trait LaboratoriumTrait
 {
 
-    private function getFormLab ($mcu_id = null)
+    private function getFormLab ($mcu_id, $laboratory_examintaions)
     {
         $labT = LaboratoryT::select('laboratory_t.laboratory_id')
         ->where('mcu_id', $mcu_id)
@@ -35,6 +36,7 @@ trait LaboratoriumTrait
                     )
                     ->leftJoin('laboratory_reference_value_m', 'laboratory_reference_value_m.laboratory_examination_id', '=', 'laboratory_examination_m.laboratory_examination_id')
                     ->where('laboratory_examination_type_id', $type->laboratory_examination_type_id)
+                    ->whereIn('laboratory_examination_m.laboratory_examination_id', $laboratory_examintaions)
                     ->get();
                 }
             }
@@ -55,11 +57,20 @@ trait LaboratoriumTrait
                     ->leftJoin('laboratory_detail_t', 'laboratory_detail_t.laboratory_examination_id', '=', 'laboratory_examination_m.laboratory_examination_id')
                     ->leftJoin('laboratory_t', 'laboratory_t.laboratory_id', '=', 'laboratory_detail_t.laboratory_id')
                     ->where('laboratory_examination_type_id', $type->laboratory_examination_type_id)
-                    ->where(function ($query) use ($mcu_id) {
-                        $query->whereNull('laboratory_t.laboratory_id')
-                            ->orWhere('laboratory_t.mcu_id', $mcu_id);
-                    })
-                    ->get();
+                    ->whereIn('laboratory_examination_m.laboratory_examination_id', $laboratory_examintaions);
+
+
+                    $labDetailT = LaboratoryDetailT::select('*')->where('laboratory_id', $labT->laboratory_id)->first();
+                    if (!empty($labDetailT)) {
+                        $type->examinations->where(function ($query) use ($mcu_id) {
+                            $query->whereNull('laboratory_t.laboratory_id')
+                                ->orWhere('laboratory_t.mcu_id', $mcu_id);
+                        });
+                    }
+                    $type->examinations = $type->examinations->get();
+                    // $type->examinations = $type->examinations;
+                    $type->examinations->result = 1;
+                    // Log::info($type->examinations);
                 }
             }
             $data['laboratory_id'] = $labT->laboratory_id;
@@ -75,6 +86,10 @@ trait LaboratoriumTrait
             $post = $request->post();
             $action = $request->input('action');
             $laboratory_id = isset($post['laboratory_id']) ? $post['laboratory_id'] : null;
+
+            if ($action == 'delete') {
+                return self::actionDeleteLab($laboratory_id);
+            }
 
             DB::beginTransaction();
             $model = new LaboratoryT();
@@ -123,6 +138,58 @@ trait LaboratoriumTrait
                 'error' => ConstantsHelper::MESSAGE_ERROR_SAVE
             ]);
         }
+    }
+
+    private function actionDeleteLab ($laboratory_id)
+    {
+        try {
+            if (empty($laboratory_id)){
+                return redirect()->back()->with([
+                    'error' => ConstantsHelper::MESSAGE_ERROR_DELETE
+                ]);
+            }
+            DB::beginTransaction();
+            $model = LaboratoryT::find($laboratory_id);
+            $model->delete();
+            LaboratoryDetailT::where('laboratory_id', $laboratory_id)->delete();
+            DB::commit();
+            return redirect()->back()->with([
+                'success' => ConstantsHelper::MESSAGE_SUCCESS_DELETE
+            ]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect()->back()->with([
+                'error' => ConstantsHelper::MESSAGE_ERROR_DELETE
+            ]);
+        }
+    }
+
+    private function getDataPrintLaboratorium($mcu_id)
+    {
+        $model = LaboratoryT::select('laboratory_id', 'laboratory_code', 'mcu_id', 'additional_data')->where('mcu_id', $mcu_id)->first();
+        $data = [];
+        $data = $model;
+        $modelDetail = LaboratoryDetailT::select(
+            'laboratory_id',
+            'laboratory_detail_id',
+            'laboratory_detail_t.laboratory_examination_id',
+            'laboratory_examination_group_m.laboratory_examination_group_name as group',
+            'laboratory_examination_type_m.laboratory_examination_type_name as type',
+            'laboratory_examination_m.laboratory_examination_name',
+            'result',
+            'reference_value',
+            'is_abnormal'
+            )
+            ->leftJoin('laboratory_examination_m', 'laboratory_examination_m.laboratory_examination_id', '=', 'laboratory_detail_t.laboratory_examination_id')
+            ->leftJoin('laboratory_examination_type_m', 'laboratory_examination_type_m.laboratory_examination_type_id', '=', 'laboratory_examination_m.laboratory_examination_type_id')
+            ->leftJoin('laboratory_examination_group_m', 'laboratory_examination_group_m.laboratory_examination_group_id', '=', 'laboratory_examination_type_m.laboratory_examination_group_id')
+            ->leftJoin('laboratory_reference_value_m', 'laboratory_reference_value_m.laboratory_examination_id', '=', 'laboratory_detail_t.laboratory_examination_id')
+            ->where('laboratory_id', $model->laboratory_id)
+            ->orderBy('laboratory_examination_group_m.laboratory_examination_group_id')
+            ->get();
+
+        $data['detail'] = $modelDetail;
+        return $data;
     }
 
 }

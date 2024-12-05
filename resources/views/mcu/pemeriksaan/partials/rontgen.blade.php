@@ -2,113 +2,141 @@
     <div class="card-header">
         <h3 class="card-title">Rontgen</h3>
     </div>
-    <div class="card-body">
-        <div class="card">
-            <div class="card-header">
-                <h3 class="card-title">Gambar Hasil Rontgen</h3>
+    <form action="/mcu/program-mcu/detail/pemeriksaan/save-rontgen" method="POST" enctype="multipart/form-data">
+        @csrf
+        <input type="hidden" name="rontgen_id" value="{{ !empty($data_rontgen->rontgen_id) ? $data_rontgen->rontgen_id : null }}" id="">
+        <input type="hidden" name="mcu_id" value="{{ $mcu_id }}" id="">
+        <div class="card-body">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Gambar Hasil Rontgen</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group row align-items-center mb-3">
+                                <label class="col-sm-2 col-form-label">File Gambar</label>
+                                <div class="col-sm-10">
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" name="image_file" id="customFile">
+                                        <label class="custom-file-label" for="customFile">Upload File Gambar</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @if(!empty($data_rontgen->image_file))
+                        <div class="row">
+                            <div class="col-md-12">
+                                <img src="{{ asset('uploads/rontgen/'.$data_rontgen->image_file) }}" alt="" style="width:100%;">
+                            </div>
+                        </div>
+                    @endif
+                </div>
             </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="form-group row align-items-center mb-3">
-                            <label class="col-sm-2 col-form-label">File Gambar</label>
-                            <div class="col-sm-10">
-                                <div class="custom-file">
-                                    <input type="file" class="custom-file-input" name="import_file" id="customFile">
-                                    <label class="custom-file-label" for="customFile">Upload File Gambar</label>
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Hasil Radiologi</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group row align-items-center mb-3">
+                                <label class="col-sm-4 col-form-label">Jenis Pemeriksaan</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="rontgen_examination_type" name="rontgen_examination_type" value="{{ !empty($data_rontgen->rontgen_examination_type) ? $data_rontgen->rontgen_examination_type : '' }}" placeholder="">
+                                </div>
+                            </div>
+                            <div class="form-group row align-items-center mb-3">
+                                <label class="col-sm-4 col-form-label">Diagnosa Klinis</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="mcuCode" name="clinical_diagnosis" value="{{ !empty($data_rontgen->clinical_diagnosis) ? $data_rontgen->clinical_diagnosis : '' }}" placeholder="">
+                                </div>
+                            </div>
+                            <div class="form-group row align-items-center mb-3">
+                                <label class="col-sm-4 col-form-label">Cor</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="mcuCode" name="cor" value="{{ !empty($data_rontgen->cor) ? $data_rontgen->cor : '' }}" placeholder="">
+                                </div>
+                            </div>
+                            <div class="form-group row align-items-center mb-3">
+                                <label class="col-sm-4 col-form-label">Pulmo</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="mcuCode" name="pulmo" value="{{ !empty($data_rontgen->pulmo) ? $data_rontgen->pulmo : '' }}" placeholder="">
+                                </div>
+                            </div>
+                            <div class="form-group row align-items-center mb-3">
+                                <label class="col-sm-4 col-form-label">Oss Costae</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="mcuCode" name="oss_costae" value="{{ !empty($data_rontgen->oss_costae) ? $data_rontgen->oss_costae : '' }}" placeholder="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row align-items-center mb-3">
+                                <label class="col-sm-4 col-form-label">Sinus Diafragma</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="mcuCode" name="diaphragmatic_sinus" value="{{ !empty($data_rontgen->diaphragmatic_sinus) ? $data_rontgen->diaphragmatic_sinus : '' }}" placeholder="">
+                                </div>
+                            </div>
+                            <div class="form-group row align-items-center mb-3">
+                                <label class="col-sm-4 col-form-label">Kesimpulan</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="mcuCode" name="conclusion" value="{{ !empty($data_rontgen->conclusion) ? $data_rontgen->conclusion : '' }}" placeholder="">
+                                </div>
+                            </div>
+                            <div class="form-group row align-items-center mb-3">
+                                <label class="col-sm-4 col-form-label">Status Pemeriksaan</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="mcuCode" name="examination_status" value="{{ !empty($data_rontgen->examination_status) ? $data_rontgen->examination_status : '' }}" placeholder="">
+                                </div>
+                            </div>
+                            <div class="form-group row align-items-center mb-3">
+                                <label class="col-sm-4 col-form-label">Pemeriksa</label>
+                                <div class="col-sm-8">
+                                    {{-- <select class="form-control select2" name="employee_id" style="width: 100%;">
+                                        <option selected="selected" value="">- Pilih Peserta -</option>
+                                        @foreach ($employees as $employee)
+                                            <option value="{{ $employee->employee_id }}">
+                                                {{ $employee->employee_name }}
+                                            </option>
+                                        @endforeach
+                                    </select> --}}
+                                    <select class="form-control select2 selectDoctor" name="doctor_id" style="width: 100%;">
+                                        <option selected="selected" value="">- Dokter Pemeriksa -</option>
+                                        <option value="1">Test Dokter</option>
+                                        <option value="2">Test Dokter</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row align-items-center mb-3">
+                                <label class="col-sm-4 col-form-label">Catatan</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="mcuCode" name="notes" value="{{ !empty($data_rontgen->notes) ? $data_rontgen->notes : '' }}" placeholder="">
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="card">
-            <div class="card-header">
-                <h3 class="card-title">Ukuran Kacamata</h3>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group row align-items-center mb-3">
-                            <label class="col-sm-4 col-form-label">Jenis Pemeriksaan</label>
-                            <div class="col-sm-8">
-                                <input type="text" class="form-control" id="mcuCode" name="mcu_code" placeholder="">
-                            </div>
-                        </div>
-                        <div class="form-group row align-items-center mb-3">
-                            <label class="col-sm-4 col-form-label">Diagnosa Klinis</label>
-                            <div class="col-sm-8">
-                                <input type="text" class="form-control" id="mcuCode" name="mcu_code" placeholder="">
-                            </div>
-                        </div>
-                        <div class="form-group row align-items-center mb-3">
-                            <label class="col-sm-4 col-form-label">Cor</label>
-                            <div class="col-sm-8">
-                                <input type="text" class="form-control" id="mcuCode" name="mcu_code" placeholder="">
-                            </div>
-                        </div>
-                        <div class="form-group row align-items-center mb-3">
-                            <label class="col-sm-4 col-form-label">Pulmo</label>
-                            <div class="col-sm-8">
-                                <input type="text" class="form-control" id="mcuCode" name="mcu_code" placeholder="">
-                            </div>
-                        </div>
-                        <div class="form-group row align-items-center mb-3">
-                            <label class="col-sm-4 col-form-label">Oss Costae</label>
-                            <div class="col-sm-8">
-                                <input type="text" class="form-control" id="mcuCode" name="mcu_code" placeholder="">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group row align-items-center mb-3">
-                            <label class="col-sm-4 col-form-label">Sinus Diafragma</label>
-                            <div class="col-sm-8">
-                                <input type="text" class="form-control" id="mcuCode" name="mcu_code" placeholder="">
-                            </div>
-                        </div>
-                        <div class="form-group row align-items-center mb-3">
-                            <label class="col-sm-4 col-form-label">Kesimpulan</label>
-                            <div class="col-sm-8">
-                                <input type="text" class="form-control" id="mcuCode" name="mcu_code" placeholder="">
-                            </div>
-                        </div>
-                        <div class="form-group row align-items-center mb-3">
-                            <label class="col-sm-4 col-form-label">Status Pemeriksaan</label>
-                            <div class="col-sm-8">
-                                <input type="text" class="form-control" id="mcuCode" name="mcu_code" placeholder="">
-                            </div>
-                        </div>
-                        <div class="form-group row align-items-center mb-3">
-                            <label class="col-sm-4 col-form-label">Pemeriksa</label>
-                            <div class="col-sm-8">
-                                <input type="text" class="form-control" id="mcuCode" name="mcu_code" placeholder="">
-                            </div>
-                        </div>
-                        <div class="form-group row align-items-center mb-3">
-                            <label class="col-sm-4 col-form-label">Catatan</label>
-                            <div class="col-sm-8">
-                                <input type="text" class="form-control" id="mcuCode" name="mcu_code" placeholder="">
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="d-flex justify-content-end">
+                <button type="submit" class="btn btn-danger action-delete" {{ empty($data_rontgen) ? 'disabled' : '' }}>
+                    <i class="fas fa-trash"></i>&nbsp;&nbsp;Hapus
+                </button>
+                &nbsp;&nbsp;
+                <button type="submit" class="btn btn-success action-save">
+                    <i class="fas fa-save"></i>&nbsp;&nbsp;Simpan
+                </button>
             </div>
         </div>
-        <div class="d-flex justify-content-end">
-            <button type="submit" class="btn btn-danger action-export">
-                <i class="fas fa-trash"></i>&nbsp;&nbsp;Hapus
-            </button>
-            &nbsp;&nbsp;
-            <button type="submit" class="btn btn-success action-export">
-                <i class="fas fa-save"></i>&nbsp;&nbsp;Simpan
-            </button>
-        </div>
-    </div>
+    </form>
 </div>
 <script>
     $(function() {
         $('.selectDoctor').select2();
+        $(".custom-file-input").on("change", function() {
+            var fileName = $(this).val().split("\\").pop();
+            $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+        });
     });
 </script>

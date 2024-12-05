@@ -5,17 +5,39 @@ namespace App\Http\Controllers\Mcu;
 use App\Helpers\ConstantsHelper;
 use App\Http\Controllers\Controller;
 use App\Imports\McuAnamnesisImport;
+use App\Imports\McuAudiometryImport;
+use App\Imports\McuEkgImport;
+use App\Imports\McuLaboratoryImport;
+use App\Imports\McuPapsmearImport;
+use App\Imports\McuRefractionImport;
+use App\Imports\McuResumeMcuImport;
+use App\Imports\McuRontgenImport;
+use App\Imports\McuSpirometryImport;
+use App\Imports\McuTreadmillImport;
+use App\Imports\McuUsgImport;
+use App\Models\AudiometryT;
 use App\Models\CompanyM;
+use App\Models\EkgT;
 use App\Models\EmployeeM;
 use App\Models\LookupC;
 use App\Models\McuCompanyV;
 use App\Models\McuEmployeeV;
 use App\Models\McuProgramM;
 use App\Models\McuT;
+use App\Models\PackageM;
+use App\Models\RefractionT;
+use App\Models\RontgenT;
+use App\Models\SpirometryT;
+use App\Models\TreadmillT;
+use App\Models\UsgT;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 use Maatwebsite\Excel\Facades\Excel;
+use ZipArchive;
 
 class ProgramMcuController extends Controller
 {
@@ -71,6 +93,8 @@ class ProgramMcuController extends Controller
     {
         $company_id = $request->get('company_id');
         $mcu_program_id = $request->get('mcu_program_id');
+        $employees = EmployeeM::select('employee_id', 'employee_code', 'employee_name')->where('company_id', $company_id)->get();
+        $packages = PackageM::select('id', 'package_code', 'package_name')->get();
 
         $company_name = CompanyM::where('company_id', $company_id)->value('company_name');
         $mcu_program_name = McuProgramM::where('mcu_program_id', $mcu_program_id)->value('mcu_program_name');
@@ -95,7 +119,7 @@ class ProgramMcuController extends Controller
             $mcu_program_id = $request->get('mcu_program_id');
             $model = new McuEmployeeV();
             $query = $model->select();
-            $query = $query->where('company_id', $company_id)->where('mcu_program_id', $mcu_program_id);
+            $query = $query->where('company_id', $company_id)->where('mcu_program_id', $mcu_program_id)->where('deleted_at', null);
             $totalRecords = $query->count();
 
             if ($request->has('search') && !empty($request->search['value'])) {
@@ -150,11 +174,23 @@ class ProgramMcuController extends Controller
             $post = $request->post();
             $company_id = $post['company_id'];
             $mcu_program_id = $post['mcu_program_id'];
-            unset($post['mcu_code']);
             DB::beginTransaction();
             $model = new McuT();
-            $model->create($post);
-            DB::commit();
+            unset($post['_token']);
+            $model->attributes = $post;
+            if ($model->validate() === true) {
+                if ($model->save()) {
+                    DB::commit();
+                    return redirect()->back()->with([
+                        'success' => ConstantsHelper::MESSAGE_SUCCESS_SAVE
+                    ]);
+                }
+            } else {
+                DB::rollback();
+                return redirect()->back()->with([
+                    'error' => $model->validate()
+                ]);
+            }
 
             return redirect('/mcu/program-mcu/detail?company_id='.$company_id.'&mcu_program_id='.$mcu_program_id)->with('success', 'Form submitted successfully!');
         } catch (\Exception $e) {
@@ -193,14 +229,35 @@ class ProgramMcuController extends Controller
                     $import_model = new McuAnamnesisImport($post['mcu_date'], $post['company_id'], $post['mcu_program_id']);
                     break;
                 case ConstantsHelper::LOOKUP_EXAMINATION_TYPE_REFRACTION:
+                    $import_model = new McuRefractionImport($post['mcu_date'], $post['company_id'], $post['mcu_program_id']);
+                    break;
                 case ConstantsHelper::LOOKUP_EXAMINATION_TYPE_LAB:
+                    $import_model = new McuLaboratoryImport($post['mcu_date'], $post['company_id'], $post['mcu_program_id']);
+                    break;
                 case ConstantsHelper::LOOKUP_EXAMINATION_TYPE_RONTGEN:
+                    $import_model = new McuRontgenImport($post['mcu_date'], $post['company_id'], $post['mcu_program_id']);
+                    break;
                 case ConstantsHelper::LOOKUP_EXAMINATION_TYPE_AUDIOMETRY:
+                    $import_model = new McuAudiometryImport($post['mcu_date'], $post['company_id'], $post['mcu_program_id']);
+                    break;
                 case ConstantsHelper::LOOKUP_EXAMINATION_TYPE_SPIROMETRY:
+                    $import_model = new McuSpirometryImport($post['mcu_date'], $post['company_id'], $post['mcu_program_id']);
+                    break;
                 case ConstantsHelper::LOOKUP_EXAMINATION_TYPE_EKG:
+                    $import_model = new McuEkgImport($post['mcu_date'], $post['company_id'], $post['mcu_program_id']);
+                    break;
                 case ConstantsHelper::LOOKUP_EXAMINATION_TYPE_USG:
+                    $import_model = new McuUsgImport($post['mcu_date'], $post['company_id'], $post['mcu_program_id']);
+                    break;
                 case ConstantsHelper::LOOKUP_EXAMINATION_TYPE_TREADMILL:
-                    return redirect()->back()->with('error', 'Belum Tersedia!');
+                    $import_model = new McuTreadmillImport($post['mcu_date'], $post['company_id'], $post['mcu_program_id']);
+                    break;
+                case ConstantsHelper::LOOKUP_EXAMINATION_TYPE_PAPSMEAR:
+                    $import_model = new McuPapsmearImport($post['mcu_date'], $post['company_id'], $post['mcu_program_id']);
+                    break;
+                case ConstantsHelper::LOOKUP_EXAMINATION_TYPE_RESUME_MCU:
+                    $import_model = new McuResumeMcuImport($post['mcu_date'], $post['company_id'], $post['mcu_program_id']);
+                    break;
                 default:
                     return redirect()->back()->with('error', 'Jenis Pemeriksaan Salah!');
             }
@@ -210,7 +267,174 @@ class ProgramMcuController extends Controller
             }
 
             Excel::import($import_model, $request->file('import_file'));
-            return redirect()->back()->with('success', 'Imported Successfully');
+            return redirect()->back()->with('success', 'Import Excel Berhasil');
+        } catch (ValidationException $e) {
+            return redirect()->back()->with('error', $e->getMessage());
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', $e->getMessage());
+        }
+    }
+
+    public function uploadHasil(Request $request)
+    {
+        try{
+            $post = $request->post();
+            $request->validate([
+                'examination_type' => 'required',
+                'import_file' => [
+                    'required',
+                    'file',
+                    'mimes:zip',
+                ],
+                'mcu_date' => 'required',
+                'company_id' => 'required',
+                'mcu_program_id' => 'required',
+            ], [
+                'examination_type.required' => 'Jenis Pemeriksaan Tidak Boleh Kosong.',
+                'import_file.required' => 'File ZIP Tidak Boleh Kosong.',
+                'import_file.file' => 'File ZIP Tidak Valid.',
+                'import_file.mimes' => 'File ZIP Tidak Sesuai, Silahakn Upload File Berupa ZIP',
+                'mcu_date.required' => 'Tanggal MCU Tidak Boleh Kosong.',
+                'company_id.required' => 'ID Perusahaan Tidak Boleh Kosong.',
+                'mcu_program_id.required' => 'ID Program MCU Tidak Boleh Kosong.',
+            ]);
+
+            $zipFile = $request->file('import_file');
+            $zipPath = $zipFile->store('temp');
+            $extractPath = null;
+            $model = null;
+            switch ($request->post('examination_type')) {
+                case ConstantsHelper::LOOKUP_EXAMINATION_TYPE_REFRACTION:
+                    $model = new RefractionT();
+                    $extractPath = 'uploads/refraction/extract/';
+                    $imagePath = 'uploads/refraction/';
+                    $category = 'refraksi';
+                    break;
+                case ConstantsHelper::LOOKUP_EXAMINATION_TYPE_RONTGEN:
+                    $model = new RontgenT();
+                    $extractPath = 'uploads/rontgen/extract/';
+                    $imagePath = 'uploads/rontgen/';
+                    $category = 'rontgen';
+                    break;
+                case ConstantsHelper::LOOKUP_EXAMINATION_TYPE_AUDIOMETRY:
+                    $model = new AudiometryT();
+                    $extractPath = 'uploads/audiometry/extract/';
+                    $imagePath = 'uploads/audiometry/';
+                    $category = 'audiometry';
+                    break;
+                case ConstantsHelper::LOOKUP_EXAMINATION_TYPE_SPIROMETRY:
+                    $model = new SpirometryT();
+                    $extractPath = 'uploads/spirometry/extract/';
+                    $imagePath = 'uploads/epirometry/';
+                    $category = 'spirometry';
+                    break;
+                case ConstantsHelper::LOOKUP_EXAMINATION_TYPE_EKG:
+                    $model = new EkgT();
+                    $extractPath = 'uploads/ekg/extract/';
+                    $imagePath = 'uploads/ekg/';
+                    $category = 'ekg';
+                    break;
+                case ConstantsHelper::LOOKUP_EXAMINATION_TYPE_USG:
+                    $model = new UsgT();
+                    $extractPath = 'uploads/usg/extract/';
+                    $imagePath = 'uploads/usg/';
+                    $category = 'usg';
+                    break;
+                case ConstantsHelper::LOOKUP_EXAMINATION_TYPE_TREADMILL:
+                    $model = new TreadmillT();
+                    $extractPath = 'uploads/treadmill/';
+                    $category = 'treadmill';
+                    break;
+                default:
+                    return redirect()->back()->with('error', 'Jenis Pemeriksaan Salah!');
+            }
+
+            $zip = new ZipArchive;
+            if ($zip->open(storage_path('app/' . $zipPath)) === true) {
+                $zip->extractTo($extractPath);
+                $zip->close();
+            } else {
+                throw new \Exception('Terjadi Kesalahan!');
+            }
+
+            $files = scandir($extractPath);
+            $allowedExtensions = ['jpg', 'jpeg', 'png'];
+
+            foreach ($files as $key => $file) {
+                $filePath = $extractPath . '/' . $file;
+                $extension = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+                if (!in_array($extension, $allowedExtensions) || !is_file($filePath)) {
+                    unset($files[$key]);
+                }
+            }
+
+            foreach ($files as $file) {
+                $filePath = $extractPath . $file;
+                if ($file == '.' || $file == '..') {
+                    continue;
+                }
+
+                if (in_array($file, ['.DS_Store', '.git', 'Thumbs.db'])) {
+                    unset($files[$file]);
+                    continue;
+                }
+
+                $extension = pathinfo($filePath, PATHINFO_EXTENSION);
+                $fileName = pathinfo($file, PATHINFO_FILENAME);
+                $pattern = '/^\d+_[A-Za-z0-9]+_' . preg_quote($category, '/') . '$/i';
+                if (in_array(strtolower($extension), $allowedExtensions) && is_file($filePath) && preg_match($pattern, $fileName)) {
+
+                    $filename = $fileName . '.' . $extension;
+                    $storedPath = $imagePath . $filename;
+
+                    $fileNameWithoutExtension = pathinfo($file, PATHINFO_FILENAME);  // Get the filename without extension
+                    $nik = explode('_', $fileNameWithoutExtension)[0];
+                    $packageCode = explode('_', $fileNameWithoutExtension)[1];
+
+                    $employeeModel = EmployeeM::select('employee_id')->where('nik', $nik)->first();
+                    $packageModel = PackageM::select('id')->where('package_code', $packageCode)->first();
+
+                    if ($employeeModel == null) {
+                        throw new \Exception('Terjadi Kesalahan! Peserta dengan nik '.$nik.' Tidak Ditemukan!');
+                    }
+                    if ($packageModel == null) {
+                        throw new \Exception('Terjadi Kesalahan! Kode paket '.$packageCode.' Tidak Ditemukan!');
+                    }
+
+                    if (!is_dir($imagePath)) {
+                        mkdir($imagePath, 0755, true);
+                    }
+                    File::move($extractPath.$file, $imagePath . $filename);
+
+                    $modelMcu = McuT::select('mcu_id')
+                        ->where('employee_id', $employeeModel->employee_id)
+                        ->where('company_id', $post['company_id'])
+                        ->where('mcu_program_id', $post['mcu_program_id'])
+                        ->where('is_import', true)
+                        ->where('package_id', $packageModel->id)
+                        ->first();
+                    Log::info($modelMcu);
+
+                    if ($modelMcu == null) {
+                        throw new \Exception('Peserta dengan nik '.$nik.' dan kode paket '.$packageCode.' belum memiliki mcu, silahkan input mcu terlebih dahulu atau melalui import excel!');
+                    }
+
+                    $payload = [
+                        'mcu_id' => $modelMcu->mcu_id,
+                        'image_file' => $filename,
+                    ];
+                    $existingRecord = $model->where('mcu_id', $payload['mcu_id'])->first();
+                    if ($existingRecord) {
+                        $existingRecord->update($payload);
+                    } else {
+                        throw new \Exception('Peserta dengan nik '.$nik.' dan kode paket '.$packageCode.' belum memiliki pemeriksaan '.$category.', silahkan input terlebih dahulu atau melalui import excel!');
+                    }
+                } else {
+                    throw new \Exception('Nama file tidak sesuai!');
+                }
+            }
+            Storage::delete($zipPath);
+            return redirect()->back()->with('success', 'Upload Hasil Skses');
         } catch (ValidationException $e) {
             return redirect()->back()->with('error', $e->getMessage());
         } catch (\Exception $e) {

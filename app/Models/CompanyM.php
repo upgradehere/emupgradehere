@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\McuProgramM;
+use App\Models\McuT;
 
 class CompanyM extends Model
 {
@@ -27,4 +29,14 @@ class CompanyM extends Model
         'created_at',
         'updated_at',
     ];
+
+    public function program()
+    {
+        return $this->hasMany(McuProgramM::class, 'company_id', 'company_id');
+    }
+
+    public function mcu()
+    {
+        return $this->hasMany(McuT::class, 'company_id', 'company_id');
+    }
 }

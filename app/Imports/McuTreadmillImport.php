@@ -1,0 +1,102 @@
+<?php
+
+namespace App\Imports;
+
+use App\Models\EmployeeM;
+use App\Models\McuT;
+use App\Models\PackageM;
+use App\Models\TreadmillT;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Maatwebsite\Excel\Concerns\ToCollection;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
+
+class McuTreadmillImport implements ToCollection, WithHeadingRow
+{
+
+    public function __construct($mcuDate, $companyId, $mcuProgramId)
+    {
+        $this->mcuDate = $mcuDate;
+        $this->companyId = $companyId;
+        $this->mcuProgramId = $mcuProgramId;
+    }
+
+    /**
+    * @param Collection $collection
+    */
+    public function collection(Collection $collection)
+    {
+        DB::beginTransaction();
+        foreach ($collection as $row)
+        {
+            $employeeModel = EmployeeM::select('employee_id')->where('nik', $row['nik'])->first();
+            $packageModel = PackageM::select('id')->where('package_code', $row['kode_paket'])->first();
+
+            if ($employeeModel == null) {
+                throw new \Exception('Terjadi Kesalahan! Peserta dengan nik '.$row['nik'].' Tidak Ditemukan!');
+            }
+            if ($packageModel == null) {
+                throw new \Exception('Terjadi Kesalahan! Kode paket '.$row['kode_paket'].' Tidak Ditemukan!');
+            }
+            $modelMcu = McuT::select('mcu_id')
+                ->where('employee_id', $employeeModel->employee_id)
+                ->where('company_id', $this->companyId)
+                ->where('mcu_program_id', $this->mcuProgramId)
+                ->where('is_import', true)
+                ->where('package_id', $packageModel->id)
+                ->first();
+
+            if ($modelMcu != null) {
+                $mcu_id = $modelMcu->mcu_id;
+            } else {
+                McuT::insert([
+                    'mcu_date' => $this->mcuDate,
+                    'employee_id' => $employeeModel->employee_id,
+                    'company_id' => $this->companyId,
+                    'mcu_program_id' => $this->mcuProgramId,
+                    'is_import' => true,
+                    'package_id' => $packageModel->id
+                ]);
+                $modelMcu = McuT::select('mcu_id')
+                    ->where('employee_id', $employeeModel->employee_id)
+                    ->where('company_id', $this->companyId)
+                    ->where('mcu_program_id', $this->mcuProgramId)
+                    ->where('package_id', $packageModel->id)
+                    ->where('is_import', true)->first();
+                $mcu_id = $modelMcu->mcu_id;
+            }
+
+            $modelTreadmill = TreadmillT::select('treadmill_id')->where('mcu_id', $mcu_id)->first();
+            if ($modelTreadmill != null) {
+                TreadmillT::where('mcu_id', $mcu_id)->delete();
+            }
+            $data = [
+                'mcu_id' => $mcu_id,
+                'treadmill_date' => date('Y-m-d H:i:s'),
+                'resting_ekg' => !empty($row['ekg_saat_istirahat']) ? $row['ekg_saat_istirahat'] : null,
+                'max_heart_rate_target' => !empty($row['target_denyut_jantung_max']) ? $row['target_denyut_jantung_max'] : null,
+                'reached' => !empty($row['tercapai']) ? $row['tercapai'] : null,
+                'end_test_minute' => !empty($row['test_diakhiri_pada_menit_ke']) ? $row['test_diakhiri_pada_menit_ke'] : null,
+                'heart_rate_response' => !empty($row['response_denyut_jantung']) ? $row['response_denyut_jantung'] : null,
+                'blood_preassure_response' => !empty($row['response_tekanan_darah']) ? $row['response_tekanan_darah'] : null,
+                'aritmia' => !empty($row['aritmia']) ? $row['aritmia'] : null,
+                'chest_pain' => !empty($row['nyeri_dada']) ? $row['nyeri_dada'] : null,
+                'other_symptoms' => !empty($row['gejala_lain_lain']) ? $row['gejala_lain_lain'] : null,
+                'during_after_training_test' => !empty($row['selama_setelah_uji_latih']) ? $row['selama_setelah_uji_latih'] : null,
+                'mm_lead' => !empty($row['mm_lead']) ? $row['mm_lead'] : null,
+                'at_the_minute' => !empty($row['pada_menit_ke']) ? $row['pada_menit_ke'] : null,
+                'st_normalization_after' => !empty($row['st_normalisasi_setelah']) ? $row['st_normalisasi_setelah'] : null,
+                'functional_class' => !empty($row['functional_class']) ? $row['functional_class'] : null,
+                'freshness_level' => !empty($row['tingkat_kesegaran']) ? $row['tingkat_kesegaran'] : null,
+                'aerobic_capacity' => !empty($row['kapasitas_aerobik']) ? $row['kapasitas_aerobik'] : null,
+                'conc_normalization_after' => !empty($row['kesimpulan_normalisasi_setelah']) ? $row['kesimpulan_normalisasi_setelah'] : null,
+                'is_abnormal' => !empty($row['is_abnormal']) ? $row['is_abnormal'] : null,
+                'notes' => !empty($row['catatan']) ? $row['catatan'] : null
+            ];
+            TreadmillT::insert($data);
+        }
+        DB::commit();
+    }
+
+}

@@ -32,10 +32,9 @@
                     </div>
                     <div class="form-group">
                         <label>Tanggal MCU</label>
-                        <div class="input-group date" id="reservationdatetime" data-target-input="nearest">
-                            <input type="text" class="form-control datetimepicker-input" name="mcu_date"
-                                data-target="#reservationdatetime" />
-                            <div class="input-group-append" data-target="#reservationdatetime" data-toggle="datetimepicker">
+                        <div class="input-group date" id="tglMcuImport" data-target-input="nearest">
+                            <input type="text" class="form-control datetimepicker-input" name="mcu_date" data-target="#tglMcuImport" />
+                            <div class="input-group-append" data-target="#tglMcuImport" data-toggle="datetimepicker">
                                 <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                             </div>
                         </div>
@@ -60,6 +59,11 @@
         $(".custom-file-input").on("change", function() {
             var fileName = $(this).val().split("\\").pop();
             $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+        });
+
+        $('#tglMcuImport').datetimepicker({
+            format: 'YYYY-MM-DD HH:mm:ss',
+            icons: { time: 'far fa-clock' }
         });
     });
 </script>

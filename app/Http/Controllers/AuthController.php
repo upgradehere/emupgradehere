@@ -209,26 +209,32 @@ class AuthController extends Controller
 
     public function sendOtp($data)
     {
-        $sid    = env('TWILIO_SID');
-        $token  = env('TWILIO_AUTH_TOKEN');
-        $twilio = new Client($sid, $token);
-        
-        if (substr($data->phone_number, 0, 1) === '0') {
-            $data->phone_number = '+62' . substr($data->phone_number, 1);
-        }
+        $isDev = env('APP_OTP');
 
-        $message = $twilio->messages
-            ->create("whatsapp:$data->phone_number",
-                array(
-                "from" => "whatsapp:+14155238886",
-                "body" => "*$data->otp* adalah kode OTP login EM Health Anda, jika anda tidak merasa melakukan login, abaikan pesan ini dan jangan bagikan kode OTP yang terlampir. Kode OTP akan kadaluarsa dalam 2 menit."
-                )
-            );
+        if ($isDev == 1) {
+            $sid    = env('TWILIO_SID');
+            $token  = env('TWILIO_AUTH_TOKEN');
+            $twilio = new Client($sid, $token);
             
-        if ($message->sid) {
-            return ['status' => 200];
+            if (substr($data->phone_number, 0, 1) === '0') {
+                $data->phone_number = '+62' . substr($data->phone_number, 1);
+            }
+    
+            $message = $twilio->messages
+                ->create("whatsapp:$data->phone_number",
+                    array(
+                    "from" => "whatsapp:+14155238886",
+                    "body" => "*$data->otp* adalah kode OTP login EM Health Anda, jika anda tidak merasa melakukan login, abaikan pesan ini dan jangan bagikan kode OTP yang terlampir. Kode OTP akan kadaluarsa dalam 2 menit."
+                    )
+                );
+                
+            if ($message->sid) {
+                return ['status' => 200];
+            } else {
+                return ['status' => 500];
+            }
         } else {
-            return ['status' => 500];
+            return ['status' => 200];
         }
     }
 }
