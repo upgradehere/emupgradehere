@@ -56,6 +56,24 @@
     .fw-700 {
         font-weight: 700;
     }
+    .custom-header {
+        text-align: center;
+        position: relative;
+    }
+    .custom-header::before, .custom-header::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        width: 40%;
+        height: 2px;
+        background-color: #000;
+    }
+    .custom-header::before {
+        left: 0;
+    }
+    .custom-header::after {
+        right: 0;
+    }
 </style>
     <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -145,7 +163,7 @@
                             </div>
                           </div>
                           <div class="card-body">
-                            <div id="chart_riwayat_penyakit" style="width: 100%; height: 703px;"></div>
+                            <div id="chart_riwayat_penyakit" style="width: 100%; height: 652px;"></div>
                           </div>
                         </div>
                     </div>
@@ -180,6 +198,11 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <header class="custom-header mt-2">
+                <h3>Kesimpulan</h3>
+            </header>
+            <div class="row">
                 <div class="col-md-3">
                     <div class="card">
                       <div class="card-header border-0">
