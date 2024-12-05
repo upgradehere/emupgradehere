@@ -111,4 +111,10 @@ trait SpirometriTrait
         }
     }
 
+    private function getDataPrintSpirometry($mcu_id)
+    {
+        $model = SpirometryT::select('*')->where('mcu_id', $mcu_id)->first();
+        return $model;
+    }
+
 }

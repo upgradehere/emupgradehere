@@ -164,4 +164,32 @@ trait LaboratoriumTrait
         }
     }
 
+    private function getDataPrintLaboratorium($mcu_id)
+    {
+        $model = LaboratoryT::select('laboratory_id', 'laboratory_code', 'mcu_id', 'additional_data')->where('mcu_id', $mcu_id)->first();
+        $data = [];
+        $data = $model;
+        $modelDetail = LaboratoryDetailT::select(
+            'laboratory_id',
+            'laboratory_detail_id',
+            'laboratory_detail_t.laboratory_examination_id',
+            'laboratory_examination_group_m.laboratory_examination_group_name as group',
+            'laboratory_examination_type_m.laboratory_examination_type_name as type',
+            'laboratory_examination_m.laboratory_examination_name',
+            'result',
+            'reference_value',
+            'is_abnormal'
+            )
+            ->leftJoin('laboratory_examination_m', 'laboratory_examination_m.laboratory_examination_id', '=', 'laboratory_detail_t.laboratory_examination_id')
+            ->leftJoin('laboratory_examination_type_m', 'laboratory_examination_type_m.laboratory_examination_type_id', '=', 'laboratory_examination_m.laboratory_examination_type_id')
+            ->leftJoin('laboratory_examination_group_m', 'laboratory_examination_group_m.laboratory_examination_group_id', '=', 'laboratory_examination_type_m.laboratory_examination_group_id')
+            ->leftJoin('laboratory_reference_value_m', 'laboratory_reference_value_m.laboratory_examination_id', '=', 'laboratory_detail_t.laboratory_examination_id')
+            ->where('laboratory_id', $model->laboratory_id)
+            ->orderBy('laboratory_examination_group_m.laboratory_examination_group_id')
+            ->get();
+
+        $data['detail'] = $modelDetail;
+        return $data;
+    }
+
 }

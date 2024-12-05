@@ -111,12 +111,32 @@ class PemeriksaanMcuController extends Controller
         $mcu_model = McuT::find($mcu_id);
         $employee_model = EmployeeM::select('*')->where('employee_id', $mcu_model->employee_id)->first();
         $anamnesis = self::getDataPrintAnamnesis($mcu_id);
+        $laboratorium = self::getDataPrintLaboratorium($mcu_id);
+        $refraksi = self::getDataPrintRefraction($mcu_id);
+        $rontgen = self::getDataPrintRontgen($mcu_id);
+        $audiometri = self::getDataPrintAudiometry($mcu_id);
+        $spirometri = self::getDataPrintSpirometry($mcu_id);
+        $ekg = self::getDataPrintEkg($mcu_id);
+        $usg = self::getDataPrintUsg($mcu_id);
+        $treadmill = self::getDataPrintTreadmill($mcu_id);
+        $papsmear = self::getDataPrintPapsmear($mcu_id);
+        $resume = self::getDataPrintResume($mcu_id);
         $data = [
             'nik' => $employee_model->nik,
             'employee_name' => $employee_model->employee_name,
             'mcu_date' => date('Y/m/d', strtotime($mcu_model->mcu_date)),
             'mcu_code' => $mcu_model->mcu_code,
-            'anamnesis' => $anamnesis
+            'anamnesis' => $anamnesis,
+            'laboratorium' => $laboratorium,
+            'refraksi' => $refraksi,
+            'rontgen' => $rontgen,
+            'audiometri' => $audiometri,
+            'spirometri' => $spirometri,
+            'ekg' => $ekg,
+            'usg' => $usg,
+            'treadmill' => $treadmill,
+            'papsmear' => $papsmear,
+            'resume' => $resume
         ];
 
         $pdf = PDF::loadView('mcu.pemeriksaan.print.cetak_pemeriksaan', $data)->setPaper('a4', 'portrait');
