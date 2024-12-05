@@ -112,20 +112,11 @@ trait RefractionTrait
         }
     }
 
-    // private function getDataPrintAnamnesis($mcu_id)
-    // {
-    //     $model = AnamnesisT::select('*')->where('mcu_id', $mcu_id)->first();
-    //     $data = $model;
-    //     if (!empty($model->medical_history)) {
-    //         $data['medical_history'] = $this->mappingJsonData(
-    //             ['surgical_history_notes', 'epilepsy_notes', 'main_complaint'],
-    //             json_decode($model->medical_history, true)
-    //         );
-    //     } else {
-    //         $data['medical_history'] = null;
-    //     }
-    //     return $data;
-    // }
+    private function getDataPrintRefraction($mcu_id)
+    {
+        $model = RefractionT::select('*')->where('mcu_id', $mcu_id)->first();
+        return $model;
+    }
 
     // private function mappingJsonData($skip = [], $data) {
     //     $mappedData = [];
