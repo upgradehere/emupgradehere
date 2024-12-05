@@ -50,6 +50,12 @@
         margin-bottom: 10px;
         padding: 0px;
     }
+    .gender-total {
+        color:#ae9f9f;
+    }
+    .fw-700 {
+        font-weight: 700;
+    }
 </style>
     <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -77,13 +83,14 @@
     </section>
     <!-- Main content -->
     <section class="content">
+        <div id="main"></div>
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-8">
                     <div class="row">
                         <div class="col-md-6">
                             <div class="card">
-                                <div class="card-body text-left" style="padding: 20px;">
+                                <div class="card-body text-left pt-3">
                                     <div class="gender-label">Pria</div>
                                     <h3 class="gender-number" id="male_total">0/0</h3> <!-- Menampilkan total peserta pria -->
                                     <p class="gender-description">Peserta yang mengikuti medical cek up</p>
@@ -93,7 +100,7 @@
 
                         <div class="col-md-6">
                             <div class="card">
-                                <div class="card-body text-left" style="padding: 20px;">
+                                <div class="card-body text-left pt-3">
                                     <div class="gender-label">Wanita</div>
                                     <h3 class="gender-number" id="female_total">0/0</h3>
                                     <p class="gender-description">Peserta yang mengikuti medical cek up</p>
@@ -105,7 +112,7 @@
                     <div class="card">
                       <div class="card-header border-0">
                         <div class="d-flex justify-content-between">
-                          <h3 class="card-title" style="font-weight: 700;">Demografi Peserta</h3>
+                          <h3 class="card-title fw-700">Demografi Peserta</h3>
                           <a href="javascript:void(0);" class="text-dark"><i class="fas fa-external-link-alt"></i></a>
                         </div>
                       </div>
@@ -118,7 +125,7 @@
                     <div class="card">
                       <div class="card-header border-0">
                         <div class="d-flex justify-content-between">
-                          <h3 class="card-title" style="font-weight: 700;">Demografi Usia</h3>
+                          <h3 class="card-title fw-700">Demografi Usia</h3>
                           <a href="javascript:void(0);" class="text-dark"><i class="fas fa-external-link-alt"></i></a>
                         </div>
                       </div>
@@ -133,7 +140,7 @@
                         <div class="card">
                           <div class="card-header border-0">
                             <div class="d-flex justify-content-between">
-                              <h3 class="card-title" style="font-weight: 700;">10 Riwayat Penyakit Terbanyak</h3>
+                              <h3 class="card-title fw-700">10 Riwayat Penyakit Terbanyak</h3>
                               <a href="javascript:void(0);" class="text-dark"><i class="fas fa-external-link-alt"></i></a>
                             </div>
                           </div>
@@ -148,7 +155,7 @@
                         <div class="card">
                           <div class="card-header border-0">
                             <div class="d-flex justify-content-between">
-                              <h3 class="card-title" style="font-weight: 700;">10 Diagnosa Lab Terbanyak</h3>
+                              <h3 class="card-title fw-700">10 Diagnosa Lab Terbanyak</h3>
                               <a href="javascript:void(0);" class="text-dark"><i class="fas fa-external-link-alt"></i></a>
                             </div>
                           </div>
@@ -163,7 +170,7 @@
                         <div class="card">
                           <div class="card-header border-0">
                             <div class="d-flex justify-content-between">
-                              <h3 class="card-title" style="font-weight: 700;">10 Diagnosa Non Lab Terbanyak</h3>
+                              <h3 class="card-title fw-700">10 Diagnosa Non Lab Terbanyak</h3>
                               <a href="javascript:void(0);" class="text-dark"><i class="fas fa-external-link-alt"></i></a>
                             </div>
                           </div>
@@ -177,7 +184,7 @@
                     <div class="card">
                       <div class="card-header border-0">
                         <div class="d-flex justify-content-between">
-                          <h3 class="card-title" style="font-weight: 700;">Kategori Kesehatan Peserta</h3>
+                          <h3 class="card-title fw-700">Kategori Kesehatan Peserta</h3>
                           <a href="javascript:void(0);" class="text-dark"><i class="fas fa-external-link-alt"></i></a>
                         </div>
                       </div>
@@ -190,7 +197,7 @@
                     <div class="card">
                       <div class="card-header border-0">
                         <div class="d-flex justify-content-between">
-                          <h3 class="card-title" style="font-weight: 700;">Peserta Sindrom Metabolik</h3>
+                          <h3 class="card-title fw-700">Peserta Sindrom Metabolik</h3>
                           <a href="javascript:void(0);" class="text-dark"><i class="fas fa-external-link-alt"></i></a>
                         </div>
                       </div>
@@ -204,7 +211,7 @@
                         <div class="card">
                           <div class="card-header border-0">
                             <div class="d-flex justify-content-between">
-                              <h3 class="card-title" style="font-weight: 700;">Indikator Gejala Sindrom Metabolik</h3>
+                              <h3 class="card-title fw-700">Indikator Gejala Sindrom Metabolik</h3>
                               <a href="javascript:void(0);" class="text-dark"><i class="fas fa-external-link-alt"></i></a>
                             </div>
                           </div>
@@ -219,7 +226,7 @@
                         <div class="card">
                           <div class="card-header border-0">
                             <div class="d-flex justify-content-between">
-                              <h3 class="card-title" style="font-weight: 700;">Kesimpulan</h3>
+                              <h3 class="card-title fw-700">Kesimpulan</h3>
                             </div>
                           </div>
                           <div class="card-body" id="conclusion">Belum terdapat kesimpulan!
@@ -232,7 +239,7 @@
                         <div class="card">
                           <div class="card-header border-0">
                             <div class="d-flex justify-content-between">
-                              <h3 class="card-title" style="font-weight: 700;">Saran</h3>
+                              <h3 class="card-title fw-700">Saran</h3>
                             </div>
                           </div>
                           <div class="card-body" id="recommendation">Belum terdapat saran!
@@ -944,8 +951,8 @@
                     if (response.status == 'error') {
 
                     } else if (response.status == 'success') {
-                        $("#male_total").text(response.data.male + " / " + response.data.total)
-                        $("#female_total").text(response.data.female + " / " + response.data.total)
+                        $("#male_total").html(response.data.male + " <span class='gender-total'>/ " + response.data.total + "</span>")
+                        $("#female_total").html(response.data.female + " <span class='gender-total'>/  " + response.data.total + "</span>")
                     }
                 },
                 error: function(response) {
