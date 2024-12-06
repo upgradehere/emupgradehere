@@ -25,7 +25,7 @@ Route::post('/login-otp', [AuthController::class, 'otp'])->name('login.otp');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::group(['middleware' => ['auth', 'role:1,2']], function () {
-    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::get('/dashboard/get-gender/{id_program}', [DashboardController::class, 'getGender'])->name('get-gender');
     Route::get('/dashboard/get-age/{id_program}', [DashboardController::class, 'getAge'])->name('get-age');

@@ -89,10 +89,20 @@
                                 <label for="">Alamat Perusahaan</label>
                                 <textarea required name="company_address" id="" class="form-control" cols="30" rows="10"></textarea>
                             </div>
+                            <div class="form-group">
+                                <label for="">Password Default PIC</label>
+                                <input type="password" required name="password" id="password" class="form-control">
+                            </div>
+                            <ul id="passwordRules" style="color: red;">
+                                <li id="minLength">Minimal 8 Karakter</li>
+                                <li id="uppercase">Harus memiliki huruf besar dan kecil</li>
+                                <li id="number">Harus mengandung angka</li>
+                                <li id="specialChar">Harus memiliki spesial karakter (!@#$%^&*)</li>
+                            </ul>
 
                             <div class="modal-footer justify-content-between">
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
-                                <button type="submit" class="btn btn-primary">Simpan</button>
+                                <button type="submit" class="btn btn-primary" id="saveButton">Simpan</button>
                             </div>
                         </form>
                     </div>
@@ -122,6 +132,57 @@
     </section>
     <script>
         $(function() {
+            const passwordInput = $("#password");
+            const rules = {
+                minLength: $("#minLength"),
+                uppercase: $("#uppercase"),
+                number: $("#number"),
+                specialChar: $("#specialChar")
+            };
+            const submitButton = $("#saveButton");
+
+            passwordInput.on("keyup", function() {
+                const password = passwordInput.val();
+
+                let isValid = true; // Assume password is valid, check rules to confirm
+
+                // Check each rule
+                if (password.length >= 8) {
+                    rules.minLength.css("color", "green");
+                } else {
+                    rules.minLength.css("color", "red");
+                    isValid = false;
+                }
+
+                if (/[A-Z]/.test(password)) {
+                    rules.uppercase.css("color", "green");
+                } else {
+                    rules.uppercase.css("color", "red");
+                    isValid = false;
+                }
+
+                if (/[0-9]/.test(password)) {
+                    rules.number.css("color", "green");
+                } else {
+                    rules.number.css("color", "red");
+                    isValid = false;
+                }
+
+                if (/[!@#$%^&*]/.test(password)) {
+                    rules.specialChar.css("color", "green");
+                } else {
+                    rules.specialChar.css("color", "red");
+                    isValid = false;
+                }
+
+                // Enable or disable the submit button based on validity
+                if (isValid) {
+                    submitButton.prop("disabled", false);
+                } else {
+                    submitButton.prop("disabled", true);
+                }
+            });
+
             let table = $("#companyTable").DataTable({
                 responsive: true,
                 lengthChange: true,

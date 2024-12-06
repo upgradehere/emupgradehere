@@ -51,7 +51,7 @@ class AuthController extends Controller
         if ($user) {
             if (Hash::check($password, $user->password)) {
                 $update = User::find($user->id);
-                $update->otp = rand(000001,999999); 
+                $update->otp = random_int(100000, 999999);
                 $update->otp_expired = Carbon::now()->addMinutes(2); 
                 $update->save();
 
