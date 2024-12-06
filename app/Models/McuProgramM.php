@@ -15,6 +15,8 @@ class McuProgramM extends Model
         'mcu_program_code',
         'mcu_program_name',
         'company_id',
+        'conclusions',
+        'suggestions',
         'deleted_at',
         'created_at',
         'updated_at',

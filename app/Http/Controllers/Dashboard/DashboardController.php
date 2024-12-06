@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\McuProgramM;
 use App\Models\McuT;
+use DB;
 
 class DashboardController extends Controller
 {
@@ -66,38 +67,43 @@ class DashboardController extends Controller
 
     public function getParticipant($id_program)
     {
-        $data = [
-            ['name' => 'Heart Examination', 'male' => 120, 'female' => 150],
-            ['name' => 'Eye Examination', 'male' => 132, 'female' => 182],
-            ['name' => 'Vaccination', 'male' => 101, 'female' => 180],
-            ['name' => 'Dental Examination', 'male' => 134, 'female' => 210],
-            ['name' => 'Health Consultation', 'male' => 90, 'female' => 240],
-            ['name' => 'Skin Examination', 'male' => 230, 'female' => 270],
-            ['name' => 'Cholesterol Check', 'male' => 210, 'female' => 230],
-            ['name' => 'Blood Examination', 'male' => 100, 'female' => 170],
-            ['name' => 'Diabetes Test', 'male' => 80, 'female' => 160],
-            ['name' => 'COVID-19 Test', 'male' => 110, 'female' => 200],
-            ['name' => 'Lung Examination', 'male' => 95, 'female' => 220],
-            ['name' => 'Blood Pressure Check', 'male' => 160, 'female' => 250],
-            ['name' => 'Ear Examination', 'male' => 135, 'female' => 245],
-            ['name' => 'Cholesterol Test', 'male' => 125, 'female' => 165],
-            ['name' => 'Kidney Examination', 'male' => 140, 'female' => 180],
-            ['name' => 'Eye Check', 'male' => 150, 'female' => 210],
-            ['name' => 'ENT Examination', 'male' => 110, 'female' => 190],
-            ['name' => 'Liver Function Test', 'male' => 115, 'female' => 160],
-            ['name' => 'Stamina Examination', 'male' => 180, 'female' => 210],
-            ['name' => 'Flu Vaccination', 'male' => 160, 'female' => 220],
-            ['name' => 'Mental Health Check', 'male' => 100, 'female' => 160],
-            ['name' => 'Heart Health Check', 'male' => 200, 'female' => 250],
-            ['name' => 'Endocrine Examination', 'male' => 105, 'female' => 190],
-            ['name' => 'Rapid COVID-19 Test', 'male' => 130, 'female' => 210],
-            ['name' => 'Diet Examination', 'male' => 95, 'female' => 170],
-            ['name' => 'Reproductive Health Check', 'male' => 90, 'female' => 220],
-            ['name' => 'Blood Sugar Check', 'male' => 145, 'female' => 200],
-            ['name' => 'Nutrition Check', 'male' => 120, 'female' => 180],
-            ['name' => 'Immunization Check', 'male' => 105, 'female' => 145],
-            ['name' => 'Dental Health Check', 'male' => 110, 'female' => 185]
-        ];
+        $query = "
+            SELECT 
+                departement_name,
+                sex,
+                COUNT(*) AS count
+            FROM 
+                mcu_employee_v 
+            WHERE 
+                mcu_program_id = ?
+            GROUP BY 
+                departement_name, sex
+            ORDER BY 
+                count DESC
+            LIMIT 10
+        ";
+
+        $results = DB::select($query, [$id_program]);
+
+        $data = [];
+
+        foreach ($results as $row) {
+            $index = array_search($row->departement_name, array_column($data, 'name'));
+
+            if ($index === false) {
+                $data[] = [
+                    'name' => $row->departement_name,
+                    'male' => ($row->sex == 'Laki-laki') ? $row->count : 0,
+                    'female' => ($row->sex == 'Perempuan') ? $row->count : 0,
+                ];
+            } else {
+                if ($row->sex == 'Laki-laki') {
+                    $data[$index]['male'] += $row->count;
+                } elseif ($row->sex == 'Perempuan') {
+                    $data[$index]['female'] += $row->count;
+                }
+            }
+        }
 
         return response()->json([
             'status' => 'success',
@@ -107,13 +113,44 @@ class DashboardController extends Controller
 
     public function getAge($id_program)
     {
+         $query = "
+            SELECT
+                CASE
+                    WHEN EXTRACT(YEAR FROM AGE(dob)) < 25 THEN '<25'
+                    WHEN EXTRACT(YEAR FROM AGE(dob)) BETWEEN 26 AND 35 THEN '26-35'
+                    WHEN EXTRACT(YEAR FROM AGE(dob)) BETWEEN 36 AND 45 THEN '36-45'
+                    WHEN EXTRACT(YEAR FROM AGE(dob)) BETWEEN 46 AND 55 THEN '46-55'
+                    ELSE '>55'
+                END AS age_range,
+                sex,
+                COUNT(*) AS count
+            FROM mcu_employee_v
+            WHERE mcu_program_id = ?
+            GROUP BY age_range, sex
+            ORDER BY sex
+        ";
+
+        $results = DB::select($query, [$id_program]);
+
         $data = [
-            ['name' => '<25', 'male' => 40, 'female' => 60],
-            ['name' => '26-35', 'male' => 70, 'female' => 90],
-            ['name' => '36-45', 'male' => 50, 'female' => 80],
-            ['name' => '46-55', 'male' => 30, 'female' => 50],
-            ['name' => '>55', 'male' => 20, 'female' => 40]
+            ['name' => '<25', 'male' => 0, 'female' => 0],
+            ['name' => '26-35', 'male' => 0, 'female' => 0],
+            ['name' => '36-45', 'male' => 0, 'female' => 0],
+            ['name' => '46-55', 'male' => 0, 'female' => 0],
+            ['name' => '>55', 'male' => 0, 'female' => 0]
         ];
+
+        foreach ($results as $result) {
+            $index = array_search($result->age_range, array_column($data, 'name'));
+
+            if ($index !== false) {
+                if ($result->sex == 'Laki-laki') {
+                    $data[$index]['male'] += $result->count;
+                } elseif ($result->sex == 'Perempuan') {
+                    $data[$index]['female'] += $result->count;
+                }
+            }
+        }
 
         return response()->json([
             'status' => 'success',
@@ -172,18 +209,87 @@ class DashboardController extends Controller
 
     public function getLabDiagnosis($id_program)
     {
-        $data = [
-            ['name' => 'Complete Blood Count', 'male' => 150, 'female' => 120],
-            ['name' => 'Liver Function', 'male' => 80, 'female' => 70],
-            ['name' => 'Cholesterol', 'male' => 110, 'female' => 90],
-            ['name' => 'Blood Sugar', 'male' => 130, 'female' => 100],
-            ['name' => 'Kidney Function', 'male' => 95, 'female' => 85],
-            ['name' => 'Hepatitis', 'male' => 60, 'female' => 50],
-            ['name' => 'Urine Test', 'male' => 140, 'female' => 110],
-            ['name' => 'Cancer', 'male' => 70, 'female' => 60],
-            ['name' => 'HIV', 'male' => 40, 'female' => 35],
-            ['name' => 'TB (Tuberculosis)', 'male' => 55, 'female' => 45]
-        ];
+        $query_male = "
+            SELECT
+                laboratory_detail_t.laboratory_examination_id,
+                laboratory_examination_m.laboratory_examination_name,
+                COUNT(laboratory_detail_t.laboratory_examination_id) AS count,
+                mcu_t.mcu_program_id,
+                e_m.sex
+            FROM laboratory_detail_t
+            LEFT JOIN laboratory_examination_m
+                ON laboratory_examination_m.laboratory_examination_id = laboratory_detail_t.laboratory_examination_id
+            LEFT JOIN laboratory_t
+                ON laboratory_t.laboratory_id = laboratory_detail_t.laboratory_id
+            LEFT JOIN mcu_t
+                ON mcu_t.mcu_id = laboratory_t.mcu_id
+            LEFT JOIN employee_m e_m
+                ON mcu_t.employee_id = e_m.employee_id
+            WHERE laboratory_detail_t.is_abnormal IS TRUE
+                AND e_m.sex = 11  -- Male
+                AND mcu_t.mcu_program_id = ?
+            GROUP BY laboratory_detail_t.laboratory_examination_id, laboratory_examination_m.laboratory_examination_name, mcu_t.mcu_program_id, e_m.sex
+            ORDER BY count DESC
+            LIMIT 10
+        ";
+
+        $results_male = DB::select($query_male, [$id_program]);
+
+        $query_female = "
+            SELECT
+                laboratory_detail_t.laboratory_examination_id,
+                laboratory_examination_m.laboratory_examination_name,
+                COUNT(laboratory_detail_t.laboratory_examination_id) AS count,
+                mcu_t.mcu_program_id,
+                e_m.sex
+            FROM laboratory_detail_t
+            LEFT JOIN laboratory_examination_m
+                ON laboratory_examination_m.laboratory_examination_id = laboratory_detail_t.laboratory_examination_id
+            LEFT JOIN laboratory_t
+                ON laboratory_t.laboratory_id = laboratory_detail_t.laboratory_id
+            LEFT JOIN mcu_t
+                ON mcu_t.mcu_id = laboratory_t.mcu_id
+            LEFT JOIN employee_m e_m
+                ON mcu_t.employee_id = e_m.employee_id
+            WHERE laboratory_detail_t.is_abnormal IS TRUE
+                AND e_m.sex = 12  -- Female
+                AND mcu_t.mcu_program_id = ?
+            GROUP BY laboratory_detail_t.laboratory_examination_id, laboratory_examination_m.laboratory_examination_name, mcu_t.mcu_program_id, e_m.sex
+            ORDER BY count DESC
+            LIMIT 10
+        ";
+
+        $results_female = DB::select($query_female, [$id_program]);
+
+        $data = [];
+
+        foreach ($results_male as $row_male) {
+            $index = array_search($row_male->laboratory_examination_name, array_column($data, 'name'));
+
+            if ($index === false) {
+                $data[] = [
+                    'name' => $row_male->laboratory_examination_name,
+                    'male' => $row_male->count,
+                    'female' => 0 
+                ];
+            } else {
+                $data[$index]['male'] += $row_male->count;
+            }
+        }
+
+        foreach ($results_female as $row_female) {
+            $index = array_search($row_female->laboratory_examination_name, array_column($data, 'name'));
+
+            if ($index === false) {
+                $data[] = [
+                    'name' => $row_female->laboratory_examination_name,
+                    'male' => 0,
+                    'female' => $row_female->count
+                ];
+            } else {
+                $data[$index]['female'] += $row_female->count;
+            }
+        }
 
         return response()->json([
             'status' => 'success',
@@ -286,9 +392,11 @@ class DashboardController extends Controller
 
     public function getConclusionAndRecommendation($id_program)
     {
+        $programs = McuProgramM::where("mcu_program_id", $id_program)
+                                        ->first();
         $data = [
-            'conclusion' => 'Diagnosis menunjukkan bahwa pasien memiliki kadar gula darah yang tinggi, perlu pengobatan dan kontrol rutin.',
-            'recommendation' => 'Disarankan untuk mengatur pola makan, olahraga teratur, dan melakukan pemeriksaan gula darah secara berkala.'
+            'conclusion' => $programs->conclusions,
+            'recommendation' => $programs->suggestions
         ];
 
         return response()->json([

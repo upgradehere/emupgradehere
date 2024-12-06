@@ -246,7 +246,7 @@
                               <h3 class="card-title fw-700">Kesimpulan</h3>
                             </div>
                           </div>
-                          <div class="card-body" id="conclusion">Belum terdapat kesimpulan!
+                          <div class="card-body" id="conclusion" style="min-height: 250px; overflow-y: scroll;">Belum terdapat kesimpulan!
                           </div>
                         </div>
                     </div>
@@ -259,7 +259,7 @@
                               <h3 class="card-title fw-700">Saran</h3>
                             </div>
                           </div>
-                          <div class="card-body" id="recommendation">Belum terdapat saran!
+                          <div class="card-body" id="recommendation" style="min-height: 250px; overflow-y: scroll;">Belum terdapat saran!
                           </div>
                         </div>
                     </div>
@@ -757,7 +757,7 @@
                         interval: 0,  // Menampilkan semua label pada sumbu X
                         formatter: function (value) {
                             // Truncate label text if too long and add "..."
-                            return value.length > 10 ? value.slice(0, 10) + '...' : value;
+                            return value.length > 6 ? value.slice(0, 6) + '...' : value;
                         },
                         rotate: 45  // Memiringkan label agar lebih mudah dibaca
                     }
