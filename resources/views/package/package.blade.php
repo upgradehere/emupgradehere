@@ -1,5 +1,17 @@
 @extends('templates/template')
 @section('content')
+    <style>
+        .custom-hr {
+            height: 3px;
+            /* Set the thickness */
+            background-color: black;
+            /* Set the color */
+            border: none;
+            /* Remove the default border */
+            margin: 10px 0;
+            /* Optional: Adjust spacing */
+        }
+    </style>
     <div class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
@@ -94,16 +106,22 @@
                             <div class="row">
                                 <div class="col-6">
                                     <div class="form-check">
-                                        @foreach ($laboratorium as $k => $l)
-                                            <label for="">{{ $k }}</label><br>
-                                            <select name="" id="select_laboratorium_{{ $k }}"
-                                                class="select_laboratorium form-control">
-                                                <option value="">-- Pilih Item --</option>
-                                                @foreach ($l as $ll)
-                                                    <option value="{{ $ll->laboratory_examination_id }}">
-                                                        {{ $ll->laboratory_examination_name }}</option>
-                                                @endforeach
-                                            </select><br>
+                                        @foreach ($laboratorium as $key => $lab)
+                                            <h5>{{ $lab->laboratory_examination_group_name }}</h5>
+                                            <hr class="custom-hr">
+                                            @foreach ($lab->examinationTypes as $key2 => $type)
+                                                <span
+                                                    for="">{{ $type->laboratory_examination_type_name }}</span><br>
+                                                <select name="" id="select_laboratorium_{{ $key2 }}"
+                                                    class="select_laboratorium form-control">
+                                                    <option value="">-- Pilih Item --</option>
+                                                    @foreach ($type->examinations as $key3 => $exam)
+                                                        <option value="{{ $exam->laboratory_examination_id }}">
+                                                            {{ $exam->laboratory_examination_name }}</option>
+                                                    @endforeach
+                                                </select><br>
+                                            @endforeach
+                                            <hr>
                                         @endforeach
                                     </div>
                                 </div>
