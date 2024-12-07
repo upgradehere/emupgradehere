@@ -39,4 +39,9 @@ class CompanyM extends Model
     {
         return $this->hasMany(McuT::class, 'company_id', 'company_id');
     }
+
+    public function pic()
+    {
+        return $this->hasOne(User::class, 'id_company', 'company_id');
+    }
 }

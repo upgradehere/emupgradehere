@@ -38,6 +38,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 use Maatwebsite\Excel\Facades\Excel;
 use ZipArchive;
+use Validator;
 
 class ProgramMcuController extends Controller
 {
@@ -97,7 +98,8 @@ class ProgramMcuController extends Controller
         $packages = PackageM::select('id', 'package_code', 'package_name')->get();
 
         $company_name = CompanyM::where('company_id', $company_id)->value('company_name');
-        $mcu_program_name = McuProgramM::where('mcu_program_id', $mcu_program_id)->value('mcu_program_name');
+        // $mcu_program_name = McuProgramM::where('mcu_program_id', $mcu_program_id)->value('mcu_program_name');
+        $mcu_program_name = McuProgramM::where('mcu_program_id', $mcu_program_id)->first();
         $mcu_sum = McuT::where('company_id', $company_id)
             ->where('mcu_program_id', $mcu_program_id)
             ->count();
@@ -440,5 +442,42 @@ class ProgramMcuController extends Controller
         } catch (\Exception $e) {
             return redirect()->back()->with('error', $e->getMessage());
         }
+    }
+
+    public function saveConclusionSuggestion(Request $request)
+    {
+        $rules = [
+            'conclusion' => 'required',
+            'suggestion' => 'required',
+            'id' => 'required',
+        ];
+
+        $messages = [
+            'conclusion.required' => 'Kesimpulan wajib diisi',
+            'suggestion.required' => 'Saran wajib diisi',
+            'id.required' => 'Program harus dipilih',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()) {
+            $messages = $validator->errors()->all(); 
+
+            session()->flash('error', $messages);
+
+            return redirect()->back();
+        }
+
+        $program = McuProgramM::find($request->id);
+        $program->conclusion = $request->conclusion;
+        $program->suggestion = $request->suggestion;
+
+        if($program->save()) {
+            session()->flash('success', 'Kesimpulan dan Saran berhasil disimpan');
+        } else {
+            session()->flash('success', 'Kesalahan terjadi, harap hubungi admin kami');
+        }
+
+        return redirect()->back();
     }
 }

@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use App\Models\CompanyM;
+use App\Models\User;
 use Validator;
 use Session;
 
@@ -82,6 +84,7 @@ class CompanyController extends Controller
             'pic_email' => 'required|email',
             'pic_phone_number' => 'required|numeric',
             'company_address' => 'required',
+            'password' => 'required|min:8',
         ];
 
         $messages = [
@@ -94,6 +97,8 @@ class CompanyController extends Controller
             'pic_phone_number.required' => 'No Telp PIC wajib diisi',
             'pic_phone_number.numeric' => 'No Telp PIC harus berupa angka',
             'company_address.required' => 'Alamat Perusahaan wajib diisi',
+            'password.required' => 'Password PIC wajib diisi',
+            'password.min' => 'Password PIC minimal 8 karakter',
         ];
 
         $validator = Validator::make($request->all(), $rules, $messages);
@@ -109,13 +114,23 @@ class CompanyController extends Controller
         $company = new companyM;
 
         foreach($request->all() as $key => $req) {
-            if ($key == '_token') {
+            if ($key == '_token' || $key == 'password') {
                 continue;
             }
             $company[$key] = $req;
         }
 
         $company->save();
+
+        $user = new User;
+        $user->name = $request->pic_name;
+        $user->email = $request->pic_email;
+        $user->phone_number = $request->pic_phone_number;
+        $user->password = Hash::make($request->password);
+        $user->id_role = 2;
+        $user->id_company = $company->company_id;
+
+        $user->save();
 
         session()->flash('success', 'Perusahaan baru telah disimpan');
         return redirect()->route('company');
@@ -124,8 +139,9 @@ class CompanyController extends Controller
     public function delete($id)
     {
         $company = companyM::find($id);
+        $user = User::where("id_company", $company->company_id);
 
-        if ($company->delete()) {
+        if ($company->delete() && $user->delete()) {
             $data = [
                 'status' => 'success',
                 'message' => 'Delete success',

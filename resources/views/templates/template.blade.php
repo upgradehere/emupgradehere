@@ -48,7 +48,8 @@
         href="{{ asset('templates/adminlte-3.2.0/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
     <link rel="stylesheet"
         href="{{ asset('templates/adminlte-3.2.0/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
     <style>
         .auto-size-btn {
             height: 40px;
@@ -274,7 +275,7 @@
             <script src="{{ asset('templates/adminlte-3.2.0/plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
             <script src="{{ asset('templates/adminlte-3.2.0/plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
             <script src="{{ asset('templates/adminlte-3.2.0/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
-              <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
             @yield('content')
         </div>
     </div>

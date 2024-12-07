@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\PackageM;
 use App\Models\LookupC;
 use App\Models\LaboratoryExaminationGroupM;
+use App\Models\LaboratoryExaminationTypeM;
 use App\Models\LaboratoryExaminationM;
 use Validator;
 use Session;
@@ -19,15 +20,10 @@ class PackageController extends Controller
         $treatment = LookupC::where("lookup_type", "examination_type")
                                 ->get();
 
-        $lab_group = LaboratoryExaminationGroupM::all();
-
-        $laboratorium = [];
-
-        foreach ($lab_group as $lb) {
-            $lab_item = LaboratoryExaminationM::where('laboratory_examination_type_id', $lb->laboratory_examination_group_id)
-                                                ->get();
-            $laboratorium[$lb->laboratory_examination_group_name] = $lab_item;
-        }
+        $laboratorium = LaboratoryExaminationGroupM::with([
+                        "examinationTypes",
+                        "examinationTypes.examinations"
+                    ])->get();
 
         $data['treatment'] = $treatment;
         $data['laboratorium'] = $laboratorium;
@@ -165,15 +161,10 @@ class PackageController extends Controller
             $treatment = LookupC::where("lookup_type", "examination_type")
                                 ->get();
 
-            $lab_group = LaboratoryExaminationGroupM::all();
-
-            $laboratorium = [];
-
-            foreach ($lab_group as $lb) {
-                $lab_item = LaboratoryExaminationM::where('laboratory_examination_type_id', $lb->laboratory_examination_group_id)
-                                                    ->get();
-                $laboratorium[$lb->laboratory_examination_group_name] = $lab_item;
-            }
+            $laboratorium = LaboratoryExaminationGroupM::with([
+                "examinationTypes",
+                "examinationTypes.examinations"
+            ])->get();
 
             $data['treatment'] = $treatment;
             $data['laboratorium'] = $laboratorium;
