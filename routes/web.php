@@ -61,6 +61,8 @@ Route::group(['middleware' => ['auth', 'role:1,2']], function () {
 });
 
 Route::group(['middleware' => ['auth', 'role:1']], function () {
+    Route::post('/mcu/program-mcu/detail/save-conclusion-suggestion', [ProgramMcuController::class, 'saveConclusionSuggestion'])->name('program-mcu-save-conclusion-suggestion');
+
     Route::get('/package', [PackageController::class, 'index'])->name('package');
     Route::post('/package/store', [PackageController::class, 'store'])->name('package.store');
     Route::get('/package/delete/{id}', [PackageController::class, 'delete'])->name('package.delete');

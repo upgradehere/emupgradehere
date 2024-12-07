@@ -33,7 +33,7 @@
                                 </div>
                                 <div class="col-3">
                                     <h6>Nama Program</h6>
-                                    <h5>{{ $mcu_program_name }}</h5>
+                                    <h5>{{ $mcu_program_name->mcu_program_name }}</h5>
                                 </div>
                                 <div class="col-3">
                                     <h6>Jumlah Peserta</h6>
@@ -58,8 +58,8 @@
                             <div class="row">
                                 <div class="col-2">
                                     <a class="btn btn-block bg-gradient-primary auto-size-btn" data-toggle="modal"
-                                        data-target="#modal-insert-manual"><i
-                                            class="fas fa-edit"></i>&nbsp;&nbsp;Input Manual</a>
+                                        data-target="#modal-insert-manual"><i class="fas fa-edit"></i>&nbsp;&nbsp;Input
+                                        Manual</a>
                                 </div>
                                 <div class="col-2">
                                     <a class="btn btn-block bg-gradient-primary auto-size-btn" data-toggle="modal"
@@ -68,11 +68,12 @@
                                 </div>
                                 <div class="col-2">
                                     <a class="btn btn-block bg-gradient-primary auto-size-btn" data-toggle="modal"
-                                        data-target="#modal-upload-hasil"><i
-                                            class="fas fa-images"></i>&nbsp;&nbsp;Upload Hasil</a>
+                                        data-target="#modal-upload-hasil"><i class="fas fa-images"></i>&nbsp;&nbsp;Upload
+                                        Hasil</a>
                                 </div>
                                 <div class="col-2">
-                                    <a class="btn btn-block bg-gradient-primary auto-size-btn"><i
+                                    <a data-toggle="modal" data-target="#modalConclusionSuggestion"
+                                        class="btn btn-block bg-gradient-primary auto-size-btn"><i
                                             class="fas fa-edit"></i>&nbsp;&nbsp;Kesimpulan & Saran</a>
                                 </div>
                             </div>
@@ -104,12 +105,54 @@
                 </div>
             </div>
         </div>
+        <div class="modal fade" id="modalConclusionSuggestion">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Kesimpulan & Saran</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{{ route('program-mcu-save-conclusion-suggestion') }}" method="POST">
+                            @csrf
+                            <input type="hidden" value="{{ $_GET['mcu_program_id'] }}" name="id">
+                            <div class="form-group">
+                                <label for="">Kesimpulan</label>
+                                <div class="card-body">
+                                    <textarea required class="summernote" name="conclusion">
+                                        {{ $mcu_program_name->conclusion }}
+                                    </textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="">Saran</label>
+                                <div class="card-body">
+                                    <textarea required class="summernote" name="suggestion">
+                                        {{ $mcu_program_name->suggestion }}
+                                    </textarea>
+                                </div>
+                            </div>
+                            <div class="modal-footer justify-content-between">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+                                <button type="submit" class="btn btn-primary" id="saveButton">Simpan</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
     </section>
     @include('mcu.partials.insert_manual')
     @include('mcu.partials.import_file_excel')
     @include('mcu.partials.upload_hasil')
     <script>
         $(function() {
+            $('.summernote').summernote()
+
             let companyId = "{{ $company_id }}";
             let mcuProgramId = "{{ $mcu_program_id }}";
             let table = $("#mcuEmployeeTable").DataTable({
@@ -205,7 +248,7 @@
                 ],
             });
 
-            $('#mcuEmployeeTable tbody').on('click', '.action-delete-mcu', function () {
+            $('#mcuEmployeeTable tbody').on('click', '.action-delete-mcu', function() {
                 let button = $(this);
                 let mcuId = button.data('mcu-id');
 
@@ -228,12 +271,15 @@
                                 _token: '{{ csrf_token() }}',
                                 _method: 'DELETE'
                             },
-                            success: function (response) {
-                                Swal.fire("Berhasil!", "Data telah dihapus.", "success");
+                            success: function(response) {
+                                Swal.fire("Berhasil!", "Data telah dihapus.",
+                                    "success");
                                 table.ajax.reload();
                             },
-                            error: function () {
-                                Swal.fire("Gagal!", "Terjadi kesalahan saat menghapus data.", "error");
+                            error: function() {
+                                Swal.fire("Gagal!",
+                                    "Terjadi kesalahan saat menghapus data.",
+                                    "error");
                             }
                         });
                     }
