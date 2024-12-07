@@ -291,7 +291,6 @@ class ProgramMcuController extends Controller
                     'file',
                     'mimes:zip',
                 ],
-                'mcu_date' => 'required',
                 'company_id' => 'required',
                 'mcu_program_id' => 'required',
             ], [
@@ -299,7 +298,6 @@ class ProgramMcuController extends Controller
                 'import_file.required' => 'File ZIP Tidak Boleh Kosong.',
                 'import_file.file' => 'File ZIP Tidak Valid.',
                 'import_file.mimes' => 'File ZIP Tidak Sesuai, Silahakn Upload File Berupa ZIP',
-                'mcu_date.required' => 'Tanggal MCU Tidak Boleh Kosong.',
                 'company_id.required' => 'ID Perusahaan Tidak Boleh Kosong.',
                 'mcu_program_id.required' => 'ID Program MCU Tidak Boleh Kosong.',
             ]);
@@ -464,7 +462,7 @@ class ProgramMcuController extends Controller
         $validator = Validator::make($request->all(), $rules, $messages);
 
         if ($validator->fails()) {
-            $messages = $validator->errors()->all(); 
+            $messages = $validator->errors()->all();
 
             session()->flash('error', $messages);
 
