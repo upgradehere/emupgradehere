@@ -13,6 +13,7 @@ use App\Models\McuCompanyV;
 use App\Models\McuEmployeeV;
 use App\Models\McuProgramM;
 use App\Models\McuT;
+use App\Models\PackageM;
 use App\Traits\AnamnesisTrait;
 use App\Traits\AudiometriTrait;
 use App\Traits\EkgTrait;
@@ -44,14 +45,7 @@ class PemeriksaanMcuController extends Controller
     use PapsmearTrait;
     use ResumeMcuTrait;
 
-    private $test = null;
-    private $examination_package = [];
-
-    public function __construct()
-    {
-        $this->test = 'test';
-        $this->examination_package = GlobalHelper::getMcuPackage(1);
-    }
+    public function __construct() {}
 
     public function index(Request $request)
     {
@@ -63,13 +57,14 @@ class PemeriksaanMcuController extends Controller
             ->select('nik', 'employee_name', 'lookup_c.lookup_name as sex')
             ->first();
 
-        $examinations = $this->examination_package['examinations'];
-        $mcu_model = McuT::select('mcu_date', 'mcu_code')->where('mcu_id', $mcu_id)->first();
+        $mcu_model = McuT::select('mcu_date', 'mcu_code', 'package_id')->where('mcu_id', $mcu_id)->first();
         $mcu_date = !empty($mcu_model['mcu_date']) ? date('Y-m-d', strtotime($mcu_model['mcu_date'])) : '-';
         $mcu_code = !empty($mcu_model['mcu_code']) ? $mcu_model['mcu_code'] : '-';
-        $mcu_package_name = 'Paket Lengkap';
+        $getPackage = GlobalHelper::getMcuPackage($mcu_model->package_id);
+        $examinations = $getPackage['examinations'];
+        $mcu_package_name = $getPackage['package_name'];
         $data_anamnesis = self::getDataAnamnesis($mcu_id);
-        $laboratory_examintaions = !empty($this->examination_package['laboratory_examinations']) ? $this->examination_package['laboratory_examinations'] : [];
+        $laboratory_examintaions = !empty($getPackage['laboratory_examinations']) ? $getPackage['laboratory_examinations'] : [];
         $form_lab = self::getFormLab($mcu_id, $laboratory_examintaions);
         $data_refraction = self::getDataRefraction($mcu_id);
         $data_rontgen = self::getDataRontgen($mcu_id);
