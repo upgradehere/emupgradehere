@@ -188,19 +188,17 @@ class DashboardController extends Controller
 
     public function getDiseaseHistory($id_program)
     {
-        $data = [
-            ['name' => 'Diabetes Mellitus', 'diagnosis_count' => 150],
-            ['name' => 'Hypertension', 'diagnosis_count' => 200],
-            ['name' => 'Heart Disease', 'diagnosis_count' => 120],
-            ['name' => 'Gastritis', 'diagnosis_count' => 90],
-            ['name' => 'Asthma', 'diagnosis_count' => 85],
-            ['name' => 'Pneumonia', 'diagnosis_count' => 75],
-            ['name' => 'Stroke', 'diagnosis_count' => 110],
-            ['name' => 'Lung Cancer', 'diagnosis_count' => 50],
-            ['name' => 'Kidney Disease', 'diagnosis_count' => 60],
-            ['name' => 'Respiratory Tract Infection', 'diagnosis_count' => 140]
-        ];
+        $query = 'SELECT * FROM fn_non_lab_diagnosis(?) ORDER BY count DESC LIMIT 8';
 
+        $results = DB::select($query, [$id_program]);
+
+        $data = [];
+        foreach ($results as $row) {
+            $data[] = [
+                'name' =>  ucwords(str_replace("_", " ", $row->name)), 
+                'diagnosis_count' => $row->count 
+            ];
+        }
         return response()->json([
             'status' => 'success',
             'data' => $data
@@ -299,22 +297,37 @@ class DashboardController extends Controller
 
     public function getNonLabDiagnosis($id_program)
     {
-        $data = [
-            ['name' => 'Cardiovascular Function Test', 'abnormal' => 150],
-            ['name' => 'Metabolic Liver Function Test', 'abnormal' => 50],
-            ['name' => 'Complex Lipid Profile Test', 'abnormal' => 90],
-            ['name' => 'Fasting Blood Sugar Test', 'abnormal' => 120],
-            ['name' => 'Dynamic Kidney Function Test', 'abnormal' => 70],
-            ['name' => 'Hepatitis B & C Test', 'abnormal' => 30],
-            ['name' => 'Complete Urinalysis Test', 'abnormal' => 110],
-            ['name' => 'Oncology: Genetic Cancer Test', 'abnormal' => 40],
-            ['name' => 'HIV and Immunology Test', 'abnormal' => 15],
-            ['name' => 'TB Screening Test', 'abnormal' => 20]
-        ];
+         $query = "
+            SELECT 
+                key, 
+                COUNT(*) AS condition_count 
+            FROM 
+                anamnesis_t 
+            LEFT JOIN 
+                mcu_t ON mcu_t.mcu_id = anamnesis_t.mcu_id,
+                jsonb_each_text(anamnesis_t.medical_history::jsonb) AS medical_conditions(key, value)
+            WHERE 
+                value = '1' 
+                AND mcu_t.mcu_program_id = ? 
+            GROUP BY 
+                key 
+            ORDER BY 
+                condition_count DESC 
+            LIMIT 8;
+        ";
+
+        $results = DB::select($query, [$id_program]);
+
+        $formattedResults = collect($results)->map(function ($item) {
+            return [
+                'name' => ucfirst(str_replace('_', ' ', $item->key)),
+                'abnormal' => $item->condition_count,
+            ];
+        });
 
         return response()->json([
             'status' => 'success',
-            'data' => $data
+            'data' => $formattedResults,
         ]);
     }
 
@@ -395,8 +408,8 @@ class DashboardController extends Controller
         $programs = McuProgramM::where("mcu_program_id", $id_program)
                                         ->first();
         $data = [
-            'conclusion' => $programs->conclusions,
-            'recommendation' => $programs->suggestions
+            'conclusion' => $programs->conclusion,
+            'recommendation' => $programs->suggestion
         ];
 
         return response()->json([
