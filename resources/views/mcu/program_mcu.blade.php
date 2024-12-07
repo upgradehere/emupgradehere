@@ -55,7 +55,7 @@
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: '/api/mcu/program-mcu/get-data-mcu-program-company',
+                    url: 'get-data-mcu-program-company',
                     type: 'GET',
                     data: function(d) {
 

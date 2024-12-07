@@ -191,7 +191,7 @@
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: 'api/company/get-data-company',
+                    url: 'get-data-company',
                     type: 'GET',
                     data: function(d) {
 
