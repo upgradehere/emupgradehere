@@ -37,6 +37,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Auth;
 use ZipArchive;
 use Validator;
 
@@ -50,6 +51,8 @@ class ProgramMcuController extends Controller
     public function getDataMcuProgramCompany(Request $request)
     {
         try {
+            $auth = Auth::user();
+
             $model = new McuCompanyV();
             $query = $model->select();
 

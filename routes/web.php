@@ -44,6 +44,9 @@ Route::group(['middleware' => ['auth', 'role:1,2']], function () {
     Route::post('/mcu/program-mcu/detail/input-manual-mcu/save-input-manual-mcu', [ProgramMcuController::class, 'actionInsertManualMcu'])->name('save-input-manual-mcu');
     Route::post('/mcu/program-mcu/detail/import-excel-anamnesa', [ProgramMcuController::class, 'importExcelAnamnesa']);
     Route::post('/mcu/program-mcu/detail/upload-hasil', [ProgramMcuController::class, 'uploadHasil']);
+    Route::get('/get-data-mcu-program-company',  [ProgramMcuController::class, 'getDataMcuProgramCompany']);
+    Route::get('/get-data-mcu-employee',  [ProgramMcuController::class, 'getDataMcuEmployee']);
+    
     Route::get('/mcu/program-mcu/detail/pemeriksaan', [PemeriksaanMcuController::class, 'index']);
     Route::get('/mcu/program-mcu/detail/pemeriksaan/cetak-pemeriksaan', [PemeriksaanMcuController::class, 'cetakPemeriksaanMcu']);
     Route::delete('/mcu/program-mcu/detail/pemeriksaan/delete-pemeriksaan', [PemeriksaanMcuController::class, 'deletePemeriksaanMcu']);
@@ -68,10 +71,12 @@ Route::group(['middleware' => ['auth', 'role:1']], function () {
     Route::get('/package/delete/{id}', [PackageController::class, 'delete'])->name('package.delete');
     Route::get('/package/detail/{id}', [PackageController::class, 'detail'])->name('package.detail');
     Route::post('/package/update', [PackageController::class, 'update'])->name('package.update');
+    Route::get('/get-data-package',  [PackageController::class, 'getDataPackage']);
 
     Route::get('/company', [CompanyController::class, 'index'])->name('company');
     Route::post('/company/store', [CompanyController::class, 'store'])->name('company.store');
     Route::get('/company/delete/{id}', [CompanyController::class, 'delete'])->name('company.delete');
     Route::get('/company/detail/{id}', [CompanyController::class, 'detail'])->name('company.detail');
     Route::post('/company/update', [CompanyController::class, 'update'])->name('company.update');
+    Route::get('/get-data-company',  [CompanyController::class, 'getDataCompany']);
 });

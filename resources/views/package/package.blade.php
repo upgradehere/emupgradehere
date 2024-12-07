@@ -180,7 +180,7 @@
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: 'api/package/get-data-package',
+                    url: 'get-data-package',
                     type: 'GET',
                     data: function(d) {
 
