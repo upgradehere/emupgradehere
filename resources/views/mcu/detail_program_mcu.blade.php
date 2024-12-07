@@ -163,7 +163,7 @@
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: 'get-data-mcu-employee',
+                    url: '/get-data-mcu-employee',
                     type: 'GET',
                     data: function(d) {
                         d.company_id = companyId;

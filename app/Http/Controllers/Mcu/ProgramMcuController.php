@@ -51,6 +51,8 @@ class ProgramMcuController extends Controller
     public function getDataMcuProgramCompany(Request $request)
     {
         try {
+            $auth = Auth::user();
+
             $model = new McuCompanyV();
             $query = $model->select();
 

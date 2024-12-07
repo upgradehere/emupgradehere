@@ -37,6 +37,7 @@
                                         <th>Kode Perusahaan</th>
                                         <th>Jumlah Program</th>
                                         <th>Jumlah MCU</th>
+                                        <th style="width: 100px;">Program</th>
                                         <th style="width: 80px;"><i class="fas fa-cogs"></i></th>
                                     </tr>
                                 </thead>
@@ -228,6 +229,15 @@
                         name: 'total_mcu',
                         searchable: true,
                         orderable: true
+                    },
+                    {
+                        data: null,
+                        orderable: false,
+                        searchable: false,
+                        render: function(data, type, row) {
+                            var company_id = row.company_id;
+                            return `<a class="btn btn-success btn-sm" href="/mcu/program-mcu?company-id=${company_id}"><i class="fas fa-list"></i> Program</a>`;
+                        }
                     },
                     {
                         data: null,
