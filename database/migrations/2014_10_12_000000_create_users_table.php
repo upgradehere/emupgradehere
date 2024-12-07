@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('otp', 6)->nullable();
             $table->datetime('otp_expired', 6)->nullable();
             $table->integer('id_role', 1);
-            $table->integer('id_company', 5)->nullable();
+            $table->unsignedInteger('id_company')->nullable();
             $table->softDeletes();
             $table->rememberToken();
             $table->timestamps();
