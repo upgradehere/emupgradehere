@@ -39,6 +39,9 @@ Route::group(['middleware' => ['auth', 'role:1,2']], function () {
     Route::get('/dashboard/get-conclusion-recommendation/{id_program}', [DashboardController::class, 'getConclusionAndRecommendation'])->name('get-conclusion-recommendation');
 
     Route::get('/mcu/program-mcu', [ProgramMcuController::class, 'index'])->name('program-mcu');
+    Route::post('/mcu/program-mcu/save-program', [ProgramMcuController::class, 'saveProgram'])->name('program-mcu-save-program');
+    Route::post('/mcu/program-mcu/update-program', [ProgramMcuController::class, 'updateProgram'])->name('program-mcu-update-program');
+    Route::get('/mcu/program-mcu/detail/name/{id}', [ProgramMcuController::class, 'getProgramName'])->name('detail-program-mcu-name');
     Route::get('/mcu/program-mcu/detail', [ProgramMcuController::class, 'detailProgramMcu'])->name('detail-program-mcu');
     Route::get('/mcu/program-mcu/detail/input-manual-mcu', [ProgramMcuController::class, 'insertManualMcu'])->name('input-manual-mcu');
     Route::post('/mcu/program-mcu/detail/input-manual-mcu/save-input-manual-mcu', [ProgramMcuController::class, 'actionInsertManualMcu'])->name('save-input-manual-mcu');
