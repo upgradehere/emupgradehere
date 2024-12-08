@@ -45,13 +45,16 @@ class ProgramMcuController extends Controller
 {
     public function index()
     {
-        return view('/mcu/program_mcu');
+        $company = CompanyM::all();
+        $data['company'] = $company;
+        return view('/mcu/program_mcu', $data);
     }
 
     public function getDataMcuProgramCompany(Request $request)
     {
         try {
             $auth = Auth::user();
+            $company_id = $auth->id_company;
 
             $model = new McuCompanyV();
             $query = $model->select();
@@ -62,6 +65,10 @@ class ProgramMcuController extends Controller
                     $q->where('mcu_program_name', 'ilike', '%' . $searchValue . '%')
                         ->orWhere('company_name', 'ilike', '%' . $searchValue . '%');
                 });
+            }
+
+            if ($company_id !== NULL) {
+                $query->where('company_id', $company_id);
             }
 
             if ($request->has('order') && is_array($request->order)) {
@@ -480,5 +487,113 @@ class ProgramMcuController extends Controller
         }
 
         return redirect()->back();
+    }
+
+    public function saveProgram(Request $request)
+    {
+        $rules = [
+            'company_id' => 'required',
+            'mcu_program_code' => 'required',
+            'mcu_program_name' => 'required',
+        ];
+
+        $messages = [
+            'company_id.required' => 'Nama Perusahaan wajib diisi',
+            'mcu_program_code.required' => 'Kode Program wajib diisi',
+            'mcu_program_name.required' => 'Nama Program wajib diisi',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()) {
+            $messages = $validator->errors()->all(); 
+
+            session()->flash('error', $messages);
+
+            return redirect()->route('program-mcu');
+        }
+
+        $program = new McuProgramM;
+
+        foreach ($request->all() as $k => $r) {
+            if ($k == '_token') {
+                continue;
+            }
+
+            $program->$k = $r;
+        }
+
+        if ($program->save()) {
+            session()->flash('success', 'Program baru telah disimpan');
+            return redirect()->route('program-mcu');
+        } else {
+            session()->flash('success', 'Kesalahan terjadi, program gagal disimpan, harap hubungi Admin kami');
+            return redirect()->route('program-mcu');
+        }
+    }
+
+    public function getProgramName($id)
+    {
+        $program = McuProgramM::find($id);
+        
+        if ($program == null) {
+            $data = [
+                'status' => 'error',
+                'message' => 'Request Failed',
+                'data' => 'Program tidak ditemukan',
+            ];
+
+        } else {
+            $data = [
+                'status' => 'success',
+                'message' => 'Request Success',
+                'data' => $program,
+            ];
+        }
+
+        return response()->json($data, 200);
+    }
+
+    public function updateProgram(Request $request)
+    {
+        $rules = [
+            'mcu_program_id' => 'required',
+            'mcu_program_code' => 'required',
+            'mcu_program_name' => 'required',
+        ];
+
+        $messages = [
+            'mcu_program_id.required' => 'Program wajib dipilih',
+            'mcu_program_code.required' => 'Kode Program wajib diisi',
+            'mcu_program_name.required' => 'Nama Program wajib diisi',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()) {
+            $messages = $validator->errors()->all(); 
+
+            session()->flash('error', $messages);
+
+            return redirect()->route('program-mcu');
+        }
+
+        $program = McuProgramM::find($request->mcu_program_id);
+
+        foreach ($request->all() as $k => $r) {
+            if ($k == '_token' || $k == 'mcu_program_id') {
+                continue;
+            }
+
+            $program->$k = $r;
+        }
+
+        if ($program->save()) {
+            session()->flash('success', 'Program telah diperbarui');
+            return redirect()->route('program-mcu');
+        } else {
+            session()->flash('success', 'Kesalahan terjadi, program gagal diperbarui, harap hubungi Admin kami');
+            return redirect()->route('program-mcu');
+        }
     }
 }

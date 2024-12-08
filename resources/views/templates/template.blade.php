@@ -157,7 +157,8 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="{{ url('/mcu/program-mcu') }}" class="nav-link">
+                                    <a href="{{ url('/mcu/program-mcu') }}"
+                                        class="nav-link {{ Str::contains(Route::currentRouteName(), 'program-mcu') ? 'active' : '' }}">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Informasi MCU</p>
                                     </a>
