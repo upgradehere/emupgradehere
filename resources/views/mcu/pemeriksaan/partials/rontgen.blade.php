@@ -94,18 +94,13 @@
                             <div class="form-group row align-items-center mb-3">
                                 <label class="col-sm-4 col-form-label">Pemeriksa</label>
                                 <div class="col-sm-8">
-                                    {{-- <select class="form-control select2" name="employee_id" style="width: 100%;">
-                                        <option selected="selected" value="">- Pilih Peserta -</option>
-                                        @foreach ($employees as $employee)
-                                            <option value="{{ $employee->employee_id }}">
-                                                {{ $employee->employee_name }}
-                                            </option>
-                                        @endforeach
-                                    </select> --}}
-                                    <select class="form-control select2 selectDoctor" name="doctor_id" style="width: 100%;">
+                                    <select class="form-control select2 selectDoctorRontgen" name="doctor_id" style="width: 100%;">
                                         <option selected="selected" value="">- Dokter Pemeriksa -</option>
-                                        <option value="1">Test Dokter</option>
-                                        <option value="2">Test Dokter</option>
+                                        @if (!empty($doctor_data))
+                                            @foreach ($doctor_data as $doctor)
+                                            <option value="{{ $doctor->id }}">{{ $doctor->doctor_name }}</option>
+                                            @endforeach
+                                        @endif
                                     </select>
                                 </div>
                             </div>
@@ -133,7 +128,10 @@
 </div>
 <script>
     $(function() {
-        $('.selectDoctor').select2();
+        let doctorRontgen = @json($data_rontgen->doctor_id ?? null);
+        $('.selectDoctorRontgen').select2();
+        $('.selectDoctorRontgen').val(doctorRontgen).trigger('change');
+
         $(".custom-file-input").on("change", function() {
             var fileName = $(this).val().split("\\").pop();
             $(this).siblings(".custom-file-label").addClass("selected").html(fileName);

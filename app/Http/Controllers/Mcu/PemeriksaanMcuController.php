@@ -7,6 +7,7 @@ use App\Helpers\GlobalHelper;
 use App\Http\Controllers\Controller;
 use App\Imports\McuAnamnesisImport;
 use App\Models\CompanyM;
+use App\Models\DoctorM;
 use App\Models\EmployeeM;
 use App\Models\LookupC;
 use App\Models\McuCompanyV;
@@ -56,6 +57,8 @@ class PemeriksaanMcuController extends Controller
             ->where('employee_id', $employee_id)
             ->select('nik', 'employee_name', 'lookup_c.lookup_name as sex')
             ->first();
+
+        $doctor_data = DoctorM::select('id', 'doctor_code', 'doctor_name', 'doctor_sign')->orderBy('id', 'asc')->get();
 
         $mcu_model = McuT::select('mcu_date', 'mcu_code', 'package_id')->where('mcu_id', $mcu_id)->first();
         $mcu_date = !empty($mcu_model['mcu_date']) ? date('Y-m-d', strtotime($mcu_model['mcu_date'])) : '-';
