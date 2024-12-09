@@ -20,6 +20,7 @@ trait ResumeMcuTrait
     {
         try {
             $post = $request->post();
+            unset($post['files']);
             $action = $request->input('action');
             $resume_mcu_id = isset($post['resume_mcu_id']) ? $post['resume_mcu_id'] : null;
             if ($action == 'delete') {
