@@ -50,6 +50,19 @@
                                     <input type="text" class="form-control" id="mcuCode" name="recommendations" value="{{ !empty($data_papsmear->recommendations) ? $data_papsmear->recommendations : '' }}" placeholder="">
                                 </div>
                             </div>
+                            <div class="form-group row align-items-center mb-3">
+                                <label class="col-sm-2 col-form-label">Pemeriksa</label>
+                                <div class="col-sm-10">
+                                    <select class="form-control select2 selectDoctorPapsmear" name="doctor_id" style="width: 100%;">
+                                        <option selected="selected" value="">- Dokter Pemeriksa -</option>
+                                        @if (!empty($doctor_data))
+                                            @foreach ($doctor_data as $doctor)
+                                            <option value="{{ $doctor->id }}">{{ $doctor->doctor_name }}</option>
+                                            @endforeach
+                                        @endif
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -68,6 +81,13 @@
 </div>
 <script>
     $(function() {
-        $('.selectDoctor').select2();
+        let doctorPapsmear = @json($data_papsmear->doctor_id ?? null);
+        $('.selectDoctorPapsmear').select2();
+        $('.selectDoctorPapsmear').val(doctorPapsmear).trigger('change');
+
+        $(".custom-file-input").on("change", function() {
+            var fileName = $(this).val().split("\\").pop();
+            $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+        });
     });
 </script>
