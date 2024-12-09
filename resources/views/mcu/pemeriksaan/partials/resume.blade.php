@@ -17,49 +17,65 @@
                             <div class="form-group row align-items-center mb-3">
                                 <label class="col-sm-2 col-form-label">Kesan Fisik</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="mcuCode" name="physical_impression" value="{{ !empty($data_resume_mcu->physical_impression) ? $data_resume_mcu->physical_impression : '' }}" placeholder="">
+                                    <textarea required class="summernote" name="physical_impression">
+                                        {{ $data_resume_mcu->physical_impression }}
+                                    </textarea>
                                 </div>
                             </div>
                             <div class="form-group row align-items-center mb-3">
                                 <label class="col-sm-2 col-form-label">Kesan Rontgen</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="mcuCode" name="rontgen_impression" value="{{ !empty($data_resume_mcu->rontgen_impression) ? $data_resume_mcu->rontgen_impression : '' }}" placeholder="">
+                                    <textarea required class="summernote" name="rontgen_impression">
+                                        {{ $data_resume_mcu->rontgen_impression }}
+                                    </textarea>
                                 </div>
                             </div>
                             <div class="form-group row align-items-center mb-3">
                                 <label class="col-sm-2 col-form-label">Kesan EKG</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="mcuCode" name="ekg_impression" value="{{ !empty($data_resume_mcu->ekg_impression) ? $data_resume_mcu->ekg_impression : '' }}" placeholder="">
+                                    <textarea required class="summernote" name="ekg_impression">
+                                        {{ $data_resume_mcu->ekg_impression }}
+                                    </textarea>
                                 </div>
                             </div>
                             <div class="form-group row align-items-center mb-3">
                                 <label class="col-sm-2 col-form-label">Kesan Audiometri</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="mcuCode" name="audiometry_impression" value="{{ !empty($data_resume_mcu->audiometry_impression) ? $data_resume_mcu->audiometry_impression : '' }}" placeholder="">
+                                    <textarea required class="summernote" name="audiometry_impression">
+                                        {{ $data_resume_mcu->audiometry_impression }}
+                                    </textarea>
                                 </div>
                             </div>
                             <div class="form-group row align-items-center mb-3">
                                 <label class="col-sm-2 col-form-label">Kesan USG</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="mcuCode" name="usg_impression" value="{{ !empty($data_resume_mcu->usg_impression) ? $data_resume_mcu->usg_impression : '' }}" placeholder="">
+                                    <textarea required class="summernote" name="ekg_impression">
+                                        {{ $data_resume_mcu->ekg_impression }}
+                                    </textarea>
                                 </div>
                             </div>
                             <div class="form-group row align-items-center mb-3">
                                 <label class="col-sm-2 col-form-label">Kesan Spirometri</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="mcuCode" name="spirometry_impression" value="{{ !empty($data_resume_mcu->spirometry_impression) ? $data_resume_mcu->spirometry_impression : '' }}" placeholder="">
+                                    <textarea required class="summernote" name="spirometry_impression">
+                                        {{ $data_resume_mcu->spirometry_impression }}
+                                    </textarea>
                                 </div>
                             </div>
                             <div class="form-group row align-items-center mb-3">
                                 <label class="col-sm-2 col-form-label">Kesan Refraksi</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="mcuCode" name="refreaction_impression" value="{{ !empty($data_resume_mcu->refreaction_impression) ? $data_resume_mcu->refreaction_impression : '' }}" placeholder="">
+                                    <textarea required class="summernote" name="refreaction_impression">
+                                        {{ $data_resume_mcu->refreaction_impression }}
+                                    </textarea>
                                 </div>
                             </div>
                             <div class="form-group row align-items-center mb-3">
                                 <label class="col-sm-2 col-form-label">Kesan Laboratorium</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="mcuCode" name="laboratory_impression" value="{{ !empty($data_resume_mcu->laboratory_impression) ? $data_resume_mcu->laboratory_impression : '' }}" placeholder="">
+                                    <textarea required class="summernote" name="laboratory_impression">
+                                        {{ $data_resume_mcu->laboratory_impression }}
+                                    </textarea>
                                 </div>
                             </div>
                         </div>
@@ -76,13 +92,17 @@
                             <div class="form-group row align-items-center mb-3">
                                 <label class="col-sm-2 col-form-label">Kesimpulan Hasil</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="mcuCode" name="result_conclusion" value="{{ !empty($data_resume_mcu->result_conclusion) ? $data_resume_mcu->result_conclusion : '' }}" placeholder="">
+                                    <textarea required class="summernote" name="result_conclusion">
+                                        {{ $data_resume_mcu->result_conclusion }}
+                                    </textarea>
                                 </div>
                             </div>
                             <div class="form-group row align-items-center mb-3">
                                 <label class="col-sm-2 col-form-label">Saran</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="mcuCode" name="suggestion" value="{{ !empty($data_resume_mcu->suggestion) ? $data_resume_mcu->suggestion : '' }}" placeholder="">
+                                    <textarea required class="summernote" name="suggestion">
+                                        {{ $data_resume_mcu->suggestion }}
+                                    </textarea>
                                 </div>
                             </div>
                             <div class="form-group row align-items-center mb-3">
@@ -116,6 +136,21 @@
 </div>
 <script>
     $(function() {
+        $('.summernote').summernote({
+            height: 100,
+            toolbar: [
+                ['style', ['bold', 'italic', 'underline', 'clear']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['view', ['codeview', 'help']]
+            ],
+            callbacks: {
+                onImageUpload: function(files) {
+                    alert('File uploads are disabled.');
+                }
+            },
+            disableDragAndDrop: true
+        });
+
         let doctorResume = @json($data_resume_mcu->doctor_id ?? null);
         $('.selectDoctorResume').select2();
         $('.selectDoctorResume').val(doctorResume).trigger('change');
