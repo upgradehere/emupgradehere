@@ -50,11 +50,17 @@ class ProgramMcuController extends Controller
         return view('/mcu/program_mcu', $data);
     }
 
-    public function getDataMcuProgramCompany(Request $request)
+    public function getDataMcuProgramCompany(Request $request, $company_id)
     {
         try {
             $auth = Auth::user();
-            $company_id = $auth->id_company;
+            if ($auth->id_role == 2) {
+                $company_id = $auth->id_company;
+            } else {
+                if ($company_id == 'A') {
+                    $company_id = NULL;
+                }
+            }
 
             $model = new McuCompanyV();
             $query = $model->select();

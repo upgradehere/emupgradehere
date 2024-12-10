@@ -139,7 +139,7 @@
                         <li class="nav-item">
                             <a href="{{ route('dashboard') }}"
                                 class="nav-link {{ Route::is('dashboard') ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-home"></i>
+                                <i class="nav-icon fas fa-chart-bar"></i>
                                 <p>
                                     Dashboard
                                 </p>

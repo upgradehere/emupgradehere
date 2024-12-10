@@ -49,9 +49,71 @@
         .identity-header td:nth-child(2) {
             border-left: 1px solid #ddd; /* Adds a visual separator */
         }
+
+        .watermark {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(10%,-5%) rotate(-70deg);;
+            opacity: 0.1; 
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .watermark img {
+            transform: rotate(45deg);
+            width: 120%;
+            height: auto;
+        }
+        
+        .logo-left {
+            float: left;
+            max-width: 300px;
+            height: auto;
+        }
+
+        .logo-right {
+            float: right;
+            max-width: 300px;
+            height: auto;
+        }
+
+        .logo-footer {
+            max-width: 800px;
+            height: auto;
+        }
+        
+        @page {
+           margin-top: 130px;
+           margin-bottom: 150px; 
+           margin-left: 20px; 
+           margin-right: 20px; 
+        }
+
+        header { 
+            position: fixed;
+            top: -100px;
+            left: 0px;
+            right: 0px;
+        }
+        footer { 
+            position: fixed; 
+            bottom: -150px; 
+            left: -20px; 
+        }
     </style>
 </head>
 <body>
+    <header>
+        <img class="logo-left" src="{{ public_path('img-pdf/header.jpeg') }}" alt="Logo Kiri">
+        <img class="logo-right" src="{{ public_path('img-pdf/header.jpeg') }}" alt="Logo Kanan">
+    </header>
+    <div class="watermark">
+        <img src="{{ public_path('img-pdf/watermark.jpg') }}" alt="Watermark Logo">
+    </div>
+    <footer>
+        <img class="logo-footer" src="{{ public_path('img-pdf/footer.png') }}" alt="Footer Logo">
+    </footer>
     <table class="identity-header">
         <tbody>
             <tr>

@@ -27,6 +27,10 @@
                                 <button class="btn btn-success" data-toggle="modal" data-target="#modal_add_program">+
                                     Tambah
                                     Program Baru</button>
+                                @if (request()->has('company-id'))
+                                    <a href="{{ route('program-mcu') }}" class="btn btn-primary">Tampilkan Semua Program
+                                        Dari Semua Perusahaan</a>
+                                @endif
                             @endif
                         </div>
                         <!-- /.card-header -->
@@ -129,6 +133,10 @@
     </section>
     <script>
         $(function() {
+            var urlParams = new URLSearchParams(window.location.search);
+            urlParams = urlParams.get('company-id');
+            companyId = (urlParams == null) ? 'A' : urlParams;
+
             let table = $("#mcuProgramTable").DataTable({
                 responsive: true,
                 lengthChange: true,
@@ -137,7 +145,7 @@
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: '/get-data-mcu-program-company',
+                    url: '/get-data-mcu-program-company/' + companyId,
                     type: 'GET',
                     data: function(d) {
 

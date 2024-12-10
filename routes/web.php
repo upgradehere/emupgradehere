@@ -47,7 +47,7 @@ Route::group(['middleware' => ['auth', 'role:1,2']], function () {
     Route::post('/mcu/program-mcu/detail/input-manual-mcu/save-input-manual-mcu', [ProgramMcuController::class, 'actionInsertManualMcu'])->name('save-input-manual-mcu');
     Route::post('/mcu/program-mcu/detail/import-excel-anamnesa', [ProgramMcuController::class, 'importExcelAnamnesa']);
     Route::post('/mcu/program-mcu/detail/upload-hasil', [ProgramMcuController::class, 'uploadHasil']);
-    Route::get('/get-data-mcu-program-company',  [ProgramMcuController::class, 'getDataMcuProgramCompany']);
+    Route::get('/get-data-mcu-program-company/{id}',  [ProgramMcuController::class, 'getDataMcuProgramCompany']);
     Route::get('/get-data-mcu-employee',  [ProgramMcuController::class, 'getDataMcuEmployee']);
     
     Route::get('/mcu/program-mcu/detail/pemeriksaan', [PemeriksaanMcuController::class, 'index']);
@@ -82,4 +82,10 @@ Route::group(['middleware' => ['auth', 'role:1']], function () {
     Route::get('/company/detail/{id}', [CompanyController::class, 'detail'])->name('company.detail');
     Route::post('/company/update', [CompanyController::class, 'update'])->name('company.update');
     Route::get('/get-data-company',  [CompanyController::class, 'getDataCompany']);
+
+    Route::get('/employee/{id}', [EmployeeController::class, 'index'])->name('employee');
+    Route::post('/employee/store', [EmployeeController::class, 'store'])->name('employee.store');
+    Route::get('/employee/delete/{id}', [EmployeeController::class, 'delete'])->name('employee.delete');
+    Route::get('/employee/detail/{id}', [EmployeeController::class, 'detail'])->name('employee.detail');
+    Route::post('/employee/update', [EmployeeController::class, 'update'])->name('employee.update');
 });
