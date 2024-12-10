@@ -92,9 +92,14 @@
                             <div class="form-group row align-items-center mb-3">
                                 <label class="col-sm-2 col-form-label">Kesimpulan Hasil</label>
                                 <div class="col-sm-10">
-                                    <textarea required class="summernote" name="result_conclusion">
-                                        {{ $data_resume_mcu->result_conclusion }}
-                                    </textarea>
+                                    <select class="form-control select2 selectKesimpulan" name="result_conclusion" style="width: 100%;">
+                                        <option selected="selected" value="">- Kesimpulan Hasil MCU -</option>
+                                        @if (!empty($kesimpulan_mcu_dropdown))
+                                            @foreach ($kesimpulan_mcu_dropdown as $conclusion)
+                                            <option value="{{ $conclusion->lookup_id }}">{{ $conclusion->lookup_name }}</option>
+                                            @endforeach
+                                        @endif
+                                    </select>
                                 </div>
                             </div>
                             <div class="form-group row align-items-center mb-3">
@@ -154,5 +159,9 @@
         let doctorResume = @json($data_resume_mcu->doctor_id ?? null);
         $('.selectDoctorResume').select2();
         $('.selectDoctorResume').val(doctorResume).trigger('change');
+
+        let kesimpulan = @json($data_resume_mcu->result_conclusion ?? null);
+        $('.selectKesimpulan').select2();
+        $('.selectKesimpulan').val(kesimpulan).trigger('change');
     });
 </script>
