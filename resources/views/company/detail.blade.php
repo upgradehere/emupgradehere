@@ -23,7 +23,7 @@
                     <div class="card card-primary">
                         <!-- /.card-header -->
                         <!-- form start -->
-                        <form method="POST" action="{{ route('company.update') }}">
+                        <form method="POST" action="{{ route('company.update') }}" enctype="multipart/form-data">
                             @csrf
                             <input type="hidden" value="{{ $company->company_id }}" name="id">
                             <div class="card-body">
@@ -60,6 +60,13 @@
                                 <div class="form-group">
                                     <label for="">Alamat Perusahaan</label>
                                     <textarea required name="company_address" id="" class="form-control" cols="30" rows="10">{{ $company->company_address }}</textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="">Kop Perusahaan</label><br>
+                                    <img style="width:10%" src="/uploads/letterhead/{{ $company->letterhead }}"
+                                        alt=""><br><br>
+                                    <input type="file" name="letterhead" id="letterhead" accept=".jpg,.png"><br>
+                                    <span style="color:red">Maksimal size file Kop adalah 100kb</span>
                                 </div>
                             </div>
                             <!-- /.card-body -->

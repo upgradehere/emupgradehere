@@ -37,8 +37,8 @@
                                         <th>Kode Perusahaan</th>
                                         <th>Jumlah Program</th>
                                         <th>Jumlah MCU</th>
-                                        <th style="width: 100px;">Program</th>
-                                        <th style="width: 80px;"><i class="fas fa-cogs"></i></th>
+                                        <th style="width: 50px;">Program</th>
+                                        <th style="width: 110px;"><i class="fas fa-cogs"></i></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -60,7 +60,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form action="{{ route('company.store') }}" method="POST">
+                        <form action="{{ route('company.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group">
                                 <label for="">Nama Perusahaan</label>
@@ -89,6 +89,11 @@
                             <div class="form-group">
                                 <label for="">Alamat Perusahaan</label>
                                 <textarea required name="company_address" id="" class="form-control" cols="30" rows="10"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="">Kop Perusahaan</label><br>
+                                <input type="file" name="letterhead" id="letterhead" accept=".jpg,.png" required><br>
+                                <span style="color:red">Maksimal size file Kop adalah 100kb</span>
                             </div>
                             <div class="form-group">
                                 <label for="">Password Default PIC</label>
@@ -236,7 +241,7 @@
                         searchable: false,
                         render: function(data, type, row) {
                             var company_id = row.company_id;
-                            return `<a class="btn btn-success btn-sm" href="/mcu/program-mcu?company-id=${company_id}"><i class="fas fa-list"></i> Program</a>`;
+                            return `<a class="btn btn-success btn-sm" href="/mcu/program-mcu?company-id=${company_id}"><i class="fas fa-list"></i> List</a>`;
                         }
                     },
                     {
@@ -248,6 +253,7 @@
                             var delete_url = "{{ route('company.delete', ['id' => '__id__']) }}";
                             delete_url = delete_url.replace('__id__', company_id);
                             return `<a class="btn btn-primary btn-sm action-detail" href="/company/detail/${company_id}"><i class="fas fa-eye"></i></a>
+                                    <a class="btn btn-warning btn-sm" href="/employee/${company_id}"><i class="fas fa-users"></i></a>
                                     <a class="btn btn-danger btn-sm action-delete" data-url="${delete_url}"><i class="fas fa-trash"></i></a>`;
                         }
                     }

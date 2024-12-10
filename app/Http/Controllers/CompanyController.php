@@ -85,6 +85,12 @@ class CompanyController extends Controller
             'pic_phone_number' => 'required|numeric',
             'company_address' => 'required',
             'password' => 'required|min:8',
+            'letterhead' => [
+                'required',
+                'file',
+                'mimes:jpg,png',
+                'max:200'
+            ],
         ];
 
         $messages = [
@@ -99,6 +105,9 @@ class CompanyController extends Controller
             'company_address.required' => 'Alamat Perusahaan wajib diisi',
             'password.required' => 'Password PIC wajib diisi',
             'password.min' => 'Password PIC minimal 8 karakter',
+            'letterhead.required' => 'File Kop wajib diisi',
+            'letterhead.mimes' => 'File Kop hanya diperbolehkan tipe .jpg atau .png',
+            'letterhead.max' => 'File Kop melebihi batas maksimal 100kb',
         ];
 
         $validator = Validator::make($request->all(), $rules, $messages);
@@ -114,13 +123,35 @@ class CompanyController extends Controller
         $company = new companyM;
 
         foreach($request->all() as $key => $req) {
-            if ($key == '_token' || $key == 'password') {
+            if ($key == '_token' || $key == 'password' || $key == 'letterhead') {
                 continue;
             }
             $company[$key] = $req;
         }
 
-        $company->save();
+        if ($request->hasFile('letterhead')) {
+            $file = $request->file('letterhead');
+            $fileName = $file->getClientOriginalName();
+            $uploadPath = public_path('uploads/letterhead');
+
+            if (!file_exists($uploadPath)) {
+                mkdir($uploadPath, 0755, true);
+            }
+
+            if ($file->move($uploadPath, $fileName)) {
+                $company->letterhead = $fileName;
+            } else {
+                session()->flash('error', 'Kesalahan terjadi, perusahaan baru gagal disimpan, harap hubungi Admin kami');
+                return redirect()->route('company');
+            }
+        }
+
+        if ($company->save()) {
+        } else {
+            session()->flash('error', 'Kesalahan terjadi, perusahaan baru gagal disimpan, harap hubungi Admin kami');
+            return redirect()->route('company');
+        }
+        
 
         $user = new User;
         $user->name = $request->pic_name;
@@ -130,7 +161,11 @@ class CompanyController extends Controller
         $user->id_role = 2;
         $user->id_company = $company->company_id;
 
-        $user->save();
+        if ($user->save()) {
+        } else {
+            session()->flash('error', 'Kesalahan terjadi, perusahaan baru gagal disimpan, harap hubungi Admin kami');
+            return redirect()->route('company');
+        }
 
         session()->flash('success', 'Perusahaan baru telah disimpan');
         return redirect()->route('company');
@@ -217,9 +252,30 @@ class CompanyController extends Controller
             $company[$key] = $req;
         }
 
-        $company->save();
+        if ($request->hasFile('letterhead')) {
+            $file = $request->file('letterhead');
+            $fileName = $file->getClientOriginalName();
+            $uploadPath = public_path('uploads/letterhead');
 
-        session()->flash('success', 'Perusahaan diperbarui');
-        return redirect()->route('company.detail', ['id' => $id]);
+            if (!file_exists($uploadPath)) {
+                mkdir($uploadPath, 0755, true);
+            }
+
+            if ($file->move($uploadPath, $fileName)) {
+                $company->letterhead = $fileName;
+            } else {
+                session()->flash('error', 'Kesalahan terjadi, perusahaan baru gagal disimpan, harap hubungi Admin kami');
+                return redirect()->route('company');
+            }
+        }
+
+        if ($company->save()) {
+            session()->flash('success', 'Perusahaan diperbarui');
+            return redirect()->route('company.detail', ['id' => $id]);
+        } else {
+            session()->flash('success', 'Kesalahan terjadi, perusahaan gagal diperbarui. Harap hubungi Admin kamu');
+            return redirect()->route('company.detail', ['id' => $id]);
+        }
+
     }
 }
