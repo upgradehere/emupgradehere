@@ -1,4 +1,4 @@
-<h4>Anamnesa</h4>
+<h4>ANAMNESA</h4>
 <h5>Riwayat Penyakit Sebelumnya</h5>
 <table class="identity-header">
     <tbody>

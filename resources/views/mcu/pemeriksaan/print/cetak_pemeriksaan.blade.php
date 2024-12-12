@@ -128,7 +128,9 @@
     @if (!empty($anamnesis))
     @include('mcu.pemeriksaan.print.partials.cetak_anamnesis')
     @endif
+    
     <div class="page-break"></div>
+    
     @if (!empty($laboratorium))
     @include('mcu.pemeriksaan.print.partials.cetak_lab')
     @endif
@@ -136,10 +138,14 @@
     @if (!empty($refraksi))
     @include('mcu.pemeriksaan.print.partials.cetak_refraksi')
     @endif
+    
+    <div class="page-break"></div>
 
     @if (!empty($rontgen))
     @include('mcu.pemeriksaan.print.partials.cetak_rontgen')
     @endif
+
+    <div class="page-break"></div>
 
     @if (!empty($audiometri))
     @include('mcu.pemeriksaan.print.partials.cetak_audiometri')
@@ -153,6 +159,8 @@
     @include('mcu.pemeriksaan.print.partials.cetak_ekg')
     @endif
 
+    <div class="page-break"></div>
+
     @if (!empty($usg))
     @include('mcu.pemeriksaan.print.partials.cetak_usg')
     @endif
@@ -164,6 +172,8 @@
     @if (!empty($papsmear))
     @include('mcu.pemeriksaan.print.partials.cetak_papsmear')
     @endif
+
+    <div class="page-break"></div>
 
     @if (!empty($resume))
     @include('mcu.pemeriksaan.print.partials.cetak_resume')

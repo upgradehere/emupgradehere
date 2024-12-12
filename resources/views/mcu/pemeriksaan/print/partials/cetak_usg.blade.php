@@ -1,1 +1,55 @@
 <h4>Usg</h4>
+<table class="identity-header">
+    <tbody>
+        <tr>
+            <td>
+            	<table>
+		            <tr>
+		                <td>Hepar</td>
+		                <td></td>
+		            </tr>
+		            <tr>
+		                <td>Kantong Empedu</td>
+		                <td></td>
+		            </tr>
+		            <tr>
+		                <td>Pankreas</td>
+		                <td></td>
+		            </tr>
+		            <tr>
+		                <td>Lien</td>
+		                <td></td>
+		            </tr>
+		            <tr>
+		                <td>Ginjal</td>
+		                <td></td>
+		            </tr>
+		        </table>
+            </td>
+            <td>
+            	 <table>
+		            <tr>
+		                <td>Buli Buli</td>
+		                <td></td>
+		            </tr>
+		            <tr>
+		                <td>Prostat/Uterus</td>
+		                <td></td>
+		            </tr>
+		            <tr>
+		                <td>Kesan</td>
+		                <td></td>
+		            </tr>
+		            <tr>
+		                <td>Kesimpulan</td>
+		                <td></td>
+		            </tr>
+		            <tr>
+		                <td>Pemeriksa</td>
+		                <td></td>
+		            </tr>
+		        </table>
+            </td>
+        </tr>
+    </tbody>
+</table>
