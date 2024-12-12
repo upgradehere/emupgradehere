@@ -16,13 +16,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">Pegawai</h1>
+                    <h1 class="m-0">Dokter</h1>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Beranda</a></li>
-                        <li class="breadcrumb-item">Perusahaan</li>
-                        <li class="breadcrumb-item active">Pegawai</li>
+                        <li class="breadcrumb-item active">Dokter</li>
                     </ol>
                 </div><!-- /.col -->
             </div><!-- /.row -->
@@ -34,23 +33,20 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">Daftar Pegawai</h3> <br>
+                            <h3 class="card-title">Daftar Dokter</h3> <br>
                         </div>
                         <div class="card-header">
                             <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#modal-add">+ Tambah
-                                Pegawai Baru</button>
-                            <a href="{{ route('employee') }}" class="btn btn-primary btn-sm">Tampilkan Semua Pegawai Dari
-                                Semua Perusahaan</a>
+                                Dokter Baru</button>
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
-                            <table id="employeeTable" class="table table-bordered table-striped">
+                            <table id="doctorTable" class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
                                         <th style="width: 30px;">No</th>
-                                        <th>Kode Pegawai</th>
-                                        <th>Nama Pegawai</th>
-                                        <th>Perusahaan</th>
+                                        <th>Kode Dokter</th>
+                                        <th>Nama Dokter</th>
                                         <th style="width: 80px;"><i class="fas fa-cogs"></i></th>
                                     </tr>
                                 </thead>
@@ -67,46 +63,26 @@
             <div class="modal-dialog modal-xl">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">Tambah Pegawai Baru</h4>
+                        <h4 class="modal-title">Tambah Dokter Baru</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form action="{{ route('employee.store') }}" method="POST">
+                        <form action="{{ route('doctor.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group">
-                                <label for="">Perusahaan</label>
-                                <select name="company_id" id="" class="form-control" required>
-                                    <option value="">-- Pilih Perusahaan --</option>
-                                    @foreach ($company as $cp)
-                                        <option value="{{ $cp->company_id }}">{{ $cp->company_name }}</option>
-                                    @endforeach
-                                </select>
+                                <label for="">Nama Dokter</label>
+                                <input type="text" required name="doctor_name" class="form-control">
                             </div>
                             <div class="form-group">
-                                <label for="">Nama Pegawai</label>
-                                <input type="text" required name="employee_name" class="form-control">
+                                <label for="">Kode Dokter</label>
+                                <input type="text" required name="doctor_code" class="form-control">
                             </div>
                             <div class="form-group">
-                                <label for="">Kode Pegawai</label>
-                                <input type="text" required name="employee_code" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label for="">NIK</label>
-                                <input type="text" required name="nik" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label for="">No Telp</label>
-                                <input type="text" required name="phone_number" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label for="">Jenis Kelamin</label>
-                                <select name="sex" id="" class="form-control" required>
-                                    <option value="">-- Pilih Jenis Kelamin --</option>
-                                    <option value="11">Laki Laki</option>
-                                    <option value="12">Perempuan</option>
-                                </select>
+                                <label for="">Tanda Tangan Dokter</label>
+                                <input type="file" name="doctor_sign" id="doctor_sign" accept=".jpg,.png" required><br>
+                                <span style="color:red">Maksimal size file TTD Dokter adalah 100kb</span>
                             </div>
 
                             <div class="modal-footer justify-content-between">
@@ -129,7 +105,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        Apakah Anda yakin ingin menghapus pegawai ini?
+                        Apakah Anda yakin ingin menghapus dokter ini?
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
@@ -141,7 +117,7 @@
     </section>
     <script>
         $(function() {
-            let table = $("#employeeTable").DataTable({
+            let table = $("#doctorTable").DataTable({
                 responsive: true,
                 lengthChange: true,
                 autoWidth: false,
@@ -149,7 +125,7 @@
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: '/employee/data/<?php echo $company_id; ?>',
+                    url: '/doctor/data/',
                     type: 'GET',
                     data: function(d) {
 
@@ -165,20 +141,14 @@
                         }
                     },
                     {
-                        data: 'employee_code',
-                        name: 'employee_code',
+                        data: 'doctor_code',
+                        name: 'doctor_code',
                         searchable: true,
                         orderable: true
                     },
                     {
-                        data: 'employee_name',
-                        name: 'employee_name',
-                        searchable: true,
-                        orderable: true
-                    },
-                    {
-                        data: 'company.company_name',
-                        name: 'company.company_name',
+                        data: 'doctor_name',
+                        name: 'doctor_name',
                         searchable: true,
                         orderable: true
                     },
@@ -187,10 +157,10 @@
                         orderable: false,
                         searchable: false,
                         render: function(data, type, row) {
-                            var employee_id = row.employee_id;
-                            var delete_url = "{{ route('employee.delete', ['id' => '__id__']) }}";
-                            delete_url = delete_url.replace('__id__', employee_id);
-                            return `<a class="btn btn-primary btn-sm action-detail" href="/employee/detail/${employee_id}"><i class="fas fa-eye"></i></a>
+                            var doctor_id = row.id;
+                            var delete_url = "{{ route('doctor.delete', ['id' => '__id__']) }}";
+                            delete_url = delete_url.replace('__id__', doctor_id);
+                            return `<a class="btn btn-primary btn-sm action-detail" href="/doctor/detail/${doctor_id}"><i class="fas fa-eye"></i></a>
                                     <a class="btn btn-danger btn-sm action-delete" data-url="${delete_url}"><i class="fas fa-trash"></i></a>`;
                         }
                     }
@@ -200,7 +170,7 @@
                 ],
             });
 
-            $('#employeeTable tbody').on('click', '.action-delete', function() {
+            $('#doctorTable tbody').on('click', '.action-delete', function() {
                 Swal.fire({
                     title: "Apakah anda akan menghapus data?",
                     showDenyButton: true,

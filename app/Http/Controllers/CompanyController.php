@@ -255,7 +255,14 @@ class CompanyController extends Controller
         if ($request->hasFile('letterhead')) {
             $file = $request->file('letterhead');
             $fileName = $file->getClientOriginalName();
+            $fileSize = $file->getSize();
+            $fileSizeInKB = $fileSize / 1024;
             $uploadPath = public_path('uploads/letterhead');
+
+            if ($fileSizeInKB > 100) {
+                session()->flash('error', 'Ukuran file Kop Surat maksimal 100Kb');
+                return redirect()->route('company');
+            }
 
             if (!file_exists($uploadPath)) {
                 mkdir($uploadPath, 0755, true);

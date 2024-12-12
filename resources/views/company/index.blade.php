@@ -253,7 +253,7 @@
                             var delete_url = "{{ route('company.delete', ['id' => '__id__']) }}";
                             delete_url = delete_url.replace('__id__', company_id);
                             return `<a class="btn btn-primary btn-sm action-detail" href="/company/detail/${company_id}"><i class="fas fa-eye"></i></a>
-                                    <a class="btn btn-warning btn-sm" href="/employee/${company_id}"><i class="fas fa-users"></i></a>
+                                    <a class="btn btn-warning btn-sm" href="/employee?company-id=${company_id}"><i class="fas fa-users"></i></a>
                                     <a class="btn btn-danger btn-sm action-delete" data-url="${delete_url}"><i class="fas fa-trash"></i></a>`;
                         }
                     }

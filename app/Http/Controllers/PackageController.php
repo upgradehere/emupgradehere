@@ -53,6 +53,13 @@ class PackageController extends Controller
                 }
             }
 
+            // Map additional fields
+            $data = $data->map(function ($item) {
+                $item->price = 'Rp ' . number_format($item->price, 0, ',', '.');
+        
+                return $item;
+            });
+            
             $start = $request->start ?? 0;
             $length = $request->length ?? 10;
 

@@ -4,13 +4,13 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">Detail Pegawai</h1>
+                    <h1 class="m-0">Detail Dokter</h1>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Beranda</a></li>
-                        <li class="breadcrumb-item"><a href={{ route('package') }}>Pegawai</a></li>
-                        <li class="breadcrumb-item active">Detail Pegawai</li>
+                        <li class="breadcrumb-item"><a href={{ route('doctor') }}>Dokter</a></li>
+                        <li class="breadcrumb-item active">Detail Dokter</li>
                     </ol>
                 </div><!-- /.col -->
             </div><!-- /.row -->
@@ -23,49 +23,26 @@
                     <div class="card card-primary">
                         <!-- /.card-header -->
                         <!-- form start -->
-                        <form method="POST" action="{{ route('employee.update') }}">
+                        <form method="POST" action="{{ route('doctor.update') }}" enctype="multipart/form-data">
                             @csrf
-                            <input type="hidden" value="{{ $employee->employee_id }}" name="id">
+                            <input type="hidden" value="{{ $doctor->id }}" name="id">
                             <div class="card-body">
                                 <div class="form-group">
-                                    <label for="">Perusahaan</label>
-                                    <select name="company_id" id="" class="form-control" required>
-                                        <option value="">-- Pilih Perusahaan --</option>
-                                        @foreach ($company as $cp)
-                                            <option {{ $cp->company_id == $employee->company_id ? 'selected' : '' }}
-                                                value="{{ $cp->company_id }}">{{ $cp->company_name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="">Nama Pegawai</label>
-                                    <input type="text" required value="{{ $employee->employee_name }}"
-                                        name="employee_name" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <label for="">Kode Pegawai</label>
-                                    <input type="text" required value="{{ $employee->employee_code }}"
-                                        name="employee_code" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <label for="">NIK</label>
-                                    <input type="text" required value="{{ $employee->nik }}" name="nik"
+                                    <label for="">Nama Dokter</label>
+                                    <input type="text" required value="{{ $doctor->doctor_name }}" name="doctor_name"
                                         class="form-control">
                                 </div>
                                 <div class="form-group">
-                                    <label for="">No Telp</label>
-                                    <input type="text" required value="{{ $employee->phone_number }}"
-                                        name="phone_number" class="form-control">
+                                    <label for="">Kode Dokter</label>
+                                    <input type="text" required value="{{ $doctor->doctor_code }}" name="doctor_code"
+                                        class="form-control">
                                 </div>
                                 <div class="form-group">
-                                    <label for="">Jenis Kelamin</label>
-                                    <select name="sex" id="" class="form-control" required>
-                                        <option value="">-- Pilih Jenis Kelamin --</option>
-                                        <option {{ $employee->sex == 11 ? 'selected' : '' }} value="11">Laki Laki
-                                        </option>
-                                        <option {{ $employee->sex == 12 ? 'selected' : '' }} value="12">Perempuan
-                                        </option>
-                                    </select>
+                                    <label for="">Tanda Tangan Dokter</label><br>
+                                    <img src="/uploads/doctor_sign/{{ $doctor->doctor_sign }}" style="width:10%"
+                                        alt=""><br><br>
+                                    <input type="file" name="doctor_sign" id="doctor_sign" accept=".jpg,.png"><br>
+                                    <span style="color:red">Maksimal size file TTD Dokter adalah 100kb</span>
                                 </div>
                             </div>
                             <!-- /.card-body -->

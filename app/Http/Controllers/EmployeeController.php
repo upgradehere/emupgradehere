@@ -4,36 +4,41 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\EmployeeM;
+use App\Models\CompanyM;
 use Validator;
 use Session;
 
 class EmployeeController extends Controller
 {
-    public function index(Request $request, $company_id)
+    public function index(Request $request)
     {
         $data = [];
+        $data['company_id'] = 'A';
 
-        if (strtolower($company_id) == 'all') {
-            $employee = EmployeeM::all();
-        } else {
-            $employee = EmployeeM::where('company_id', $company_id)->get();
+        if ($request->get('company-id')) {
+            if (is_numeric($request->get('company-id'))) {
+                $data['company_id'] = $request->get('company-id');
+            }
         }
 
-        $data['employee'] = $employee;
+        $company = CompanyM::all();
+        $data['company'] = $company;
 
         return view('employee/index', $data);
     }
 
-    public function getDataPackage(Request $request)
+    public function data(Request $request, $company_id)
     {
         try {
-            $model = new PackageM();
-            $query = $model->select();
+            $model = new EmployeeM();
+            // $query = $model->select();
+            $query = $model->with('company');
 
             if ($request->has('search') && !empty($request->search['value'])) {
                 $searchValue = $request->search['value'];
                 $query = $query->where(function ($q) use ($searchValue) {
-                    $q->where('package_name', 'ilike', '%' . $searchValue . '%');
+                    $q->where('employee_name', 'ilike', '%' . $searchValue . '%')
+                        ->orWhere('employee_code', 'ilike', '%' . $searchValue . '%');
                 });
             }
 
@@ -46,6 +51,10 @@ class EmployeeController extends Controller
                 }
             }
 
+            if ($company_id !== 'A') {
+                $query->where('company_id', $company_id);
+            }
+           
             $start = $request->start ?? 0;
             $length = $request->length ?? 10;
 
@@ -69,18 +78,23 @@ class EmployeeController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'package_name' => 'required',
-            'package_code' => 'required',
-            'price' => 'required|numeric',
-            'desc' => 'required',
+            'company_id' => 'required',
+            'employee_name' => 'required',
+            'employee_code' => 'required',
+            'nik' => 'required|numeric',
+            'phone_number' => 'required|numeric',
+            'sex' => 'required',
         ];
 
         $messages = [
-            'package_name.required' => 'Nama Paket wajib diisi',
-            'package_code.required' => 'Kode Paket wajib diisi',
-            'price.required' => 'Harga wajib diisi',
-            'price.numeric' => 'Harga harus berupa angka',
-            'desc.required' => 'Deskripsi Paket wajib diisi',
+            'company_id.required' => 'Perusahaan wajib diisi',
+            'employee_name.required' => 'Nama Pegawai wajib diisi',
+            'employee_code.required' => 'Kode Pegawai wajib diisi',
+            'nik.required' => 'NIK Paket wajib diisi',
+            'nik.numeric' => 'NIK harus berupa angka',
+            'phone_number.required' => 'No Telp Paket wajib diisi',
+            'phone_number.numeric' => 'No Telp harus berupa angka',
+            'sex.required' => 'Jenis Kelamin Paket wajib diisi',
         ];
         $validator = Validator::make($request->all(), $rules, $messages);
 
@@ -89,43 +103,31 @@ class EmployeeController extends Controller
 
             session()->flash('error', $messages);
 
-            return redirect()->route('package');
+            return redirect()->route('employee');
         }
 
-        $package = new PackageM;
-        $package->package_name = $request->package_name;
-        $package->package_code = $request->package_code;
-        $package->price = $request->price;
-        $package->desc = $request->desc;
-
-        if (isset($request->treatment)) {
-            foreach ($request->treatment as $t) {
-                $package->$t = 1;
+        $employee = new EmployeeM;
+        foreach ($request->all() as $k => $r) {
+            if ($k != '_token') {
+                $employee->$k = $r;
             }
         }
 
-        $lab_id = [];
-        if (isset($request->laboratory_item)) {
-            foreach ($request->laboratory_item as $l) {
-                array_push($lab_id, $l);
-            }
+        if($employee->save()) {
+            session()->flash('success', 'Pegawai baru berhasil disimpan');
+        } else {
+            session()->flash('error', 'Kesalahan terjadi, pegawai gagal disimpan, harap hubungi Admin kami');
         }
 
-        $lab_id = json_encode($lab_id);
-
-        $package->lab = $lab_id;
-
-        $package->save();
-
-        session()->flash('success', 'Paket baru telah disimpan');
-        return redirect()->route('package');
+        return redirect()->route('employee');
+        
     }
 
     public function delete($id)
     {
-        $package = PackageM::find($id);
+        $employee = EmployeeM::find($id);
 
-        if ($package->delete()) {
+        if ($employee->delete()) {
             $data = [
                 'status' => 'success',
                 'message' => 'Delete success',
@@ -146,28 +148,14 @@ class EmployeeController extends Controller
     public function detail($id)
     {
         $data = [];
-        $package = PackageM::find($id);
+        $employee = EmployeeM::with('company')->where('employee_id',$id)->first();
+        $company = CompanyM::all();
         
-        if ($package) {
-            $data['package'] = $package;
+        if ($employee) {
+            $data['employee'] = $employee;
+            $data['company'] = $company;
             
-            $treatment = LookupC::where("lookup_type", "examination_type")
-                                ->get();
-
-            $laboratorium = LaboratoryExaminationGroupM::with([
-                "examinationTypes",
-                "examinationTypes.examinations"
-            ])->get();
-
-            $data['treatment'] = $treatment;
-            $data['laboratorium'] = $laboratorium;
-
-            $lab_ids = json_decode($package->lab);
-            $lab_item_current = LaboratoryExaminationM::whereIn('laboratory_examination_id', $lab_ids)->get();
-
-            $data['laboratorium_current'] = $lab_item_current;
-
-            return view('package/detail', $data);
+            return view('employee/detail', $data);
         } else {
             return view('errors/404');
         }
@@ -176,18 +164,25 @@ class EmployeeController extends Controller
     public function update(Request $request)
     {
         $rules = [
-            'package_name' => 'required',
-            'package_code' => 'required',
-            'price' => 'required|numeric',
-            'desc' => 'required',
+            'id' => 'required',
+            'company_id' => 'required',
+            'employee_name' => 'required',
+            'employee_code' => 'required',
+            'nik' => 'required|numeric',
+            'phone_number' => 'required|numeric',
+            'sex' => 'required',
         ];
 
         $messages = [
-            'package_name.required' => 'Nama Paket wajib diisi',
-            'package_code.required' => 'Kode Paket wajib diisi',
-            'price.required' => 'Harga wajib diisi',
-            'price.numeric' => 'Harga harus berupa angka',
-            'desc.required' => 'Deskripsi Paket wajib diisi',
+            'id.required' => 'Pegawai tidak dipilih',
+            'company_id.required' => 'Perusahaan wajib diisi',
+            'employee_name.required' => 'Nama Pegawai wajib diisi',
+            'employee_code.required' => 'Kode Pegawai wajib diisi',
+            'nik.required' => 'NIK Paket wajib diisi',
+            'nik.numeric' => 'NIK harus berupa angka',
+            'phone_number.required' => 'No Telp Paket wajib diisi',
+            'phone_number.numeric' => 'No Telp harus berupa angka',
+            'sex.required' => 'Jenis Kelamin Paket wajib diisi',
         ];
 
         $id = $request->id;
@@ -199,46 +194,27 @@ class EmployeeController extends Controller
 
             session()->flash('error', $messages);
 
-            return redirect()->route('package.detail', ['id' => $id]);
+            return redirect()->route('employee.detail', ['id' => $id]);
         }
 
-        $package = PackageM::find($id);
-        $package->package_name = $request->package_name;
-        $package->price = $request->price;
-        $package->desc = $request->desc;
+        $employee = EmployeeM::find($id);
 
-        $package->anamnesis = 0;
-        $package->rontgen = 0;
-        $package->audiometry = 0;
-        $package->spirometry = 0;
-        $package->ekg = 0;
-        $package->usg = 0;
-        $package->treadmill = 0;
-        $package->papsmear = 0;
-        $package->resume = 0;
-        $package->refraction = 0;
-        $package->lab = "[]";
-
-        if (isset($request->treatment)) {
-            foreach ($request->treatment as $t) {
-                $package->$t = 1;
+        if ($employee) {
+            foreach ($request->all() as $k => $r) {
+                if ($k != '_token' && $k != 'id') {
+                    $employee->$k = $r;
+                }
             }
-        }
-
-        $lab_id = [];
-        if (isset($request->laboratory_item)) {
-            foreach ($request->laboratory_item as $l) {
-                array_push($lab_id, $l);
+    
+            if($employee->save()) {
+                session()->flash('success', 'Pegawai baru berhasil disimpan');
+            } else {
+                session()->flash('error', 'Kesalahan terjadi, pegawai gagal disimpan, harap hubungi Admin kami');
             }
+        } else {
+            session()->flash('error', 'Pegawai tidak ditemukan');
         }
 
-        $lab_id = json_encode($lab_id);
-
-        $package->lab = $lab_id;
-
-        $package->save();
-
-        session()->flash('success', 'Paket diperbarui');
-        return redirect()->route('package.detail', ['id' => $id]);
+        return redirect()->route('employee');
     }
 }

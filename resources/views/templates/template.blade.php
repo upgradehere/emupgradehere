@@ -187,6 +187,17 @@
                                 </a>
                             </li>
                         @endif
+                        @if (Auth::user()->id_role == 1)
+                            <li class="nav-item">
+                                <a href="{{ route('doctor') }}"
+                                    class="nav-link {{ Route::is('doctor.*') || Route::is('doctor') ? 'active' : '' }}">
+                                    <i class="nav-icon fas fa-user-md"></i>
+                                    <p>
+                                        Dokter
+                                    </p>
+                                </a>
+                            </li>
+                        @endif
 
                     </ul>
                 </nav>
