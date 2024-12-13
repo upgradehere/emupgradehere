@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('password', 100);
             $table->string('otp', 6)->nullable();
             $table->datetime('otp_expired', 6)->nullable();
-            $table->integer('id_role', 1);
+            $table->unsignedInteger('id_role');
             $table->unsignedInteger('id_company')->nullable();
             $table->softDeletes();
             $table->rememberToken();

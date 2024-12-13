@@ -7,12 +7,14 @@ use App\Helpers\GlobalHelper;
 use App\Http\Controllers\Controller;
 use App\Imports\McuAnamnesisImport;
 use App\Models\CompanyM;
+use App\Models\DoctorM;
 use App\Models\EmployeeM;
 use App\Models\LookupC;
 use App\Models\McuCompanyV;
 use App\Models\McuEmployeeV;
 use App\Models\McuProgramM;
 use App\Models\McuT;
+use App\Models\PackageM;
 use App\Traits\AnamnesisTrait;
 use App\Traits\AudiometriTrait;
 use App\Traits\EkgTrait;
@@ -44,14 +46,7 @@ class PemeriksaanMcuController extends Controller
     use PapsmearTrait;
     use ResumeMcuTrait;
 
-    private $test = null;
-    private $examination_package = [];
-
-    public function __construct()
-    {
-        $this->test = 'test';
-        $this->examination_package = GlobalHelper::getMcuPackage(1);
-    }
+    public function __construct() {}
 
     public function index(Request $request)
     {
@@ -63,13 +58,16 @@ class PemeriksaanMcuController extends Controller
             ->select('nik', 'employee_name', 'lookup_c.lookup_name as sex')
             ->first();
 
-        $examinations = $this->examination_package['examinations'];
-        $mcu_model = McuT::select('mcu_date', 'mcu_code')->where('mcu_id', $mcu_id)->first();
+        $doctor_data = DoctorM::select('id', 'doctor_code', 'doctor_name', 'doctor_sign')->orderBy('id', 'asc')->get();
+
+        $mcu_model = McuT::select('mcu_date', 'mcu_code', 'package_id')->where('mcu_id', $mcu_id)->first();
         $mcu_date = !empty($mcu_model['mcu_date']) ? date('Y-m-d', strtotime($mcu_model['mcu_date'])) : '-';
         $mcu_code = !empty($mcu_model['mcu_code']) ? $mcu_model['mcu_code'] : '-';
-        $mcu_package_name = 'Paket Lengkap';
+        $getPackage = GlobalHelper::getMcuPackage($mcu_model->package_id);
+        $examinations = $getPackage['examinations'];
+        $mcu_package_name = $getPackage['package_name'];
         $data_anamnesis = self::getDataAnamnesis($mcu_id);
-        $laboratory_examintaions = !empty($this->examination_package['laboratory_examinations']) ? $this->examination_package['laboratory_examinations'] : [];
+        $laboratory_examintaions = !empty($getPackage['laboratory_examinations']) ? $getPackage['laboratory_examinations'] : [];
         $form_lab = self::getFormLab($mcu_id, $laboratory_examintaions);
         $data_refraction = self::getDataRefraction($mcu_id);
         $data_rontgen = self::getDataRontgen($mcu_id);
@@ -80,6 +78,8 @@ class PemeriksaanMcuController extends Controller
         $data_papsmear = self::getDataPapsmear($mcu_id);
         $data_resume_mcu = self::getDataResumeMcu($mcu_id);
         $data_audiometry = self::getDataAudiometry($mcu_id);
+        $kesimpulan_mcu_dropdown = LookupC::select('lookup_id', 'lookup_code', 'lookup_type', 'lookup_name')->where('lookup_type', ConstantsHelper::LOOKUP_KESIMPULAN_MCU)->get();
+        // return $kesimpulan_mcu_dropdown;
 
         return view('/mcu/pemeriksaan/index_pemeriksaan', get_defined_vars());
     }

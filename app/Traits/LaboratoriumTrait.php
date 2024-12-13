@@ -44,33 +44,41 @@ trait LaboratoriumTrait
             $groups = LaboratoryExaminationGroupM::with(['examinationTypes.examinations'])->get();
             foreach ($groups as $group) {
                 foreach ($group->examinationTypes as $type) {
-                    $type->examinations = LaboratoryExaminationM::select(
+                    $query = LaboratoryExaminationM::select(
                         'laboratory_examination_m.laboratory_examination_id',
                         'laboratory_examination_m.laboratory_examination_code',
                         'laboratory_examination_m.laboratory_examination_name',
                         'laboratory_reference_value_m.unit',
                         'laboratory_reference_value_m.reference_value',
-                        'laboratory_detail_t.result',
-                        'laboratory_detail_t.is_abnormal',
+                        DB::raw('NULL as result'),
+                        DB::raw('NULL as is_abnormal')
                     )
                     ->leftJoin('laboratory_reference_value_m', 'laboratory_reference_value_m.laboratory_examination_id', '=', 'laboratory_examination_m.laboratory_examination_id')
-                    ->leftJoin('laboratory_detail_t', 'laboratory_detail_t.laboratory_examination_id', '=', 'laboratory_examination_m.laboratory_examination_id')
-                    ->leftJoin('laboratory_t', 'laboratory_t.laboratory_id', '=', 'laboratory_detail_t.laboratory_id')
                     ->where('laboratory_examination_type_id', $type->laboratory_examination_type_id)
                     ->whereIn('laboratory_examination_m.laboratory_examination_id', $laboratory_examintaions);
 
+                    $examinations = $query->get();
+                    $filledData = LaboratoryExaminationM::select(
+                        'laboratory_examination_m.laboratory_examination_id',
+                        'laboratory_detail_t.result',
+                        'laboratory_detail_t.is_abnormal'
+                    )
+                    ->leftJoin('laboratory_detail_t', 'laboratory_detail_t.laboratory_examination_id', '=', 'laboratory_examination_m.laboratory_examination_id')
+                    ->leftJoin('laboratory_t', 'laboratory_t.laboratory_id', '=', 'laboratory_detail_t.laboratory_id')
+                    ->where('laboratory_examination_type_id', $type->laboratory_examination_type_id)
+                    ->whereIn('laboratory_examination_m.laboratory_examination_id', $laboratory_examintaions)
+                    ->where('laboratory_t.mcu_id', $mcu_id)
+                    ->get()
+                    ->keyBy('laboratory_examination_id');
 
-                    $labDetailT = LaboratoryDetailT::select('*')->where('laboratory_id', $labT->laboratory_id)->first();
-                    if (!empty($labDetailT)) {
-                        $type->examinations->where(function ($query) use ($mcu_id) {
-                            $query->whereNull('laboratory_t.laboratory_id')
-                                ->orWhere('laboratory_t.mcu_id', $mcu_id);
-                        });
+                    foreach ($examinations as $examination) {
+                        if (isset($filledData[$examination->laboratory_examination_id])) {
+                            $examination->result = $filledData[$examination->laboratory_examination_id]->result;
+                            $examination->is_abnormal = $filledData[$examination->laboratory_examination_id]->is_abnormal;
+                        }
                     }
-                    $type->examinations = $type->examinations->get();
-                    // $type->examinations = $type->examinations;
-                    $type->examinations->result = 1;
-                    // Log::info($type->examinations);
+
+                    $type->examinations = $examinations;
                 }
             }
             $data['laboratory_id'] = $labT->laboratory_id;

@@ -25,4 +25,13 @@ class ConstantsHelper {
     const LOOKUP_EXAMINATION_TYPE_PAPSMEAR = 29;
     const LOOKUP_EXAMINATION_TYPE_RESUME_MCU = 30;
 
+    // lookup kesimpulan hasil mcu
+    const LOOKUP_KESIMPULAN_MCU = 'kesimpulan_mcu';
+
+    const KESIMPULAN_FIT_TO_WORK = 31;
+    const KESIMPULAN_FIT_TO_WORK_WITH_MEDICAL_NOTE = 32;
+    const KESIMPULAN_FIT_TEMPORARY_UNFIT = 33;
+    const KESIMPULAN_NEED_FURTHER_EXAMINATION = 34;
+    const KESIMPULAN_FIT_WITH_NOTE = 35;
+
 }

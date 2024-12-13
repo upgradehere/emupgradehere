@@ -290,7 +290,14 @@
                             <div class="form-group row align-items-center mb-3">
                                 <label class="col-sm-4 col-form-label">Pemeriksa</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="mcuCode" name="doctor_id" value="{{ isset($data_audiometry->doctor_id) ? $data_audiometry->doctor_id : '' }}" placeholder="">
+                                    <select class="form-control select2 selectDoctorAudiometry" name="doctor_id" style="width: 100%;">
+                                        <option selected="selected" value="">- Dokter Pemeriksa -</option>
+                                        @if (!empty($doctor_data))
+                                            @foreach ($doctor_data as $doctor)
+                                            <option value="{{ $doctor->id }}">{{ $doctor->doctor_name }}</option>
+                                            @endforeach
+                                        @endif
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -311,7 +318,10 @@
 </div>
 <script>
     $(function() {
-        $('.selectDoctor').select2();
+        let doctorAudiometry = @json($data_audiometry->doctor_id ?? null);
+        $('.selectDoctorAudiometry').select2();
+        $('.selectDoctorAudiometry').val(doctorAudiometry).trigger('change');
+
         $(".custom-file-input").on("change", function() {
             var fileName = $(this).val().split("\\").pop();
             $(this).siblings(".custom-file-label").addClass("selected").html(fileName);

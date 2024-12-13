@@ -81,12 +81,14 @@ class McuAudiometryImport implements ToCollection, WithHeadingRow
                     'employee_id' => $employeeModel->employee_id,
                     'company_id' => $this->companyId,
                     'mcu_program_id' => $this->mcuProgramId,
-                    'is_import' => true
+                    'is_import' => true,
+                    'package_id' => $packageModel->id
                 ]);
                 $modelMcu = McuT::select('mcu_id')
                     ->where('employee_id', $employeeModel->employee_id)
                     ->where('company_id', $this->companyId)
                     ->where('mcu_program_id', $this->mcuProgramId)
+                    ->where('package_id', $packageModel->id)
                     ->where('is_import', true)->first();
                 $mcu_id = $modelMcu->mcu_id;
             }
