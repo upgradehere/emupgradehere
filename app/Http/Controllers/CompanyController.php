@@ -285,4 +285,42 @@ class CompanyController extends Controller
         }
 
     }
+
+    public function reset(Request $request)
+    {
+        $rules = [
+            'company_id' => 'required',
+            'password_reset' => 'required',
+        ];
+
+        $messages = [
+            'company_id.required' => 'Perusahaan tidak dipilih',
+            'password_reset.required' => 'Password baru wajib diisi',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()) {
+            $messages = $validator->errors()->all(); 
+
+            session()->flash('error', $messages);
+
+            return redirect()->route('company');
+        }
+
+        $user = User::where('id_company', $request->company_id)->first();
+        if ($user) {
+            $user->password = Hash::make($request->password_reset); 
+        } else {
+            session()->flash('error', 'PIC tidak ditemukan');
+        }
+        
+        if ($user->save()) {
+            session()->flash('success', 'Password PIC berhasil direset');
+        } else {
+            session()->flash('error', 'Kesalahan terjadi, Password PIC gagal direset, harap hubungi Admin kami');
+        }
+
+        return redirect()->route('company');
+    }
 }

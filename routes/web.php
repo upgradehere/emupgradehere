@@ -83,6 +83,7 @@ Route::group(['middleware' => ['auth', 'role:1']], function () {
     Route::get('/company/delete/{id}', [CompanyController::class, 'delete'])->name('company.delete');
     Route::get('/company/detail/{id}', [CompanyController::class, 'detail'])->name('company.detail');
     Route::post('/company/update', [CompanyController::class, 'update'])->name('company.update');
+    Route::post('/company/reset', [CompanyController::class, 'reset'])->name('company.reset');
     Route::get('/get-data-company',  [CompanyController::class, 'getDataCompany']);
 
     Route::get('/employee', [EmployeeController::class, 'index'])->name('employee');

@@ -93,7 +93,9 @@
                             <div class="form-group">
                                 <label for="">Kop Perusahaan</label><br>
                                 <input type="file" name="letterhead" id="letterhead" accept=".jpg,.png" required><br>
-                                <span style="color:red">Maksimal size file Kop adalah 100kb</span>
+                                <i class="fas fa-question-circle" data-toggle="modal" data-target="#modal-panduan"></i><span
+                                    style="color:red"> Lihat
+                                    panduan file Kop</span>
                             </div>
                             <div class="form-group">
                                 <label for="">Password Default PIC</label>
@@ -134,6 +136,66 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="modal fade" id="modal-reset">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Reset Password PIC Perusahaan</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{{ route('company.reset') }}" method="POST">
+                            @csrf
+                            <input type="hidden" id="company_id" name="company_id">
+                            <div class="form-group">
+                                <label for="">Password Default PIC</label>
+                                <input type="password" required name="password_reset" id="password_reset"
+                                    class="form-control">
+                            </div>
+                            <ul id="passwordRules_reset" style="color: red;">
+                                <li id="minLength_reset">Minimal 8 Karakter</li>
+                                <li id="uppercase_reset">Harus memiliki huruf besar dan kecil</li>
+                                <li id="number_reset">Harus mengandung angka</li>
+                                <li id="specialChar_reset">Harus memiliki spesial karakter (!@#$%^&*)</li>
+                            </ul>
+
+                            <div class="modal-footer justify-content-between">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+                                <button type="submit" class="btn btn-primary" id="saveButton_reset">Simpan</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <div class="modal fade" id="modal-panduan">
+            <div class="modal-dialog modal-md">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Reset Password PIC Perusahaan</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <label for="">Berikut panduan untuk upload file Kop</label><br>
+                        <ul>
+                            <li>Maksimal file size 100KB</li>
+                            <li>Margin atas yang disarankan adalah 4cm</li>
+                            <li>Margin bawah yang disarankan adalah 4cm</li>
+                            <li>Margin kiri yang disarankan adalah 1cm</li>
+                            <li>Margin kanan yang disarankan adalah 1cm</li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
         </div>
     </section>
     <script>
@@ -186,6 +248,57 @@
                     submitButton.prop("disabled", false);
                 } else {
                     submitButton.prop("disabled", true);
+                }
+            });
+
+            const passwordInput_reset = $("#password_reset");
+            const rules_reset = {
+                minLength_reset: $("#minLength_reset"),
+                uppercase_reset: $("#uppercase_reset"),
+                number_reset: $("#number_reset"),
+                specialChar_reset: $("#specialChar_reset")
+            };
+            const submitButton_reset = $("#saveButton_reset");
+
+            passwordInput_reset.on("keyup", function() {
+                const password_reset = passwordInput_reset.val();
+
+                let isValid_reset = true; // Assume password is valid, check rules to confirm
+
+                // Check each rule
+                if (password_reset.length >= 8) {
+                    rules_reset.minLength_reset.css("color", "green");
+                } else {
+                    rules_reset.minLength_reset.css("color", "red");
+                    isValid_reset = false;
+                }
+
+                if (/[A-Z]/.test(password_reset)) {
+                    rules_reset.uppercase_reset.css("color", "green");
+                } else {
+                    rules_reset.uppercase_reset.css("color", "red");
+                    isValid_reset = false;
+                }
+
+                if (/[0-9]/.test(password_reset)) {
+                    rules_reset.number_reset.css("color", "green");
+                } else {
+                    rules_reset.number_reset.css("color", "red");
+                    isValid_reset = false;
+                }
+
+                if (/[!@#$%^&*]/.test(password_reset)) {
+                    rules_reset.specialChar_reset.css("color", "green");
+                } else {
+                    rules_reset.specialChar_reset.css("color", "red");
+                    isValid = false;
+                }
+
+                // Enable or disable the submit button based on validity
+                if (isValid_reset) {
+                    submitButton_reset.prop("disabled", false);
+                } else {
+                    submitButton_reset.prop("disabled", true);
                 }
             });
 
@@ -254,7 +367,8 @@
                             delete_url = delete_url.replace('__id__', company_id);
                             return `<a class="btn btn-primary btn-sm action-detail" href="/company/detail/${company_id}"><i class="fas fa-eye"></i></a>
                                     <a class="btn btn-warning btn-sm" href="/employee?company-id=${company_id}"><i class="fas fa-users"></i></a>
-                                    <a class="btn btn-danger btn-sm action-delete" data-url="${delete_url}"><i class="fas fa-trash"></i></a>`;
+                                    <a class="btn btn-danger btn-sm action-delete" data-url="${delete_url}"><i class="fas fa-trash"></i></a>
+                                    <a class="btn btn-success btn-sm action-reset" data-id="${company_id}"><i class="fas fa-key"></i></a>`;
                         }
                     }
                 ],
@@ -297,6 +411,13 @@
                         });
                     }
                 });
+            });
+
+            $(document).on("click", ".action-reset", function() {
+                var id = $(this).attr("data-id");
+                $("#company_id").val(id);
+
+                $("#modal-reset").modal("show");
             });
         });
     </script>

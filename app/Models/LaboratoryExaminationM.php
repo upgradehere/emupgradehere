@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\LaboratoryExaminationTypeM;
 
 class LaboratoryExaminationM extends Model
 {
@@ -20,4 +21,9 @@ class LaboratoryExaminationM extends Model
         'created_at',
         'updated_at',
     ];
+
+    public function type()
+    {
+        return $this->hasOne(LaboratoryExaminationTypeM::class, 'laboratory_examination_type_id', 'laboratory_examination_type_id');
+    }
 }
