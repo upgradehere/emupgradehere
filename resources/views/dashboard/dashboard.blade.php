@@ -285,28 +285,10 @@
         })
 
         //temporary
-        getGender();
-        getAge()
-        getParticipant()
-        getDiseaseHistory()
-        getLabDiagnosis()
-        getNonLabDiagnosis()
-        getHealthCategory()
-        getMetabolicSyndrome()
-        getSymptoms()
-        getConclusionAndRecommendation()
+        getAllDataChart()
 
         $(document).on("change", "#program_id", function() {
-            getGender();
-            getAge()
-            getParticipant()
-            getDiseaseHistory()
-            getLabDiagnosis()
-            getNonLabDiagnosis()
-            getHealthCategory()
-            getMetabolicSyndrome()
-            getSymptoms()
-            getConclusionAndRecommendation()
+            getAllDataChart()
         });
 
         function buildChartMale(chartDom, male, total) {
@@ -1074,234 +1056,53 @@
             myChart.setOption(option);
         }
 
-        function getGender() {
-            var url = "{{ route('get-gender', ':program_id') }}";
+        function getAllDataChart() {
             var program_id = $("#program_id").val();
+
+            var url = "{{ route('get-all-data-chart', ':program_id') }}";
             url = url.replace(":program_id", program_id);
 
             $.ajax({
                 url: url,
                 method: 'GET',
                 success: function(response) {
-                    if (response.status == 'error') {
+                    if (response.status === 'success') {
+                        var genderData = response.data.gender;
+                        var participantData = response.data.participant;
+                        var ageData = response.data.age;
+                        var healthCategoryData = response.data.health_category;
+                        var metabolicSyndromeData = response.data.metabolic_syndrome;
+                        var diseaseHistoryData = response.data.disease_history;
+                        var labDiagnosisData = response.data.lab_diagnosis;
+                        var nonLabDiagnosisData = response.data.non_lab_diagnosis;
+                        var symptomsData = response.data.symptoms;
+                        var conclusionAndRecommendationData = response.data.conclusion_and_recommendation;
 
-                    } else if (response.status == 'success') {
-                        buildChartMale("chart_male",response.data.male, response.data.total)
-                        buildChartFemale("chart_female",response.data.female, response.data.total)
-                    }
-                },
-                error: function(response) {
-                    toastr.error('Kesalahan terjadi, harap hubungi Admin kami')
-                }
-            });
-        }
+                        buildChartMale("chart_male", genderData.male, genderData.total);
+                        buildChartFemale("chart_female", genderData.female, genderData.total);
+                        buildChartParticipant("chart_peserta", participantData);
+                        buildChartAge("chart_usia", ageData);
+                        buildChartHealthCategory("chart_kategori_kesehatan", healthCategoryData);
+                        buildChartMetabolicSyndrome("chart_kategori_sindrom_metabolik", metabolicSyndromeData);
+                        buildChartDiseaseHistory("chart_riwayat_penyakit", diseaseHistoryData);
+                        buildChartLabDiagnosis("chart_riwayat_diagnosa_lab", labDiagnosisData);
+                        buildChartNonLabDiagnosis("chart_riwayat_diagnosa_non_lab", nonLabDiagnosisData);
+                        buildChartSymptoms("chart_gejala", symptomsData);
 
-        function getParticipant() {
-            var url = "{{ route('get-participant', ':program_id') }}";
-            var program_id = $("#program_id").val();
-            url = url.replace(":program_id", program_id);
-
-            $.ajax({
-                url: url,
-                method: 'GET',
-                success: function(response) {
-                    if (response.status == 'error') {
-                        // handle error
-                    } else if (response.status == 'success') {
-                        dataPeserta = response.data;
-                        buildChartParticipant('chart_peserta', dataPeserta);
-                    }
-                },
-                error: function(response) {
-                    toastr.error('Kesalahan terjadi, harap hubungi Admin kami');
-                }
-            });
-        }
-
-        function getAge() {
-            var url = "{{ route('get-age', ':program_id') }}";
-            var program_id = $("#program_id").val();
-            url = url.replace(":program_id", program_id);
-
-            $.ajax({
-                url: url,
-                method: 'GET',
-                success: function(response) {
-                    if (response.status == 'error') {
-                        // handle error
-                    } else if (response.status == 'success') {
-                        dataUsia = response.data;
-                        buildChartAge('chart_usia', dataUsia);
-                    }
-                },
-                error: function(response) {
-                    toastr.error('Kesalahan terjadi, harap hubungi Admin kami');
-                }
-            });
-        }
-
-        function getDiseaseHistory() {
-            var program_id = $("#program_id").val();
-            var url = "{{ route('get-disease-history', ':program_id') }}";
-            url = url.replace(":program_id", program_id);
-
-            $.ajax({
-                url: url,
-                method: 'GET',
-                success: function(response) {
-                    if (response.status == 'error') {
-                        // handle error
-                    } else if (response.status == 'success') {
-                        dataDiseaseHistory = response.data;
-                        buildChartDiseaseHistory('chart_riwayat_penyakit', dataDiseaseHistory);
-                    }
-                },
-                error: function(response) {
-                    toastr.error('Kesalahan terjadi, harap hubungi Admin kami');
-                }
-            });
-        }
-
-        function getLabDiagnosis() {
-            var url = "{{ route('get-lab-diagnosis', ':program_id') }}";
-            var program_id = $("#program_id").val();
-            url = url.replace(":program_id", program_id);
-
-            $.ajax({
-                url: url,
-                method: 'GET',
-                success: function(response) {
-                    if (response.status == 'error') {
-                        // handle error
-                    } else if (response.status == 'success') {
-                        // handle success, use response.data
-                        dataLabDiagnosis = response.data;
-                        buildChartLabDiagnosis('chart_riwayat_diagnosa_lab', dataLabDiagnosis);
-                    }
-                },
-                error: function(response) {
-                    toastr.error('Kesalahan terjadi, harap hubungi Admin kami');
-                }
-            });
-        }
-
-        function getNonLabDiagnosis() {
-            var url = "{{ route('get-non-lab-diagnosis', ':program_id') }}";
-            var program_id = $("#program_id").val();
-            url = url.replace(":program_id", program_id);
-
-            $.ajax({
-                url: url,
-                method: 'GET',
-                success: function(response) {
-                    if (response.status == 'error') {
-                        // handle error
-                    } else if (response.status == 'success') {
-                        // handle success, use response.data
-                        dataNonLabDiagnosis = response.data;
-                        buildChartNonLabDiagnosis('chart_riwayat_diagnosa_non_lab', dataNonLabDiagnosis);
-                    }
-                },
-                error: function(response) {
-                    toastr.error('Kesalahan terjadi, harap hubungi Admin kami');
-                }
-            });
-        }
-
-        function getHealthCategory() {
-            var url = "{{ route('get-health-category', ':program_id') }}";
-            var program_id = $("#program_id").val();
-            url = url.replace(":program_id", program_id);
-
-            $.ajax({
-                url: url,
-                method: 'GET',
-                success: function(response) {
-                    if (response.status == 'error') {
-                        // handle error
-                    } else if (response.status == 'success') {
-                        dataHealthCategory = response.data;
-                        buildChartHealthCategory('chart_kategori_kesehatan',dataHealthCategory);
-                    }
-                },
-                error: function(response) {
-                    toastr.error('Kesalahan terjadi, harap hubungi Admin kami');
-                }
-            });
-        }
-
-        function getMetabolicSyndrome() {
-            var url = "{{ route('get-metabolic-syndrome', ':program_id') }}";
-            var program_id = $("#program_id").val();
-            url = url.replace(":program_id", program_id);
-
-            $.ajax({
-                url: url,
-                method: 'GET',
-                success: function(response) {
-                    if (response.status == 'error') {
-                        // handle error
-                    } else if (response.status == 'success') {
-                        dataMetabolicSyndrome = response.data;
-                        buildChartMetabolicSyndrome('chart_kategori_sindrom_metabolik',dataMetabolicSyndrome);
-                    }
-                },
-                error: function(response) {
-                    toastr.error('Kesalahan terjadi, harap hubungi Admin kami');
-                }
-            });
-        }
-
-        function getSymptoms() {
-            var url = "{{ route('get-symptoms', ':program_id') }}";
-            var program_id = $("#program_id").val();
-            url = url.replace(":program_id", program_id);
-
-            $.ajax({
-                url: url,
-                method: 'GET',
-                success: function(response) {
-                    if (response.status == 'error') {
-                        // handle error
-                    } else if (response.status == 'success') {
-                        // handle success, use response.data
-                        dataSymptoms = response.data;
-                        console.log(dataSymptoms)
-                        buildChartSymptoms('chart_gejala', dataSymptoms);
-                    }
-                },
-                error: function(response) {
-                    toastr.error('Kesalahan terjadi, harap hubungi Admin kami');
-                }
-            });
-        }
-
-        function getConclusionAndRecommendation() {
-            var url = "{{ route('get-conclusion-recommendation', ':program_id') }}";
-            var program_id = $("#program_id").val();
-            url = url.replace(":program_id", program_id);
-
-            $.ajax({
-                url: url,
-                method: 'GET',
-                success: function(response) {
-                    if (response.status == 'error') {
-                        // handle error
-                    } else if (response.status == 'success') {
-                        // handle success, use response.data
-                        var conclusion =  response.data.conclusion;
-                        var recommendation =  response.data.recommendation;
                         $('#conclusion').empty();
                         $('#recommendation').empty();
-                        $('#conclusion').append(conclusion)
-                        $('#recommendation').append(recommendation)
+                        $('#conclusion').append(conclusionAndRecommendationData.conclusion);
+                        $('#recommendation').append(conclusionAndRecommendationData.recommendation);
+                    } else {
+                        toastr.error('Gagal memuat data untuk semua chart');
                     }
                 },
-                error: function(response) {
+                error: function() {
                     toastr.error('Kesalahan terjadi, harap hubungi Admin kami');
                 }
             });
         }
+
 
     </script>
 @endsection
