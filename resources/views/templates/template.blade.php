@@ -69,8 +69,8 @@
 
         <!-- Preloader -->
         <div class="preloader flex-column justify-content-center align-items-center">
-            <img class="animation__shake" src="{{ asset('templates/adminlte-3.2.0/dist/img/AdminLTELogo.png') }}"
-                alt="AdminLTELogo" height="60" width="60">
+            <img class="animation__shake" src="{{ asset('templates/adminlte-3.2.0/dist/img/logo.png') }}"
+                alt="AdminLTELogo" height="20%" width="">
         </div>
 
         <!-- Navbar -->
@@ -87,30 +87,26 @@
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item dropdown user-menu">
                     <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
-                        <img src="{{ asset('templates/adminlte-3.2.0/dist/img/user2-160x160.jpg') }}"
-                            class="user-image img-circle elevation-2" alt="User Image">
+                        <i class="fas fa-user"></i>
                         <span class="d-none d-md-inline">{{ Auth::user()->name }}</span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                         <!-- User image -->
-                        <li class="user-header bg-primary">
-                            <img src="{{ asset('templates/adminlte-3.2.0/dist/img/user2-160x160.jpg') }}"
-                                class="img-circle elevation-2" alt="User Image">
-                            <p>{{ Auth::user()->name }}</p>
-                        </li>
                         <!-- Menu Body -->
-                        <li class="user-body">
+                        <li class="user-body" style="background-color:#2693a2;color:#fff">
                             <div class="row">
                                 <div class="col-12 text-center">
-                                    <p>{{ Auth::user()->id_role == 1 ? 'Admin' : 'Company' }}</p>
+                                    <p>{{ Auth::user()->id_role == 1 ? '- Admin EM Health -' : '- PIC Perusahaan -' }}
+                                    </p>
                                 </div>
                             </div>
                             <!-- /.row -->
                         </li>
                         <!-- Menu Footer-->
                         <li class="user-footer">
-                            <a href="#" class="btn btn-default btn-flat">Profil</a>
-                            <a href="{{ route('logout') }}" class="btn btn-default btn-flat float-right">Keluar</a>
+                            <a href="{{ 'change-password' }}" class="btn btn-success">Ganti
+                                Password</a>
+                            <a href="{{ route('logout') }}" class="btn btn-danger float-right">Keluar</a>
                         </li>
                     </ul>
                 </li>
@@ -123,8 +119,8 @@
             <!-- Brand Logo -->
             <a href="index3.html" class="brand-link">
                 <img src="{{ asset('templates/adminlte-3.2.0/dist/img/AdminLTELogo.png') }}" alt="AdminLTE Logo"
-                    class="brand-image img-circle elevation-3" style="opacity: .8">
-                <span class="brand-text font-weight-light">Em Health</span>
+                    class="brand-image img-circle elevation-3">
+                <span class="brand-text font-weight-bold">EM Health</span>
             </a>
 
             <!-- Sidebar -->

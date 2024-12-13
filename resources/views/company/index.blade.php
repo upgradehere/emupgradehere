@@ -38,7 +38,7 @@
                                         <th>Jumlah Program</th>
                                         <th>Jumlah MCU</th>
                                         <th style="width: 50px;">Program</th>
-                                        <th style="width: 110px;"><i class="fas fa-cogs"></i></th>
+                                        <th style="width: 150px;"><i class="fas fa-cogs"></i></th>
                                     </tr>
                                 </thead>
                                 <tbody>
