@@ -27,4 +27,9 @@ class EmployeeM extends Model
         'sex'
     ];
 
+    public function company()
+    {
+        return $this->hasOne(CompanyM::class, 'company_id', 'company_id');
+    }
+
 }

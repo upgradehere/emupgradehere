@@ -29,7 +29,7 @@
 
         .sub-table td {
             padding: 5px;
-            font-size: 14px;
+            font-size: 13px;
             vertical-align: middle;
         }
 
@@ -54,66 +54,37 @@
             position: fixed;
             top: 50%;
             left: 50%;
-            transform: translate(10%,-5%) rotate(-70deg);;
-            opacity: 0.1; 
+            transform: translate(-50%, -50%);
             z-index: -1;
             pointer-events: none;
         }
 
         .watermark img {
-            transform: rotate(45deg);
-            width: 120%;
+            width: 793px;
+            height: 1122px;
             height: auto;
         }
-        
-        .logo-left {
-            float: left;
-            max-width: 300px;
-            height: auto;
-        }
-
-        .logo-right {
-            float: right;
-            max-width: 300px;
-            height: auto;
-        }
-
-        .logo-footer {
-            max-width: 800px;
-            height: auto;
-        }
-        
         @page {
-           margin-top: 130px;
-           margin-bottom: 150px; 
+           margin-top: 135px;
+           margin-bottom: 135px; 
            margin-left: 20px; 
            margin-right: 20px; 
         }
-
-        header { 
-            position: fixed;
-            top: -100px;
-            left: 0px;
-            right: 0px;
+        input[type="checkbox"] {
+            transform: scale(1.2); /* Membesarkan ukuran checkbox */
         }
-        footer { 
-            position: fixed; 
-            bottom: -150px; 
-            left: -20px; 
+        table.sub-table td {
+            padding: 3px; /* Menambahkan padding dalam sel tabel */
+        }
+        .page-break {
+            page-break-before: always;
         }
     </style>
 </head>
 <body>
-    <header>
-        <img class="logo-left" src="{{ public_path('img-pdf/header.jpeg') }}" alt="Logo Kiri">
-        <img class="logo-right" src="{{ public_path('img-pdf/header.jpeg') }}" alt="Logo Kanan">
-    </header>
     <div class="watermark">
-        <img src="{{ public_path('img-pdf/watermark.jpg') }}" alt="Watermark Logo">
+        <img src="{{ empty($letterhead) ? public_path('img-pdf/default.jpg') : public_path('uplploads/letterhead/'.$letterhead) }}" alt="Template Logo">
     </div>
-    <footer>
-        <img class="logo-footer" src="{{ public_path('img-pdf/footer.png') }}" alt="Footer Logo">
-    </footer>
     <table class="identity-header">
         <tbody>
             <tr>
@@ -152,11 +123,14 @@
             </tr>
         </tbody>
     </table>
+
     <h3><center>Hasil Pemeriksaan MCU</center></h3>
     @if (!empty($anamnesis))
     @include('mcu.pemeriksaan.print.partials.cetak_anamnesis')
     @endif
-
+    
+    <div class="page-break"></div>
+    
     @if (!empty($laboratorium))
     @include('mcu.pemeriksaan.print.partials.cetak_lab')
     @endif
@@ -164,10 +138,14 @@
     @if (!empty($refraksi))
     @include('mcu.pemeriksaan.print.partials.cetak_refraksi')
     @endif
+    
+    <div class="page-break"></div>
 
     @if (!empty($rontgen))
     @include('mcu.pemeriksaan.print.partials.cetak_rontgen')
     @endif
+
+    <div class="page-break"></div>
 
     @if (!empty($audiometri))
     @include('mcu.pemeriksaan.print.partials.cetak_audiometri')
@@ -181,6 +159,8 @@
     @include('mcu.pemeriksaan.print.partials.cetak_ekg')
     @endif
 
+    <div class="page-break"></div>
+
     @if (!empty($usg))
     @include('mcu.pemeriksaan.print.partials.cetak_usg')
     @endif
@@ -192,6 +172,8 @@
     @if (!empty($papsmear))
     @include('mcu.pemeriksaan.print.partials.cetak_papsmear')
     @endif
+
+    <div class="page-break"></div>
 
     @if (!empty($resume))
     @include('mcu.pemeriksaan.print.partials.cetak_resume')

@@ -117,7 +117,8 @@
                                                     <option value="">-- Pilih Item --</option>
                                                     @foreach ($type->examinations as $key3 => $exam)
                                                         <option value="{{ $exam->laboratory_examination_id }}">
-                                                            {{ $exam->laboratory_examination_name }}</option>
+                                                            {{ $type->laboratory_examination_type_name . '-' . $exam->laboratory_examination_name }}
+                                                        </option>
                                                     @endforeach
                                                 </select><br>
                                             @endforeach

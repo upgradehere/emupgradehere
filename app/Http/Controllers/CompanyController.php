@@ -255,7 +255,14 @@ class CompanyController extends Controller
         if ($request->hasFile('letterhead')) {
             $file = $request->file('letterhead');
             $fileName = $file->getClientOriginalName();
+            $fileSize = $file->getSize();
+            $fileSizeInKB = $fileSize / 1024;
             $uploadPath = public_path('uploads/letterhead');
+
+            if ($fileSizeInKB > 100) {
+                session()->flash('error', 'Ukuran file Kop Surat maksimal 100Kb');
+                return redirect()->route('company');
+            }
 
             if (!file_exists($uploadPath)) {
                 mkdir($uploadPath, 0755, true);
@@ -277,5 +284,43 @@ class CompanyController extends Controller
             return redirect()->route('company.detail', ['id' => $id]);
         }
 
+    }
+
+    public function reset(Request $request)
+    {
+        $rules = [
+            'company_id' => 'required',
+            'password_reset' => 'required',
+        ];
+
+        $messages = [
+            'company_id.required' => 'Perusahaan tidak dipilih',
+            'password_reset.required' => 'Password baru wajib diisi',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()) {
+            $messages = $validator->errors()->all(); 
+
+            session()->flash('error', $messages);
+
+            return redirect()->route('company');
+        }
+
+        $user = User::where('id_company', $request->company_id)->first();
+        if ($user) {
+            $user->password = Hash::make($request->password_reset); 
+        } else {
+            session()->flash('error', 'PIC tidak ditemukan');
+        }
+        
+        if ($user->save()) {
+            session()->flash('success', 'Password PIC berhasil direset');
+        } else {
+            session()->flash('error', 'Kesalahan terjadi, Password PIC gagal direset, harap hubungi Admin kami');
+        }
+
+        return redirect()->route('company');
     }
 }

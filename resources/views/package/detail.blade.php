@@ -75,7 +75,8 @@
                                                         <option value="">-- Pilih Item --</option>
                                                         @foreach ($type->examinations as $key3 => $exam)
                                                             <option value="{{ $exam->laboratory_examination_id }}">
-                                                                {{ $exam->laboratory_examination_name }}</option>
+                                                                {{ $type->laboratory_examination_type_name . '-' . $exam->laboratory_examination_name }}
+                                                            </option>
                                                         @endforeach
                                                     </select><br>
                                                 @endforeach
@@ -98,7 +99,8 @@
                                                         <td><input type='text' name='laboratory_item[]'
                                                                 class="laboratory_item" readonly
                                                                 value="{{ $lc->laboratory_examination_id }}"></td>
-                                                        <td>{{ $lc->laboratory_examination_name }}</td>
+                                                        <td>{{ $lc->type->laboratory_examination_type_name . '-' . $lc->laboratory_examination_name }}
+                                                        </td>
                                                         <td><button class="btn btn-danger btn-sm delete_item" type="button"
                                                                 data-id="{{ $lc->laboratory_examination_id }}">Hapus</button>
                                                         </td>

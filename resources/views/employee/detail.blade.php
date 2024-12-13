@@ -4,13 +4,13 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">Detail Paket</h1>
+                    <h1 class="m-0">Detail Pegawai</h1>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Beranda</a></li>
-                        <li class="breadcrumb-item"><a href={{ route('package') }}>Paket</a></li>
-                        <li class="breadcrumb-item active">Detail Paket</li>
+                        <li class="breadcrumb-item"><a href={{ route('package') }}>Pegawai</a></li>
+                        <li class="breadcrumb-item active">Detail Pegawai</li>
                     </ol>
                 </div><!-- /.col -->
             </div><!-- /.row -->
@@ -23,90 +23,49 @@
                     <div class="card card-primary">
                         <!-- /.card-header -->
                         <!-- form start -->
-                        <form method="POST" action="{{ route('package.update') }}">
+                        <form method="POST" action="{{ route('employee.update') }}">
                             @csrf
-                            <input type="hidden" value="{{ $package->id }}" name="id">
+                            <input type="hidden" value="{{ $employee->employee_id }}" name="id">
                             <div class="card-body">
                                 <div class="form-group">
-                                    <label for="">Nama Paket</label>
-                                    <input type="text" class="form-control" id="" required placeholder=""
-                                        name="package_name" value="{{ $package->package_name }}">
+                                    <label for="">Perusahaan</label>
+                                    <select name="company_id" id="" class="form-control" required>
+                                        <option value="">-- Pilih Perusahaan --</option>
+                                        @foreach ($company as $cp)
+                                            <option {{ $cp->company_id == $employee->company_id ? 'selected' : '' }}
+                                                value="{{ $cp->company_id }}">{{ $cp->company_name }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="">Kode Paket</label>
-                                    <input type="text" class="form-control" id="" required placeholder=""
-                                        name="package_code" value="{{ $package->package_code }}">
+                                    <label for="">Nama Pegawai</label>
+                                    <input type="text" required value="{{ $employee->employee_name }}"
+                                        name="employee_name" class="form-control">
                                 </div>
                                 <div class="form-group">
-                                    <label for="">Harga</label>
-                                    <input type="text" class="form-control" id="" required placeholder=""
-                                        name="price" value="{{ $package->price }}">
+                                    <label for="">Kode Pegawai</label>
+                                    <input type="text" required value="{{ $employee->employee_code }}"
+                                        name="employee_code" class="form-control">
                                 </div>
                                 <div class="form-group">
-                                    <label for="">Deskripsi</label>
-                                    <textarea name="desc" id="" cols="30" rows="10" class="form-control">{{ $package->desc }}</textarea>
+                                    <label for="">NIK</label>
+                                    <input type="text" required value="{{ $employee->nik }}" name="nik"
+                                        class="form-control">
                                 </div>
-
-                                <label for="">Pemeriksaan</label>
-                                <hr>
-                                <div class="form-check">
-                                    @foreach ($treatment as $t)
-                                        <input type="checkbox" name="treatment[]" id="" class="form-check-input"
-                                            value="{{ $t->lookup_code }}"
-                                            {{ $package[$t->lookup_code] == 1 ? 'checked' : '' }}>
-                                        <label class="form-check-label" for="">{{ $t->lookup_name }}</label><br>
-                                    @endforeach
+                                <div class="form-group">
+                                    <label for="">No Telp</label>
+                                    <input type="text" required value="{{ $employee->phone_number }}"
+                                        name="phone_number" class="form-control">
                                 </div>
-
-                                <br>
-                                <label for="">Laboratorium</label>
-                                <hr>
-                                <div class="row">
-                                    <div class="col-6">
-                                        <div class="form-check">
-                                            @foreach ($laboratorium as $key => $lab)
-                                                <h5>{{ $lab->laboratory_examination_group_name }}</h5>
-                                                <hr class="custom-hr">
-                                                @foreach ($lab->examinationTypes as $key2 => $type)
-                                                    <span
-                                                        for="">{{ $type->laboratory_examination_type_name }}</span><br>
-                                                    <select name="" id="select_laboratorium_{{ $key2 }}"
-                                                        class="select_laboratorium form-control">
-                                                        <option value="">-- Pilih Item --</option>
-                                                        @foreach ($type->examinations as $key3 => $exam)
-                                                            <option value="{{ $exam->laboratory_examination_id }}">
-                                                                {{ $exam->laboratory_examination_name }}</option>
-                                                        @endforeach
-                                                    </select><br>
-                                                @endforeach
-                                                <hr>
-                                            @endforeach
-                                        </div>
-                                    </div>
-                                    <div class="col-6">
-                                        <table class="table">
-                                            <thead>
-                                                <tr>
-                                                    <th>ID Item</th>
-                                                    <th>Item</th>
-                                                    <th>Hapus</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="tbody_item">
-                                                @foreach ($laboratorium_current as $lc)
-                                                    <tr>
-                                                        <td><input type='text' name='laboratory_item[]'
-                                                                class="laboratory_item" readonly
-                                                                value="{{ $lc->laboratory_examination_id }}"></td>
-                                                        <td>{{ $lc->laboratory_examination_name }}</td>
-                                                        <td><button class="btn btn-danger btn-sm delete_item" type="button"
-                                                                data-id="{{ $lc->laboratory_examination_id }}">Hapus</button>
-                                                        </td>
-                                                    </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                <div class="form-group">
+                                    <label for="">Jenis Kelamin</label>
+                                    <select name="sex" id="" class="form-control" required>
+                                        <option value="">-- Pilih Jenis Kelamin --</option>
+                                        <option {{ $employee->sex == 11 ? 'selected' : '' }} value="11">Laki Laki
+                                        </option>
+                                        <option {{ $employee->sex == 12 ? 'selected' : '' }} value="12">Perempuan
+                                        </option>
+                                    </select>
                                 </div>
                             </div>
                             <!-- /.card-body -->

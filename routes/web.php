@@ -6,6 +6,9 @@ use App\Http\Controllers\Mcu\PemeriksaanMcuController;
 use App\Http\Controllers\Mcu\ProgramMcuController;
 use App\Http\Controllers\PackageController;
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\DoctorController;
+use App\Http\Controllers\PasswordController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -64,6 +67,9 @@ Route::group(['middleware' => ['auth', 'role:1,2']], function () {
     Route::post('/mcu/program-mcu/detail/pemeriksaan/save-treadmill', [PemeriksaanMcuController::class, 'saveTreadmill']);
     Route::post('/mcu/program-mcu/detail/pemeriksaan/save-papsmear', [PemeriksaanMcuController::class, 'savePapsmear']);
     Route::post('/mcu/program-mcu/detail/pemeriksaan/save-resume-mcu', [PemeriksaanMcuController::class, 'saveResumeMcu']);
+
+    Route::get('/change-password', [PasswordController::class, 'index'])->name('change-password');
+    Route::post('/change-password/store', [PasswordController::class, 'store'])->name('change-password.store');
 });
 
 Route::group(['middleware' => ['auth', 'role:1']], function () {
@@ -81,11 +87,20 @@ Route::group(['middleware' => ['auth', 'role:1']], function () {
     Route::get('/company/delete/{id}', [CompanyController::class, 'delete'])->name('company.delete');
     Route::get('/company/detail/{id}', [CompanyController::class, 'detail'])->name('company.detail');
     Route::post('/company/update', [CompanyController::class, 'update'])->name('company.update');
+    Route::post('/company/reset', [CompanyController::class, 'reset'])->name('company.reset');
     Route::get('/get-data-company',  [CompanyController::class, 'getDataCompany']);
 
-    Route::get('/employee/{id}', [EmployeeController::class, 'index'])->name('employee');
+    Route::get('/employee', [EmployeeController::class, 'index'])->name('employee');
+    Route::get('/employee/data/{id}', [EmployeeController::class, 'data'])->name('employee.data');
     Route::post('/employee/store', [EmployeeController::class, 'store'])->name('employee.store');
     Route::get('/employee/delete/{id}', [EmployeeController::class, 'delete'])->name('employee.delete');
     Route::get('/employee/detail/{id}', [EmployeeController::class, 'detail'])->name('employee.detail');
     Route::post('/employee/update', [EmployeeController::class, 'update'])->name('employee.update');
+
+    Route::get('/doctor', [DoctorController::class, 'index'])->name('doctor');
+    Route::get('/doctor/data', [DoctorController::class, 'data'])->name('doctor.data');
+    Route::post('/doctor/store', [DoctorController::class, 'store'])->name('doctor.store');
+    Route::get('/doctor/delete/{id}', [DoctorController::class, 'delete'])->name('doctor.delete');
+    Route::get('/doctor/detail/{id}', [DoctorController::class, 'detail'])->name('doctor.detail');
+    Route::post('/doctor/update', [DoctorController::class, 'update'])->name('doctor.update');
 });

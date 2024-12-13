@@ -66,7 +66,9 @@
                                     <img style="width:10%" src="/uploads/letterhead/{{ $company->letterhead }}"
                                         alt=""><br><br>
                                     <input type="file" name="letterhead" id="letterhead" accept=".jpg,.png"><br>
-                                    <span style="color:red">Maksimal size file Kop adalah 100kb</span>
+                                    <i class="fas fa-question-circle" data-toggle="modal"
+                                        data-target="#modal-panduan"></i><span style="color:red"> Lihat
+                                        panduan file Kop</span>
                                 </div>
                             </div>
                             <!-- /.card-body -->
@@ -77,6 +79,30 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="modal fade" id="modal-panduan">
+            <div class="modal-dialog modal-md">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Reset Password PIC Perusahaan</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <label for="">Berikut panduan untuk upload file Kop</label><br>
+                        <ul>
+                            <li>Maksimal file size 100KB</li>
+                            <li>Margin atas yang disarankan adalah 4cm</li>
+                            <li>Margin bawah yang disarankan adalah 4cm</li>
+                            <li>Margin kiri yang disarankan adalah 1cm</li>
+                            <li>Margin kanan yang disarankan adalah 1cm</li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
         </div>
     </section>
 @endsection

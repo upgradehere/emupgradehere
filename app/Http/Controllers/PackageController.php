@@ -57,6 +57,14 @@ class PackageController extends Controller
             $length = $request->length ?? 10;
 
             $data = $query->offset($start)->limit($length)->get();
+
+            // Map additional fields
+            $data = $data->map(function ($item) {
+                $item->price = 'Rp ' . number_format($item->price, 0, ',', '.');
+        
+                return $item;
+            });
+
             $totalRecords = $model->count();
             $filteredRecords = $query->count();
 
@@ -170,7 +178,7 @@ class PackageController extends Controller
             $data['laboratorium'] = $laboratorium;
 
             $lab_ids = json_decode($package->lab);
-            $lab_item_current = LaboratoryExaminationM::whereIn('laboratory_examination_id', $lab_ids)->get();
+            $lab_item_current = LaboratoryExaminationM::with('type')->whereIn('laboratory_examination_id', $lab_ids)->get();
 
             $data['laboratorium_current'] = $lab_item_current;
 
