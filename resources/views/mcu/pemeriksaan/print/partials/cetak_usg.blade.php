@@ -6,23 +6,23 @@
             	<table>
 		            <tr>
 		                <td>Hepar</td>
-		                <td></td>
+		                <td>{{ $usg->liver ?? 'N/A' }}</td>
 		            </tr>
 		            <tr>
 		                <td>Kantong Empedu</td>
-		                <td></td>
+		                <td>{{ $usg->gallbladder ?? 'N/A' }}</td>
 		            </tr>
 		            <tr>
 		                <td>Pankreas</td>
-		                <td></td>
+		                <td>{{ $usg->pancreas ?? 'N/A' }}</td>
 		            </tr>
 		            <tr>
 		                <td>Lien</td>
-		                <td></td>
+		                <td>{{ $usg->lien ?? 'N/A' }}</td>
 		            </tr>
 		            <tr>
 		                <td>Ginjal</td>
-		                <td></td>
+		                <td>{{ $usg->kidney ?? 'N/A' }}</td>
 		            </tr>
 		        </table>
             </td>
@@ -30,23 +30,23 @@
             	 <table>
 		            <tr>
 		                <td>Buli Buli</td>
-		                <td></td>
+		                <td>{{ $usg->bladder ?? 'N/A' }}</td>
 		            </tr>
 		            <tr>
 		                <td>Prostat/Uterus</td>
-		                <td></td>
+		                <td>{{ $usg->prostat ?? 'N/A' }}</td>
 		            </tr>
 		            <tr>
 		                <td>Kesan</td>
-		                <td></td>
+		                <td>{{ $usg->classification ?? 'N/A' }}</td>
 		            </tr>
 		            <tr>
 		                <td>Kesimpulan</td>
-		                <td></td>
+		                <td>{{ $usg->suggestion ?? 'N/A' }}</td>
 		            </tr>
 		            <tr>
 		                <td>Pemeriksa</td>
-		                <td></td>
+		                <td>{{ $usg->doctor_id ?? 'N/A' }}</td>
 		            </tr>
 		        </table>
             </td>

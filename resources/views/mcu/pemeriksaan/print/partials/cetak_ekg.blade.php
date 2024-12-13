@@ -6,19 +6,19 @@
             	<table>
 		            <tr>
 		                <td>Irama</td>
-		                <td></td>
+		                <td>{{ $ekg->rhythm ?? 'N/A' }}</td>
 		            </tr>
 		            <tr>
 		                <td>Rate</td>
-		                <td></td>
+		                <td>{{ $ekg->rate ?? 'N/A' }}</td>
 		            </tr>
 		            <tr>
 		                <td>Axis</td>
-		                <td></td>
+		                <td>{{ $ekg->axis ?? 'N/A' }}</td>
 		            </tr>
 		            <tr>
 		                <td>Kelainan</td>
-		                <td></td>
+		                <td>{{ $ekg->abnormality ?? 'N/A' }}</td>
 		            </tr>
 		        </table>
             </td>
@@ -26,23 +26,22 @@
          		<table>
 		            <tr>
 		                <td>Kesimpulan</td>
-		                <td></td>
+		                <td>{{ $ekg->conclusion ?? 'N/A' }}</td>
 		            </tr>
 		            <tr>
 		                <td>Saran</td>
-		                <td></td>
+		                <td>{{ $ekg->suggestion ?? 'N/A' }}</td>
 		            </tr>
 		            <tr>
 		                <td>Abnormal</td>
-		                <td></td>
+		                <td>{{ $ekg->is_abnormal ? 'Yes' : 'No' }}</td>
 		            </tr>
 		            <tr>
 		                <td>Pemeriksa</td>
-		                <td></td>
+		                <td>{{ $ekg->doctor_id ?? 'N/A' }}</td>
 		            </tr>
 		        </table>
             </td>
         </tr>
     </tbody>
 </table>
-

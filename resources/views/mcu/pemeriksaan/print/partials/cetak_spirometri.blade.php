@@ -6,23 +6,23 @@
             	<table>
 		            <tr>
 		                <td>Nilai Prediksi</td>
-		                <td></td>
+		                <td>{{ $spirometri->prediction_value ?? 'N/A' }}</td>
 		            </tr>
 		            <tr>
 		                <td>KVP</td>
-		                <td></td>
+		                <td>{{ $spirometri->kvp ?? 'N/A' }}</td>
 		            </tr>
 		            <tr>
 		                <td>Percentage KVP</td>
-		                <td></td>
+		                <td>{{ $spirometri->kvp_percentage ?? 'N/A' }}</td>
 		            </tr>
 		            <tr>
 		                <td>VEP</td>
-		                <td></td>
+		                <td>{{ $spirometri->vep ?? 'N/A' }}</td>
 		            </tr>
 		            <tr>
 		                <td>Percentage VEP</td>
-		                <td></td>
+		                <td>{{ $spirometri->vep_percetage ?? 'N/A' }}</td>
 		            </tr>
 		        </table>
             </td>
@@ -30,23 +30,23 @@
             	 <table>
 		            <tr>
 		                <td>APE</td>
-		                <td></td>
+		                <td>{{ $spirometri->ape ?? 'N/A' }}</td>
 		            </tr>
 		            <tr>
 		                <td>Total APE</td>
-		                <td></td>
+		                <td>{{ $spirometri->ape_total ?? 'N/A' }}</td>
 		            </tr>
 		            <tr>
 		                <td>Kesan</td>
-		                <td></td>
+		                <td>{{ $spirometri->classification ?? 'N/A' }}</td>
 		            </tr>
 		            <tr>
 		                <td>Kesimpulan</td>
-		                <td></td>
+		                <td>{{ $spirometri->conclusion ?? 'N/A' }}</td>
 		            </tr>
 		            <tr>
 		                <td>Pemeriksa</td>
-		                <td></td>
+		                <td>{{ $spirometri->doctor_id ?? 'N/A' }}</td>
 		            </tr>
 		        </table>
             </td>

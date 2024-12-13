@@ -110,6 +110,9 @@ class PemeriksaanMcuController extends Controller
         $mcu_id = $request->get('mcu_id');
         $mcu_model = McuT::find($mcu_id);
         $employee_model = EmployeeM::select('*')->where('employee_id', $mcu_model->employee_id)->first();
+        $company_model  = CompanyM::select('*')->where('company_id', $mcu_model->company_id)->first();
+        $letterhead = $company_model->letterhead;
+        $anamnesis = self::getDataPrintAnamnesis($mcu_id);
         $anamnesis = self::getDataPrintAnamnesis($mcu_id);
         $laboratorium = self::getDataPrintLaboratorium($mcu_id);
         $refraksi = self::getDataPrintRefraction($mcu_id);

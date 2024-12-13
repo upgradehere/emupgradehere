@@ -83,7 +83,7 @@
 </head>
 <body>
     <div class="watermark">
-        <img src="{{ public_path('img-pdf/default.jpg') }}" alt="Template Logo">
+        <img src="{{ empty($letterhead) ? public_path('img-pdf/default.jpg') : public_path('uplploads/letterhead/'.$letterhead) }}" alt="Template Logo">
     </div>
     <table class="identity-header">
         <tbody>

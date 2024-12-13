@@ -3,27 +3,27 @@
     <tbody>
         <tr>
             <td>Kesimpulan</td>
-            <td></td>
+            <td>{{ $papsmear->conclusion ?? 'N/A' }}</td>
         </tr>
         <tr>
             <td>Kesan</td>
-            <td></td>
+            <td>{{ $papsmear->classification ?? 'N/A' }}</td>
         </tr>
         <tr>
             <td>Spesimen</td>
-            <td></td>
+            <td>{{ $papsmear->speciment ?? 'N/A' }}</td>
         </tr>
         <tr>
             <td>Keterangan Klinis</td>
-            <td></td>
+            <td>{{ $papsmear->clinical_description ?? 'N/A' }}</td>
         </tr>
         <tr>
             <td>Kategori Umum/Rincian</td>
-            <td></td>
+            <td>{{ $papsmear->general_category ?? 'N/A' }}</td>
         </tr>
         <tr>
             <td>Anjuran</td>
-            <td></td>
+            <td>{{ $papsmear->recommendations ?? 'N/A' }}</td>
         </tr>
     </tbody>
 </table>
