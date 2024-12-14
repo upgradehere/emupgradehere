@@ -15,6 +15,10 @@ class AuthController extends Controller
 {
     public function index(Request $request)
     {
+        $auth = Auth::user();
+        if ($auth) {
+            return redirect()->route('dashboard');
+        }
         return view('login.index');
     }
 
@@ -51,6 +55,34 @@ class AuthController extends Controller
         if ($user) {
             if (Hash::check($password, $user->password)) {
                 $update = User::find($user->id);
+
+                if ($update->id_role == 1) {
+                     $cred = [
+                        'email'     => $email,
+                        'password'  => $password,
+                    ];
+                    
+                    Auth::attempt($cred);
+
+                    if (Auth::check()) { 
+                        $data = [
+                            'status' => 'success|pass',
+                            'message' => 'Login success',
+                            'data' => '',
+                        ];
+
+                        Session::flash('login_success', 'Selamat datang '.$user->name); 
+                    } else {
+                        $data = [
+                            'status' => 'error',
+                            'message' => 'Login failed',
+                            'data' => 'Email atau Password atau OTP tidak terdaftar',
+                        ];
+                    }
+
+                    return response()->json($data, 200);
+                }
+
                 $update->otp = random_int(100000, 999999);
                 $update->otp_expired = Carbon::now()->addMinutes(2); 
                 $update->save();

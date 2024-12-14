@@ -54,15 +54,12 @@ class DashboardController extends Controller
         $total = count($mcu);
 
         $data = [
-            'status' => 'success',
-            'data' => [
                 'male' => $male,
                 'female' => $female,
                 'total' => $total,
-            ]
-        ];
+            ];
 
-        return response()->json($data, 200);
+        return $data;
     }
 
     public function getParticipant($id_program)
@@ -105,10 +102,7 @@ class DashboardController extends Controller
             }
         }
 
-        return response()->json([
-            'status' => 'success',
-            'data' => $data
-        ]);
+        return $data;
     }
 
     public function getAge($id_program)
@@ -152,38 +146,62 @@ class DashboardController extends Controller
             }
         }
 
-        return response()->json([
-            'status' => 'success',
-            'data' => $data
-        ]);
+        return $data;
     }
 
     public function getHealthCategory($id_program)
     {
+        $lookupQuery = '
+            SELECT lookup_id, lookup_name
+            FROM lookup_c
+            WHERE lookup_type = \'kesimpulan_mcu\'
+        ';
+        
+        $lookupResults = DB::select($lookupQuery);
+
+        $lookupMap = [];
+        foreach ($lookupResults as $result) {
+            $lookupMap[$result->lookup_id] = $result->lookup_name;
+        }
+
+        $query = '
+            SELECT
+                COUNT(CASE WHEN CAST(result_conclusion AS NUMERIC) = 31 THEN 1 END)::integer as fit_to_work,
+                COUNT(CASE WHEN CAST(result_conclusion AS NUMERIC) = 32 THEN 1 END)::integer as fit_to_work_with_medical_note,
+                COUNT(CASE WHEN CAST(result_conclusion AS NUMERIC) = 33 THEN 1 END)::integer as temporary_unfit,
+                COUNT(CASE WHEN CAST(result_conclusion AS NUMERIC) = 34 THEN 1 END)::integer as need_further_examination,
+                COUNT(CASE WHEN CAST(result_conclusion AS NUMERIC) = 35 THEN 1 END)::integer as fit_with_note
+            FROM resume_mcu_t
+            LEFT JOIN mcu_t ON mcu_t.mcu_id = resume_mcu_t.mcu_id
+            WHERE mcu_program_id = ?
+        ';
+
+        $results = DB::select($query, [$id_program]);
+
         $data = [
-            ['value' => 1048, 'name' => 'Fit with Note'],
-            ['value' => 735, 'name' => 'Fit to Work'],
-            ['value' => 580, 'name' => 'Temporary Unfit'],
-            ['value' => 484, 'name' => 'nan']
+            ['value' => $results[0]->fit_to_work ?? 0, 'name' => $lookupMap[31]],
+            ['value' => $results[0]->fit_to_work_with_medical_note ?? 0, 'name' => $lookupMap[32]],
+            ['value' => $results[0]->temporary_unfit ?? 0, 'name' => $lookupMap[33]],
+            ['value' => $results[0]->need_further_examination ?? 0, 'name' => $lookupMap[34]],
+            ['value' => $results[0]->fit_with_note ?? 0, 'name' => $lookupMap[35]]
         ];
 
-        return response()->json([
-            'status' => 'success',
-            'data' => $data
-        ]);
+        return $data;
     }
+
 
     public function getMetabolicSyndrome($id_program)
     {
+        $query = 'SELECT SUM(count_normal) as count_normal, SUM(count_abnormal) as count_abnormal FROM fn_sindrom_metabolik(?)';
+
+        $results = DB::select($query, [$id_program]);
+
         $data = [
-            'normal' => 70,   // Number of participants with normal condition
-            'abnormal' => 30  // Number of participants with abnormal condition
+            'normal' => $results[0]->count_normal ?? 0,   
+            'abnormal' => $results[0]->count_abnormal ?? 0 
         ];
 
-        return response()->json([
-            'status' => 'success',
-            'data' => $data
-        ]);
+        return $data;
     }
 
     public function getDiseaseHistory($id_program)
@@ -199,10 +217,7 @@ class DashboardController extends Controller
                 'diagnosis_count' => $row->count 
             ];
         }
-        return response()->json([
-            'status' => 'success',
-            'data' => $data
-        ]);
+        return $data;
     }
 
     public function getLabDiagnosis($id_program)
@@ -289,10 +304,7 @@ class DashboardController extends Controller
             }
         }
 
-        return response()->json([
-            'status' => 'success',
-            'data' => $data
-        ]);
+        return $data;
     }
 
     public function getNonLabDiagnosis($id_program)
@@ -318,90 +330,41 @@ class DashboardController extends Controller
 
         $results = DB::select($query, [$id_program]);
 
-        $formattedResults = collect($results)->map(function ($item) {
+        $data = collect($results)->map(function ($item) {
             return [
                 'name' => ucfirst(str_replace('_', ' ', $item->key)),
                 'abnormal' => $item->condition_count,
             ];
         });
 
-        return response()->json([
-            'status' => 'success',
-            'data' => $formattedResults,
-        ]);
+        return $data;
     }
 
     public function getSymptoms($id_program)
     {
-        $data = [
-            [
-                'disease' => 'Diabetes',
-                'diagnoses' => [
-                    'Initial Diagnosis' => 320,
-                    'Follow-up Examination' => 120,
-                    'Treatment Recommendations' => 220
-                ]
-            ],
-            [
-                'disease' => 'Hypertension',
-                'diagnoses' => [
-                    'Initial Diagnosis' => 302,
-                    'Follow-up Examination' => 132,
-                    'Treatment Recommendations' => 182,
-                    'Follow-up Actions' => 212
-                ]
-            ],
-            [
-                'disease' => 'Asthma',
-                'diagnoses' => [
-                    'Initial Diagnosis' => 301,
-                    'Follow-up Examination' => 101
-                ]
-            ],
-            [
-                'disease' => 'Heart Disease',
-                'diagnoses' => [
-                    'Initial Diagnosis' => 334,
-                    'Follow-up Examination' => 134,
-                    'Treatment Recommendations' => 234,
-                    'Follow-up Actions' => 154,
-                    'Diet Recommendations' => 934
-                ]
-            ],
-            [
-                'disease' => 'Cancer',
-                'diagnoses' => [
-                    'Initial Diagnosis' => 390,
-                    'Follow-up Examination' => 90,
-                    'Treatment Recommendations' => 290
-                ]
-            ],
-            [
-                'disease' => 'Stroke',
-                'diagnoses' => [
-                    'Initial Diagnosis' => 330,
-                    'Follow-up Examination' => 230,
-                    'Treatment Recommendations' => 330,
-                    'Follow-up Actions' => 330
-                ]
-            ],
-            [
-                'disease' => 'Kidney Disease',
-                'diagnoses' => [
-                    'Initial Diagnosis' => 320,
-                    'Follow-up Examination' => 210,
-                    'Treatment Recommendations' => 310,
-                    'Follow-up Actions' => 410,
-                    'Diet Recommendations' => 1320
-                ]
-            ]
-        ];
+        $query = 'SELECT * FROM fn_sindrom_metabolik(?)';
+        $results = DB::select($query, [$id_program]);
 
-        return response()->json([
-            'status' => 'success',
-            'data' => $data
-        ]);
+        $data = [];
+        foreach ($results as $row) {
+            $json_data = json_decode($row->json_data, true);
+
+            $diseaseData = [
+                'disease' => ucwords(str_replace("_", " ", $row->name)),
+                'diagnoses' => []
+            ];
+
+            foreach ($json_data as $key => $count) {
+                $formattedKey = ucwords(str_replace("_", " ", $key));
+                $diseaseData['diagnoses'][$formattedKey] = $count;
+            }
+
+            $data[] = $diseaseData;
+        }
+
+        return $data;
     }
+
 
     public function getConclusionAndRecommendation($id_program)
     {
@@ -412,10 +375,40 @@ class DashboardController extends Controller
             'recommendation' => $programs->suggestion
         ];
 
-        return response()->json([
+        return $data;
+    }
+
+    public function getAllDataChart($program_id)
+    {
+        set_time_limit(120); 
+        $genderData = $this->getGender($program_id);
+        $participantData = $this->getParticipant($program_id);
+        $ageData = $this->getAge($program_id);
+        $healthCategoryData = $this->getHealthCategory($program_id);
+        $metabolicSyndromeData = $this->getMetabolicSyndrome($program_id);
+        $diseaseHistoryData = $this->getDiseaseHistory($program_id);
+        $labDiagnosisData = $this->getLabDiagnosis($program_id);
+        $nonLabDiagnosisData = $this->getNonLabDiagnosis($program_id);
+        $symptomsData = $this->getSymptoms($program_id);
+        $conclusionAndRecommendationData = $this->getConclusionAndRecommendation($program_id);
+
+        $data = [
             'status' => 'success',
-            'data' => $data
-        ]);
+            'data' => [
+                'gender' => $genderData,
+                'participant' => $participantData,
+                'age' => $ageData,
+                'health_category' => $healthCategoryData,
+                'metabolic_syndrome' => $metabolicSyndromeData,
+                'disease_history' => $diseaseHistoryData,
+                'lab_diagnosis' => $labDiagnosisData,
+                'non_lab_diagnosis' => $nonLabDiagnosisData,
+                'symptoms' => $symptomsData,
+                'conclusion_and_recommendation' => $conclusionAndRecommendationData,
+            ]
+        ];
+
+        return response()->json($data);
     }
 
 }

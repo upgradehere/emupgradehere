@@ -1,10 +1,14 @@
 <h4>ANAMNESA</h4>
-<h5>Riwayat Penyakit Sebelumnya</h5>
-<table class="identity-header">
+<table style="border:none; width: 100%;">
     <tbody>
         <tr>
-            <td>
-                <table class="sub-table">
+            <th colspan="2" align="left" style="border-bottom: 2px solid black; font-size: 15px;">
+                Riwayat Penyakit Sebelumnya
+            </th>
+        </tr>
+        <tr>
+            <td style="width: 50%; vertical-align: top;">
+                <table class="sub-table" style="border: none;">
                     <thead>
                         <tr>
                             <th width="200px"></th>
@@ -162,10 +166,9 @@
                         </tr>
                     </tbody>
                 </table>
-
             </td>
-            <td>
-                <table class="sub-table">
+            <td style="width: 50%; vertical-align: top;">
+                <table class="sub-table" style="border: none;">
                     <thead>
                         <tr>
                             <th width="200px"></th>
