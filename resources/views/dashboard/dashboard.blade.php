@@ -367,7 +367,7 @@
         function buildChartFemale(chartDom, male, total) {
             var data = [
                 { value: total, name: 'Total', itemStyle: { color: '#DADFE9' } },
-                { value: male, name: 'Wanita', itemStyle: { color: '#A1D6FC' } }
+                { value: male, name: 'Wanita', itemStyle: { color: '#FF69B4' } }
             ];
 
             // Inisialisasi chart
@@ -438,8 +438,9 @@
         }
 
         function buildChartParticipant(chartDom, data) {
-            chartDom = document.getElementById(chartDom)
+            chartDom = document.getElementById(chartDom);
             var myChart = echarts.init(chartDom);
+
             var option = {
                 tooltip: {
                     trigger: 'axis',
@@ -450,7 +451,7 @@
                 grid: {
                     left: '1%',
                     right: '1%',
-                    top  : '1%',
+                    top: '1%',
                     bottom: '25px',  // Memberikan ruang lebih di bawah untuk dataZoom
                     containLabel: true
                 },
@@ -502,7 +503,7 @@
                         stack: 'Gender',
                         emphasis: {
                             itemStyle: {
-                                color: '#A1D6FC'  // Warna saat hover untuk Wanita
+                                color: '#FF69B4'  // Warna saat hover untuk Wanita (pink)
                             }
                         },
                         label: {
@@ -514,20 +515,20 @@
                             color: '#fff'  // Pastikan warna label tetap putih
                         },
                         itemStyle: {
-                            color: '#A1D6FC'  // Warna untuk batang Wanita
+                            color: '#FF69B4'  // Warna untuk batang Wanita (pink)
                         },
                         data: data.map(item => item.female)  // Ambil data female dari data
                     }
                 ],
                 dataZoom: [
                     {
-                      type: 'slider',
-                      show: true,
-                      xAxisIndex: [0],  // Menggunakan data pada sumbu X
-                      start: 0,  // Posisi awal zoom
-                      end: 55,  // Posisi akhir zoom
-                      bottom: '10',  // Menempatkan dataZoom tepat di bawah grafik
-                      height: 20  // Menambah tinggi slider dataZoom agar lebih mudah dilihat
+                        type: 'slider',
+                        show: true,
+                        xAxisIndex: [0],  // Menggunakan data pada sumbu X
+                        start: 0,  // Posisi awal zoom
+                        end: 55,  // Posisi akhir zoom
+                        bottom: '10',  // Menempatkan dataZoom tepat di bawah grafik
+                        height: 20  // Menambah tinggi slider dataZoom agar lebih mudah dilihat
                     }
                 ]
             };
@@ -535,6 +536,7 @@
             // Set opsi dan tampilkan grafik
             myChart.setOption(option);
         }
+
 
         function buildChartAge(chartDom, dataUsia) {
             var chartDom = document.getElementById(chartDom);
@@ -546,7 +548,7 @@
             var myChart = echarts.init(chartDom);
 
             var option = {
-                color: ['#0F3B99', '#A1D6FC'], // Warna solid untuk male dan female
+                color: ['#0F3B99', '#FF69B4'], // Warna solid untuk male (Pria) dan female (Wanita) menjadi pink
                 tooltip: {
                     trigger: 'axis',
                     axisPointer: {
@@ -602,7 +604,7 @@
                         showSymbol: false,
                         areaStyle: {
                             opacity: 1,  // Mengurangi transparansi (jadi solid)
-                            color: '#0F3B99'  // Warna solid untuk male
+                            color: '#0F3B99'  // Warna solid untuk Pria
                         },
                         emphasis: {
                             focus: 'series'
@@ -625,7 +627,7 @@
                         showSymbol: false,
                         areaStyle: {
                             opacity: 1,  // Mengurangi transparansi (jadi solid)
-                            color: '#A1D6FC'  // Warna solid untuk female
+                            color: '#FF69B4'  // Warna solid untuk Wanita (pink)
                         },
                         emphasis: {
                             focus: 'series'
@@ -642,6 +644,7 @@
 
             myChart.setOption(option);
         }
+
 
         function buildChartDiseaseHistory(chartDom, data) {
             chartDom = document.getElementById(chartDom);
