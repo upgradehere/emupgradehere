@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 // Authenticaton
+Route::get('/', [AuthController::class, 'index'])->name('login');
 Route::get('/login', [AuthController::class, 'index'])->name('login');
 Route::post('/login-check', [AuthController::class, 'check'])->name('login.check');
 Route::post('/login-otp', [AuthController::class, 'otp'])->name('login.otp');
