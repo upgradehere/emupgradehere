@@ -1,71 +1,125 @@
-<h4>Refraksi / Trial Lens</h4>
-<table class="identity-header">
-    <tbody>
-        <tr>
-            <td>
-            	<table>
-			        <tr>
-			            <td>Spheris Kiri</td>
-			            <td>{{ $refraksi->left_spherical }}</td>
-			        </tr>
-			        <tr>
-			            <td>Cylinder Kiri</td>
-			            <td>{{ $refraksi->left_cylinder }}</td>
-			        </tr>
-			        <tr>
-			            <td>Axis Kiri</td>
-			            <td>{{ $refraksi->left_axis }}</td>
-			        </tr>
-			        <tr>
-			            <td>ADD Kiri</td>
-			            <td>{{ $refraksi->left_add }}</td>
-			        </tr>
-			        <tr>
-			            <td>PD Kiri</td>
-			            <td>{{ $refraksi->left_pd }}</td>
-			        </tr>
-			        <tr>
-			            <td>Visus Tanpa Koreksi, OD Kiri</td>
-			            <td>{{ $refraksi->uncorrected_vision_left_od }}</td>
-			        </tr>
-			        <tr>
-			            <td>Visus Tanpa Koreksi, OS Kiri</td>
-			            <td>{{ $refraksi->uncorrected_vision_left_os }}</td>
-			        </tr>
-			    </table>
-            </td>
-            <td>
-            <table>
-		        <tr>
-		            <td>Spheris Kanan</td>
-		            <td>{{ $refraksi->right_spherical }}</td>
-		        </tr>
-		        <tr>
-		            <td>Cylinder Kanan</td>
-		            <td>{{ $refraksi->right_cylinder }}</td>
-		        </tr>
-		        <tr>
-		            <td>Axis Kanan</td>
-		            <td>{{ $refraksi->right_axis }}</td>
-		        </tr>
-		        <tr>
-		            <td>ADD Kanan</td>
-		            <td>{{ $refraksi->right_add }}</td>
-		        </tr>
-		        <tr>
-		            <td>PD Kanan</td>
-		            <td>{{ $refraksi->right_pd }}</td>
-		        </tr>
-		        <tr>
-		            <td>Visus Tanpa Koreksi, OD Kanan</td>
-		            <td>{{ $refraksi->uncorrected_vision_right_od }}</td>
-		        </tr>
-		        <tr>
-		            <td>Visus Tanpa Koreksi, OS Kanan</td>
-		            <td>{{ $refraksi->uncorrected_vision_right_os }}</td>
-		        </tr>
-		    </table>		
-            </td>
-        </tr>
-    </tbody>
-</table>
+<div class="no-break">
+	<h4>REFRAKSI / TRIAL LENS</h4>
+	<table style="width: 100%; border-collapse: collapse; border-spacing: 0px 10px; font-size: 13px;" cellpadding="3">
+	    <tbody>
+	    	<tr>
+	    		<th colspan="2" align="left" style="border-bottom: 2px solid black; font-size: 15px;"> Gambar Hasil Refraksi/Trial Lens </th>
+	    	</tr>
+	    	<tr style="padding-bottom: 50px;">
+	    		<td colspan="2"> {{ $refraksi->image_file }} <br><br></td>
+	    	</tr>
+	    	<tr>
+	    		<th colspan="2" align="left" style="border-bottom: 2px solid black; font-size: 15px;"> Ukuran Kacamata </th>
+	    	</tr>
+	        <tr>
+	            <td>
+	            	<table cellpadding="3" style="width: 100%;">
+				        <tr>
+				            <td width="80%"><b>Spheris Kiri</b></td>
+				            <td>:</td>
+				            <td width="20%" align="left">{{ $refraksi->left_spherical }}</td>
+				        </tr>
+				        <tr>
+				            <td width="80%"><b>Cylinder Kiri</b></td>
+				            <td>:</td>
+				            <td width="20%" align="left">{{ $refraksi->left_cylinder }}</td>
+				        </tr>
+				        <tr>
+				            <td width="80%"><b>Axis Kiri</b></td>
+				            <td>:</td>
+				            <td width="20%" align="left">{{ $refraksi->left_axis }}</td>
+				        </tr>
+				        <tr>
+				            <td width="80%"><b>ADD Kiri</b></td>
+				            <td>:</td>
+				            <td width="20%" align="left">{{ $refraksi->left_add }}</td>
+				        </tr>
+				        <tr>
+				            <td width="80%"><b>PD Kiri</b></td>
+				            <td>:</td>
+				            <td width="20%" align="left">{{ $refraksi->left_pd }}</td>
+				        </tr>
+				        <tr>
+				            <td width="80%"><b>Visus Tanpa Koreksi, OD Kiri</b></td>
+				            <td>:</td>
+				            <td width="20%" align="left">{{ $refraksi->uncorrected_vision_left_od }}</td>
+				        </tr>
+				        <tr>
+				            <td width="80%"><b>Visus Tanpa Koreksi, OS Kiri</b></td>
+				            <td>:</td>
+				            <td width="20%" align="left">{{ $refraksi->uncorrected_vision_left_os }}</td>
+				        </tr>
+				    </table>
+	            </td>
+	            <td>
+		            <table cellpadding="3" style="width: 100%;">
+				        <tr>
+				            <td width="80%"><b>Spheris Kanan</b></td>
+				            <td>:</td>
+				            <td width="20%" align="left">{{ $refraksi->right_spherical }}</td>
+				        </tr>
+				        <tr>
+				            <td width="80%"><b>Cylinder Kanan</b></td>
+				            <td>:</td>
+				            <td width="20%" align="left">{{ $refraksi->right_cylinder }}</td>
+				        </tr>
+				        <tr>
+				            <td width="80%"><b>Axis Kanan</b></td>
+				            <td>:</td>
+				            <td width="20%" align="left">{{ $refraksi->right_axis }}</td>
+				        </tr>
+				        <tr>
+				            <td width="80%"><b>ADD Kanan</b></td>
+				            <td>:</td>
+				            <td width="20%" align="left">{{ $refraksi->right_add }}</td>
+				        </tr>
+				        <tr>
+				            <td width="80%"><b>PD Kanan</b></td>
+				            <td>:</td>
+				            <td width="20%" align="left">{{ $refraksi->right_pd }}</td>
+				        </tr>
+				        <tr>
+				            <td width="80%"><b>Visus Tanpa Koreksi, OD Kanan</b></td>
+				            <td>:</td>
+				            <td width="20%" align="left">{{ $refraksi->uncorrected_vision_right_od }}</td>
+				        </tr>
+				        <tr>
+				            <td width="80%"><b>Visus Tanpa Koreksi, OS Kanan</b></td>
+				            <td>:</td>
+				            <td width="20%" align="left">{{ $refraksi->uncorrected_vision_right_os }}</td>
+				        </tr>
+				    </table>		
+	            </td>
+	        </tr>
+	        <tr>
+	    		<th colspan="2" align="left" style="border-bottom: 2px solid black; font-size: 15px;"> Catatan </th>
+	    	</tr>
+	    	<tr style="padding-top: 50px;">
+	    		<td colspan="2">
+	    			<table cellpadding="3" style="width: 100%;">
+				        <tr>
+				            <td width="20%"><b>Terapi Hasil Refraksi</b></td>
+				            <td>:</td>
+				            <td width="80%" align="left">{{ $refraksi->refraction_therapy_result }}</td>
+				        </tr>
+				        <tr>
+				            <td width="20%"><b>Kesimpulan & Saran</b></td>
+				            <td>:</td>
+				            <td width="80%" align="left">{{ $refraksi->conclusion }}</td>
+				        </tr>
+				        <tr>
+				            <td width="20%"><b>Catatan</b></td>
+				            <td>:</td>
+				            <td width="80%" align="left">{{ $refraksi->Catatan }}</td>
+				        </tr>
+				        <tr>
+				            <td width="20%"><b>Pemeriksa</b></td>
+				            <td>:</td>
+				            <td width="80%" align="left">{{ $refraksi->doctor_id }}</td>
+				        </tr>
+				    </table>
+	    		</td>
+	    	</tr>
+	    </tbody>
+	</table>
+</div>

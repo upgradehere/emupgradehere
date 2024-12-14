@@ -79,6 +79,10 @@
         .page-break {
             page-break-before: always;
         }
+        .no-break {
+            page-break-inside: avoid; /* Prevent page breaks inside this div */
+            break-inside: avoid-column; /* For newer browsers that support break-inside */
+        }
     </style>
 </head>
 <body>
@@ -139,13 +143,9 @@
     @include('mcu.pemeriksaan.print.partials.cetak_refraksi')
     @endif
     
-    <div class="page-break"></div>
-
     @if (!empty($rontgen))
     @include('mcu.pemeriksaan.print.partials.cetak_rontgen')
     @endif
-
-    <div class="page-break"></div>
 
     @if (!empty($audiometri))
     @include('mcu.pemeriksaan.print.partials.cetak_audiometri')
@@ -159,8 +159,6 @@
     @include('mcu.pemeriksaan.print.partials.cetak_ekg')
     @endif
 
-    <div class="page-break"></div>
-
     @if (!empty($usg))
     @include('mcu.pemeriksaan.print.partials.cetak_usg')
     @endif
@@ -172,8 +170,6 @@
     @if (!empty($papsmear))
     @include('mcu.pemeriksaan.print.partials.cetak_papsmear')
     @endif
-
-    <div class="page-break"></div>
 
     @if (!empty($resume))
     @include('mcu.pemeriksaan.print.partials.cetak_resume')

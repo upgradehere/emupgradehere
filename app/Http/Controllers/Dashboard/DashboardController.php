@@ -342,72 +342,29 @@ class DashboardController extends Controller
 
     public function getSymptoms($id_program)
     {
-        $data = [
-            [
-                'disease' => 'Diabetes',
-                'diagnoses' => [
-                    'Initial Diagnosis' => 320,
-                    'Follow-up Examination' => 120,
-                    'Treatment Recommendations' => 220
-                ]
-            ],
-            [
-                'disease' => 'Hypertension',
-                'diagnoses' => [
-                    'Initial Diagnosis' => 302,
-                    'Follow-up Examination' => 132,
-                    'Treatment Recommendations' => 182,
-                    'Follow-up Actions' => 212
-                ]
-            ],
-            [
-                'disease' => 'Asthma',
-                'diagnoses' => [
-                    'Initial Diagnosis' => 301,
-                    'Follow-up Examination' => 101
-                ]
-            ],
-            [
-                'disease' => 'Heart Disease',
-                'diagnoses' => [
-                    'Initial Diagnosis' => 334,
-                    'Follow-up Examination' => 134,
-                    'Treatment Recommendations' => 234,
-                    'Follow-up Actions' => 154,
-                    'Diet Recommendations' => 934
-                ]
-            ],
-            [
-                'disease' => 'Cancer',
-                'diagnoses' => [
-                    'Initial Diagnosis' => 390,
-                    'Follow-up Examination' => 90,
-                    'Treatment Recommendations' => 290
-                ]
-            ],
-            [
-                'disease' => 'Stroke',
-                'diagnoses' => [
-                    'Initial Diagnosis' => 330,
-                    'Follow-up Examination' => 230,
-                    'Treatment Recommendations' => 330,
-                    'Follow-up Actions' => 330
-                ]
-            ],
-            [
-                'disease' => 'Kidney Disease',
-                'diagnoses' => [
-                    'Initial Diagnosis' => 320,
-                    'Follow-up Examination' => 210,
-                    'Treatment Recommendations' => 310,
-                    'Follow-up Actions' => 410,
-                    'Diet Recommendations' => 1320
-                ]
-            ]
-        ];
+        $query = 'SELECT * FROM fn_sindrom_metabolik(?)';
+        $results = DB::select($query, [$id_program]);
 
-       return $data;
+        $data = [];
+        foreach ($results as $row) {
+            $json_data = json_decode($row->json_data, true);
+
+            $diseaseData = [
+                'disease' => ucwords(str_replace("_", " ", $row->name)),
+                'diagnoses' => []
+            ];
+
+            foreach ($json_data as $key => $count) {
+                $formattedKey = ucwords(str_replace("_", " ", $key));
+                $diseaseData['diagnoses'][$formattedKey] = $count;
+            }
+
+            $data[] = $diseaseData;
+        }
+
+        return $data;
     }
+
 
     public function getConclusionAndRecommendation($id_program)
     {
