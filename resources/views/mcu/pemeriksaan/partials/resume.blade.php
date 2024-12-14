@@ -18,7 +18,7 @@
                                 <label class="col-sm-2 col-form-label">Kesan Fisik</label>
                                 <div class="col-sm-10">
                                     <textarea required class="summernote" name="physical_impression">
-                                        {{ $data_resume_mcu->physical_impression }}
+                                        {{ !empty($data_resume_mcu->physical_impression) ? $data_resume_mcu->physical_impression : null }}
                                     </textarea>
                                 </div>
                             </div>
@@ -26,7 +26,7 @@
                                 <label class="col-sm-2 col-form-label">Kesan Rontgen</label>
                                 <div class="col-sm-10">
                                     <textarea required class="summernote" name="rontgen_impression">
-                                        {{ $data_resume_mcu->rontgen_impression }}
+                                        {{ !empty($data_resume_mcu->rontgen_impression) ? $data_resume_mcu->rontgen_impression : null }}
                                     </textarea>
                                 </div>
                             </div>
@@ -34,7 +34,7 @@
                                 <label class="col-sm-2 col-form-label">Kesan EKG</label>
                                 <div class="col-sm-10">
                                     <textarea required class="summernote" name="ekg_impression">
-                                        {{ $data_resume_mcu->ekg_impression }}
+                                        {{ !empty($data_resume_mcu->ekg_impression) ? $data_resume_mcu->ekg_impression : null }}
                                     </textarea>
                                 </div>
                             </div>
@@ -42,7 +42,7 @@
                                 <label class="col-sm-2 col-form-label">Kesan Audiometri</label>
                                 <div class="col-sm-10">
                                     <textarea required class="summernote" name="audiometry_impression">
-                                        {{ $data_resume_mcu->audiometry_impression }}
+                                        {{ !empty($data_resume_mcu->audiometry_impression) ? $data_resume_mcu->audiometry_impression : null }}
                                     </textarea>
                                 </div>
                             </div>
@@ -50,7 +50,7 @@
                                 <label class="col-sm-2 col-form-label">Kesan USG</label>
                                 <div class="col-sm-10">
                                     <textarea required class="summernote" name="ekg_impression">
-                                        {{ $data_resume_mcu->ekg_impression }}
+                                        {{ !empty($data_resume_mcu->ekg_impression) ? $data_resume_mcu->ekg_impression : null }}
                                     </textarea>
                                 </div>
                             </div>
@@ -58,7 +58,7 @@
                                 <label class="col-sm-2 col-form-label">Kesan Spirometri</label>
                                 <div class="col-sm-10">
                                     <textarea required class="summernote" name="spirometry_impression">
-                                        {{ $data_resume_mcu->spirometry_impression }}
+                                        {{ !empty($data_resume_mcu->spirometry_impression) ? $data_resume_mcu->spirometry_impression : null }}
                                     </textarea>
                                 </div>
                             </div>
@@ -66,7 +66,7 @@
                                 <label class="col-sm-2 col-form-label">Kesan Refraksi</label>
                                 <div class="col-sm-10">
                                     <textarea required class="summernote" name="refreaction_impression">
-                                        {{ $data_resume_mcu->refreaction_impression }}
+                                        {{ !empty($data_resume_mcu->refreaction_impression) ? $data_resume_mcu->refreaction_impression : null }}
                                     </textarea>
                                 </div>
                             </div>
@@ -74,7 +74,7 @@
                                 <label class="col-sm-2 col-form-label">Kesan Laboratorium</label>
                                 <div class="col-sm-10">
                                     <textarea required class="summernote" name="laboratory_impression">
-                                        {{ $data_resume_mcu->laboratory_impression }}
+                                        {{ !empty($data_resume_mcu->laboratory_impression) ? $data_resume_mcu->laboratory_impression : null }}
                                     </textarea>
                                 </div>
                             </div>
@@ -106,7 +106,7 @@
                                 <label class="col-sm-2 col-form-label">Saran</label>
                                 <div class="col-sm-10">
                                     <textarea required class="summernote" name="suggestion">
-                                        {{ $data_resume_mcu->suggestion }}
+                                        {{ !empty($data_resume_mcu->suggestion) ? $data_resume_mcu->suggestion : null }}
                                     </textarea>
                                 </div>
                             </div>
