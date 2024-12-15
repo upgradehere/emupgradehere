@@ -2,6 +2,7 @@
 
 namespace App\Imports;
 
+use App\Helpers\ConstantsHelper;
 use App\Models\EmployeeM;
 use App\Models\McuT;
 use App\Models\PackageM;
@@ -71,6 +72,24 @@ class McuResumeMcuImport implements ToCollection, WithHeadingRow
             if ($modelResumeMcu != null) {
                 ResumeMcuT::where('mcu_id', $mcu_id)->delete();
             }
+
+            if (isset($row['kesimpulan_hasil'])) {
+                if ($row['kesimpulan_hasil'] == ConstantsHelper::KESIMPULAN_FIT_TO_WORK_NAME) {
+                    $resultConclusion = ConstantsHelper::KESIMPULAN_FIT_TO_WORK;
+                } elseif ($row['kesimpulan_hasil'] == ConstantsHelper::KESIMPULAN_FIT_TO_WORK_WITH_MEDICAL_NOTE_NAME) {
+                    $resultConclusion = ConstantsHelper::KESIMPULAN_FIT_TO_WORK_WITH_MEDICAL_NOTE;
+                } elseif ($row['kesimpulan_hasil'] == ConstantsHelper::KESIMPULAN_FIT_TEMPORARY_UNFIT_NAME) {
+                    $resultConclusion = ConstantsHelper::KESIMPULAN_FIT_TEMPORARY_UNFIT;
+                } elseif ($row['kesimpulan_hasil'] == ConstantsHelper::KESIMPULAN_NEED_FURTHER_EXAMINATION_NAME) {
+                    $resultConclusion = ConstantsHelper::KESIMPULAN_NEED_FURTHER_EXAMINATION;
+                } elseif ($row['kesimpulan_hasil'] == ConstantsHelper::KESIMPULAN_FIT_WITH_NOTE_NAME) {
+                    $resultConclusion = ConstantsHelper::KESIMPULAN_FIT_WITH_NOTE;
+                } else {
+                    $resultConclusion = null;
+                }
+            } else {
+                $resultConclusion = null;
+            }
             $data = [
                 'mcu_id' => $mcu_id,
                 'resume_mcu_date' => date('Y-m-d H:i:s'),
@@ -82,7 +101,7 @@ class McuResumeMcuImport implements ToCollection, WithHeadingRow
                 'spirometry_impression' => !empty($row['kesan_spirometri']) ? $row['kesan_spirometri'] : null,
                 'refreaction_impression' => !empty($row['kesan_refraksi']) ? $row['kesan_refraksi'] : null,
                 'laboratory_impression' => !empty($row['kesan_laboratorium']) ? $row['kesan_laboratorium'] : null,
-                'result_conclusion' => !empty($row['kesimpulan_hasil']) ? $row['kesimpulan_hasil'] : null,
+                'result_conclusion' => $resultConclusion,
                 'suggestion' => !empty($row['saran']) ? $row['saran'] : null,
             ];
             ResumeMcuT::insert($data);

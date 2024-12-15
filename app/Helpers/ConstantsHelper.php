@@ -34,4 +34,10 @@ class ConstantsHelper {
     const KESIMPULAN_NEED_FURTHER_EXAMINATION = 34;
     const KESIMPULAN_FIT_WITH_NOTE = 35;
 
+    const KESIMPULAN_FIT_TO_WORK_NAME = 'Fit To Work';
+    const KESIMPULAN_FIT_TO_WORK_WITH_MEDICAL_NOTE_NAME = 'Fit To Work With Medical Note';
+    const KESIMPULAN_FIT_TEMPORARY_UNFIT_NAME = 'Temporary Unfit';
+    const KESIMPULAN_NEED_FURTHER_EXAMINATION_NAME = 'Need Further Examination';
+    const KESIMPULAN_FIT_WITH_NOTE_NAME = 'Fit With Note';
+
 }
