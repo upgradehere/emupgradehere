@@ -37,6 +37,7 @@ class RefractionT extends Model
         'notes',
         'doctor_id',
         'additional_data',
+        'is_import',
         'deleted_at',
         'created_at',
         'updated_at',
@@ -77,6 +78,7 @@ class RefractionT extends Model
         'notes' => 'Catatan',
         'doctor_id' => 'Dokter ID',
         'additional_data' => 'Additional Data',
+        'is_import' => 'is_import',
     ];
 
     public function validate(){
