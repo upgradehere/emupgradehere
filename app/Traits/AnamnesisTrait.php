@@ -16,6 +16,8 @@ trait AnamnesisTrait
         if (!empty($query)) {
             $anamnesis = $query;
             $anamnesis['medical_history'] = !empty($query['medical_history']) ? json_decode($query['medical_history']) : [];
+            $anamnesis['habit_factor'] = !empty($query['habit_factor']) ? json_decode($query['habit_factor']) : [];
+            $anamnesis['work_hazard_history'] = !empty($query['work_hazard_history']) ? json_decode($query['work_hazard_history']) : [];
             $anamnesis['eyes'] = !empty($query['eyes']) ? json_decode($query['eyes']) : [];
             $anamnesis['ears'] = !empty($query['ears']) ? json_decode($query['ears']) : [];
             $anamnesis['nose'] = !empty($query['nose']) ? json_decode($query['nose']) : [];
@@ -64,6 +66,8 @@ trait AnamnesisTrait
                 'bmi_classification' => $post['bmi_classification'],
                 'skin_condition' => $post['skin_condition'],
                 'medical_history' => json_encode($post['medical_history']),
+                'habit_factor' => json_encode($post['habit_factor']),
+                'work_hazard_history' => json_encode($post['work_hazard_history']),
                 'eyes' => json_encode($post['eyes']),
                 'ears' => json_encode($post['ears']),
                 'nose' => json_encode($post['nose']),
