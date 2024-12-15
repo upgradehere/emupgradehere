@@ -1,4 +1,4 @@
-@if (!empty($usg))
+@if (!empty($treadmill))
 @include('mcu.pemeriksaan.print.partials.header', ['title_header' => 'PEMERIKSAAN TREADMMILL'])
 @endif
 

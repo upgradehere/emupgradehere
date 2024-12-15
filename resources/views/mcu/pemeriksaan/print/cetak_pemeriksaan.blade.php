@@ -126,7 +126,11 @@
 </head>
 <body>
     <div class="watermark">
-        <img src="{{ empty($letterhead) ? public_path('img-pdf/default.jpg') : public_path('upload/letterhead/'.$letterhead) }}" alt="Template Logo">
+        @if(empty($letterhead))
+            <img src="{{ public_path('pdf/default.jpg') }}">
+        @else
+            <img src="{{ public_path('uploadssss/letterhead/'.$letterhead) }}">
+        @endif
     </div>
 
     <div class="header">
@@ -135,12 +139,11 @@
     <div class="cover">
         <div class="content" style="padding-left: 90px; padding-right: 90px;">
 
-            <!-- Tabel Biodata Karyawan dengan class table-cover -->
             <table class="table-cover">
                 <tr>
                     <th>No MCU</th>
                     <td>:</td>
-                    <td>{{ $employee_name }}</td>
+                    <td>{{ $mcu_code }}</td>
                 </tr>
                 <tr>
                     <th>Nama</th>
@@ -181,69 +184,69 @@
         </div>
     </div>
     
-    <div class="page-break"></div>
 
     @if (!empty($anamnesis))
+    <div class="page-break"></div>
     @include('mcu.pemeriksaan.print.partials.cetak_anamnesis')
     @endif
     
-    <div class="page-break"></div>
 
     @if (!empty($refraksi))
+    <div class="page-break"></div>
     @include('mcu.pemeriksaan.print.partials.cetak_refraksi')
     @endif
 
-    <div class="page-break"></div>
 
     @if (!empty($laboratorium))
+    <div class="page-break"></div>
     @include('mcu.pemeriksaan.print.partials.cetak_lab')
     @endif
 
-    <div class="page-break"></div>
 
     @if (!empty($rontgen))
+    <div class="page-break"></div>
     @include('mcu.pemeriksaan.print.partials.cetak_rontgen')
     @endif
     
-    <div class="page-break"></div>
 
     @if (!empty($audiometri))
+    <div class="page-break"></div>
     @include('mcu.pemeriksaan.print.partials.cetak_audiometri')
     @endif
 
-    <div class="page-break"></div>
 
     @if (!empty($spirometri))
+    <div class="page-break"></div>
     @include('mcu.pemeriksaan.print.partials.cetak_spirometri')
     @endif
 
-    <div class="page-break"></div>
 
     @if (!empty($ekg))
+    <div class="page-break"></div>
     @include('mcu.pemeriksaan.print.partials.cetak_ekg')
     @endif
 
-    <div class="page-break"></div>
 
     @if (!empty($usg))
+    <div class="page-break"></div>
     @include('mcu.pemeriksaan.print.partials.cetak_usg')
     @endif
 
-    <div class="page-break"></div>
 
     @if (!empty($treadmill))
+    <div class="page-break"></div>
     @include('mcu.pemeriksaan.print.partials.cetak_treadmill')
     @endif
     
-    <div class="page-break"></div>
 
     @if (!empty($papsmear))
+    <div class="page-break"></div>
     @include('mcu.pemeriksaan.print.partials.cetak_papsmear')
     @endif
 
-    <div class="page-break"></div>
 
     @if (!empty($resume))
+    <div class="page-break"></div>
     @include('mcu.pemeriksaan.print.partials.cetak_resume')
     @endif
 </body>
