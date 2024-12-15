@@ -30,6 +30,7 @@ class UsgT extends Model
         'is_abnormal',
         'image_file',
         'additional_data',
+        'is_import',
         'deleted_at',
         'created_at',
         'updated_at',
@@ -63,6 +64,7 @@ class UsgT extends Model
         'is_abnormal' => 'is_abnormal',
         'image_file' => 'image_file',
         'additional_data' => 'additional_data',
+        'is_import' => 'is_import',
     ];
 
     public function validate(){

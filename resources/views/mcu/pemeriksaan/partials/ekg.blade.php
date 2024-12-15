@@ -15,6 +15,29 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group row align-items-center mb-3">
+                                <label for="exampleCheck1" class="col-sm-2 col-form-label">Import Hasil</label>
+                                <div class="col-sm-10">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                        <input type="hidden" name="is_import" value="0">
+                                            <input type="checkbox" class="form-check-input" value="1" name="is_import"
+                                            <?php
+                                                if (isset($data_ekg->is_import)) {
+                                                    if ($data_ekg->is_import == true) {
+                                                        echo 'checked';
+                                                    } else {
+                                                        echo '';
+                                                    }
+                                                } else {
+                                                    echo 'checked';
+                                                }
+                                            ?>>
+                                            <i>*ceklis jika hasil pemeriksaan digabung dengan gambar pemeriksaan</i>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row align-items-center mb-3">
                                 <label class="col-sm-2 col-form-label">File Gambar</label>
                                 <div class="col-sm-10">
                                     <div class="custom-file">

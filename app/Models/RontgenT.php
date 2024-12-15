@@ -30,6 +30,7 @@ class RontgenT extends Model
         'is_abnormal',
         'image_file',
         'additional_data',
+        'is_import',
         'deleted_at',
         'created_at',
         'updated_at',
@@ -64,6 +65,7 @@ class RontgenT extends Model
         'is_abnormal' => 'is_abnormal',
         'image_file' => 'Image File',
         'additional_data' => 'Additional Data',
+        'is_import' => 'is_import',
     ];
 
     public function validate(){
