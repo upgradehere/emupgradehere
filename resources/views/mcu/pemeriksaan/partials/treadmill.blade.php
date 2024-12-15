@@ -216,6 +216,15 @@
                                 </div>
                             </div>
                             <div class="form-group row align-items-center mb-3">
+                                <label class="col-sm-2 col-form-label">Normal / Abnormal</label>
+                                <div class="col-sm-10">
+                                    <select class="form-control" name="is_abnormal" style="width: 100%;">
+                                        <option value="0" {{ isset($data_treadmill->is_abnormal) && $data_treadmill->is_abnormal == 0 ? 'selected' : '' }}>Normal</option>
+                                        <option value="1" {{ isset($data_treadmill->is_abnormal) && $data_treadmill->is_abnormal == 1 ? 'selected' : '' }}>Abnormal</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row align-items-center mb-3">
                                 <label class="col-sm-2 col-form-label">Pemeriksa</label>
                                 <div class="col-sm-10">
                                     <select class="form-control select2 selectDoctorTreadmill" name="doctor_id" style="width: 100%;">
