@@ -167,24 +167,6 @@
                                 </div>
                             </div>
                             <div class="form-group row align-items-center mb-3">
-                                <label class="col-sm-4 col-form-label">Apakah Anda Perokok</label>
-                                <div class="col-sm-8">
-                                    <select class="form-control" id="smoker" name="medical_history[smoker]">
-                                        <option value="0" {{ isset($data_anamnesis->medical_history->smoker) && $data_anamnesis->medical_history->smoker == 0 ? 'selected' : '' }}>Tidak</option>
-                                        <option value="1" {{ isset($data_anamnesis->medical_history->smoker) && $data_anamnesis->medical_history->smoker == 1 ? 'selected' : '' }}>Ya</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group row align-items-center mb-3">
-                                <label class="col-sm-4 col-form-label">Apakah Anda Rutin Berolahraga</label>
-                                <div class="col-sm-8">
-                                    <select class="form-control" id="exercise_regularly" name="medical_history[exercise_regularly]">
-                                        <option value="0" {{ isset($data_anamnesis->medical_history->exercise_regularly) && $data_anamnesis->medical_history->exercise_regularly == 0 ? 'selected' : '' }}>Tidak</option>
-                                        <option value="1" {{ isset($data_anamnesis->medical_history->exercise_regularly) && $data_anamnesis->medical_history->exercise_regularly == 1 ? 'selected' : '' }}>Ya</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group row align-items-center mb-3">
                                 <label class="col-sm-4 col-form-label">Nyeri Saat Buang Air Kecil</label>
                                 <div class="col-sm-8">
                                     <select class="form-control" id="pain_when_urinating" name="medical_history[pain_when_urinating]">
@@ -221,6 +203,157 @@
                                 <label class="col-sm-4 col-form-label">Keluhan Utama Saat Ini</label>
                                 <div class="col-sm-8">
                                     <input type="text" class="form-control" id="main_complaint" name="medical_history[main_complaint]" value="{{ isset($data_anamnesis->medical_history->main_complaint) ? $data_anamnesis->medical_history->main_complaint : '' }}" placeholder="">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Faktor Kebiasaan</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group row align-items-center mb-3">
+                                <label class="col-sm-4 col-form-label">Merokok</label>
+                                <div class="col-sm-8">
+                                    <select class="form-control" id="smoking" name="habit_factor[smoking]">
+                                        <option value="0" {{ isset($data_anamnesis->habit_factor->smoking) && $data_anamnesis->habit_factor->smoking == 0 ? 'selected' : '' }}>Tidak Merokok</option>
+                                        <option value="1" {{ isset($data_anamnesis->habit_factor->smoking) && $data_anamnesis->habit_factor->smoking == 1 ? 'selected' : '' }}>Kadang - Kadang (Kurang Dari 3 Batang/hari)</option>
+                                        <option value="2" {{ isset($data_anamnesis->habit_factor->smoking) && $data_anamnesis->habit_factor->smoking == 2 ? 'selected' : '' }}>Aktif (Lebih Dari 3 Batang/hari)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row align-items-center mb-3">
+                                <label class="col-sm-4 col-form-label">Olahraga</label>
+                                <div class="col-sm-8">
+                                    <select class="form-control" id="exercise" name="habit_factor[exercise]">
+                                        <option value="0" {{ isset($data_anamnesis->habit_factor->exercise) && $data_anamnesis->habit_factor->exercise == 0 ? 'selected' : '' }}>Jarang Olahraga</option>
+                                        <option value="1" {{ isset($data_anamnesis->habit_factor->exercise) && $data_anamnesis->habit_factor->exercise == 1 ? 'selected' : '' }}>Teratur Setiap 1 Minggu</option>
+                                        <option value="2" {{ isset($data_anamnesis->habit_factor->exercise) && $data_anamnesis->habit_factor->exercise == 2 ? 'selected' : '' }}>Teratur Setiap 2 Minggu</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row align-items-center mb-3">
+                                <label class="col-sm-4 col-form-label">Alkohol</label>
+                                <div class="col-sm-8">
+                                    <select class="form-control" id="alcohol" name="habit_factor[alcohol]">
+                                        <option value="0" {{ isset($data_anamnesis->habit_factor->alcohol) && $data_anamnesis->habit_factor->alcohol == 0 ? 'selected' : '' }}>Tidak</option>
+                                        <option value="1" {{ isset($data_anamnesis->habit_factor->alcohol) && $data_anamnesis->habit_factor->alcohol == 1 ? 'selected' : '' }}>Ya</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row align-items-center mb-3">
+                                <label class="col-sm-4 col-form-label">Jika Ya, Berapa Kali</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="alcohol_note" name="habit_factor[alcohol_note]" value="{{ isset($data_anamnesis->habit_factor->alcohol_note) ? $data_anamnesis->habit_factor->alcohol_note : '' }}" placeholder="">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Riwayat Hazard Lingkungan Kerja</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group row align-items-center mb-3">
+                                <label class="col-sm-4 col-form-label">Bising</label>
+                                <div class="col-sm-8">
+                                    <select class="form-control" id="noise" name="work_hazard_history[noise]">
+                                        <option value="0" {{ isset($data_anamnesis->work_hazard_history->noise) && $data_anamnesis->work_hazard_history->noise == 0 ? 'selected' : '' }}>Tidak</option>
+                                        <option value="1" {{ isset($data_anamnesis->work_hazard_history->noise) && $data_anamnesis->work_hazard_history->noise == 1 ? 'selected' : '' }}>Ya</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row align-items-center mb-3">
+                                <label class="col-sm-4 col-form-label">Getaran</label>
+                                <div class="col-sm-8">
+                                    <select class="form-control" id="vibration" name="work_hazard_history[vibration]">
+                                        <option value="0" {{ isset($data_anamnesis->work_hazard_history->vibration) && $data_anamnesis->work_hazard_history->vibration == 0 ? 'selected' : '' }}>Tidak</option>
+                                        <option value="1" {{ isset($data_anamnesis->work_hazard_history->vibration) && $data_anamnesis->work_hazard_history->vibration == 1 ? 'selected' : '' }}>Ya</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row align-items-center mb-3">
+                                <label class="col-sm-4 col-form-label">Debu</label>
+                                <div class="col-sm-8">
+                                    <select class="form-control" id="dust" name="work_hazard_history[dust]">
+                                        <option value="0" {{ isset($data_anamnesis->work_hazard_history->dust) && $data_anamnesis->work_hazard_history->dust == 0 ? 'selected' : '' }}>Tidak</option>
+                                        <option value="1" {{ isset($data_anamnesis->work_hazard_history->dust) && $data_anamnesis->work_hazard_history->dust == 1 ? 'selected' : '' }}>Ya</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row align-items-center mb-3">
+                                <label class="col-sm-4 col-form-label">Zat Kimia</label>
+                                <div class="col-sm-8">
+                                    <select class="form-control" id="chemicals" name="work_hazard_history[chemicals]">
+                                        <option value="0" {{ isset($data_anamnesis->work_hazard_history->chemicals) && $data_anamnesis->work_hazard_history->chemicals == 0 ? 'selected' : '' }}>Tidak</option>
+                                        <option value="1" {{ isset($data_anamnesis->work_hazard_history->chemicals) && $data_anamnesis->work_hazard_history->chemicals == 1 ? 'selected' : '' }}>Ya</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row align-items-center mb-3">
+                                <label class="col-sm-4 col-form-label">Panas</label>
+                                <div class="col-sm-8">
+                                    <select class="form-control" id="heat" name="work_hazard_history[heat]">
+                                        <option value="0" {{ isset($data_anamnesis->work_hazard_history->heat) && $data_anamnesis->work_hazard_history->heat == 0 ? 'selected' : '' }}>Tidak</option>
+                                        <option value="1" {{ isset($data_anamnesis->work_hazard_history->heat) && $data_anamnesis->work_hazard_history->heat == 1 ? 'selected' : '' }}>Ya</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row align-items-center mb-3">
+                                <label class="col-sm-4 col-form-label">Asap</label>
+                                <div class="col-sm-8">
+                                    <select class="form-control" id="smoke" name="work_hazard_history[smoke]">
+                                        <option value="0" {{ isset($data_anamnesis->work_hazard_history->smoke) && $data_anamnesis->work_hazard_history->smoke == 0 ? 'selected' : '' }}>Tidak</option>
+                                        <option value="1" {{ isset($data_anamnesis->work_hazard_history->smoke) && $data_anamnesis->work_hazard_history->smoke == 1 ? 'selected' : '' }}>Ya</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row align-items-center mb-3">
+                                <label class="col-sm-4 col-form-label">Monitor Komputer</label>
+                                <div class="col-sm-8">
+                                    <select class="form-control" id="computer_monitor" name="work_hazard_history[computer_monitor]">
+                                        <option value="0" {{ isset($data_anamnesis->work_hazard_history->computer_monitor) && $data_anamnesis->work_hazard_history->computer_monitor == 0 ? 'selected' : '' }}>Tidak</option>
+                                        <option value="1" {{ isset($data_anamnesis->work_hazard_history->computer_monitor) && $data_anamnesis->work_hazard_history->computer_monitor == 1 ? 'selected' : '' }}>Ya</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row align-items-center mb-3">
+                                <label class="col-sm-4 col-form-label">Gerakan Berulang</label>
+                                <div class="col-sm-8">
+                                    <select class="form-control" id="repetitive_motion" name="work_hazard_history[repetitive_motion]">
+                                        <option value="0" {{ isset($data_anamnesis->work_hazard_history->repetitive_motion) && $data_anamnesis->work_hazard_history->repetitive_motion == 0 ? 'selected' : '' }}>Tidak</option>
+                                        <option value="1" {{ isset($data_anamnesis->work_hazard_history->repetitive_motion) && $data_anamnesis->work_hazard_history->repetitive_motion == 1 ? 'selected' : '' }}>Ya</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row align-items-center mb-3">
+                                <label class="col-sm-4 col-form-label">Mendorong / Menarik</label>
+                                <div class="col-sm-8">
+                                    <select class="form-control" id="push_pull" name="work_hazard_history[push_pull]">
+                                        <option value="0" {{ isset($data_anamnesis->work_hazard_history->push_pull) && $data_anamnesis->work_hazard_history->push_pull == 0 ? 'selected' : '' }}>Tidak</option>
+                                        <option value="1" {{ isset($data_anamnesis->work_hazard_history->push_pull) && $data_anamnesis->work_hazard_history->push_pull == 1 ? 'selected' : '' }}>Ya</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row align-items-center mb-3">
+                                <label class="col-sm-4 col-form-label">Angkat Beban</label>
+                                <div class="col-sm-8">
+                                    <select class="form-control" id="weightlifting" name="work_hazard_history[weightlifting]">
+                                        <option value="0" {{ isset($data_anamnesis->work_hazard_history->weightlifting) && $data_anamnesis->work_hazard_history->weightlifting == 0 ? 'selected' : '' }}>Tidak</option>
+                                        <option value="1" {{ isset($data_anamnesis->work_hazard_history->weightlifting) && $data_anamnesis->work_hazard_history->weightlifting == 1 ? 'selected' : '' }}>Ya</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>

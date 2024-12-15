@@ -31,6 +31,14 @@ class McuAnamnesisImport implements ToCollection, WithHeadingRow
         $rps_en = self::mappingMedicalHistory()['en'];
         $riwayatPenyakit = [];
 
+        $hf = self::mappingHabitFactor()['id'];
+        $hf_en = self::mappingHabitFactor()['en'];
+        $faktorKebiasaan = [];
+
+        $whh = self::mappingWorkHazardHistory()['id'];
+        $whh_en = self::mappingWorkHazardHistory()['en'];
+        $riwayatHazardLingkunganKerja = [];
+
         $mata = self::mappingEyes()['id'];
         $mata_en = self::mappingEyes()['en'];
         $fisikMata = [];
@@ -86,6 +94,44 @@ class McuAnamnesisImport implements ToCollection, WithHeadingRow
                 } else {
                     $riwayatPenyakit[$rps_en[$index]] = isset($row["riwayat_penyakit_sebelumnya_$r"]) && $row["riwayat_penyakit_sebelumnya_$r"] == 'Ya' ? 1 : 0;
                 }
+            }
+
+            // Faktor kebiasaan
+            foreach ($hf as $index => $r) {
+                if ($r == 'merokok') {
+                    if (isset($row["faktor_kebiasaan_$r"])) {
+                        if ($row["faktor_kebiasaan_$r"] == 'Tidak') {
+                            $faktorKebiasaan[$hf_en[$index]] = 0;
+                        } elseif ($row["faktor_kebiasaan_$r"] == 'Kadang-Kadang') {
+                            $faktorKebiasaan[$hf_en[$index]] = 1;
+                        } elseif ($row["faktor_kebiasaan_$r"] == 'Aktif') {
+                            $faktorKebiasaan[$hf_en[$index]] = 2;
+                        } else {
+                            $faktorKebiasaan[$hf_en[$index]] = 0;
+                        }
+                    }
+                } elseif ($r == 'olahraga') {
+                    if (isset($row["faktor_kebiasaan_$r"])) {
+                        if ($row["faktor_kebiasaan_$r"] == 'Jarang Olahraga') {
+                            $faktorKebiasaan[$hf_en[$index]] = 0;
+                        } elseif ($row["faktor_kebiasaan_$r"] == 'Teratur Setiap 1 Minggu') {
+                            $faktorKebiasaan[$hf_en[$index]] = 1;
+                        } elseif ($row["faktor_kebiasaan_$r"] == 'Teratur Setiap 2 Minggu') {
+                            $faktorKebiasaan[$hf_en[$index]] = 2;
+                        } else {
+                            $faktorKebiasaan[$hf_en[$index]] = 0;
+                        }
+                    }
+                } elseif ($r == 'alkohol') {
+                    $faktorKebiasaan[$hf_en[$index]] = isset($row["faktor_kebiasaan_$r"]) && $row["faktor_kebiasaan_$r"] == 'Ya' ? 1 : 0;
+                } elseif ($r == 'alkohol_berapa_kali') {
+                    $faktorKebiasaan[$hf_en[$index]] = isset($row["faktor_kebiasaan_$r"]) ? $row["faktor_kebiasaan_$r"] : '';
+                }
+            }
+
+            // Riwayat hazard lingkungak kerja
+            foreach ($whh as $index => $r) {
+                $riwayatHazardLingkunganKerja[$whh_en[$index]] = isset($row["riwayat_hazard_lingkungan_kerja_$r"]) && $row["riwayat_hazard_lingkungan_kerja_$r"] == 'Ya' ? 1 : 0;
             }
 
             // Mata
@@ -244,6 +290,8 @@ class McuAnamnesisImport implements ToCollection, WithHeadingRow
                 'bmi_classification' => !empty($row['pemeriksaan_umum_kesan_bmi']) ? $row['pemeriksaan_umum_kesan_bmi'] : null,
                 'skin_condition' => !empty($row['kulit_kondisi_kulit']) ? $row['kulit_kondisi_kulit'] : null,
                 'medical_history' => json_encode($riwayatPenyakit),
+                'habit_factor' => json_encode($faktorKebiasaan),
+                'work_hazard_history' => json_encode($riwayatHazardLingkunganKerja),
                 'eyes' => json_encode($fisikMata),
                 'ears' => json_encode($fisikTelinga),
                 'nose' => json_encode($fisikHidung),
@@ -315,6 +363,52 @@ class McuAnamnesisImport implements ToCollection, WithHeadingRow
                 'epilepsy',
                 'epilepsy_notes',
                 'main_complaint'
+            ]
+        ];
+    }
+
+    private function mappingHabitFactor(){
+        return [
+            'id' => [
+                'merokok',
+                'olahraga',
+                'alkohol',
+                'alkohol_berapa_kali'
+            ],
+            'en' => [
+                'smoking',
+                'exercise',
+                'alcohol',
+                'alcohol_note'
+            ]
+        ];
+    }
+
+    private function mappingWorkHazardHistory(){
+        return [
+            'id' => [
+                'bising',
+                'getaran',
+                'debu',
+                'zat_kimia',
+                'panas',
+                'asap',
+                'monitor_komputer',
+                'gerakan_berulang',
+                'mendorong_menarik',
+                'angkat_beban'
+            ],
+            'en' => [
+                'noise',
+                'vibration',
+                'dust',
+                'chemicals',
+                'heat',
+                'smoke',
+                'computer_monitor',
+                'repetitive_motion',
+                'push_pull',
+                'weightlifting'
             ]
         ];
     }
