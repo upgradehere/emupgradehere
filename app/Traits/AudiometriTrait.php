@@ -81,7 +81,8 @@ trait AudiometriTrait
                 'suggestion' => $post['suggestion'],
                 'doctor_id' => $post['doctor_id'],
                 'image_file' => $post['image_file'],
-                'additional_data' => $post['additional_data']
+                'additional_data' => $post['additional_data'],
+                'is_import' => $post['is_import']
             ];
             if (!empty($audiometry_id)) {
                 $query = $model->find($audiometry_id);

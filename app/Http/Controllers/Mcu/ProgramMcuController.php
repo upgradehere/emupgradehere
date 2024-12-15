@@ -432,18 +432,37 @@ class ProgramMcuController extends Controller
                     Log::info($modelMcu);
 
                     if ($modelMcu == null) {
-                        throw new \Exception('Peserta dengan nik '.$nik.' dan kode paket '.$packageCode.' belum memiliki mcu, silahkan input mcu terlebih dahulu atau melalui import excel!');
+                        // throw new \Exception('Peserta dengan nik '.$nik.' dan kode paket '.$packageCode.' belum memiliki mcu, silahkan input mcu terlebih dahulu atau melalui import excel!');
+                        McuT::insert([
+                            'mcu_date' => date('Y-m-d H:i:s'),
+                            'employee_id' => $employeeModel->employee_id,
+                            'company_id' => $post['company_id'],
+                            'mcu_program_id' => $post['mcu_program_id'],
+                            'is_import' => true,
+                            'package_id' => $packageModel->id
+                        ]);
+                        $modelMcuNew = McuT::select('mcu_id')
+                            ->where('employee_id', $employeeModel->employee_id)
+                            ->where('company_id', $post['company_id'])
+                            ->where('mcu_program_id', $post['mcu_program_id'])
+                            ->where('is_import', true)
+                            ->where('package_id', $packageModel->id)
+                            ->first();
+                        $mcu_id = $modelMcuNew->mcu_id;
+                    } else {
+                        $mcu_id = $modelMcu->mcu_id;
                     }
-
                     $payload = [
-                        'mcu_id' => $modelMcu->mcu_id,
+                        'mcu_id' => $mcu_id,
                         'image_file' => $filename,
                     ];
-                    $existingRecord = $model->where('mcu_id', $payload['mcu_id'])->first();
+                    $existingRecord = $model->where('mcu_id', $mcu_id)->first();
                     if ($existingRecord) {
                         $existingRecord->update($payload);
                     } else {
-                        throw new \Exception('Peserta dengan nik '.$nik.' dan kode paket '.$packageCode.' belum memiliki pemeriksaan '.$category.', silahkan input terlebih dahulu atau melalui import excel!');
+                        $payload['is_import'] = true;
+                        $model->insert($payload);
+                        // throw new \Exception('Peserta dengan nik '.$nik.' dan kode paket '.$packageCode.' belum memiliki pemeriksaan '.$category.', silahkan input terlebih dahulu atau melalui import excel!');
                     }
                 } else {
                     throw new \Exception('Nama file tidak sesuai!');
@@ -512,7 +531,7 @@ class ProgramMcuController extends Controller
         $validator = Validator::make($request->all(), $rules, $messages);
 
         if ($validator->fails()) {
-            $messages = $validator->errors()->all(); 
+            $messages = $validator->errors()->all();
 
             session()->flash('error', $messages);
 
@@ -541,7 +560,7 @@ class ProgramMcuController extends Controller
     public function getProgramName($id)
     {
         $program = McuProgramM::find($id);
-        
+
         if ($program == null) {
             $data = [
                 'status' => 'error',
@@ -577,7 +596,7 @@ class ProgramMcuController extends Controller
         $validator = Validator::make($request->all(), $rules, $messages);
 
         if ($validator->fails()) {
-            $messages = $validator->errors()->all(); 
+            $messages = $validator->errors()->all();
 
             session()->flash('error', $messages);
 

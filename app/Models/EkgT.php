@@ -27,6 +27,7 @@ class EkgT extends Model
         'is_abnormal',
         'image_file',
         'additional_data',
+        'is_import',
         'deleted_at',
         'created_at',
         'updated_at',
@@ -56,7 +57,8 @@ class EkgT extends Model
         'doctor_id' => 'doctor_id',
         'is_abnormal' => 'is_abnormal',
         'image_file' =>'image_file',
-        'additional_data' => 'additional_data'
+        'additional_data' => 'additional_data',
+        'is_import' => 'is_import'
     ];
 
     public function validate(){
