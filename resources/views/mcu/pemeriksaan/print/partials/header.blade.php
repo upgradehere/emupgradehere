@@ -21,7 +21,7 @@
                     <tr>
                         <td>PERUSAHAAN</td>
                         <td>:</td>
-                        <td align="left">-</td>
+                        <td align="left">{{ $company_name }}</td>
                     </tr>
                     <tr>
                         <td>BAGIAN</td>
@@ -40,12 +40,12 @@
                     <tr>
                         <td>J.KEL</td>
                         <td>:</td>
-                        <td align="left">{{ "-" }}</td>
+                        <td align="left">{{ $sex }}</td>
                     </tr>
                     <tr>
                         <td>TGL LAHIR</td>
                         <td>:</td>
-                        <td align="left">{{ "-" }}</td>
+                        <td align="left">{{ $dob }}</td>
                     </tr>
                 </table>
             </td>
@@ -59,7 +59,7 @@
                     <tr>
                         <td>UMUR</td>
                         <td>:</td>
-                        <td align="left">{{ "-" }}</td>
+                        <td align="left">{{ $age }}</td>
                     </tr>
                 </table>
             </td>

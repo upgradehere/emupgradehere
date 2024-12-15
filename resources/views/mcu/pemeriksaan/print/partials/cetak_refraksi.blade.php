@@ -1,13 +1,17 @@
+@if (!empty($anamnesis))
+@include('mcu.pemeriksaan.print.partials.header', ['title_header' => 'PEMERIKSAAN FISIK REFRAKSI'])
+@endif
+
+@if(!empty($refraksi->image_file))
+<div style="text-align: center; padding-top: 20px;">
+	<img src="{{ public_path('uploads/refraction/'.$refraksi->image_file) }}" style="max-width: 710px; max-height: 600px;">
+</div>
+<div class="page-break"></div>
+@endif
+
 <div class="no-break">
-	<h4>REFRAKSI / TRIAL LENS</h4>
 	<table style="width: 100%; border-collapse: collapse; border-spacing: 0px 10px; font-size: 13px;" cellpadding="3">
 	    <tbody>
-	    	<tr>
-	    		<th colspan="2" align="left" style="border-bottom: 2px solid black; font-size: 15px;"> Gambar Hasil Refraksi/Trial Lens </th>
-	    	</tr>
-	    	<tr style="padding-bottom: 50px;">
-	    		<td colspan="2"> {{ $refraksi->image_file }} <br><br></td>
-	    	</tr>
 	    	<tr>
 	    		<th colspan="2" align="left" style="border-bottom: 2px solid black; font-size: 15px;"> Ukuran Kacamata </th>
 	    	</tr>
@@ -115,7 +119,7 @@
 				        <tr>
 				            <td width="20%"><b>Pemeriksa</b></td>
 				            <td>:</td>
-				            <td width="80%" align="left">{{ $refraksi->doctor_id }}</td>
+				            <td width="80%" align="left">{{ $doctor_list[$refraksi->doctor_id] ?? '' }}</td>
 				        </tr>
 				    </table>
 	    		</td>

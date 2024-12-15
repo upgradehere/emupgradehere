@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class EmployeeM extends Model
 {
@@ -32,4 +33,17 @@ class EmployeeM extends Model
         return $this->hasOne(CompanyM::class, 'company_id', 'company_id');
     }
 
+    public function getUmur()
+    {
+        if ($this->dob) {
+            $dob = Carbon::parse($this->dob);
+            $now = Carbon::now();
+
+            $diff = $dob->diff($now);
+
+            return $diff->y . ' TAHUN ' . $diff->m . ' BULAN';
+        }
+
+        return null;
+    }
 }

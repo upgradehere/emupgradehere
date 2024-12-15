@@ -1,4 +1,7 @@
-<h4>PAPSMEAR</h4>
+@if (!empty($papsmear))
+@include('mcu.pemeriksaan.print.partials.header', ['title_header' => 'PEMERIKSAAN PAPSMEAR'])
+@endif
+
 <div class="no-break">
     <table style="width: 100%; border-collapse: collapse; font-size: 13px;" cellpadding="3">
         <tbody>

@@ -109,6 +109,8 @@ class PemeriksaanMcuController extends Controller
     {
         $mcu_id = $request->get('mcu_id');
         $mcu_model = McuT::find($mcu_id);
+        $doctors = DoctorM::all();
+        $doctor_list = $doctors->pluck('doctor_name', 'id');
         $employee_model = EmployeeM::select('*')->where('employee_id', $mcu_model->employee_id)->first();
         $company_model  = CompanyM::select('*')->where('company_id', $mcu_model->company_id)->first();
         $letterhead = $company_model->letterhead;
@@ -125,7 +127,11 @@ class PemeriksaanMcuController extends Controller
         $resume = self::getDataPrintResume($mcu_id);
         $data = [
             'nik' => $employee_model->nik,
+            'sex' => $employee_model->sex == '11' ? "LAKI-LAKI" : "PEREMPUAN" ,
             'employee_name' => $employee_model->employee_name,
+            'age' => $employee_model->getUmur(),
+            'dob' => date('Y/m/d', strtotime($employee_model->dob)),
+            'company_name' => $company_model->company_name,
             'mcu_date' => date('Y/m/d', strtotime($mcu_model->mcu_date)),
             'mcu_code' => $mcu_model->mcu_code,
             'anamnesis' => $anamnesis,
@@ -138,7 +144,8 @@ class PemeriksaanMcuController extends Controller
             'usg' => $usg,
             'treadmill' => $treadmill,
             'papsmear' => $papsmear,
-            'resume' => $resume
+            'resume' => $resume,
+            'doctor_list' => $doctor_list
         ];
 
         $pdf = PDF::loadView('mcu.pemeriksaan.print.cetak_pemeriksaan', $data)->setPaper('a4', 'portrait');

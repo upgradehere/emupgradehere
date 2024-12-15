@@ -1,4 +1,8 @@
-<h4>ANAMNESA</h4>
+@if (!empty($anamnesis))
+@include('mcu.pemeriksaan.print.partials.header', ['title_header' => 'PEMERIKSAAN FISIK ANAMNESA'])
+@endif
+    
+<h4>PEMERIKSAAN ANAMNESA</h4>
 <table style="border:none; width: 100%;">
     <tbody>
         <tr>
@@ -322,7 +326,258 @@
     </tbody>
 </table>
 
-<h4>Pemeriksaan Fisik</h4>
+<table style="border:none; width: 100%;">
+    <tbody>
+        <tr>
+            <th colspan="2" align="left" style="border-bottom: 1px solid black; font-size: 15px;">
+                Faktor Kebiasaan
+            </th>
+        </tr>
+        <tr>
+            <td style="width: 50%; vertical-align: top;">
+                <table style="border: none; font-size: 13px; width: 100%">
+                    <tbody>
+                        <tr>
+                            <td colspan="2" style="padding-top:20px"></td>
+                        </tr>
+                        <tr>
+                            <td width="10%">Merokok</td>
+                            <td width="1%">:</td>
+                            <td align="left">
+                                @if(optional(json_decode($anamnesis['habit_factor'], true))['smoking'] == '1')
+                                    Kadang - Kadang (Kurang Dari 3 Batang/hari)
+                                @elseif(optional(json_decode($anamnesis['habit_factor'], true))['smoking'] == 2)
+                                    Aktif (Lebih Dari 3 Batang/hari)
+                                @else
+                                    Tidak Merokok
+                                @endif
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width="10%">Olahraga</td>
+                            <td width="1%">:</td>
+                            <td align="left">
+                                @if(optional(json_decode($anamnesis['habit_factor'], true))['exercise'] == '1')
+                                    Teratur Setiap 1 Minggu
+                                @elseif(optional(json_decode($anamnesis['habit_factor'], true))['smoking'] == 2)
+                                    Teratur Setiap 2 Minggu
+                                @else
+                                    Jarang Olahraga
+                                @endif
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+            <td style="width: 50%; vertical-align: top;">
+                <table style="border: none; font-size: 13px; width: 100%;">
+                    <thead>
+                        <tr>
+                            <th width="200px"></th>
+                            <th>Ya</th>
+                            <th>Tidak</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td width="30%">Alhohol {{ optional($anamnesis['habit_factor'])['alcohol'] }}</td>
+                            <td align="center">
+                                <input type="checkbox" 
+                                       {{ optional(json_decode($anamnesis['habit_factor'], true))['alcohol'] == '1' ? 'checked' : '' }} 
+                                       disabled>
+                            </td>
+                            <td align="center" >
+                                <input type="checkbox" 
+                                       {{ optional(json_decode($anamnesis['habit_factor'], true))['alcohol'] == '0' ? 'checked' : '' }} 
+                                       disabled>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width="30%">Jika Ya, Berapa Kali</td>
+                            <td colspan="2" align="left" width="30%">: {{ optional(json_decode($anamnesis['habit_factor'], true))['alcohol_note'] ?? '' }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="page-break"></div>
+
+@if (!empty($anamnesis))
+@include('mcu.pemeriksaan.print.partials.header', ['title_header' => 'PEMERIKSAAN FISIK ANAMNESA'])
+@endif
+
+<table style="border:none; width: 100%;">
+    <tbody>
+        <tr>
+            <th colspan="2" align="left" style="border-bottom: 2px solid black; font-size: 15px;">
+                Riwayat Hazard Lingkungan Kerja
+            </th>
+        </tr>
+        <tr>
+            <td style="width: 50%; vertical-align: top;">
+                <table class="sub-table" style="border: none;">
+                    <thead>
+                        <tr>
+                            <th width="200px"></th>
+                            <th >Ya</th>
+                            <th>Tidak</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Bising</td>
+                            <td align="center">
+                                <input type="checkbox" 
+                                       {{ optional(json_decode($anamnesis['work_hazard_history'],true))['noise'] == '1' ? 'checked' : '' }} 
+                                       disabled>
+                            </td>
+                            <td align="center">
+                                <input type="checkbox" 
+                                       {{ optional(json_decode($anamnesis['work_hazard_history'],true))['noise'] == '0' ? 'checked' : '' }} 
+                                       disabled>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Getaran</td>
+                            <td align="center">
+                                <input type="checkbox" 
+                                       {{ optional(json_decode($anamnesis['work_hazard_history'],true))['vibration'] == '1' ? 'checked' : '' }} 
+                                       disabled>
+                            </td>
+                            <td align="center">
+                                <input type="checkbox" 
+                                       {{ optional(json_decode($anamnesis['work_hazard_history'],true))['vibration'] == '0' ? 'checked' : '' }} 
+                                       disabled>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Debu</td>
+                            <td align="center">
+                                <input type="checkbox" 
+                                       {{ optional(json_decode($anamnesis['work_hazard_history'],true))['dust'] == '1' ? 'checked' : '' }} 
+                                       disabled>
+                            </td>
+                            <td align="center">
+                                <input type="checkbox" 
+                                       {{ optional(json_decode($anamnesis['work_hazard_history'],true))['dust'] == '0' ? 'checked' : '' }} 
+                                       disabled>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Zat Kimia</td>
+                            <td align="center">
+                                <input type="checkbox" 
+                                       {{ optional(json_decode($anamnesis['work_hazard_history'],true))['chemicals'] == '1' ? 'checked' : '' }} 
+                                       disabled>
+                            </td>
+                            <td align="center">
+                                <input type="checkbox" 
+                                       {{ optional(json_decode($anamnesis['work_hazard_history'],true))['chemicals'] == '0' ? 'checked' : '' }} 
+                                       disabled>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Panas</td>
+                            <td align="center">
+                                <input type="checkbox" 
+                                       {{ optional(json_decode($anamnesis['work_hazard_history'],true))['chemicals'] == '1' ? 'checked' : '' }} 
+                                       disabled>
+                            </td>
+                            <td align="center">
+                                <input type="checkbox" 
+                                       {{ optional(json_decode($anamnesis['work_hazard_history'],true))['chemicals'] == '0' ? 'checked' : '' }} 
+                                       disabled>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+            <td style="width: 50%; vertical-align: top;">
+                <table class="sub-table" style="border: none;">
+                    <thead>
+                        <tr>
+                            <th width="200px"></th>
+                            <th>Ya</th>
+                            <th>Tidak</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Asap</td>
+                            <td align="center">
+                                <input type="checkbox" 
+                                       {{ optional(json_decode($anamnesis['work_hazard_history'],true))['smoke'] == '1' ? 'checked' : '' }} 
+                                       disabled>
+                            </td>
+                            <td align="center">
+                                <input type="checkbox" 
+                                       {{ optional(json_decode($anamnesis['work_hazard_history'],true))['smoke'] == '0' ? 'checked' : '' }} 
+                                       disabled>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Monitor Komputer</td>
+                            <td align="center">
+                                <input type="checkbox" 
+                                       {{ optional(json_decode($anamnesis['work_hazard_history'],true))['computer_monitor'] == '1' ? 'checked' : '' }} 
+                                       disabled>
+                            </td>
+                            <td align="center">
+                                <input type="checkbox" 
+                                       {{ optional(json_decode($anamnesis['work_hazard_history'],true))['computer_monitor'] == '0' ? 'checked' : '' }} 
+                                       disabled>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Gerakan Berulang</td>
+                            <td align="center">
+                                <input type="checkbox" 
+                                       {{ optional(json_decode($anamnesis['work_hazard_history'],true))['repetitive_motion'] == '1' ? 'checked' : '' }} 
+                                       disabled>
+                            </td>
+                            <td align="center">
+                                <input type="checkbox" 
+                                       {{ optional(json_decode($anamnesis['work_hazard_history'],true))['repetitive_motion'] == '0' ? 'checked' : '' }} 
+                                       disabled>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Mendorong / Menarik</td>
+                            <td align="center">
+                                <input type="checkbox" 
+                                       {{ optional(json_decode($anamnesis['work_hazard_history'],true))['push_pull'] == '1' ? 'checked' : '' }} 
+                                       disabled>
+                            </td>
+                            <td align="center">
+                                <input type="checkbox" 
+                                       {{ optional(json_decode($anamnesis['work_hazard_history'],true))['push_pull'] == '0' ? 'checked' : '' }} 
+                                       disabled>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Angkat Beban</td>
+                            <td align="center">
+                                <input type="checkbox" 
+                                       {{ optional(json_decode($anamnesis['work_hazard_history'],true))['weightlifting'] == '1' ? 'checked' : '' }} 
+                                       disabled>
+                            </td>
+                            <td align="center">
+                                <input type="checkbox" 
+                                       {{ optional(json_decode($anamnesis['work_hazard_history'],true))['weightlifting'] == '0' ? 'checked' : '' }} 
+                                       disabled>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<h4>PEMERIKSAAN FISIK</h4>
 <table style="border:none; width: 100%; padding-left: 10px; padding-right: 10px;">
     <tbody>
         <tr>
@@ -395,24 +650,13 @@
             </td>
         </tr>
         <tr>
-            <th colspan="2" align="left" style="border-bottom: 1px solid black; border-top: 1px solid black; font-size: 15px; padding-top: 3px;">
+            <th colspan="2" align="left" style="border-bottom: 1px solid black; font-size: 15px; padding-top: 3px;">
                 2. Keadaan Kulit
             </th>
         </tr>
         <tr>
             <td colspan="2" style="font-size: 13px;">{{ $anamnesis->skin_condition ?? "-" }}</td>
         </tr>
-    </tbody>
-</table>
-
-<div class="page-break"></div>
-
-@if (!empty($anamnesis))
-@include('mcu.pemeriksaan.print.partials.header', ['title_header' => 'PEMERIKSAAN FISIK ANAMNESA'])
-@endif
-
-<table style="border:none; width: 100%; padding-left: 10px; padding-right: 10px;">
-    <tbody>
         <tr>
             <th colspan="2" align="left" style="border-bottom: 1px solid black; font-size: 15px; padding-top: 3px;">
                 3. Mata
@@ -572,8 +816,19 @@
                 </table>
             </td>
         </tr>
+    </tbody>
+</table>
+
+<div class="page-break"></div>
+
+@if (!empty($anamnesis))
+@include('mcu.pemeriksaan.print.partials.header', ['title_header' => 'PEMERIKSAAN FISIK ANAMNESA'])
+@endif
+
+<table style="border:none; width: 100%; padding-left: 10px; padding-right: 10px;">
+    <tbody>
         <tr>
-            <th colspan="2" align="left" style="border-bottom: 1px solid black; border-top: 1px solid black; font-size: 15px; padding-top: 3px;">
+            <th colspan="2" align="left" style="border-bottom: 1px solid black; font-size: 15px; padding-top: 3px;">
                 4. Telinga
             </th>
         </tr>
@@ -649,7 +904,7 @@
             </td>
         </tr>
         <tr>
-            <th colspan="2" align="left" style="border-bottom: 1px solid black; border-top: 1px solid black; font-size: 15px; padding-top: 3px;">
+            <th colspan="2" align="left" style="border-bottom: 1px solid black; font-size: 15px; padding-top: 3px;">
                5. Hidung
             </th>
         </tr>
@@ -710,7 +965,7 @@
             </td>
         </tr>
         <tr>
-            <th colspan="2" align="left" style="border-bottom: 1px solid black; border-top: 1px solid black; font-size: 15px; padding-top: 3px;">
+            <th colspan="2" align="left" style="border-bottom: 1px solid black; font-size: 15px; padding-top: 3px;">
                6. Rongga Mulut
             </th>
         </tr>
@@ -785,17 +1040,6 @@
                 </table>
             </td>
         </tr>
-    </tbody>
-</table>
-
-<div class="page-break"></div>
-
-@if (!empty($anamnesis))
-@include('mcu.pemeriksaan.print.partials.header', ['title_header' => 'PEMERIKSAAN FISIK ANAMNESA'])
-@endif
-
-<table style="border:none; width: 100%; padding-left: 10px; padding-right: 10px;">
-    <tbody>
         <tr>
             <th colspan="2" align="left" style="border-bottom: 1px solid black; font-size: 15px; padding-top: 3px;">
                7. Gigi
@@ -899,7 +1143,7 @@
             </td>
         </tr>
         <tr>
-            <th colspan="2" align="left" style="border-bottom: 1px solid black; border-top: 1px solid black; font-size: 15px; padding-top: 3px;">
+            <th colspan="2" align="left" style="border-bottom: 1px solid black; font-size: 15px; padding-top: 3px;">
                 8. Leher
             </th>
         </tr>
@@ -960,7 +1204,7 @@
             </td>
         </tr>
         <tr>
-            <th colspan="2" align="left" style="border-bottom: 1px solid black; border-top: 1px solid black; font-size: 15px; padding-top: 3px;">
+            <th colspan="2" align="left" style="border-bottom: 1px solid black; font-size: 15px; padding-top: 3px;">
                 9. Thorax
             </th>
         </tr>
@@ -1043,8 +1287,19 @@
                 </table>
             </td>
         </tr>
+    </tbody>
+</table>
+
+<div class="page-break"></div>
+
+@if (!empty($anamnesis))
+@include('mcu.pemeriksaan.print.partials.header', ['title_header' => 'PEMERIKSAAN FISIK ANAMNESA'])
+@endif
+
+<table style="border:none; width: 100%; padding-left: 10px; padding-right: 10px;">
+    <tbody>
         <tr>
-            <th colspan="2" align="left" style="border-bottom: 1px solid black; border-top: 1px solid black; font-size: 15px; padding-top: 3px;">
+            <th colspan="2" align="left" style="border-bottom: 1px solid black; font-size: 15px; padding-top: 3px;">
                10. Abdomen
             </th>
         </tr>
@@ -1198,7 +1453,7 @@
             </td>
         </tr>
         <tr>
-            <th colspan="2" align="left" style="border-bottom: 1px solid black; border-top: 1px solid black; font-size: 15px; padding-top: 3px;">
+            <th colspan="2" align="left" style="border-bottom: 1px solid black; font-size: 15px; padding-top: 3px;">
                 11. Tulang Belakang 
             </th>
         </tr>
@@ -1245,17 +1500,6 @@
                 </table>
             </td>
         </tr>
-    </tbody>
-</table>
-
-<div class="page-break"></div>
-
-@if (!empty($anamnesis))
-@include('mcu.pemeriksaan.print.partials.header', ['title_header' => 'PEMERIKSAAN FISIK ANAMNESA'])
-@endif
-
-<table style="border:none; width: 100%; padding-left: 10px; padding-right: 10px;">
-    <tbody>
         <tr>
             <th colspan="2" align="left" style="border-bottom: 1px solid black; font-size: 15px; padding-top: 3px;">
                 12. Ekstremitas Atas 
@@ -1333,7 +1577,7 @@
             </td>
         </tr>
         <tr>
-            <th colspan="2" align="left" style="border-bottom: 1px solid black; border-top: 1px solid black; font-size: 15px; padding-top: 3px;"> 
+            <th colspan="2" align="left" style="border-bottom: 1px solid black; font-size: 15px; padding-top: 3px;"> 
                 13. Ekstremitas Bawah
             </th>
         </tr>

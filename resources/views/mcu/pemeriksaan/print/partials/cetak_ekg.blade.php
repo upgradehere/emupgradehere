@@ -1,13 +1,10 @@
+@if (!empty($ekg))
+@include('mcu.pemeriksaan.print.partials.header', ['title_header' => 'PEMERIKSAAN EKG'])
+@endif
+
 <div class="no-break">
-	<h4>EKG</h4>
 	<table style="width: 100%; border-collapse: collapse; border-spacing: 0px 10px; font-size: 13px;" cellpadding="3">
 	    <tbody>
-	    	<tr>
-	    		<th colspan="2" align="left" style="border-bottom: 2px solid black; font-size: 15px;"> Hasil Gambar EKG </th>
-	    	</tr>
-	    	<tr style="padding-bottom: 50px;">
-	    		<td colspan="2"> {{ '-' }} <br><br></td>
-	    	</tr>
 	    	<tr>
 	    		<th colspan="2" align="left" style="border-bottom: 2px solid black; font-size: 15px;"> Hasil EKG </th>
 	    	</tr>
@@ -51,12 +48,12 @@
 			            <tr>
 			                <td align="left" width="20%"><b>Abnormal</b></td>
 			                <td>:</td>
-			                <td align="left" width="80%">{{ $ekg->is_abnormal }}</td>
+			                <td align="left" width="80%">{{ $ekg->is_abnormal == 1 ? "Abnormal" : Normal }}</td>
 			            </tr>
 			            <tr>
 			                <td align="left" width="20%"><b>Pemeriksa</b></td>
 			                <td>:</td>
-			                <td align="left" width="80%">{{ $ekg->doctor_id ?? '' }}</td>
+			                <td align="left" width="80%">{{ $doctor_list[$audiometri->doctor_id] ?? '' }}</td>
 			            </tr>
 			        </table>
 	            </td>
@@ -64,3 +61,10 @@
 	    </tbody>
 	</table>
 </div>
+
+@if(!empty($ekg->image_file))
+<div class="page-break"></div>
+<div style="text-align: center; padding-top: 20px;">
+    <img src="{{ public_path('uploads/ekg/'.$ekg->image_file) }}" style="max-width: 710px; max-height: 600px;">
+</div>
+@endif
