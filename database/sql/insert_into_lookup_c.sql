@@ -1,0 +1,20 @@
+INSERT INTO public.lookup_c (lookup_id, lookup_code, lookup_type, lookup_name, additional_data, deleted_at, created_at, updated_at)
+VALUES
+    (11, NULL, 'sex', 'Laki-laki', NULL, NULL, NULL, NULL),
+    (12, NULL, 'sex', 'Perempuan', NULL, NULL, NULL, NULL),
+    (20, 'anamnesis', 'examination_type', 'Fisik & Anamnesa', '{"tab_name":"tab-anamnesis"}', NULL, NULL, NULL),
+    (21, 'refraction', 'examination_type', 'Refraksi/Trial Lens', '{"tab_name":"tab-refraction"}', NULL, NULL, NULL),
+    (22, 'lab', 'examination_type', 'Laboratorium', '{"tab_name":"tab-lab"}', NULL, NULL, NULL),
+    (23, 'rontgen', 'examination_type', 'Rontgen', '{"tab_name":"tab-rontgen"}', NULL, NULL, NULL),
+    (24, 'audiometry', 'examination_type', 'Audiometri', '{"tab_name":"tab-audiometri"}', NULL, NULL, NULL),
+    (25, 'spirometry', 'examination_type', 'Spirometri', '{"tab_name":"tab-spirometri"}', NULL, NULL, NULL),
+    (26, 'ekg', 'examination_type', 'EKG', '{"tab_name":"tab-ekg"}', NULL, NULL, NULL),
+    (27, 'usg', 'examination_type', 'USG', '{"tab_name":"tab-usg"}', NULL, NULL, NULL),
+    (28, 'treadmill', 'examination_type', 'Treadmill', '{"tab_name":"tab-treadmill"}', NULL, NULL, NULL),
+    (29, 'papsmear', 'examination_type', 'Papsmear', '{"tab_name":"tab-papsmear"}', NULL, NULL, NULL),
+    (30, 'resume', 'examination_type', 'Resume MCU', '{"tab_name":"tab-resume"}', NULL, NULL, NULL),
+    (31, NULL, 'kesimpulan_mcu', 'Fit To Work', NULL, NULL, NULL, NULL),
+    (32, NULL, 'kesimpulan_mcu', 'Fit To Work With Medical Note', NULL, NULL, NULL, NULL),
+    (33, NULL, 'kesimpulan_mcu', 'Temporary Unfit', NULL, NULL, NULL, NULL),
+    (34, NULL, 'kesimpulan_mcu', 'Need Further Examination', NULL, NULL, NULL, NULL),
+    (35, NULL, 'kesimpulan_mcu', 'Fit With Note', NULL, NULL, NULL, NULL);
