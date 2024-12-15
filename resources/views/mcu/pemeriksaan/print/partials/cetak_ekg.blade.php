@@ -17,22 +17,22 @@
 			            <tr>
 			                <td align="left" width="20%"><b>Irama</b></td>
 			                <td>:</td>
-			                <td align="left" width="80%">{{ $ekg->rhythm ?? 'N/A' }}</td>
+			                <td align="left" width="80%">{{ $ekg->rhythm ?? '' }}</td>
 			            </tr>
 			            <tr>
 			                <td align="left" width="20%"><b>Rate</b></td>
 			                <td>:</td>
-			                <td align="left" width="80%">{{ $ekg->rate ?? 'N/A' }}</td>
+			                <td align="left" width="80%">{{ $ekg->rate ?? '' }}</td>
 			            </tr>
 			            <tr>
 			                <td align="left" width="20%"><b>Axis</b></td>
 			                <td>:</td>
-			                <td align="left" width="80%">{{ $ekg->axis ?? 'N/A' }}</td>
+			                <td align="left" width="80%">{{ $ekg->axis ?? '' }}</td>
 			            </tr>
 			            <tr>
 			                <td align="left" width="20%"><b>Kelainan</b></td>
 			                <td>:</td>
-			                <td align="left" width="80%">{{ $ekg->abnormality ?? 'N/A' }}</td>
+			                <td align="left" width="80%">{{ $ekg->abnormality ?? '' }}</td>
 			            </tr>
 			        </table>
 	            </td>
@@ -41,22 +41,22 @@
 			            <tr>
 			                <td align="left" width="20%"><b>Kesimpulan</b></td>
 			                <td>:</td>
-			                <td align="left" width="80%">{{ $ekg->conclusion ?? 'N/A' }}</td>
+			                <td align="left" width="80%">{{ $ekg->conclusion ?? '' }}</td>
 			            </tr>
 			            <tr>
 			                <td align="left" width="20%"><b>Saran</b></td>
 			                <td>:</td>
-			                <td align="left" width="80%">{{ $ekg->suggestion ?? 'N/A' }}</td>
+			                <td align="left" width="80%">{{ $ekg->suggestion ?? '' }}</td>
 			            </tr>
 			            <tr>
 			                <td align="left" width="20%"><b>Abnormal</b></td>
 			                <td>:</td>
-			                <td align="left" width="80%">{{ $ekg->is_abnormal ? 'Yes' : 'No' }}</td>
+			                <td align="left" width="80%">{{ $ekg->is_abnormal }}</td>
 			            </tr>
 			            <tr>
 			                <td align="left" width="20%"><b>Pemeriksa</b></td>
 			                <td>:</td>
-			                <td align="left" width="80%">{{ $ekg->doctor_id ?? 'N/A' }}</td>
+			                <td align="left" width="80%">{{ $ekg->doctor_id ?? '' }}</td>
 			            </tr>
 			        </table>
 	            </td>

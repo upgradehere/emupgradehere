@@ -17,27 +17,27 @@
 			            <tr>
 			                <td align="left" width="35%"><b>Nilai Prediksi</b></td>
 			                <td align="right">:</td>
-			                <td width="65%" align="right">{{ $spirometri->prediction_value ?? 'N/A' }} mL</td>
+			                <td width="65%" align="left">{{ $spirometri->prediction_value ?? 'N/A' }} mL</td>
 			            </tr>
 			            <tr>
 			                <td align="left" width="35%"><b>KVP</b></td>
 			                <td align="right">:</td>
-			                <td width="65%" align="right">{{ $spirometri->kvp ?? 'N/A' }} mL</td>
+			                <td width="65%" align="left">{{ $spirometri->kvp ?? 'N/A' }} mL</td>
 			            </tr>
 			            <tr>
 			                <td align="left" width="35%"><b>Percentage KVP</b></td>
 			                <td align="right">:</td>
-			                <td width="65%" align="right">{{ $spirometri->kvp_percentage ?? 'N/A' }} %</td>
+			                <td width="65%" align="left">{{ $spirometri->kvp_percentage ?? 'N/A' }} %</td>
 			            </tr>
 			            <tr>
 			                <td align="left" width="35%"><b>VEP</b></td>
 			                <td align="right">:</td>
-			                <td width="65%" align="right">{{ $spirometri->vep ?? 'N/A' }} mL</td>
+			                <td width="65%" align="left">{{ $spirometri->vep ?? 'N/A' }} mL</td>
 			            </tr>
 			            <tr>
 			                <td align="left" width="35%"><b>Percentage VEP</b></td>
 			                <td align="right">:</td>
-			                <td width="65%" align="right">{{ $spirometri->vep_percetage ?? 'N/A' }} %</td>
+			                <td width="65%" align="left">{{ $spirometri->vep_percetage ?? 'N/A' }} %</td>
 			            </tr>
 			        </table>
 	            </td>
@@ -46,27 +46,27 @@
 			            <tr>
 			                <td align="left" width="35%"><b>APE</b></td>
 			                <td align="right">:</td>
-			                <td width="65%" align="right">{{ $spirometri->ape ?? 'N/A' }} L</td>
+			                <td width="65%" align="left">{{ $spirometri->ape ?? 'N/A' }} L</td>
 			            </tr>
 			            <tr>
 			                <td align="left" width="35%"><b>Total APE</b></td>
 			                <td align="right">:</td>
-			                <td width="65%" align="right">{{ $spirometri->ape_total ?? 'N/A' }} L/min </td>
+			                <td width="65%" align="left">{{ $spirometri->ape_total ?? 'N/A' }} L/min </td>
 			            </tr>
 			            <tr>
 			                <td align="left" width="35%"><b>Kesan</b></td>
 			                <td align="right">:</td>
-			                <td width="65%" align="right">{{ $spirometri->classification ?? 'N/A' }}</td>
+			                <td width="65%" align="left">{{ $spirometri->classification ?? 'N/A' }}</td>
 			            </tr>
 			            <tr>
 			                <td align="left" width="35%"><b>Kesimpulan</b></td>
 			                <td align="right">:</td>
-			                <td width="65%" align="right">{{ $spirometri->conclusion ?? 'N/A' }}</td>
+			                <td width="65%" align="left">{{ $spirometri->conclusion ?? 'N/A' }}</td>
 			            </tr>
 			            <tr>
 			                <td align="left" width="35%"><b>Pemeriksa</b></td>
 			                <td align="right">:</td>
-			                <td width="65%" align="right">{{ $spirometri->doctor_id ?? 'N/A' }}</td>
+			                <td width="65%" align="left">{{ $spirometri->doctor_id ?? 'N/A' }}</td>
 			            </tr>
 			        </table>
 	            </td>

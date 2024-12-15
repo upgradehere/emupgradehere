@@ -11,15 +11,21 @@
 
         .identity-header {
             width: 100%;
-            border: 1px solid #ddd;
+            border: 1px solid black;
             border-collapse: collapse;
             table-layout: fixed; /* Ensures equal width for columns */
         }
-
+        .identity-header th {
+            border: 1px solid black;
+        }
         .identity-header td {
-            width: 50%; /* Makes each cell 50% of the total width */
-            padding: 10px;
+            font-size: 12px;
+            font-weight: bold;
             vertical-align: top;
+        }
+
+        .border-left {
+            border-left: 1px solid black;
         }
 
         .sub-table {
@@ -28,26 +34,22 @@
         }
 
         .sub-table td {
-            padding: 5px;
             font-size: 13px;
-            vertical-align: middle;
+        }
+        .sub-table th {
+            font-size: 13px;
         }
 
         .sub-table td:first-child {
-            font-weight: bold;
-            width: 40%; /* Allocates 30% for labels */
+            width: 40%;
         }
 
         .sub-table td:nth-child(2) {
-            width: 5%; /* Small space for the colon */
+            width: 5%;
         }
 
         .sub-table td:nth-child(3) {
-            width: 55%; /* Remaining space for the value */
-        }
-
-        .identity-header td:nth-child(2) {
-            border-left: 1px solid #ddd; /* Adds a visual separator */
+            width: 55%;
         }
 
         .watermark {
@@ -65,16 +67,13 @@
             height: auto;
         }
         @page {
-           margin-top: 135px;
-           margin-bottom: 135px; 
+           margin-top: 145px;
+           margin-bottom: 145px; 
            margin-left: 20px; 
            margin-right: 20px; 
         }
         input[type="checkbox"] {
             transform: scale(1.2); /* Membesarkan ukuran checkbox */
-        }
-        table.sub-table td {
-            padding: 3px; /* Menambahkan padding dalam sel tabel */
         }
         .page-break {
             page-break-before: always;
@@ -89,66 +88,45 @@
     <div class="watermark">
         <img src="{{ empty($letterhead) ? public_path('img-pdf/default.jpg') : public_path('uplploads/letterhead/'.$letterhead) }}" alt="Template Logo">
     </div>
-    <table class="identity-header">
-        <tbody>
-            <tr>
-                <td>
-                    <table class="sub-table">
-                        <tbody>
-                            <tr>
-                                <td>NIK</td>
-                                <td></td>
-                                <td>{{ $nik }}</td>
-                            </tr>
-                            <tr>
-                                <td>Nama</td>
-                                <td></td>
-                                <td>{{ $employee_name }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </td>
-                <td>
-                    <table class="sub-table">
-                        <tbody>
-                            <tr>
-                                <td>Tanggal MCU</td>
-                                <td></td>
-                                <td>{{ $mcu_date }}</td>
-                            </tr>
-                            <tr>
-                                <td>No. MCU</td>
-                                <td></td>
-                                <td>{{ $mcu_code }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </td>
-            </tr>
-        </tbody>
-    </table>
 
-    <h3><center>Hasil Pemeriksaan MCU</center></h3>
+    @if (!empty($anamnesis))
+    @include('mcu.pemeriksaan.print.partials.header', ['title_header' => 'PEMERIKSAAN FISIK ANAMNESA'])
+    @endif
+
     @if (!empty($anamnesis))
     @include('mcu.pemeriksaan.print.partials.cetak_anamnesis')
     @endif
     
     <div class="page-break"></div>
-    
+
+
+    @if (!empty($anamnesis))
+    @include('mcu.pemeriksaan.print.partials.header', ['title_header' => 'PEMERIKSAAN LABORATORIUM'])
+    @endif
+
     @if (!empty($laboratorium))
     @include('mcu.pemeriksaan.print.partials.cetak_lab')
     @endif
-
-    @if (!empty($refraksi))
-    @include('mcu.pemeriksaan.print.partials.cetak_refraksi')
-    @endif
     
-    @if (!empty($rontgen))
-    @include('mcu.pemeriksaan.print.partials.cetak_rontgen')
+    <div class="page-break"></div>
+    
+    @if (!empty($anamnesis))
+    @include('mcu.pemeriksaan.print.partials.header', ['title_header' => 'PEMERIKSAAN AUDIOMETRI'])
     @endif
 
     @if (!empty($audiometri))
     @include('mcu.pemeriksaan.print.partials.cetak_audiometri')
+    @endif
+
+
+    @if (!empty($refraksi))
+    @include('mcu.pemeriksaan.print.partials.cetak_refraksi')
+    @endif
+
+
+    
+    @if (!empty($rontgen))
+    @include('mcu.pemeriksaan.print.partials.cetak_rontgen')
     @endif
 
     @if (!empty($spirometri))
