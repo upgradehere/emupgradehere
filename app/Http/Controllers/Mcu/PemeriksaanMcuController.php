@@ -138,6 +138,7 @@ class PemeriksaanMcuController extends Controller
             $mcu_model = McuT::find($mcu_id);
             $doctors = DoctorM::all();
             $doctor_list = $doctors->pluck('doctor_name', 'id');
+            $doctor_sign = $doctors->pluck('doctor_sign', 'id');
             $employee_model = EmployeeM::select('*')->where('employee_id', $mcu_model->employee_id)->first();
             $company_model  = CompanyM::select('*')->where('company_id', $mcu_model->company_id)->first();
             $anamnesis = self::getDataPrintAnamnesis($mcu_id);
@@ -185,7 +186,8 @@ class PemeriksaanMcuController extends Controller
                 'treadmill' => $treadmill,
                 'papsmear' => $papsmear,
                 'resume' => $resume,
-                'doctor_list' => $doctor_list
+                'doctor_list' => $doctor_list,
+                'doctor_sign' => $doctor_sign
             ];
         } catch (\Exception $e) {
             Log::error('Gagal generate MCU untuk mcu_id: ' . $request->get('mcu_id') . '. Error: ' . $e->getMessage());
