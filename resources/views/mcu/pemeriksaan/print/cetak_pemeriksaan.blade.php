@@ -163,7 +163,7 @@
                 <tr>
                     <th>Dept / Bagian</th>
                     <td>:</td>
-                    <td></td>
+                    <td>{{ $departement_name }}</td>
                 </tr>
                 <tr>
                     <th>Tanggal MCU</th>

@@ -2,7 +2,7 @@
 @include('mcu.pemeriksaan.print.partials.header', ['title_header' => 'PEMERIKSAAN RONTGEN'])
 @endif
 
-@if (!$rontgen->is_import)
+@if (isset($rontgen->is_import) && !$rontgen->is_import)
 	<div class="no-break">
 		<h4>RONTGEN</h4>
 		<table style="width: 100%; border-collapse: collapse; border-spacing: 0px 10px; font-size: 13px;" cellpadding="3">
@@ -85,7 +85,7 @@
 	@endif
 @endif
 
-@if(!empty($rontgen->image_file && !empty($rontgen->image_file)))
+@if((isset($rontgen->is_import) && !$rontgen->is_import) && !empty($rontgen->image_file))
     <div class="page-break"></div>
 @endif
 

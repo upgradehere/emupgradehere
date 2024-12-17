@@ -135,16 +135,7 @@ trait AnamnesisTrait
     private function getDataPrintAnamnesis($mcu_id)
     {
         $model = AnamnesisT::select('*')->where('mcu_id', $mcu_id)->first();
-        $data = $model;
-        if (!empty($model->medical_history)) {
-            $data['medical_history'] = $this->mappingJsonData(
-                ['surgical_history_notes', 'epilepsy_notes', 'main_complaint'],
-                json_decode($model->medical_history, true)
-            );
-        } else {
-            $data['medical_history'] = null;
-        }
-        return $data;
+        return $model;
     }
 
     private function mappingJsonData($skip = [], $data) {

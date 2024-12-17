@@ -137,11 +137,14 @@ trait AudiometriTrait
     private function getDataPrintAudiometry($mcu_id)
     {
         $model = AudiometryT::select('*')->where('mcu_id', $mcu_id)->first();
-        $data = $model;
-        $data['right_air_conduction'] = !empty($model->right_air_conduction) ? json_decode($model->right_air_conduction, true) : [];
-        $data['left_air_conduction'] = !empty($model->left_air_conduction) ? json_decode($model->left_air_conduction, true) : [];
-        $data['right_bone_conduction'] = !empty($model->right_bone_conduction) ? json_decode($model->right_bone_conduction, true) : [];
-        $data['left_bone_conduction'] = !empty($model->left_bone_conduction) ? json_decode($model->left_bone_conduction, true) : [];
+        $data = [];
+        if ($model) {
+            $data = $model;
+            $data['right_air_conduction'] = !empty($model->right_air_conduction) ? json_decode($model->right_air_conduction, true) : [];
+            $data['left_air_conduction'] = !empty($model->left_air_conduction) ? json_decode($model->left_air_conduction, true) : [];
+            $data['right_bone_conduction'] = !empty($model->right_bone_conduction) ? json_decode($model->right_bone_conduction, true) : [];
+            $data['left_bone_conduction'] = !empty($model->left_bone_conduction) ? json_decode($model->left_bone_conduction, true) : [];
+        }
         return $data;
     }
 }
