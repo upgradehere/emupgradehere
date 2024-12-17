@@ -2,7 +2,7 @@
 @include('mcu.pemeriksaan.print.partials.header', ['title_header' => 'PEMERIKSAAN EKG'])
 @endif
 
-@if (!$ekg->is_import)
+@if (isset($ekg->is_import) && !$ekg->is_import)
 	<div class="no-break">
 		<table style="width: 100%; border-collapse: collapse; border-spacing: 0px 10px; font-size: 13px;" cellpadding="3">
 		    <tbody>
@@ -79,7 +79,7 @@
 	@endif
 @endif
 
-@if(!empty($ekg->image_file && !empty($ekg->image_file)))
+@if((isset($ekg->is_import) && !$ekg->is_import) && !empty($ekg->image_file))
     <div class="page-break"></div>
 @endif
 

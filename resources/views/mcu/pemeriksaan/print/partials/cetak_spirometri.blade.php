@@ -2,7 +2,7 @@
 @include('mcu.pemeriksaan.print.partials.header', ['title_header' => 'PEMERIKSAAN SPIROMETRI'])
 @endif
 
-@if (!$spirometri->is_import)
+@if (isset($spirometri->is_import) && !$spirometri->is_import)
 	<div class="no-break">
 		<table style="width: 100%; border-collapse: collapse; border-spacing: 0px 10px; font-size: 13px;" cellpadding="3">
 		    <tbody>
@@ -89,7 +89,7 @@
 	@endif
 @endif
 
-@if(!empty($spirometri->image_file && !empty($spirometri->image_file)))
+@if((isset($spirometri->is_import) && !$spirometri->is_import) && !empty($spirometri->image_file))
     <div class="page-break"></div>
 @endif
 

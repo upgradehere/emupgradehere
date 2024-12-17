@@ -139,7 +139,19 @@ class PemeriksaanMcuController extends Controller
             $doctors = DoctorM::all();
             $doctor_list = $doctors->pluck('doctor_name', 'id');
             $doctor_sign = $doctors->pluck('doctor_sign', 'id');
-            $employee_model = EmployeeM::select('*')->where('employee_id', $mcu_model->employee_id)->first();
+            $employee_model = EmployeeM::select('employee_m.employee_id',
+                                            'employee_m.employee_code',
+                                            'employee_m.employee_name',
+                                            'employee_m.nik',
+                                            'employee_m.company_id',
+                                            'employee_m.departement_id',
+                                            'employee_m.dob',
+                                            'employee_m.phone_number',
+                                            'employee_m.additional_data',
+                                            'employee_m.sex',
+                                            'departement_m.departement_name')
+                                        ->leftJoin('departement_m','employee_m.departement_id', 'departement_m.departement_id')
+                                        ->where('employee_id', $mcu_model->employee_id)->first();
             $company_model  = CompanyM::select('*')->where('company_id', $mcu_model->company_id)->first();
             $anamnesis = self::getDataPrintAnamnesis($mcu_id);
             $laboratorium = self::getDataPrintLaboratorium($mcu_id);
@@ -172,6 +184,7 @@ class PemeriksaanMcuController extends Controller
                 'age' => $employee_model->getUmur(),
                 'dob' => date('Y/m/d', strtotime($employee_model->dob)),
                 'company_name' => $company_model->company_name,
+                'departement_name' => $employee_model->departement_name,
                 'mcu_date' => date('Y/m/d', strtotime($mcu_model->mcu_date)),
                 'mcu_code' => $mcu_model->mcu_code,
                 'letterhead' => $letterhead,
@@ -190,7 +203,7 @@ class PemeriksaanMcuController extends Controller
                 'doctor_sign' => $doctor_sign
             ];
         } catch (\Exception $e) {
-            Log::error('Gagal generate MCU untuk mcu_id: ' . $request->get('mcu_id') . '. Error: ' . $e->getMessage());
+            Log::error('Gagal generate MCU untuk mcu_id: ' . $request->get('mcu_id') . '. Error: ' . $e->getMessage(). ' file' . $e->getFile() . ' line' . $e->getLine());
         }
 
         $pdf = PDF::loadView('mcu.pemeriksaan.print.cetak_pemeriksaan', $data)->setPaper('a4', 'portrait');

@@ -49,8 +49,8 @@
                             <div class="form-group row align-items-center mb-3">
                                 <label class="col-sm-2 col-form-label">Kesan USG</label>
                                 <div class="col-sm-10">
-                                    <textarea required class="summernote" name="ekg_impression">
-                                        {{ !empty($data_resume_mcu->ekg_impression) ? $data_resume_mcu->ekg_impression : null }}
+                                    <textarea required class="summernote" name="usg_impression">
+                                        {{ !empty($data_resume_mcu->usg_impression) ? $data_resume_mcu->usg_impression : null }}
                                     </textarea>
                                 </div>
                             </div>
