@@ -26,7 +26,7 @@
                     <tr>
                         <td>BAGIAN</td>
                         <td>:</td>
-                        <td align="left">-</td>
+                        <td align="left">{{ $departement_name }}</td>
                     </tr>
                 </table>
             </td>

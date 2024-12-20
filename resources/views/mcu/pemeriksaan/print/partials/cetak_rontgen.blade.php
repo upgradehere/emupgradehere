@@ -55,12 +55,12 @@
 				            <tr>
 				                <td width="40%"><b>Pemeriksa</b></td>
 				                <td>:</td>
-				                <td width="60%" align="left">{{ $rontgen->doctor_id ?? '' }}</td>
+				                <td width="60%" align="left">{{ $doctor_list[$rontgen->doctor_id] ?? '' }}</td>
 				            </tr>
 				            <tr>
 				                <td width="40%"><b>Catatan</b></td>
 				                <td>:</td>
-				                <td width="60%" align="left">{{ $doctor_list[$rontgen->doctor_id] ?? '' }}</td>
+				                <td width="60%" align="left">{{ $rontgen->notes ?? '' }}</td>
 				            </tr>
 				        </table>
 		            </td>
@@ -90,7 +90,12 @@
 @endif
 
 @if(!empty($rontgen->image_file))
-<div style="text-align: center; padding-top: 20px;">
-	<img src="{{ public_path('uploads/rontgen/'.$rontgen->image_file) }}" style="max-width: 710px; max-height: 600px;">
-</div>
+    @foreach (json_decode($rontgen->image_file,true) as $key => $image_file)
+		<div style="text-align: center; padding-top: 20px;">
+			<img src="{{ public_path('uploads/rontgen/'.$image_file) }}" style="max-width: 710px; max-height: 600px;">
+		</div>
+		@if(count(json_decode($rontgen->image_file,true)) == $key)
+				<div class="page-break"></div>
+		@endif
+    @endforeach
 @endif

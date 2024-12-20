@@ -1,9 +1,7 @@
 @if (!empty($anamnesis))
 @include('mcu.pemeriksaan.print.partials.header', ['title_header' => 'PEMERIKSAAN FISIK ANAMNESA'])
 @endif
-<?php 
-// dd(optional(json_decode($anamnesis['medical_history'],true))['asthma']);
- ?>
+
 @if (!empty($anamnesis))
     <h4>PEMERIKSAAN ANAMNESA</h4>
     <table style="border:none; width: 100%;">

@@ -134,7 +134,7 @@
     </div>
 
     <div class="header">
-        <h3>Healt Screening Result</h3>
+        <h3>Health Screening Result</h3>
     </div>
     <div class="cover">
         <div class="content" style="padding-left: 90px; padding-right: 90px;">
