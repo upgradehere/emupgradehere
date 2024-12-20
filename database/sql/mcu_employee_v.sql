@@ -20,7 +20,8 @@ AS SELECT mcu_t.mcu_id,
     package_m.id AS package_id,
     package_m.package_code,
     package_m.package_name,
-    mcu_t.deleted_at
+    mcu_t.deleted_at,
+    mcu_t.is_import
    FROM mcu_t
      LEFT JOIN employee_m ON employee_m.employee_id = mcu_t.employee_id
      LEFT JOIN departement_m ON departement_m.departement_id = employee_m.departement_id

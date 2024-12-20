@@ -120,8 +120,8 @@ class ProgramMcuController extends Controller
             ->where('mcu_program_id', $mcu_program_id)
             ->count();
 
-        $employee_sum = McuT::where('company_id', 1)
-            ->where('mcu_program_id', 4)
+        $employee_sum = McuT::where('company_id', $company_id)
+            ->where('mcu_program_id', $mcu_program_id)
             ->distinct('employee_id')
             ->count('employee_id');
 

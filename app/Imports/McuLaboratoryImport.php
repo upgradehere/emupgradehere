@@ -32,6 +32,7 @@ class McuLaboratoryImport implements ToCollection, WithHeadingRow
         DB::beginTransaction();
         foreach ($collection as $row)
         {
+            Log::info($row['nik']);
             $employeeModel = EmployeeM::select('employee_id')->where('nik', $row['nik'])->first();
             $packageModel = PackageM::select('id')->where('package_code', $row['kode_paket'])->first();
 
