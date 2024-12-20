@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\EmployeeM;
 use App\Models\CompanyM;
+use App\Models\DepartementM;
 use Validator;
 use Session;
 
@@ -83,7 +84,9 @@ class EmployeeController extends Controller
             'employee_code' => 'required',
             'nik' => 'required|numeric',
             'phone_number' => 'required|numeric',
+            'dob' => 'required',
             'sex' => 'required',
+            'departement_id' => 'required',
         ];
 
         $messages = [
@@ -92,9 +95,11 @@ class EmployeeController extends Controller
             'employee_code.required' => 'Kode Pegawai wajib diisi',
             'nik.required' => 'NIK Paket wajib diisi',
             'nik.numeric' => 'NIK harus berupa angka',
-            'phone_number.required' => 'No Telp Paket wajib diisi',
-            'phone_number.numeric' => 'No Telp harus berupa angka',
+            'phone_number.required' => 'No Whatsapp Paket wajib diisi',
+            'phone_number.numeric' => 'No Whatsapp harus berupa angka',
+            'dob.required' => 'Tanggal Lahir wajib diisi',
             'sex.required' => 'Jenis Kelamin Paket wajib diisi',
+            'departement_id.required' => 'Departemen wajib diisi',
         ];
         $validator = Validator::make($request->all(), $rules, $messages);
 
@@ -150,10 +155,12 @@ class EmployeeController extends Controller
         $data = [];
         $employee = EmployeeM::with('company')->where('employee_id',$id)->first();
         $company = CompanyM::all();
+        $departement = DepartementM::where("company_id", $employee->company_id)->get();
         
         if ($employee) {
             $data['employee'] = $employee;
             $data['company'] = $company;
+            $data['departement'] = $departement;
             
             return view('employee/detail', $data);
         } else {
@@ -170,7 +177,9 @@ class EmployeeController extends Controller
             'employee_code' => 'required',
             'nik' => 'required|numeric',
             'phone_number' => 'required|numeric',
+            'dob' => 'required',
             'sex' => 'required',
+            'departement_id' => 'required',
         ];
 
         $messages = [
@@ -180,9 +189,11 @@ class EmployeeController extends Controller
             'employee_code.required' => 'Kode Pegawai wajib diisi',
             'nik.required' => 'NIK Paket wajib diisi',
             'nik.numeric' => 'NIK harus berupa angka',
-            'phone_number.required' => 'No Telp Paket wajib diisi',
-            'phone_number.numeric' => 'No Telp harus berupa angka',
+            'phone_number.required' => 'No Whatsapp Paket wajib diisi',
+            'phone_number.numeric' => 'No Whatsapp harus berupa angka',
+            'dob.required' => 'Tanggal Lahir wajib diisi',
             'sex.required' => 'Jenis Kelamin Paket wajib diisi',
+            'departement_id.required' => 'Departemen wajib diisi',
         ];
 
         $id = $request->id;
@@ -207,9 +218,9 @@ class EmployeeController extends Controller
             }
     
             if($employee->save()) {
-                session()->flash('success', 'Pegawai baru berhasil disimpan');
+                session()->flash('success', 'Pegawai baru berhasil diperbarui');
             } else {
-                session()->flash('error', 'Kesalahan terjadi, pegawai gagal disimpan, harap hubungi Admin kami');
+                session()->flash('error', 'Kesalahan terjadi, pegawai gagal diperbarui, harap hubungi Admin kami');
             }
         } else {
             session()->flash('error', 'Pegawai tidak ditemukan');

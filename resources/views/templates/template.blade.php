@@ -175,10 +175,21 @@
                         @if (Auth::user()->id_role == 1)
                             <li class="nav-item">
                                 <a href="{{ route('company') }}"
-                                    class="nav-link {{ Route::is('company.*') || Route::is('company') ? 'active' : '' }}">
+                                    class="nav-link {{ Route::is('company.*') || Route::is('employee.*') || Route::is('company') ? 'active' : '' }}">
                                     <i class="nav-icon fas fa-building"></i>
                                     <p>
                                         Perusahaan
+                                    </p>
+                                </a>
+                            </li>
+                        @endif
+                        @if (Auth::user()->id_role == 1)
+                            <li class="nav-item">
+                                <a href="{{ route('departement') }}"
+                                    class="nav-link {{ Route::is('departement.*') || Route::is('departement') ? 'active' : '' }}">
+                                    <i class="nav-icon fas fa-sitemap"></i>
+                                    <p>
+                                        Departemen
                                     </p>
                                 </a>
                             </li>

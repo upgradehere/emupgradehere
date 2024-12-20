@@ -33,6 +33,7 @@
                                 <thead>
                                     <tr>
                                         <th style="width: 30px;">No</th>
+                                        <th>ID</th>
                                         <th>Nama Perusahaan</th>
                                         <th>Kode Perusahaan</th>
                                         <th>Jumlah Program</th>
@@ -177,7 +178,7 @@
             <div class="modal-dialog modal-md">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">Reset Password PIC Perusahaan</h4>
+                        <h4 class="modal-title">Panduan File Kop</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -200,6 +201,11 @@
     </section>
     <script>
         $(function() {
+            $('#modal-panduan').on('hidden.bs.modal', function() {
+                $('body').removeClass('modal-open');
+                $('body').css('overflow', 'auto');
+            });
+
             const passwordInput = $("#password");
             const rules = {
                 minLength: $("#minLength"),
@@ -323,6 +329,12 @@
                         render: function(data, type, row, meta) {
                             return meta.row + 1;
                         }
+                    },
+                    {
+                        data: 'company_id',
+                        name: 'company_id',
+                        searchable: true,
+                        orderable: true
                     },
                     {
                         data: 'company_name',
