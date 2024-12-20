@@ -872,8 +872,12 @@
                     itemWidth: 10,  // Menentukan lebar ikon legend
                     itemHeight: 10,  // Menentukan tinggi ikon legend
                     textStyle: {
-                        fontSize: 14  // Ukuran font untuk teks legenda
-                    }
+                        fontSize: 14,  // Ukuran font untuk teks legenda
+                        overflow: 'truncate',  // Menangani teks yang terlalu panjang
+                        width: 120  // Lebar maksimal teks legenda
+                    },
+                    itemGap: 10,  // Jarak antar item legenda
+                    padding: [0, 0, 20, 0]  // Memberikan sedikit ruang di bawah chart untuk legend
                 },
                 color: ['#0F3B99', '#5886E9', '#FF9800', '#F44336', '#37CDC1'],  // Menentukan warna untuk sektor chart
                 series: [
@@ -901,7 +905,7 @@
                             show: false  // Menyembunyikan garis label
                         },
                         data: data,  // Data untuk chart
-                        bottom: '60px'
+                        bottom: '75px'
                     }
                 ]
             };

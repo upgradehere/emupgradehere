@@ -84,7 +84,12 @@
 @endif
 
 @if(!empty($ekg->image_file))
-<div style="text-align: center; padding-top: 20px;">
-    <img src="{{ public_path('uploads/ekg/'.$ekg->image_file) }}" style="max-width: 710px; max-height: 600px;">
-</div>
+    @foreach (json_decode($ekg->image_file,true) as $key => $image_file)
+        <div style="text-align: center; padding-top: 20px;">
+            <img src="{{ public_path('uploads/ekg/'.$image_file) }}" style="max-width: 710px; max-height: 600px;">
+        </div>
+        @if(count(json_decode($ekg->image_file,true)) == $key)
+                <div class="page-break"></div>
+        @endif
+    @endforeach
 @endif
