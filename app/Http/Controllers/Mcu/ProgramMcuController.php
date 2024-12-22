@@ -38,6 +38,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use ZipArchive;
 use Validator;
 
@@ -420,6 +421,7 @@ class ProgramMcuController extends Controller
                     if (!is_dir($imagePath)) {
                         mkdir($imagePath, 0755, true);
                     }
+                    $filename = Str::uuid().'.'.$extension;
                     File::move($extractPath.$file, $imagePath . $filename);
 
                     $modelMcu = McuT::select('mcu_id')
@@ -452,9 +454,11 @@ class ProgramMcuController extends Controller
                     } else {
                         $mcu_id = $modelMcu->mcu_id;
                     }
+                    $images = [];
+                    $images[] = $filename;
                     $payload = [
                         'mcu_id' => $mcu_id,
-                        'image_file' => $filename,
+                        'image_file' => json_encode($images),
                     ];
                     $existingRecord = $model->where('mcu_id', $mcu_id)->first();
                     if ($existingRecord) {
