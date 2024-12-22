@@ -3,10 +3,15 @@
 @endif
 
 @if(!empty($refraksi->image_file))
-<div style="text-align: center; padding-top: 20px;">
-	<img src="{{ public_path('uploads/refraction/'.$refraksi->image_file) }}" style="max-width: 710px; max-height: 600px;">
-</div>
 <div class="page-break"></div>
+    @foreach (json_decode($refraksi->image_file,true) as $key => $image_file)
+        <div style="text-align: center; padding-top: 20px;">
+            <img src="{{ public_path('uploads/refraction/'.$image_file) }}" style="max-width: 710px; max-height: 600px;">
+        </div>
+        @if(count(json_decode($refraksi->image_file,true)) == $key)
+                <div class="page-break"></div>
+        @endif
+    @endforeach
 @endif
 
 <div class="no-break">

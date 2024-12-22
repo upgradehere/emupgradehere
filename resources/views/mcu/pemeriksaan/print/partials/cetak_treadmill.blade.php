@@ -213,10 +213,14 @@
 </div>
 @endif
 
-
 @if(!empty($treadmill->image_file))
 <div class="page-break"></div>
-<div style="text-align: left; padding-top: 20px;">
-    <img src="{{ public_path('uploads/treadmill/'.$treadmill->image_file) }}" style="max-width: 710px; max-height: 600px;">
-</div>
+    @foreach (json_decode($treadmill->image_file,true) as $key => $image_file)
+        <div style="text-align: center; padding-top: 20px;">
+            <img src="{{ public_path('uploads/treadmill/'.$image_file) }}" style="max-width: 710px; max-height: 600px;">
+        </div>
+        @if(count(json_decode($treadmill->image_file,true)) == $key)
+                <div class="page-break"></div>
+        @endif
+    @endforeach
 @endif
