@@ -129,7 +129,7 @@
         @if(empty($letterhead))
             <img src="{{ public_path('pdf/default.jpg') }}">
         @else
-            <img src="{{ public_path('uploadssss/letterhead/'.$letterhead) }}">
+            <img src="{{ public_path('uploads/letterhead/'.$letterhead) }}">
         @endif
     </div>
 
