@@ -1,8 +1,8 @@
-@if (!empty($spirometri))
-@include('mcu.pemeriksaan.print.partials.header', ['title_header' => 'PEMERIKSAAN SPIROMETRI'])
-@endif
 
 @if (isset($spirometri->is_import) && !$spirometri->is_import)
+	@if (!empty($spirometri))
+	@include('mcu.pemeriksaan.print.partials.header', ['title_header' => 'PEMERIKSAAN SPIROMETRI'])
+	@endif
 	<div class="no-break">
 		<table style="width: 100%; border-collapse: collapse; border-spacing: 0px 10px; font-size: 13px;" cellpadding="3">
 		    <tbody>

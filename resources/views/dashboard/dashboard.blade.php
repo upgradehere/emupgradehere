@@ -284,8 +284,12 @@
             var dataSymptoms = [];
         })
 
-        //temporary
-        getAllDataChart()
+        var programId = $("#program_id").val();
+        if (programId) {
+             setTimeout(function() {
+                getAllDataChart();
+            }, 1500);
+        }
 
         $(document).on("change", "#program_id", function() {
             getAllDataChart()

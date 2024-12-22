@@ -1,8 +1,8 @@
-@if (!empty($audiometri))
-@include('mcu.pemeriksaan.print.partials.header', ['title_header' => 'PEMERIKSAAN AUDIOMETRI'])
-@endif
 
 @if (isset($audiometri->is_import) && !$audiometri->is_import)
+    @if (!empty($audiometri))
+    @include('mcu.pemeriksaan.print.partials.header', ['title_header' => 'PEMERIKSAAN AUDIOMETRI'])
+    @endif
     <table style="padding-top: 20px; border: 1px solid black; width: 100%; border-collapse: collapse; font-size: 10px;" cellpadding="3">
         <thead>
             <tr>
