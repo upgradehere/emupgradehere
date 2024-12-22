@@ -48,12 +48,16 @@
                             </div>
                         </div>
                     </div>
+                    <input type="hidden" name="existing_images" value="{{ !empty($data_ekg->image_file) ? $data_ekg->image_file : null }}" id="">
                     @if(!empty($data_ekg->image_file))
-                        <div class="row">
-                            <div class="col-md-12">
-                                <img src="{{ asset('uploads/ekg/'.$data_ekg->image_file) }}" alt="" style="width:100%;">
+                        @foreach (json_decode($data_ekg->image_file, true) as $key => $image_file)
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <img src="{{ asset('uploads/ekg/'.$image_file) }}" alt="" style="width:100%;">
+                                </div>
                             </div>
-                        </div>
+                            <br>
+                        @endforeach
                     @endif
                 </div>
             </div>

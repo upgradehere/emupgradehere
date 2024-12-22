@@ -6,6 +6,7 @@ use App\Models\AnamnesisT;
 use App\Models\RefractionT;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 trait RefractionTrait
 {
@@ -42,14 +43,16 @@ trait RefractionTrait
                 ]
             );
             if($request->has('image_file')){
-                // return $request->file('image_file');
                 $file = $request->file('image_file');
                 $extension = $file->getClientOriginalExtension();
-                $filename = $file->getClientOriginalName();
-                $post['image_file'] = $filename;
+                $filename = Str::uuid().'.'.$extension;
+                $images = !empty($post['existing_images']) ? json_decode($post['existing_images'], true) : [];
+                $images[] = $filename;
+                $post['image_file'] = $images;
                 $path = 'uploads/refraction/';
                 $file->move($path, $filename);
             }
+            unset($post['existing_images']);
 
             DB::beginTransaction();
             $model = new RefractionT();

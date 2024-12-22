@@ -6,6 +6,7 @@ use App\Models\AudiometryT;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 trait AudiometriTrait
 {
@@ -51,23 +52,6 @@ trait AudiometriTrait
             );
             $post['image_file'] = null;
             $post['additional_data'] = null;
-            if($request->has('image_file')){
-                // return $request->file('image_file');
-                $file = $request->file('image_file');
-                $extension = $file->getClientOriginalExtension();
-                $filename = $file->getClientOriginalName();
-                $post['image_file'] = $filename;
-                $path = 'uploads/audiometry/';
-                $file->move($path, $filename);
-            }
-
-            DB::beginTransaction();
-            $model = new AudiometryT();
-            if (empty($post['mcu_id'])) {
-                return redirect()->back()->with([
-                    'error' => ConstantsHelper::MESSAGE_ERROR_SAVE
-                ]);
-            }
             $payload = [
                 'mcu_id' => $post['mcu_id'],
                 'audiometry_date' => date('Y-m-d H:i:s'),
@@ -80,10 +64,28 @@ trait AudiometriTrait
                 'conclusion' => $post['conclusion'],
                 'suggestion' => $post['suggestion'],
                 'doctor_id' => $post['doctor_id'],
-                'image_file' => $post['image_file'],
                 'additional_data' => $post['additional_data'],
                 'is_import' => $post['is_import']
             ];
+            if($request->has('image_file')){
+                $file = $request->file('image_file');
+                $extension = $file->getClientOriginalExtension();
+                $filename = Str::uuid().'.'.$extension;
+                $images = !empty($post['existing_images']) ? json_decode($post['existing_images'], true) : [];
+                $images[] = $filename;
+                $payload['image_file'] = json_encode($images);
+                $path = 'uploads/audiometry/';
+                $file->move($path, $filename);
+            }
+            unset($post['existing_images']);
+
+            DB::beginTransaction();
+            $model = new AudiometryT();
+            if (empty($post['mcu_id'])) {
+                return redirect()->back()->with([
+                    'error' => ConstantsHelper::MESSAGE_ERROR_SAVE
+                ]);
+            }
             if (!empty($audiometry_id)) {
                 $query = $model->find($audiometry_id);
                 if ($query != null) {
