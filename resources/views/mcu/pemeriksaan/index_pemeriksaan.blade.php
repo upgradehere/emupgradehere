@@ -119,7 +119,15 @@
     </section>
     <script>
         $(function() {
-
+            var role = @json(Auth::user()->id_role);
+            if (role == 2) {
+                document.querySelectorAll('button, input, textarea, select').forEach(element => {
+                    element.disabled = true;
+                });
+                $('.summernote').each(function() {
+                    $(this).summernote('disable');
+                });
+            }
         });
     </script>
 @endsection
