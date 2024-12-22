@@ -1,8 +1,7 @@
-@if (!empty($rontgen))
-@include('mcu.pemeriksaan.print.partials.header', ['title_header' => 'PEMERIKSAAN RONTGEN'])
-@endif
-
 @if (isset($rontgen->is_import) && !$rontgen->is_import)
+	@if (!empty($rontgen))
+	@include('mcu.pemeriksaan.print.partials.header', ['title_header' => 'PEMERIKSAAN RONTGEN'])
+	@endif
 	<div class="no-break">
 		<h4>RONTGEN</h4>
 		<table style="width: 100%; border-collapse: collapse; border-spacing: 0px 10px; font-size: 13px;" cellpadding="3">
