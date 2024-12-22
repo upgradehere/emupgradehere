@@ -81,7 +81,6 @@ class PemeriksaanMcuController extends Controller
         $data_resume_mcu = self::getDataResumeMcu($mcu_id);
         $data_audiometry = self::getDataAudiometry($mcu_id);
         $kesimpulan_mcu_dropdown = LookupC::select('lookup_id', 'lookup_code', 'lookup_type', 'lookup_name')->where('lookup_type', ConstantsHelper::LOOKUP_KESIMPULAN_MCU)->get();
-        // return $kesimpulan_mcu_dropdown;
 
         return view('/mcu/pemeriksaan/index_pemeriksaan', get_defined_vars());
     }

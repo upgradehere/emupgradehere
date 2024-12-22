@@ -6,6 +6,7 @@ use App\Models\TreadmillT;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 trait TreadmillTrait
 {
@@ -41,14 +42,16 @@ trait TreadmillTrait
                 ]
             );
             if($request->has('image_file')){
-                // return $request->file('image_file');
                 $file = $request->file('image_file');
                 $extension = $file->getClientOriginalExtension();
-                $filename = $file->getClientOriginalName();
-                $post['image_file'] = $filename;
+                $filename = Str::uuid().'.'.$extension;
+                $images = !empty($post['existing_images']) ? json_decode($post['existing_images'], true) : [];
+                $images[] = $filename;
+                $post['image_file'] = json_encode($images);
                 $path = 'uploads/treadmill/';
                 $file->move($path, $filename);
             }
+            unset($post['existing_images']);
 
             DB::beginTransaction();
             $model = new TreadmillT();

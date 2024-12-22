@@ -9,10 +9,11 @@ use App\Models\PackageM;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class McuAnamnesisImport implements ToCollection, WithHeadingRow
+class McuAnamnesisImport implements ToCollection, WithHeadingRow, SkipsEmptyRows
 {
 
     public function __construct($mcuDate, $companyId, $mcuProgramId)
@@ -87,6 +88,7 @@ class McuAnamnesisImport implements ToCollection, WithHeadingRow
 
         foreach ($collection as $row)
         {
+            Log::info($row);
             // Riwayat penyakit sebelumnya
             foreach ($rps as $index => $r) {
                 if ($r == 'catatan_riwayat_operasi' || $r == 'catatan_epilepsi' || $r == 'keluhan_utama') {
