@@ -1,7 +1,7 @@
 @php
     $table = array();
     $counter = 0;
-    $limit   = 2;
+    $limit   = 25;
     $table_count = 0;
     foreach ($laboratorium->detail as $lab) {
         if($counter == $limit) {
