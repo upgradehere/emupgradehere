@@ -98,7 +98,7 @@ Route::group(['middleware' => ['auth', 'role:1']], function () {
     
     Route::get('/departement', [DepartementController::class, 'index'])->name('departement');
     Route::get('/departement/show/{company_id}', [DepartementController::class, 'show'])->name('departement.show');
-    Route::get('/departement/data', [DepartementController::class, 'data'])->name('departement.data');
+    Route::get('/departement/data/{id}', [DepartementController::class, 'data'])->name('departement.data');
     Route::post('/departement/store', [DepartementController::class, 'store'])->name('departement.store');
     Route::get('/departement/delete/{id}', [DepartementController::class, 'delete'])->name('departement.delete');
     Route::get('/departement/detail/{id}', [DepartementController::class, 'detail'])->name('departement.detail');

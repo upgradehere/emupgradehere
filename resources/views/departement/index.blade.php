@@ -38,6 +38,12 @@
                         <div class="card-header">
                             <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#modal-add">+ Tambah
                                 Departemen Baru</button>
+                            @if (isset($_GET['company-id']))
+                                <a href="{{ route('departement') }}" class="btn btn-primary btn-sm">Tampilkan Semua
+                                    Departemen
+                                    Dari
+                                    Semua Perusahaan</a>
+                            @endif
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
@@ -45,7 +51,7 @@
                                 <thead>
                                     <tr>
                                         <th style="width: 30px;">No</th>
-                                        <th>ID</th>
+                                        <th>Kode Departemen</th>
                                         <th>Perusahaan</th>
                                         <th>Departemen</th>
                                         <th style="width: 80px;"><i class="fas fa-cogs"></i></th>
@@ -130,7 +136,7 @@
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: '/departement/data/',
+                    url: '/departement/data/<?php echo $company_id; ?>',
                     type: 'GET',
                     data: function(d) {
 
@@ -146,8 +152,8 @@
                         }
                     },
                     {
-                        data: 'departement_id',
-                        name: 'departement_id',
+                        data: 'departement_code',
+                        name: 'departement_code',
                         searchable: true,
                         orderable: true
                     },

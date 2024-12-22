@@ -111,6 +111,12 @@ class EmployeeController extends Controller
             return redirect()->route('employee');
         }
 
+        $check = EmployeeM::where('nik', $request->nik)->get();
+        if ($check->count() > 0) {
+            session()->flash('error', 'NIK yang sama sudah ada');
+            return redirect()->route('employee');
+        }
+
         $employee = new EmployeeM;
         foreach ($request->all() as $k => $r) {
             if ($k != '_token') {

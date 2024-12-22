@@ -17,11 +17,19 @@ class DepartementController extends Controller
         $company = CompanyM::all();
         
         $data['company'] = $company;
+
+        $data['company_id'] = 'A';
+
+        if ($request->get('company-id')) {
+            if (is_numeric($request->get('company-id'))) {
+                $data['company_id'] = $request->get('company-id');
+            }
+        }
         
         return view('departement.index', $data);
     }
 
-    public function data(Request $request)
+    public function data(Request $request, $company_id)
     {
         try {
             $model = new DepartementM();
@@ -42,6 +50,10 @@ class DepartementController extends Controller
                     $direction = $order['dir'];
                     $query = $query->orderBy($columnName, $direction);
                 }
+            }
+
+            if ($company_id !== 'A') {
+                $query->where('company_id', $company_id);
             }
            
             $start = $request->start ?? 0;
@@ -113,6 +125,12 @@ class DepartementController extends Controller
 
             session()->flash('error', $messages);
 
+            return redirect()->route('departement');
+        }
+
+        $check = DepartementM::where('departement_code', $request->departement_code)->get();
+        if ($check->count() > 0) {
+            session()->flash('error', 'Kode Departemen yang sama sudah ada');
             return redirect()->route('departement');
         }
 

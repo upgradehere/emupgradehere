@@ -33,11 +33,11 @@
                                 <thead>
                                     <tr>
                                         <th style="width: 30px;">No</th>
-                                        <th>ID</th>
                                         <th>Nama Perusahaan</th>
                                         <th>Kode Perusahaan</th>
                                         <th>Jumlah Program</th>
                                         <th>Jumlah MCU</th>
+                                        <th>Departemen</th>
                                         <th style="width: 50px;">Program</th>
                                         <th style="width: 150px;"><i class="fas fa-cogs"></i></th>
                                     </tr>
@@ -331,12 +331,6 @@
                         }
                     },
                     {
-                        data: 'company_id',
-                        name: 'company_id',
-                        searchable: true,
-                        orderable: true
-                    },
-                    {
                         data: 'company_name',
                         name: 'company_name',
                         searchable: true,
@@ -359,6 +353,15 @@
                         name: 'total_mcu',
                         searchable: true,
                         orderable: true
+                    },
+                    {
+                        data: null,
+                        orderable: false,
+                        searchable: false,
+                        render: function(data, type, row) {
+                            var company_id = row.company_id;
+                            return `<a class="btn btn-success btn-sm" href="/departement?company-id=${company_id}"><i class="fas fa-list"></i> List</a>`;
+                        }
                     },
                     {
                         data: null,
