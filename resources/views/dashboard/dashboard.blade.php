@@ -110,7 +110,7 @@
                         </div>
                       </div>
                       <div class="card-body">
-                        <div id="chart_peserta" style="width: 100%; height: 200px;"></div>
+                        <div id="chart_peserta" style="width: 100%; height: 220px;"></div>
                       </div>
                     </div>
                     <!-- /.card -->
@@ -123,7 +123,7 @@
                         </div>
                       </div>
                       <div class="card-body">
-                        <div id="chart_usia" style="width: 100%; height: 200px;"></div>
+                        <div id="chart_usia" style="width: 100%; height: 220px;"></div>
                       </div>
                     </div>
                     <!-- /.card -->
@@ -134,7 +134,7 @@
                             <div class="card">
                                 <div class="card-body text-left pt-3">
                                     <div class="gender-label">Pria</div>
-                                    <div id="chart_male" style="width:100%; height: 121px;"></div>
+                                    <div id="chart_male" style="width:100%; height: 160px;"></div>
                                 </div>
                             </div>
                         </div>
@@ -143,7 +143,7 @@
                             <div class="card">
                                 <div class="card-body text-left pt-3">
                                     <div class="gender-label">Wanita</div>
-                                    <div id="chart_female" style="width:100%; height: 121px;"></div>
+                                    <div id="chart_female" style="width:100%; height: 160px;"></div>
                                 </div>
                             </div>
                         </div>
@@ -152,7 +152,7 @@
                         <div class="card">
                           <div class="card-header border-0">
                             <div class="d-flex justify-content-between">
-                              <h3 class="card-title fw-700">Riwayat Penyakit Terbanyak</h3>
+                              <h3 class="card-title fw-700">Abnormal Pemeriksaan</h3>
                               <a href="javascript:void(0);" class="text-dark"><i class="fas fa-external-link-alt"></i></a>
                             </div>
                           </div>

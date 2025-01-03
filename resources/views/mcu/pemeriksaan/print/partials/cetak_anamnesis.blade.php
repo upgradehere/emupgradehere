@@ -721,6 +721,14 @@
                                            disabled>
                                 </td>
                             </tr>
+                             <tr>
+                                <td width="30%">OD</td>
+                                <td align="left" colspan="2">: {{ optional(json_decode($anamnesis['eyes'], true))['strabismus_od'] }}</td>
+                            </tr>
+                            <tr>
+                                <td width="30%">OS</td>
+                                <td align="left" colspan="2">: {{ optional(json_decode($anamnesis['eyes'], true))['strabismus_os'] }}</td>
+                            </tr>
                             <tr>
                                 <td width="30%">Strabismus</td>
                                 <td align="center">
