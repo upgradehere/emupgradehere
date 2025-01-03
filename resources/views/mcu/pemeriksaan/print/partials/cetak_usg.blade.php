@@ -88,11 +88,11 @@
 @endif
 @if(!empty($usg->image_file))
 <div class="page-break"></div>
-    @foreach (json_decode($	@endif->image_file,true) as $key => $image_file)
+    @foreach (json_decode($usg->image_file,true) as $key => $image_file)
         <div style="text-align: center; padding-top: 20px;">
             <img src="{{ public_path('uploads/usg/'.$image_file) }}" style="max-width: 710px; max-height: 600px;">
         </div>
-        @if(count(json_decode($->image_file,true)) == $key)
+        @if(count(json_decode($usg->image_file,true)) == $key)
                 <div class="page-break"></div>
         @endif
     @endforeach

@@ -77,7 +77,6 @@ class DashboardController extends Controller
                 departement_name, sex
             ORDER BY 
                 count DESC
-            LIMIT 10
         ";
 
         $results = DB::select($query, [$id_program]);
@@ -185,6 +184,12 @@ class DashboardController extends Controller
             ['value' => $results[0]->need_further_examination ?? 0, 'name' => $lookupMap[34]],
             ['value' => $results[0]->fit_with_note ?? 0, 'name' => $lookupMap[35]]
         ];
+
+        foreach ($data as $key => $value) {
+            if (empty($value['value'])) {
+                unset($data[$key]);
+            }
+        }
 
         return $data;
     }
