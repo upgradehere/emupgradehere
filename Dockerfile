@@ -16,6 +16,9 @@ RUN apt-get update && apt-get install -y \
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
+# Add custom php.ini
+COPY php.ini /usr/local/etc/php/php.ini
+
 # Set working directory
 WORKDIR /var/www/html
 
