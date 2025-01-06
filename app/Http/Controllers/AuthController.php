@@ -255,10 +255,11 @@ class AuthController extends Controller
             }
     
             $message = $twilio->messages
-                ->create("whatsapp:$data->phone_number",
+                ->create("$data->phone_number",
                     array(
-                    "from" => "whatsapp:+14155238886",
-                    "body" => "*$data->otp* adalah kode OTP login EM Health Anda, jika anda tidak merasa melakukan login, abaikan pesan ini dan jangan bagikan kode OTP yang terlampir. Kode OTP akan kadaluarsa dalam 2 menit."
+                    "from" => "+12183775297",
+                    // "body" => "*$data->otp* adalah kode OTP login EM Health Anda, jika anda tidak merasa melakukan login, abaikan pesan ini dan jangan bagikan kode OTP yang terlampir. Kode OTP akan kadaluarsa dalam 2 menit."
+                    "body" => "$data->otp"
                     )
                 );
                 
