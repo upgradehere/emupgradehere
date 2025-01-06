@@ -197,7 +197,7 @@
                 <h3>Kesimpulan</h3>
             </header>
             <div class="row">
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <div class="card">
                       <div class="card-header border-0">
                         <div class="d-flex justify-content-between">
@@ -223,7 +223,7 @@
                       </div>
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-5">
                     <div class="w-100">
                         <div class="card">
                           <div class="card-header border-0">
@@ -878,10 +878,10 @@
                     textStyle: {
                         fontSize: 14,  // Ukuran font untuk teks legenda
                         overflow: 'truncate',  // Menangani teks yang terlalu panjang
-                        width: 120  // Lebar maksimal teks legenda
+                        width: 100  // Lebar maksimal teks legenda
                     },
-                    itemGap: 10,  // Jarak antar item legenda
-                    padding: [0, 0, 20, 0]  // Memberikan sedikit ruang di bawah chart untuk legend
+                    itemGap: 8,  // Jarak antar item legenda
+                    padding: [0, 0, 5, 0]  // Memberikan sedikit ruang di bawah chart untuk legend
                 },
                 color: ['#0F3B99', '#5886E9', '#FF9800', '#F44336', '#37CDC1'],  // Menentukan warna untuk sektor chart
                 series: [
