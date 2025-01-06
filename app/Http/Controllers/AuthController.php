@@ -56,9 +56,8 @@ class AuthController extends Controller
             if (Hash::check($password, $user->password)) {
                 $update = User::find($user->id);
 
-                $otpActive = env('APP_OTP');
 
-                if ($update->id_role == 1 || ($update->id_role == 2 && $otpActive == 0)) {
+                if ($update->id_role == 1) {
                      $cred = [
                         'email'     => $email,
                         'password'  => $password,
