@@ -278,6 +278,13 @@
                     if (data.is_import == true) {
                         $(row).css('background-color', '#7FFFD4');
                     }
+                },
+                drawCallback: function(){
+                    var role = @json(Auth::user()->id_role);
+                    console.log(role);
+                    if (role == 2) {
+                        $('.action-delete-mcu').hide();
+                    }
                 }
             });
 
