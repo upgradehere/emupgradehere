@@ -281,7 +281,6 @@
                 },
                 drawCallback: function(){
                     var role = @json(Auth::user()->id_role);
-                    console.log(role);
                     if (role == 2) {
                         $('.action-delete-mcu').hide();
                     }
