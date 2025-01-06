@@ -434,7 +434,6 @@ class ProgramMcuController extends Controller
                     Log::info($modelMcu);
 
                     if ($modelMcu == null) {
-                        // throw new \Exception('Peserta dengan nik '.$nik.' dan kode paket '.$packageCode.' belum memiliki mcu, silahkan input mcu terlebih dahulu atau melalui import excel!');
                         McuT::insert([
                             'mcu_date' => date('Y-m-d H:i:s'),
                             'employee_id' => $employeeModel->employee_id,
@@ -466,17 +465,24 @@ class ProgramMcuController extends Controller
                     } else {
                         $payload['is_import'] = true;
                         $model->insert($payload);
-                        // throw new \Exception('Peserta dengan nik '.$nik.' dan kode paket '.$packageCode.' belum memiliki pemeriksaan '.$category.', silahkan input terlebih dahulu atau melalui import excel!');
                     }
                 } else {
                     throw new \Exception('Nama file tidak sesuai!');
                 }
             }
             Storage::delete($zipPath);
-            return redirect()->back()->with('success', 'Upload Hasil Skses');
+            return redirect()->back()->with('success', 'Upload Hasil Sukses');
         } catch (ValidationException $e) {
+            Log::info($e);
+            if (is_dir($extractPath)) {
+                File::deleteDirectory($extractPath);
+            }
             return redirect()->back()->with('error', $e->getMessage());
         } catch (\Exception $e) {
+            Log::info($e);
+            if (is_dir($extractPath)) {
+                File::deleteDirectory($extractPath);
+            }
             return redirect()->back()->with('error', $e->getMessage());
         }
     }
