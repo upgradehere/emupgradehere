@@ -185,12 +185,6 @@ class DashboardController extends Controller
             ['value' => $results[0]->fit_with_note ?? 0, 'name' => $lookupMap[35]]
         ];
 
-        foreach ($data as $key => $value) {
-            if (empty($value['value'])) {
-                unset($data[$key]);
-            }
-        }
-
         return $data;
     }
 
