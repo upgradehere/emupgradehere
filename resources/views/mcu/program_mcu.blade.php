@@ -193,6 +193,12 @@
                 order: [
                     [1, 'asc']
                 ],
+                drawCallback: function(){
+                    var role = @json(Auth::user()->id_role);
+                    if (role == 2) {
+                        $('.action-delete').hide();
+                    }
+                }
             });
 
             $('#mcuProgramTable tbody').on('click', '.action-delete', function() {
