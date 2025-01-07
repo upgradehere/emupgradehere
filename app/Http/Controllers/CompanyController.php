@@ -284,8 +284,16 @@ class CompanyController extends Controller
             }
         }
 
-        $user = User::where("id_company", $company->company_id)->first();
+        $user = User::where('id_company', $id)->first();
+        
+        if (!$user) {
+            session()->flash('success', 'PIC Perusahaan tidak ditemukan');
+            return redirect()->route('company.detail', ['id' => $id]);
+        }
+
+        $user->name = $request->pic_name;
         $user->email = $request->pic_email;
+        $user->phone_number = $request->pic_phone_number;
 
         if ($company->save() && $user->save()) {
             session()->flash('success', 'Perusahaan diperbarui');
