@@ -10,10 +10,11 @@ use App\Models\ResumeMcuT;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class McuResumeMcuImport implements ToCollection, WithHeadingRow
+class McuResumeMcuImport implements ToCollection, WithHeadingRow, SkipsEmptyRows
 {
 
     public function __construct($mcuDate, $companyId, $mcuProgramId)

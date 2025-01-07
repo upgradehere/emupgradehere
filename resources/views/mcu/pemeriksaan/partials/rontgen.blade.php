@@ -48,12 +48,16 @@
                             </div>
                         </div>
                     </div>
+                    <input type="hidden" name="existing_images" value="{{ !empty($data_rontgen->image_file) ? $data_rontgen->image_file : null }}" id="">
                     @if(!empty($data_rontgen->image_file))
-                        <div class="row">
-                            <div class="col-md-12">
-                                <img src="{{ asset('uploads/rontgen/'.$data_rontgen->image_file) }}" alt="" style="width:100%;">
+                        @foreach (json_decode($data_rontgen->image_file, true) as $key => $image_file)
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <img src="{{ asset('uploads/rontgen/'.$image_file) }}" alt="" style="width:100%;">
+                                </div>
                             </div>
-                        </div>
+                            <br>
+                        @endforeach
                     @endif
                 </div>
             </div>

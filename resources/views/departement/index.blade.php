@@ -16,13 +16,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">Pegawai</h1>
+                    <h1 class="m-0">Departemen</h1>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Beranda</a></li>
-                        <li class="breadcrumb-item">Perusahaan</li>
-                        <li class="breadcrumb-item active">Pegawai</li>
+                        <li class="breadcrumb-item active">Departemen</li>
                     </ol>
                 </div><!-- /.col -->
             </div><!-- /.row -->
@@ -34,25 +33,27 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">Daftar Pegawai</h3> <br>
+                            <h3 class="card-title">Daftar Departemen</h3> <br>
                         </div>
                         <div class="card-header">
                             <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#modal-add">+ Tambah
-                                Pegawai Baru</button>
+                                Departemen Baru</button>
                             @if (isset($_GET['company-id']))
-                                <a href="{{ route('employee') }}" class="btn btn-primary btn-sm">Tampilkan Semua Pegawai
+                                <a href="{{ route('departement') }}" class="btn btn-primary btn-sm">Tampilkan Semua
+                                    Departemen
                                     Dari
                                     Semua Perusahaan</a>
                             @endif
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
-                            <table id="employeeTable" class="table table-bordered table-striped">
+                            <table id="departementTable" class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
                                         <th style="width: 30px;">No</th>
-                                        <th>Nama Pegawai</th>
+                                        <th>Kode Departemen</th>
                                         <th>Perusahaan</th>
+                                        <th>Departemen</th>
                                         <th style="width: 80px;"><i class="fas fa-cogs"></i></th>
                                     </tr>
                                 </thead>
@@ -69,56 +70,30 @@
             <div class="modal-dialog modal-xl">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">Tambah Pegawai Baru</h4>
+                        <h4 class="modal-title">Tambah Departemen Baru</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form action="{{ route('employee.store') }}" method="POST">
+                        <form action="{{ route('departement.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group">
                                 <label for="">Perusahaan</label>
-                                <select name="company_id" id="company_id" class="form-control" required>
+                                <select class="form-control" name="company_id" required id="">
                                     <option value="">-- Pilih Perusahaan --</option>
-                                    @foreach ($company as $cp)
-                                        <option value="{{ $cp->company_id }}">{{ $cp->company_name }}</option>
+                                    @foreach ($company as $c)
+                                        <option value="{{ $c->company_id }}">{{ $c->company_name }}</option>
                                     @endforeach
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label for="">Nama Pegawai</label>
-                                <input type="text" required name="employee_name" class="form-control">
+                                <label for="">Nama Departemen</label>
+                                <input type="text" required name="departement_name" class="form-control">
                             </div>
                             <div class="form-group">
-                                <label for="">Kode Pegawai</label>
-                                <input type="text" required name="employee_code" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label for="">NIK</label>
-                                <input type="text" required name="nik" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label for="">No Whatsapp</label>
-                                <input type="text" required name="phone_number" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label for="">Tanggal Lahir</label>
-                                <input type="date" required name="dob" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label for="">Jenis Kelamin</label>
-                                <select name="sex" id="" class="form-control" required>
-                                    <option value="">-- Pilih Jenis Kelamin --</option>
-                                    <option value="11">Laki Laki</option>
-                                    <option value="12">Perempuan</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="">Departemen</label>
-                                <select name="departement_id" id="departement_id" class="form-control" required>
-                                    <option value="">-- Pilih Departement --</option>
-                                </select>
+                                <label for="">Kode Departemen</label>
+                                <input type="text" required name="departement_code" class="form-control">
                             </div>
 
                             <div class="modal-footer justify-content-between">
@@ -141,7 +116,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        Apakah Anda yakin ingin menghapus pegawai ini?
+                        Apakah Anda yakin ingin menghapus departemen ini?
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
@@ -153,16 +128,7 @@
     </section>
     <script>
         $(function() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const companyId = urlParams.get('company-id');
-
-            if (companyId) {
-                setTimeout(function() {
-                    $('#company_id').val(companyId).trigger('change'); // Ensure 'change' is triggered
-                }, 100);
-            }
-
-            let table = $("#employeeTable").DataTable({
+            let table = $("#departementTable").DataTable({
                 responsive: true,
                 lengthChange: true,
                 autoWidth: false,
@@ -170,7 +136,7 @@
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: '/employee/data/<?php echo $company_id; ?>',
+                    url: '/departement/data/<?php echo $company_id; ?>',
                     type: 'GET',
                     data: function(d) {
 
@@ -186,8 +152,8 @@
                         }
                     },
                     {
-                        data: 'employee_name',
-                        name: 'employee_name',
+                        data: 'departement_code',
+                        name: 'departement_code',
                         searchable: true,
                         orderable: true
                     },
@@ -198,14 +164,21 @@
                         orderable: true
                     },
                     {
+                        data: 'departement_name',
+                        name: 'departement_name',
+                        searchable: true,
+                        orderable: true
+                    },
+                    {
                         data: null,
                         orderable: false,
                         searchable: false,
                         render: function(data, type, row) {
-                            var employee_id = row.employee_id;
-                            var delete_url = "{{ route('employee.delete', ['id' => '__id__']) }}";
-                            delete_url = delete_url.replace('__id__', employee_id);
-                            return `<a class="btn btn-primary btn-sm action-detail" href="/employee/detail/${employee_id}"><i class="fas fa-eye"></i></a>
+                            var departement_id = row.departement_id;
+                            var delete_url =
+                                "{{ route('departement.delete', ['id' => '__id__']) }}";
+                            delete_url = delete_url.replace('__id__', departement_id);
+                            return `<a class="btn btn-primary btn-sm action-detail" href="/departement/detail/${departement_id}"><i class="fas fa-eye"></i></a>
                                     <a class="btn btn-danger btn-sm action-delete" data-url="${delete_url}"><i class="fas fa-trash"></i></a>`;
                         }
                     }
@@ -215,7 +188,7 @@
                 ],
             });
 
-            $('#employeeTable tbody').on('click', '.action-delete', function() {
+            $('#departementTable tbody').on('click', '.action-delete', function() {
                 Swal.fire({
                     title: "Apakah anda akan menghapus data?",
                     showDenyButton: true,
@@ -250,48 +223,6 @@
                     }
                 });
             });
-
-            $('#company_id').on('change', function() {
-                var val = $(this).val();
-                $.ajax({
-                    url: 'departement/show/' + val,
-                    method: 'GET',
-                    success: function(response) {
-                        if (response.status == 'error') {
-                            var data = response.data
-                            if (Array.isArray(data)) {
-                                $.each(data, function(index, value) {
-                                    toastr.warning(value)
-                                })
-                            } else {
-                                toastr.warning(data)
-                            }
-                        } else if (response.status == 'success') {
-                            const newOptions = response.data;
-
-                            updateSelectOptions('#departement_id', newOptions);
-                        }
-                    },
-                    error: function(response) {
-                        toastr.error('Kesalahan terjadi, harap hubungi Admin kami')
-                    }
-                });
-            });
-
-            function updateSelectOptions(selectId, options) {
-                const $select = $(selectId);
-
-                $select.empty();
-
-                $.each(options, function(index, option) {
-                    $select.append(
-                        $('<option>', {
-                            value: option.departement_id,
-                            text: option.departement_name
-                        })
-                    );
-                });
-            }
         });
     </script>
 @endsection

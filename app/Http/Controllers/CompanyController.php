@@ -6,6 +6,10 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use App\Models\CompanyM;
 use App\Models\User;
+use App\Models\McuProgramM;
+use App\Models\DepartementM;
+use App\Models\EmployeeM;
+use App\Models\McuT;
 use Validator;
 use Session;
 
@@ -175,8 +179,12 @@ class CompanyController extends Controller
     {
         $company = companyM::find($id);
         $user = User::where("id_company", $company->company_id);
+        $program = McuProgramM::where("company_id", $company->company_id);
+        $departement = DepartementM::where("company_id", $company->company_id);
+        $employee = EmployeeM::where("company_id", $company->company_id);
+        $mcu = McuT::where("company_id", $company->company_id);
 
-        if ($company->delete() && $user->delete()) {
+        if ($company->delete() && $user->delete() && $program->delete() && $departement->delete() && $employee->delete() && $mcu->delete()) {
             $data = [
                 'status' => 'success',
                 'message' => 'Delete success',

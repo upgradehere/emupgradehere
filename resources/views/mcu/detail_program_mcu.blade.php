@@ -1,5 +1,27 @@
 @extends('templates/template')
 @section('content')
+    <style>
+        .legend-container {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .legend-color {
+            width: 30px;
+            height: 20px;
+            background-color: #7FFFD4;
+            margin-right: 8px;
+            border-radius: 2px; /* Optional: for square corners */
+        }
+    </style>
     <div class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
@@ -80,6 +102,12 @@
                             <br>
                             <div class="row">
                                 <div class="col-12">
+                                    <div class="legend-container">
+                                        <div class="legend-item">
+                                            <span class="legend-color"></span>
+                                            <span>Data MCU Import</span>
+                                        </div>
+                                    </div>
                                     <table id="mcuEmployeeTable" class="table table-bordered table-striped">
                                         <thead>
                                             <tr>
@@ -246,6 +274,17 @@
                 order: [
                     [1, 'asc']
                 ],
+                rowCallback: function(row, data) {
+                    if (data.is_import == true) {
+                        $(row).css('background-color', '#7FFFD4');
+                    }
+                },
+                drawCallback: function(){
+                    var role = @json(Auth::user()->id_role);
+                    if (role == 2) {
+                        $('.action-delete-mcu').hide();
+                    }
+                }
             });
 
             $('#mcuEmployeeTable tbody').on('click', '.action-delete-mcu', function() {

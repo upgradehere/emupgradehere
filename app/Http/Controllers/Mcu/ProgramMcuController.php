@@ -38,6 +38,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use ZipArchive;
 use Validator;
 
@@ -120,8 +121,8 @@ class ProgramMcuController extends Controller
             ->where('mcu_program_id', $mcu_program_id)
             ->count();
 
-        $employee_sum = McuT::where('company_id', 1)
-            ->where('mcu_program_id', 4)
+        $employee_sum = McuT::where('company_id', $company_id)
+            ->where('mcu_program_id', $mcu_program_id)
             ->distinct('employee_id')
             ->count('employee_id');
 
@@ -420,6 +421,7 @@ class ProgramMcuController extends Controller
                     if (!is_dir($imagePath)) {
                         mkdir($imagePath, 0755, true);
                     }
+                    $filename = Str::uuid().'.'.$extension;
                     File::move($extractPath.$file, $imagePath . $filename);
 
                     $modelMcu = McuT::select('mcu_id')
@@ -432,7 +434,6 @@ class ProgramMcuController extends Controller
                     Log::info($modelMcu);
 
                     if ($modelMcu == null) {
-                        // throw new \Exception('Peserta dengan nik '.$nik.' dan kode paket '.$packageCode.' belum memiliki mcu, silahkan input mcu terlebih dahulu atau melalui import excel!');
                         McuT::insert([
                             'mcu_date' => date('Y-m-d H:i:s'),
                             'employee_id' => $employeeModel->employee_id,
@@ -452,9 +453,11 @@ class ProgramMcuController extends Controller
                     } else {
                         $mcu_id = $modelMcu->mcu_id;
                     }
+                    $images = [];
+                    $images[] = $filename;
                     $payload = [
                         'mcu_id' => $mcu_id,
-                        'image_file' => $filename,
+                        'image_file' => json_encode($images),
                     ];
                     $existingRecord = $model->where('mcu_id', $mcu_id)->first();
                     if ($existingRecord) {
@@ -462,17 +465,24 @@ class ProgramMcuController extends Controller
                     } else {
                         $payload['is_import'] = true;
                         $model->insert($payload);
-                        // throw new \Exception('Peserta dengan nik '.$nik.' dan kode paket '.$packageCode.' belum memiliki pemeriksaan '.$category.', silahkan input terlebih dahulu atau melalui import excel!');
                     }
                 } else {
                     throw new \Exception('Nama file tidak sesuai!');
                 }
             }
             Storage::delete($zipPath);
-            return redirect()->back()->with('success', 'Upload Hasil Skses');
+            return redirect()->back()->with('success', 'Upload Hasil Sukses');
         } catch (ValidationException $e) {
+            Log::info($e);
+            if (is_dir($extractPath)) {
+                File::deleteDirectory($extractPath);
+            }
             return redirect()->back()->with('error', $e->getMessage());
         } catch (\Exception $e) {
+            Log::info($e);
+            if (is_dir($extractPath)) {
+                File::deleteDirectory($extractPath);
+            }
             return redirect()->back()->with('error', $e->getMessage());
         }
     }

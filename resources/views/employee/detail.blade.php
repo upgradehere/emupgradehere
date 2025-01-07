@@ -53,9 +53,14 @@
                                         class="form-control">
                                 </div>
                                 <div class="form-group">
-                                    <label for="">No Telp</label>
+                                    <label for="">No Whatsapp</label>
                                     <input type="text" required value="{{ $employee->phone_number }}"
                                         name="phone_number" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label for="">Tanggal Lahir</label>
+                                    <input type="date" required value="{{ date('Y-m-d', strtotime($employee->dob)) }}"
+                                        name="dob" class="form-control">
                                 </div>
                                 <div class="form-group">
                                     <label for="">Jenis Kelamin</label>
@@ -65,6 +70,17 @@
                                         </option>
                                         <option {{ $employee->sex == 12 ? 'selected' : '' }} value="12">Perempuan
                                         </option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="">Departemen</label>
+                                    <select name="departement_id" id="" class="form-control" required>
+                                        <option value="">-- Pilih Departemen --</option>
+                                        @foreach ($departement as $d)
+                                            <option value="{{ $d->departement_id }}"
+                                                {{ $employee->departement_id == $d->departement_id ? 'selected' : '' }}>
+                                                {{ $d->departement_name }}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>

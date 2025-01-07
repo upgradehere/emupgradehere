@@ -37,6 +37,7 @@
                                         <th>Kode Perusahaan</th>
                                         <th>Jumlah Program</th>
                                         <th>Jumlah MCU</th>
+                                        <th>Departemen</th>
                                         <th style="width: 50px;">Program</th>
                                         <th style="width: 150px;"><i class="fas fa-cogs"></i></th>
                                     </tr>
@@ -177,7 +178,7 @@
             <div class="modal-dialog modal-md">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">Reset Password PIC Perusahaan</h4>
+                        <h4 class="modal-title">Panduan File Kop</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -200,6 +201,11 @@
     </section>
     <script>
         $(function() {
+            $('#modal-panduan').on('hidden.bs.modal', function() {
+                $('body').removeClass('modal-open');
+                $('body').css('overflow', 'auto');
+            });
+
             const passwordInput = $("#password");
             const rules = {
                 minLength: $("#minLength"),
@@ -347,6 +353,15 @@
                         name: 'total_mcu',
                         searchable: true,
                         orderable: true
+                    },
+                    {
+                        data: null,
+                        orderable: false,
+                        searchable: false,
+                        render: function(data, type, row) {
+                            var company_id = row.company_id;
+                            return `<a class="btn btn-success btn-sm" href="/departement?company-id=${company_id}"><i class="fas fa-list"></i> List</a>`;
+                        }
                     },
                     {
                         data: null,
