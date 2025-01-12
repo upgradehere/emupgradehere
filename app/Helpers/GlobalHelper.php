@@ -95,4 +95,42 @@ class GlobalHelper {
         }
     }
 
+    public static function dataTable($request, $query)
+    {
+        $totalRecords = $query->count();
+        $search = [];
+
+        foreach ($request['columns'] as $column) {
+            if (isset($column['searchable']) && $column['searchable'] === 'true' && isset($column['data'])) {
+                $search[] = $column['data'];
+            }
+        }
+        if ($request->has('search') && !empty($request['search']['value'])) {
+            $searchValue = $request['search']['value'];
+            $query = $query->where(function ($q) use ($search, $searchValue) {
+                foreach ($search as $column) {
+                    $q->orWhere($column, 'ilike', '%' . $searchValue . '%');
+                }
+            });
+        }
+        $filteredRecords = $query->count();
+        if ($request->has('order') && is_array($request->order)) {
+            foreach ($request->order as $order) {
+                $columnIndex = $order['column'];
+                $columnName = $request->columns[$columnIndex]['data'];
+                $direction = $order['dir'];
+                $query = $query->orderBy($columnName, $direction);
+            }
+        }
+        $start = $request->start ?? 0;
+        $length = $request->length ?? 10;
+        $data = $query->offset($start)->limit($length)->get();
+        return [
+            'draw' => $request->draw,
+            'recordsTotal' => $totalRecords,
+            'recordsFiltered' => $filteredRecords,
+            'data' => $data
+        ];
+    }
+
 }

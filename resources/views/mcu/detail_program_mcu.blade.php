@@ -233,19 +233,19 @@
                     {
                         data: 'sex',
                         name: 'sex',
-                        searchable: true,
+                        searchable: false,
                         orderable: true
                     },
                     {
                         data: 'age',
                         name: 'age',
-                        searchable: true,
+                        searchable: false,
                         orderable: true
                     },
                     {
                         data: 'mcu_date',
                         name: 'mcu_date',
-                        searchable: true,
+                        searchable: false,
                         orderable: true,
                         render: function(data, type, row) {
                             if (data) {
