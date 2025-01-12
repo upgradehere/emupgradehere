@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Mcu;
 
 use App\Helpers\ConstantsHelper;
+use App\Helpers\GlobalHelper;
 use App\Http\Controllers\Controller;
 use App\Imports\McuAnamnesisImport;
 use App\Imports\McuAudiometryImport;
@@ -66,40 +67,11 @@ class ProgramMcuController extends Controller
             $model = new McuCompanyV();
             $query = $model->select();
 
-            if ($request->has('search') && !empty($request->search['value'])) {
-                $searchValue = $request->search['value'];
-                $query = $query->where(function ($q) use ($searchValue) {
-                    $q->where('mcu_program_name', 'ilike', '%' . $searchValue . '%')
-                        ->orWhere('company_name', 'ilike', '%' . $searchValue . '%');
-                });
-            }
-
             if ($company_id !== NULL) {
                 $query->where('company_id', $company_id);
             }
 
-            if ($request->has('order') && is_array($request->order)) {
-                foreach ($request->order as $order) {
-                    $columnIndex = $order['column'];
-                    $columnName = $request->columns[$columnIndex]['data'];
-                    $direction = $order['dir'];
-                    $query = $query->orderBy($columnName, $direction);
-                }
-            }
-
-            $start = $request->start ?? 0;
-            $length = $request->length ?? 10;
-
-            $data = $query->offset($start)->limit($length)->get();
-            $totalRecords = $model->count();
-            $filteredRecords = $query->count();
-
-            return response()->json([
-                'draw' => $request->draw,
-                'recordsTotal' => $totalRecords,
-                'recordsFiltered' => $filteredRecords,
-                'data' => $data
-            ]);
+            return response()->json(GlobalHelper::dataTable($request, $query));
         } catch (\Exception $e) {
             return response()->json([
                 'error' => $e->getMessage()
@@ -139,39 +111,8 @@ class ProgramMcuController extends Controller
             $model = new McuEmployeeV();
             $query = $model->select();
             $query = $query->where('company_id', $company_id)->where('mcu_program_id', $mcu_program_id)->where('deleted_at', null);
-            $totalRecords = $query->count();
 
-            if ($request->has('search') && !empty($request->search['value'])) {
-                $searchValue = $request->search['value'];
-                $query = $query->where(function ($q) use ($searchValue) {
-                    $q->where('employee_name', 'ilike', '%' . $searchValue . '%')
-                        ->orWhere('departement_name', 'ilike', '%' . $searchValue . '%')
-                        ->orWhere('mcu_code', 'ilike', '%' . $searchValue . '%')
-                        ->orWhere('nik', 'ilike', '%' . $searchValue . '%');
-                });
-            }
-
-            if ($request->has('order') && is_array($request->order)) {
-                foreach ($request->order as $order) {
-                    $columnIndex = $order['column'];
-                    $columnName = $request->columns[$columnIndex]['data'];
-                    $direction = $order['dir'];
-                    $query = $query->orderBy($columnName, $direction);
-                }
-            }
-
-            $start = $request->start ?? 0;
-            $length = $request->length ?? 10;
-
-            $data = $query->offset($start)->limit($length)->get();
-            $filteredRecords = $query->count();
-
-            return response()->json([
-                'draw' => $request->draw,
-                'recordsTotal' => $totalRecords,
-                'recordsFiltered' => $filteredRecords,
-                'data' => $data
-            ]);
+            return response()->json(GlobalHelper::dataTable($request, $query));
         } catch (\Exception $e) {
             return response()->json([
                 'error' => $e->getMessage()
