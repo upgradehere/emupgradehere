@@ -11,6 +11,9 @@ class ConstantsHelper {
     const MESSAGE_ERROR_DELETE = 'Terjadi Kesalahan. Data Gagal Dihapus!';
 
     // lookup
+    const LOOKUP_SEX_MALE = '11';
+    const LOOKUP_SEX_FEMALE = '12';
+
     const LOOKUP_EXAMINATION_TYPE = 'examination_type';
 
     const LOOKUP_EXAMINATION_TYPE_ANAMNESIS = 20;

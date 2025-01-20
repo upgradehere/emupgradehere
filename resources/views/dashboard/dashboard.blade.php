@@ -295,7 +295,7 @@
             getAllDataChart()
         });
 
-        function buildChartMale(chartDom, male, total) {
+        function buildChartMale(chartDom, male, total, program_id) {
             var data = [
                 { value: total, name: 'Total', itemStyle: { color: '#DADFE9' } },
                 { value: male, name: 'Pria', itemStyle: { color: '#0F3B99' } }
@@ -366,9 +366,16 @@
 
             // Setel opsi chart
             myChart.setOption(option);
+            myChart.on('click', function(params) {
+                if (params.name === 'Pria') {
+                    window.location.href = '/mcu/program-mcu/detail?chart_type=chart_male&mcu_program_id=' + program_id;
+                } else if (params.name === 'Total') {
+                    window.location.href = '/mcu/program-mcu/detail?chart_type=chart_male_total&mcu_program_id=' + program_id;
+                }
+            });
         }
 
-        function buildChartFemale(chartDom, male, total) {
+        function buildChartFemale(chartDom, male, total, program_id) {
             var data = [
                 { value: total, name: 'Total', itemStyle: { color: '#DADFE9' } },
                 { value: male, name: 'Wanita', itemStyle: { color: '#FF69B4' } }
@@ -439,9 +446,16 @@
 
             // Setel opsi chart
             myChart.setOption(option);
+            myChart.on('click', function(params) {
+                if (params.name === 'Wanita') {
+                    window.location.href = '/mcu/program-mcu/detail?chart_type=chart_female&mcu_program_id=' + program_id;
+                } else if (params.name === 'Total') {
+                    window.location.href = '/mcu/program-mcu/detail?chart_type=chart_female_total&mcu_program_id=' + program_id;
+                }
+            });
         }
 
-        function buildChartParticipant(chartDom, data) {
+        function buildChartParticipant(chartDom, data, program_id) {
             chartDom = document.getElementById(chartDom);
             var myChart = echarts.init(chartDom);
 
@@ -539,10 +553,13 @@
 
             // Set opsi dan tampilkan grafik
             myChart.setOption(option);
+            myChart.on('click', function(params) {
+                window.location.href = '/mcu/program-mcu/detail?chart_type=chart_peserta&chart_value=' + params.name + '&mcu_program_id=' + program_id;
+            });
         }
 
 
-        function buildChartAge(chartDom, dataUsia) {
+        function buildChartAge(chartDom, dataUsia, program_id) {
             var chartDom = document.getElementById(chartDom);
             // Menyiapkan data untuk chart
             var usiaKategori = dataUsia.map(item => item.name); // Kategori usia
@@ -647,13 +664,48 @@
             };
 
             myChart.setOption(option);
+            myChart.on('click', function(params) {
+                let value;
+                if (params.name === '<25') {
+                    if (params.seriesName === 'Pria') {
+                        value = '1_pria'
+                    } else if (params.seriesName === 'Wanita') {
+                        value = '1_wanita'
+                    }
+                } else if (params.name === '26-35') {
+                    if (params.seriesName === 'Pria') {
+                        value = '2_pria'
+                    } else if (params.seriesName === 'Wanita') {
+                        value = '2_wanita'
+                    }
+                } else if (params.name === '36-45') {
+                    if (params.seriesName === 'Pria') {
+                        value = '3_pria'
+                    } else if (params.seriesName === 'Wanita') {
+                        value = '3_wanita'
+                    }
+                } else if (params.name === '46-55') {
+                    if (params.seriesName === 'Pria') {
+                        value = '4_pria'
+                    } else if (params.seriesName === 'Wanita') {
+                        value = '4_wanita'
+                    }
+                } else if (params.name === '>55') {
+                    if (params.seriesName === 'Pria') {
+                        value = '5_pria'
+                    } else if (params.seriesName === 'Wanita') {
+                        value = '5_wanita'
+                    }
+                }
+                window.location.href = '/mcu/program-mcu/detail?chart_type=chart_usia&chart_value=' + value + '&mcu_program_id=' + program_id;
+            });
         }
 
 
-        function buildChartDiseaseHistory(chartDom, data) {
+        function buildChartDiseaseHistory(chartDom, data, program_id) {
             chartDom = document.getElementById(chartDom);
             var myChart = echarts.init(chartDom);
-            
+
             var option = {
                 tooltip: {
                     trigger: 'item',
@@ -698,9 +750,12 @@
             };
 
             myChart.setOption(option);
+            myChart.on('click', function(params) {
+                window.location.href = '/mcu/program-mcu/detail?chart_type=chart_riwayat_penyakit&chart_value=' + params.name + '&mcu_program_id=' + program_id;
+            });
         }
 
-        function buildChartLabDiagnosis(chartDom, data) {
+        function buildChartLabDiagnosis(chartDom, data, program_id) {
             chartDom = document.getElementById(chartDom);
             var myChart = echarts.init(chartDom);
 
@@ -783,9 +838,12 @@
 
             // Set options and render the chart
             myChart.setOption(option);
+            myChart.on('click', function(params) {
+                window.location.href = '/mcu/program-mcu/detail?chart_type=chart_riwayat_diagnosa_lab&chart_value=' + params.name + '&mcu_program_id=' + program_id;
+            });
         }
 
-        function buildChartNonLabDiagnosis(chartDom, data) {
+        function buildChartNonLabDiagnosis(chartDom, data, program_id) {
             chartDom = document.getElementById(chartDom);
             var myChart = echarts.init(chartDom);
 
@@ -859,12 +917,15 @@
             };
 
             myChart.setOption(option);
+            myChart.on('click', function(params) {
+                window.location.href = '/mcu/program-mcu/detail?chart_type=chart_riwayat_diagnosa_non_lab&chart_value=' + params.name + '&mcu_program_id=' + program_id;
+            });
         }
 
-        function buildChartHealthCategory(chartDom, data) {
+        function buildChartHealthCategory(chartDom, data, program_id) {
             var chartDom = document.getElementById(chartDom);
             var myChart = echarts.init(chartDom);
-            
+
             var option = {
                 tooltip: {
                     trigger: 'item'  // Tipe tooltip yang muncul ketika item dipilih
@@ -916,12 +977,15 @@
 
             // Menetapkan opsi chart dan menampilkan grafik
             myChart.setOption(option);
+            myChart.on('click', function(params) {
+                window.location.href = '/mcu/program-mcu/detail?chart_type=chart_kategori_kesehatan&chart_value=' + params.name + '&mcu_program_id=' + program_id;
+            });
         }
 
-        function buildChartMetabolicSyndrome(chartDom, data) {
+        function buildChartMetabolicSyndrome(chartDom, data, program_id) {
             chartDom = document.getElementById(chartDom);
             var myChart = echarts.init(chartDom);
-            
+
             var option = {
                 tooltip: {
                     trigger: 'item'  // Tipe tooltip yang muncul ketika item dipilih
@@ -961,16 +1025,16 @@
                             show: false  // Menyembunyikan garis label
                         },
                         data: [
-                            { 
-                                value: data.normal, 
-                                name: 'Normal', 
+                            {
+                                value: data.normal,
+                                name: 'Normal',
                                 itemStyle: {
                                     color: '#0F3B99'  // Warna biru tua untuk kategori Normal
                                 }
                             },  // Data untuk kategori Normal
-                            { 
-                                value: data.abnormal, 
-                                name: 'Abnormal', 
+                            {
+                                value: data.abnormal,
+                                name: 'Abnormal',
                                 itemStyle: {
                                     color: '#5886E9'  // Warna biru muda untuk kategori Abnormal
                                 }
@@ -983,9 +1047,12 @@
 
             // Menetapkan opsi chart dan menampilkan grafik
             myChart.setOption(option);
+            myChart.on('click', function(params) {
+                window.location.href = '/mcu/program-mcu/detail?chart_type=chart_kategori_sindrom_metabolik&chart_value=' + params.name + '&mcu_program_id=' + program_id;
+            });
         }
 
-        function buildChartSymptoms(chartDom, data) {
+        function buildChartSymptoms(chartDom, data, program_id) {
             var chartDom = document.getElementById('chart_gejala');
             var myChart = echarts.init(chartDom);
 
@@ -1065,6 +1132,9 @@
             };
 
             myChart.setOption(option);
+            myChart.on('click', function(params) {
+                window.location.href = '/mcu/program-mcu/detail?chart_type=chart_gejala&chart_value=' + params.name + '&mcu_program_id=' + program_id;
+            });
         }
 
         function getAllDataChart() {
@@ -1089,16 +1159,16 @@
                         var symptomsData = response.data.symptoms;
                         var conclusionAndRecommendationData = response.data.conclusion_and_recommendation;
 
-                        buildChartMale("chart_male", genderData.male, genderData.total);
-                        buildChartFemale("chart_female", genderData.female, genderData.total);
-                        buildChartParticipant("chart_peserta", participantData);
-                        buildChartAge("chart_usia", ageData);
-                        buildChartHealthCategory("chart_kategori_kesehatan", healthCategoryData);
-                        buildChartMetabolicSyndrome("chart_kategori_sindrom_metabolik", metabolicSyndromeData);
-                        buildChartDiseaseHistory("chart_riwayat_penyakit", diseaseHistoryData);
-                        buildChartLabDiagnosis("chart_riwayat_diagnosa_lab", labDiagnosisData);
-                        buildChartNonLabDiagnosis("chart_riwayat_diagnosa_non_lab", nonLabDiagnosisData);
-                        buildChartSymptoms("chart_gejala", symptomsData);
+                        buildChartMale("chart_male", genderData.male, genderData.total, program_id);
+                        buildChartFemale("chart_female", genderData.female, genderData.total, program_id);
+                        buildChartParticipant("chart_peserta", participantData, program_id);
+                        buildChartAge("chart_usia", ageData, program_id);
+                        buildChartHealthCategory("chart_kategori_kesehatan", healthCategoryData, program_id);
+                        buildChartMetabolicSyndrome("chart_kategori_sindrom_metabolik", metabolicSyndromeData, program_id);
+                        buildChartDiseaseHistory("chart_riwayat_penyakit", diseaseHistoryData, program_id);
+                        buildChartLabDiagnosis("chart_riwayat_diagnosa_lab", labDiagnosisData, program_id);
+                        buildChartNonLabDiagnosis("chart_riwayat_diagnosa_non_lab", nonLabDiagnosisData, program_id);
+                        buildChartSymptoms("chart_gejala", symptomsData, program_id);
 
                         $('#conclusion').empty();
                         $('#recommendation').empty();
