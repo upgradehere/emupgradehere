@@ -14,7 +14,7 @@ class DashboardController extends Controller
     public function index() {
         $user = Auth::user();
         $id_company = null;
-        
+
         if ($user->id_role == 2) {
             $id_company = $user->id_company;
         }
@@ -65,17 +65,17 @@ class DashboardController extends Controller
     public function getParticipant($id_program)
     {
         $query = "
-            SELECT 
+            SELECT
                 departement_name,
                 sex,
                 COUNT(*) AS count
-            FROM 
-                mcu_employee_v 
-            WHERE 
+            FROM
+                mcu_employee_v
+            WHERE
                 mcu_program_id = ?
-            GROUP BY 
+            GROUP BY
                 departement_name, sex
-            ORDER BY 
+            ORDER BY
                 count DESC
         ";
 
@@ -155,7 +155,7 @@ class DashboardController extends Controller
             FROM lookup_c
             WHERE lookup_type = \'kesimpulan_mcu\'
         ';
-        
+
         $lookupResults = DB::select($lookupQuery);
 
         $lookupMap = [];
@@ -191,13 +191,13 @@ class DashboardController extends Controller
 
     public function getMetabolicSyndrome($id_program)
     {
-        $query = 'SELECT SUM(count_normal) as count_normal, SUM(count_abnormal) as count_abnormal FROM fn_sindrom_metabolik(?)';
+        $query = 'SELECT * FROM fn_metabolik_normal_abnormal(?)';
 
         $results = DB::select($query, [$id_program]);
 
         $data = [
-            'normal' => $results[0]->count_normal ?? 0,   
-            'abnormal' => $results[0]->count_abnormal ?? 0 
+            'normal' => $results[0]->count_normal ?? 0,
+            'abnormal' => $results[0]->count_abnormal ?? 0
         ];
 
         return $data;
@@ -212,8 +212,8 @@ class DashboardController extends Controller
         $data = [];
         foreach ($results as $row) {
             $data[] = [
-                'name' =>  ucwords(str_replace("_", " ", $row->name)), 
-                'diagnosis_count' => $row->count 
+                'name' =>  ucwords(str_replace("_", " ", $row->name)),
+                'diagnosis_count' => $row->count
             ];
         }
         return $data;
@@ -282,7 +282,7 @@ class DashboardController extends Controller
                 $data[] = [
                     'name' => $row_male->laboratory_examination_name,
                     'male' => $row_male->count,
-                    'female' => 0 
+                    'female' => 0
                 ];
             } else {
                 $data[$index]['male'] += $row_male->count;
@@ -309,21 +309,21 @@ class DashboardController extends Controller
     public function getNonLabDiagnosis($id_program)
     {
          $query = "
-            SELECT 
-                key, 
-                COUNT(*) AS condition_count 
-            FROM 
-                anamnesis_t 
-            LEFT JOIN 
+            SELECT
+                key,
+                COUNT(*) AS condition_count
+            FROM
+                anamnesis_t
+            LEFT JOIN
                 mcu_t ON mcu_t.mcu_id = anamnesis_t.mcu_id,
                 jsonb_each_text(anamnesis_t.medical_history::jsonb) AS medical_conditions(key, value)
-            WHERE 
-                value = '1' 
-                AND mcu_t.mcu_program_id = ? 
-            GROUP BY 
-                key 
-            ORDER BY 
-                condition_count DESC 
+            WHERE
+                value = '1'
+                AND mcu_t.mcu_program_id = ?
+            GROUP BY
+                key
+            ORDER BY
+                condition_count DESC
             LIMIT 8;
         ";
 
@@ -379,7 +379,7 @@ class DashboardController extends Controller
 
     public function getAllDataChart($program_id)
     {
-        set_time_limit(120); 
+        set_time_limit(120);
         $genderData = $this->getGender($program_id);
         $participantData = $this->getParticipant($program_id);
         $ageData = $this->getAge($program_id);

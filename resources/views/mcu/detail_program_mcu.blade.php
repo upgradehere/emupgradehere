@@ -183,6 +183,9 @@
 
             let companyId = "{{ $company_id }}";
             let mcuProgramId = "{{ $mcu_program_id }}";
+            let chartType = "{{ $chart_type }}";
+            let chartValue = "{{ $chart_value }}";
+
             let table = $("#mcuEmployeeTable").DataTable({
                 responsive: true,
                 lengthChange: true,
@@ -196,6 +199,8 @@
                     data: function(d) {
                         d.company_id = companyId;
                         d.mcu_program_id = mcuProgramId;
+                        d.chart_type = chartType;
+                        d.chart_value = chartValue;
                     }
                 },
                 columns: [{

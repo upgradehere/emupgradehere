@@ -83,20 +83,30 @@ class ProgramMcuController extends Controller
     {
         $company_id = $request->get('company_id');
         $mcu_program_id = $request->get('mcu_program_id');
+        $chart_type = $request->get('chart_type');
+        $chart_value = $request->get('chart_value');
         $employees = EmployeeM::select('employee_id', 'employee_code', 'employee_name')->where('company_id', $company_id)->get();
         $packages = PackageM::select('id', 'package_code', 'package_name')->get();
 
-        $company_name = CompanyM::where('company_id', $company_id)->value('company_name');
         // $mcu_program_name = McuProgramM::where('mcu_program_id', $mcu_program_id)->value('mcu_program_name');
         $mcu_program_name = McuProgramM::where('mcu_program_id', $mcu_program_id)->first();
-        $mcu_sum = McuT::where('company_id', $company_id)
-            ->where('mcu_program_id', $mcu_program_id)
-            ->count();
+        if (!empty($chart_type)) {
+            $company_id = $mcu_program_name->company_id;
+        }
+        $company_name = CompanyM::where('company_id', $company_id)->value('company_name');
+        $mcu_sum = McuEmployeeV::where('company_id', $company_id)
+            ->where('mcu_program_id', $mcu_program_id);
 
-        $employee_sum = McuT::where('company_id', $company_id)
-            ->where('mcu_program_id', $mcu_program_id)
-            ->distinct('employee_id')
-            ->count('employee_id');
+        $employee_sum = McuEmployeeV::where('company_id', $company_id)
+            ->where('mcu_program_id', $mcu_program_id);
+
+        if (!empty($chart_type)) {
+            $mcu_sum = self::getDataFromChart($mcu_sum, $chart_type, $chart_value, null);
+            $employee_sum = self::getDataFromChart($employee_sum, $chart_type, $chart_value, null);
+        }
+        $mcu_sum = $mcu_sum->count();
+        $employee_sum = $employee_sum->distinct('employee_id')
+        ->count('employee_id');
 
         $examination_type = LookupC::select('lookup_id as examination_type_id', 'lookup_name as examination_type_name')->where('lookup_type', ConstantsHelper::LOOKUP_EXAMINATION_TYPE)->get();
 
@@ -108,9 +118,40 @@ class ProgramMcuController extends Controller
         try {
             $company_id = $request->get('company_id');
             $mcu_program_id = $request->get('mcu_program_id');
+            $chart_type = $request->get('chart_type');
+            $chart_value = $request->get('chart_value');
             $model = new McuEmployeeV();
-            $query = $model->select();
-            $query = $query->where('company_id', $company_id)->where('mcu_program_id', $mcu_program_id)->where('deleted_at', null);
+            $query = $model->select(
+                'mcu_employee_v.mcu_id',
+                'mcu_employee_v.mcu_code',
+                'mcu_employee_v.mcu_date',
+                'mcu_employee_v.employee_id',
+                'mcu_employee_v.employee_code',
+                'mcu_employee_v.employee_name',
+                'mcu_employee_v.departement_id',
+                'mcu_employee_v.departement_code',
+                'mcu_employee_v.departement_name',
+                'mcu_employee_v.company_id',
+                'mcu_employee_v.mcu_program_id',
+                'mcu_employee_v.sex',
+                'mcu_employee_v.sex_id',
+                'mcu_employee_v.dob',
+                'mcu_employee_v.age',
+                'mcu_employee_v.age_number',
+                'mcu_employee_v.additional_data',
+                'mcu_employee_v.nik',
+                'mcu_employee_v.package_id',
+                'mcu_employee_v.package_code',
+                'mcu_employee_v.package_name',
+                'mcu_employee_v.deleted_at',
+                'mcu_employee_v.is_import'
+            );
+            $query = $query->where('mcu_program_id', $mcu_program_id)->where('mcu_employee_v.deleted_at', null);
+            if (empty($chart_type)) {
+                $query = $query->where('company_id', $company_id);
+            } else {
+                $query = self::getDataFromChart($query, $chart_type, $chart_value, null);
+            }
 
             return response()->json(GlobalHelper::dataTable($request, $query));
         } catch (\Exception $e) {
@@ -118,6 +159,173 @@ class ProgramMcuController extends Controller
                 'error' => $e->getMessage()
             ]);
         }
+    }
+
+    private function getDataFromChart($query, $chart_type, $chart_value = null, $additional = null) {
+        $sex = ($additional == 'sex') ? 'sex' : 'sex_id';
+        switch ($chart_type) {
+            case 'chart_male':
+                $query = $query->where($sex, ConstantsHelper::LOOKUP_SEX_MALE);
+                break;
+
+            case 'chart_male_total':
+            case 'chart_female_total':
+                $query = $query->where(function($query) use ($sex) {
+                    $query->where($sex, ConstantsHelper::LOOKUP_SEX_MALE)
+                          ->orWhere($sex, ConstantsHelper::LOOKUP_SEX_FEMALE);
+                });
+                break;
+
+            case 'chart_female':
+                $query = $query->where($sex, ConstantsHelper::LOOKUP_SEX_FEMALE);
+                break;
+            case 'chart_peserta':
+                $query = $query->where('departement_name', $chart_value);
+                break;
+            case 'chart_usia':
+                switch ($chart_value) {
+                    //<25
+                    case '1_pria':
+                        $query = $query->where('age_number', '<', 25);
+                        $query = $query->where('sex_id', ConstantsHelper::LOOKUP_SEX_MALE);
+                        break;
+                    case '1_wanita':
+                        $query = $query->where('age_number', '<', 25);
+                        $query = $query->where('sex_id', ConstantsHelper::LOOKUP_SEX_FEMALE);
+                        break;
+                    //26-35
+                    case '2_pria':
+                        $query = $query->whereBetween('age_number', [26, 35]);
+                        $query = $query->where('sex_id', ConstantsHelper::LOOKUP_SEX_MALE);
+                        break;
+                    case '2_wanita':
+                        $query = $query->whereBetween('age_number', [26, 35]);
+                        $query = $query->where('sex_id', ConstantsHelper::LOOKUP_SEX_FEMALE);
+                    //36-45
+                    case '3_pria':
+                        $query = $query->whereBetween('age_number', [36, 45]);
+                        $query = $query->where('sex_id', ConstantsHelper::LOOKUP_SEX_MALE);
+                        break;
+                    case '3_wanita':
+                        $query = $query->whereBetween('age_number', [36, 45]);
+                        $query = $query->where('sex_id', ConstantsHelper::LOOKUP_SEX_FEMALE);
+                        break;
+                    //46-55
+                    case '4_pria':
+                        $query = $query->whereBetween('age_number', [46, 55]);
+                        $query = $query->where('sex_id', ConstantsHelper::LOOKUP_SEX_MALE);
+                        break;
+                    case '4_wanita':
+                        $query = $query->whereBetween('age_number', [46, 55]);
+                        $query = $query->where('sex_id', ConstantsHelper::LOOKUP_SEX_FEMALE);
+                        break;
+                    //>55
+                    case '5_pria':
+                        $query = $query->where('age_number', '>', 55);
+                        $query = $query->where('sex_id', ConstantsHelper::LOOKUP_SEX_MALE);
+                        break;
+                    case '5_wanita':
+                        $query = $query->where('age_number', '>', 55);
+                        $query = $query->where('sex_id', ConstantsHelper::LOOKUP_SEX_FEMALE);
+                        break;
+                    default:
+                    break;
+                }
+                break;
+            case 'chart_riwayat_penyakit':
+                switch ($chart_value) {
+                    case 'Bmi':
+                        $query = $query->leftJoin('anamnesis_t', 'anamnesis_t.mcu_id', 'mcu_employee_v.mcu_id');
+                        $query = $query->where('anamnesis_t.deleted_at', null);
+                        $query = $query->whereNotNull('bmi');
+                        break;
+                    case 'Gigi':
+                        $query = $query->leftJoin('anamnesis_t', 'anamnesis_t.mcu_id', 'mcu_employee_v.mcu_id');
+                        $query = $query->where('anamnesis_t.deleted_at', null);
+                        $query = $query->where(function ($query) {
+                            $query->whereRaw("anamnesis_t.teeth::json->>'carries_dentis' = '1'")
+                                  ->orWhereRaw("anamnesis_t.teeth::json->>'gangren_radix' = '1'")
+                                  ->orWhereRaw("anamnesis_t.teeth::json->>'gangren_pulpa' = '1'")
+                                  ->orWhereRaw("anamnesis_t.teeth::json->>'calculus_dentis' = '1'")
+                                  ->orWhereRaw("anamnesis_t.teeth::json->>'dentures' = '1'");
+                        });
+                        break;
+                    case 'Visus Mata':
+                        $query = $query->leftJoin('anamnesis_t', 'anamnesis_t.mcu_id', 'mcu_employee_v.mcu_id');
+                        $query = $query->where('anamnesis_t.deleted_at', null);
+                        $query = $query->where(function ($query) {
+                            $query->whereRaw("anamnesis_t.eyes::json->>'color_blind' = '1'")
+                                  ->orWhereRaw("anamnesis_t.eyes::json->>'visus' = '1'")
+                                  ->orWhereRaw("anamnesis_t.eyes::json->>'strabismus' = '1'")
+                                  ->orWhereRaw("anamnesis_t.eyes::json->>'anemic_conjunctiva' = '1'")
+                                  ->orWhereRaw("anamnesis_t.eyes::json->>'icteric_sclera' = '1'")
+                                  ->orWhereRaw("anamnesis_t.eyes::json->>'pupillary_reflex' = '0'")
+                                  ->orWhereRaw("anamnesis_t.eyes::json->>'eye_gland_disorders' = '1'");
+                        });
+                        break;
+                    case 'Tekanan Darah':
+                        $query = $query->leftJoin('anamnesis_t', 'anamnesis_t.mcu_id', 'mcu_employee_v.mcu_id');
+                        $query = $query->where('anamnesis_t.deleted_at', null);
+                        $query = $query->where(function ($query) {
+                            $query->where('systolic', '>', 139)
+                                  ->where('diastolic', '>', 89);
+                        })->orWhere(function ($query) {
+                            $query->where('systolic', '<', 90)
+                                  ->where('diastolic', '<', 60);
+                        });
+                        break;
+                    case 'Rontgen':
+                        $query = $query->leftJoin('rontgen_t', 'rontgen_t.mcu_id', 'mcu_employee_v.mcu_id');
+                        $query = $query->where('rontgen_t.is_abnormal', 1);
+                        $query = $query->where('rontgen_t.deleted_at', null);
+                        break;
+                    case 'Usg':
+                        $query = $query->leftJoin('usg_t', 'usg_t.mcu_id', 'mcu_employee_v.mcu_id');
+                        $query = $query->where('usg_t.is_abnormal', 1);
+                        $query = $query->where('usg_t.deleted_at', null);
+                        break;
+                    case 'Treadmill':
+                        $query = $query->leftJoin('treadmill_t', 'treadmill_t.mcu_id', 'mcu_employee_v.mcu_id');
+                        $query = $query->where('treadmill_t.is_abnormal', 1);
+                        $query = $query->where('treadmill_t.deleted_at', null);
+                        break;
+                    case 'Papsmear':
+                        $query = $query->leftJoin('papsmear_t', 'papsmear_t.mcu_id', 'mcu_employee_v.mcu_id');
+                        $query = $query->where('papsmear_t.is_abnormal', 1);
+                        $query = $query->where('papsmear_t.deleted_at', null);
+                        break;
+                    default:
+                    break;
+                }
+                break;
+            case 'chart_kategori_kesehatan':
+                $query = $query->leftJoin('resume_mcu_t', 'resume_mcu_t.mcu_id', 'mcu_employee_v.mcu_id');
+                $query = $query->leftJoin('lookup_c', 'lookup_c.lookup_id', '=', DB::raw('CAST(resume_mcu_t.result_conclusion AS INTEGER)'));
+                switch ($chart_value) {
+                    case ConstantsHelper::KESIMPULAN_FIT_TO_WORK_NAME:
+                        $query = $query->where('resume_mcu_t.result_conclusion', ConstantsHelper::KESIMPULAN_FIT_TO_WORK);
+                        break;
+                    case ConstantsHelper::KESIMPULAN_FIT_TO_WORK_WITH_MEDICAL_NOTE_NAME:
+                        $query = $query->where('resume_mcu_t.result_conclusion', ConstantsHelper::KESIMPULAN_FIT_TO_WORK_WITH_MEDICAL_NOTE);
+                        break;
+                    case ConstantsHelper::KESIMPULAN_FIT_TEMPORARY_UNFIT_NAME:
+                        $query = $query->where('resume_mcu_t.result_conclusion', ConstantsHelper::KESIMPULAN_FIT_TEMPORARY_UNFIT);
+                        break;
+                    case ConstantsHelper::KESIMPULAN_NEED_FURTHER_EXAMINATION_NAME:
+                        $query = $query->where('resume_mcu_t.result_conclusion', ConstantsHelper::KESIMPULAN_NEED_FURTHER_EXAMINATION);
+                        break;
+                    case ConstantsHelper::KESIMPULAN_FIT_WITH_NOTE_NAME:
+                        $query = $query->where('resume_mcu_t.result_conclusion', ConstantsHelper::KESIMPULAN_FIT_WITH_NOTE);
+                        break;
+                    default:
+                    break;
+                }
+                $query = $query->where('resume_mcu_t.deleted_at', null);
+                break;
+            default:
+            break;
+        }
+        return $query;
     }
 
     public function insertManualMcu(Request $request)
