@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\McuProgramM;
 use App\Models\McuT;
 use DB;
+use Illuminate\Support\Facades\Log;
 
 class DashboardController extends Controller
 {
@@ -173,6 +174,8 @@ class DashboardController extends Controller
             FROM resume_mcu_t
             LEFT JOIN mcu_t ON mcu_t.mcu_id = resume_mcu_t.mcu_id
             WHERE mcu_program_id = ?
+            AND mcu_t.deleted_at is null
+            AND resume_mcu_t.deleted_at is null
         ';
 
         $results = DB::select($query, [$id_program]);
@@ -225,6 +228,7 @@ class DashboardController extends Controller
             SELECT
                 laboratory_detail_t.laboratory_examination_id,
                 laboratory_examination_m.laboratory_examination_name,
+                laboratory_examination_m.laboratory_examination_id,
                 COUNT(laboratory_detail_t.laboratory_examination_id) AS count,
                 mcu_t.mcu_program_id,
                 e_m.sex
@@ -240,7 +244,7 @@ class DashboardController extends Controller
             WHERE laboratory_detail_t.is_abnormal IS TRUE
                 AND e_m.sex = 11  -- Male
                 AND mcu_t.mcu_program_id = ?
-            GROUP BY laboratory_detail_t.laboratory_examination_id, laboratory_examination_m.laboratory_examination_name, mcu_t.mcu_program_id, e_m.sex
+            GROUP BY laboratory_detail_t.laboratory_examination_id, laboratory_examination_m.laboratory_examination_name, laboratory_examination_m.laboratory_examination_id, mcu_t.mcu_program_id, e_m.sex
             ORDER BY count DESC
             LIMIT 10
         ";
@@ -251,6 +255,7 @@ class DashboardController extends Controller
             SELECT
                 laboratory_detail_t.laboratory_examination_id,
                 laboratory_examination_m.laboratory_examination_name,
+                laboratory_examination_m.laboratory_examination_id,
                 COUNT(laboratory_detail_t.laboratory_examination_id) AS count,
                 mcu_t.mcu_program_id,
                 e_m.sex
@@ -266,7 +271,7 @@ class DashboardController extends Controller
             WHERE laboratory_detail_t.is_abnormal IS TRUE
                 AND e_m.sex = 12  -- Female
                 AND mcu_t.mcu_program_id = ?
-            GROUP BY laboratory_detail_t.laboratory_examination_id, laboratory_examination_m.laboratory_examination_name, mcu_t.mcu_program_id, e_m.sex
+            GROUP BY laboratory_detail_t.laboratory_examination_id, laboratory_examination_m.laboratory_examination_name, laboratory_examination_m.laboratory_examination_id, mcu_t.mcu_program_id, e_m.sex
             ORDER BY count DESC
             LIMIT 10
         ";
@@ -281,6 +286,7 @@ class DashboardController extends Controller
             if ($index === false) {
                 $data[] = [
                     'name' => $row_male->laboratory_examination_name,
+                    'id' => $row_male->laboratory_examination_id,
                     'male' => $row_male->count,
                     'female' => 0
                 ];
@@ -295,6 +301,7 @@ class DashboardController extends Controller
             if ($index === false) {
                 $data[] = [
                     'name' => $row_female->laboratory_examination_name,
+                    'id' => $row_female->laboratory_examination_id,
                     'male' => 0,
                     'female' => $row_female->count
                 ];
@@ -320,6 +327,8 @@ class DashboardController extends Controller
             WHERE
                 value = '1'
                 AND mcu_t.mcu_program_id = ?
+                AND mcu_t.deleted_at is null
+                AND anamnesis_t.deleted_at is null
             GROUP BY
                 key
             ORDER BY
@@ -332,6 +341,7 @@ class DashboardController extends Controller
         $data = collect($results)->map(function ($item) {
             return [
                 'name' => ucfirst(str_replace('_', ' ', $item->key)),
+                'code' => $item->key,
                 'abnormal' => $item->condition_count,
             ];
         });
