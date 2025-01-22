@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use App\Models\EmployeeM;
 use App\Models\CompanyM;
 use App\Models\DepartementM;
 use Validator;
 use Session;
+use ZipArchive;
 
 class EmployeeController extends Controller
 {
@@ -84,6 +86,7 @@ class EmployeeController extends Controller
             'employee_code' => 'required',
             'nik' => 'required|numeric',
             'phone_number' => 'required|numeric',
+            'email' => 'required|email',
             'dob' => 'required',
             'sex' => 'required',
             'departement_id' => 'required',
@@ -93,12 +96,14 @@ class EmployeeController extends Controller
             'company_id.required' => 'Perusahaan wajib diisi',
             'employee_name.required' => 'Nama Pegawai wajib diisi',
             'employee_code.required' => 'Kode Pegawai wajib diisi',
-            'nik.required' => 'NIK Paket wajib diisi',
+            'nik.required' => 'NIK wajib diisi',
             'nik.numeric' => 'NIK harus berupa angka',
-            'phone_number.required' => 'No Whatsapp Paket wajib diisi',
+            'phone_number.required' => 'No Whatsapp wajib diisi',
             'phone_number.numeric' => 'No Whatsapp harus berupa angka',
+            'email.required' => 'Email wajib diisi',
+            'email.numeric' => 'Email tidak valid',
             'dob.required' => 'Tanggal Lahir wajib diisi',
-            'sex.required' => 'Jenis Kelamin Paket wajib diisi',
+            'sex.required' => 'Jenis Kelamin wajib diisi',
             'departement_id.required' => 'Departemen wajib diisi',
         ];
         $validator = Validator::make($request->all(), $rules, $messages);
@@ -121,6 +126,23 @@ class EmployeeController extends Controller
         foreach ($request->all() as $k => $r) {
             if ($k != '_token') {
                 $employee->$k = $r;
+            }
+        }
+
+        if ($request->hasFile('photo')) {
+            $file = $request->file('photo');
+            $fileName = $file->getClientOriginalName();
+            $uploadPath = public_path('uploads/employee-photo');
+
+            if (!file_exists($uploadPath)) {
+                mkdir($uploadPath, 0755, true);
+            }
+
+            if ($file->move($uploadPath, $fileName)) {
+                $employee->photo = $fileName;
+            } else {
+                session()->flash('error', 'Kesalahan terjadi, pegawai baru gagal disimpan, harap hubungi Admin kami');
+                return redirect()->route('employee');
             }
         }
 
@@ -183,6 +205,7 @@ class EmployeeController extends Controller
             'employee_code' => 'required',
             'nik' => 'required|numeric',
             'phone_number' => 'required|numeric',
+            'email' => 'required|email',
             'dob' => 'required',
             'sex' => 'required',
             'departement_id' => 'required',
@@ -193,12 +216,14 @@ class EmployeeController extends Controller
             'company_id.required' => 'Perusahaan wajib diisi',
             'employee_name.required' => 'Nama Pegawai wajib diisi',
             'employee_code.required' => 'Kode Pegawai wajib diisi',
-            'nik.required' => 'NIK Paket wajib diisi',
+            'nik.required' => 'NIK wajib diisi',
             'nik.numeric' => 'NIK harus berupa angka',
-            'phone_number.required' => 'No Whatsapp Paket wajib diisi',
+            'phone_number.required' => 'No Whatsapp wajib diisi',
             'phone_number.numeric' => 'No Whatsapp harus berupa angka',
+            'email.required' => 'Email wajib diisi',
+            'email.email' => 'Email harus berupa angka',
             'dob.required' => 'Tanggal Lahir wajib diisi',
-            'sex.required' => 'Jenis Kelamin Paket wajib diisi',
+            'sex.required' => 'Jenis Kelamin wajib diisi',
             'departement_id.required' => 'Departemen wajib diisi',
         ];
 
@@ -222,6 +247,23 @@ class EmployeeController extends Controller
                     $employee->$k = $r;
                 }
             }
+
+            if ($request->hasFile('photo')) {
+                $file = $request->file('photo');
+                $fileName = $file->getClientOriginalName();
+                $uploadPath = public_path('uploads/employee-photo');
+    
+                if (!file_exists($uploadPath)) {
+                    mkdir($uploadPath, 0755, true);
+                }
+    
+                if ($file->move($uploadPath, $fileName)) {
+                    $employee->photo = $fileName;
+                } else {
+                    session()->flash('error', 'Kesalahan terjadi, pegawai baru gagal disimpan, harap hubungi Admin kami');
+                    return redirect()->route('employee');
+                }
+            }
     
             if($employee->save()) {
                 session()->flash('success', 'Pegawai baru berhasil diperbarui');
@@ -233,5 +275,91 @@ class EmployeeController extends Controller
         }
 
         return redirect()->route('employee');
+    }
+
+    public function importPhoto(Request $request)
+    {
+        $zipFile = $request->file('photos');
+        $zipPath = $zipFile->move(public_path('uploads/temp'), $zipFile->getClientOriginalName());
+        $extractPath = public_path('uploads/temp-employee-photo');
+        $targetPath = public_path('uploads/employee-photo');
+
+        if (!is_dir($extractPath)) {
+            mkdir($extractPath, 0755, true);
+        }
+        if (!is_dir($targetPath)) {
+            mkdir($targetPath, 0755, true);
+        }
+
+        $zip = new ZipArchive;
+
+        if ($zip->open($zipPath) === true) {
+            $zip->extractTo($extractPath);
+            $zip->close();
+        } else {
+            session()->flash('success', 'Kesalahan terjadi, file zip gagal di ekstrak. Harap hubungi Admin kami.');
+
+            return redirect()->route('employee');
+        }
+
+        $files = scandir($extractPath);
+        $allowedExtensions = ['jpg', 'jpeg', 'png'];
+
+        foreach ($files as $key => $file) {
+            $filePath = $extractPath . '/' . $file;
+            $extension = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+            
+            if (!in_array($extension, $allowedExtensions) || !is_file($filePath)) {
+                continue;
+            }
+
+            $nik = pathinfo($file, PATHINFO_FILENAME);
+            $newPath = $targetPath . '/' . $file;
+
+            if (!rename($filePath, $newPath)) {
+                session()->flash('success', 'Kesalahan terjadi, foto pegawai gagal diimport. Harap hubungi Admin kami.');
+
+                return redirect()->route('employee');
+            }
+
+            $employee = EmployeeM::where('nik', $nik)->first();
+            if ($employee) {
+                $employee->photo = $file;
+            }
+
+            if ($employee->save()) {
+
+            } else {
+                session()->flash('success', 'Kesalahan terjadi, foto pegawai gagal diimport. Harap hubungi Admin kami.');
+
+                return redirect()->route('employee');
+            }
+        }
+
+        unlink($zipPath);
+
+        $macosxFolder = $extractPath . '/__MACOSX';
+        if (is_dir($macosxFolder)) {
+            $this->deleteFolder($macosxFolder);
+        }
+
+        session()->flash('success', 'Foto pegawai berhasil diimport');
+
+        return redirect()->route('employee');
+    }
+
+    public function deleteFolder($folderPath) {
+        if (is_dir($folderPath)) {
+            $files = array_diff(scandir($folderPath), ['.', '..']);
+            foreach ($files as $file) {
+                $filePath = $folderPath . '/' . $file;
+                if (is_dir($filePath)) {
+                    deleteFolder($filePath);
+                } else {
+                    unlink($filePath);
+                }
+            }
+            rmdir($folderPath);
+        }
     }
 }
