@@ -150,7 +150,7 @@ class ProgramMcuController extends Controller
             if (empty($chart_type)) {
                 $query = $query->where('company_id', $company_id);
             } else {
-                $query = self::getDataFromChart($query, $chart_type, $chart_value, null);
+                $query = self::getDataFromChart($query, $chart_type, $chart_value, $mcu_program_id, null);
             }
 
             return response()->json(GlobalHelper::dataTable($request, $query));
@@ -161,7 +161,7 @@ class ProgramMcuController extends Controller
         }
     }
 
-    private function getDataFromChart($query, $chart_type, $chart_value = null, $additional = null) {
+    private function getDataFromChart($query, $chart_type, $chart_value, $mcu_program_id, $additional = null) {
         $sex = ($additional == 'sex') ? 'sex' : 'sex_id';
         switch ($chart_type) {
             case 'chart_male':
@@ -321,6 +321,51 @@ class ProgramMcuController extends Controller
                     break;
                 }
                 $query = $query->where('resume_mcu_t.deleted_at', null);
+                break;
+            case 'chart_riwayat_diagnosa_non_lab':
+                $query = $query->leftJoin('anamnesis_t', 'anamnesis_t.mcu_id', 'mcu_employee_v.mcu_id');
+                switch($chart_value){
+                    case 'surgical_history':
+                        $query = $query->whereRaw("medical_history::json->>'surgical_history' = ?", ['1']);
+                        break;
+                    case 'hypotension':
+                        $query = $query->whereRaw("medical_history::json->>'hypotension' = ?", ['1']);
+                        break;
+                    case 'allergy':
+                        $query = $query->whereRaw("medical_history::json->>'allergy' = ?", ['1']);
+                        break;
+                    case 'hypertension':
+                        $query = $query->whereRaw("medical_history::json->>'hypertension' = ?", ['1']);
+                        break;
+                    case 'haemoptysis':
+                        $query = $query->whereRaw("medical_history::json->>'haemoptysis' = ?", ['1']);
+                        break;
+                    case 'rheumatism':
+                        $query = $query->whereRaw("medical_history::json->>'rheumatism' = ?", ['1']);
+                        break;
+                    case 'fracture':
+                        $query = $query->whereRaw("medical_history::json->>'fracture' = ?", ['1']);
+                        break;
+                    case 'asthma':
+                        $query = $query->whereRaw("medical_history::json->>'asthma' = ?", ['1']);
+                        break;
+                    default:
+                    break;
+                }
+                $query = $query->where('anamnesis_t.deleted_at', null);
+                break;
+            case 'chart_riwayat_diagnosa_lab':
+                $query = $query->leftJoin('laboratory_t', 'laboratory_t.mcu_id', 'mcu_employee_v.mcu_id');
+                $query = $query->leftJoin('laboratory_detail_t', 'laboratory_detail_t.laboratory_id', 'laboratory_t.laboratory_id');
+                $query = $query->where('laboratory_detail_t.laboratory_examination_id', $chart_value);
+                $query = $query->where('laboratory_detail_t.is_abnormal', true);
+                break;
+            case 'chart_kategori_sindrom_metabolik':
+                // if ($chart_value == 'Normal') {
+
+                // } else if ($chart_value == 'Abnormal') {
+
+                // }
                 break;
             default:
             break;

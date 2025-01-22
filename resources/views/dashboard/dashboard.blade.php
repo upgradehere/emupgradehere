@@ -789,6 +789,7 @@
                         dimensions: ['name', 'male', 'female', 'total'],
                         source: data.map(item => ({
                             name: item.name,
+                            id: item.id,
                             male: item.male,
                             female: item.female,
                             total: item.male + item.female  // Menambahkan kolom total yang merupakan jumlah male + female
@@ -839,7 +840,7 @@
             // Set options and render the chart
             myChart.setOption(option);
             myChart.on('click', function(params) {
-                window.location.href = '/mcu/program-mcu/detail?chart_type=chart_riwayat_diagnosa_lab&chart_value=' + params.name + '&mcu_program_id=' + program_id;
+                window.location.href = '/mcu/program-mcu/detail?chart_type=chart_riwayat_diagnosa_lab&chart_value=' + params.data.id + '&mcu_program_id=' + program_id;
             });
         }
 
@@ -872,6 +873,7 @@
                         dimensions: ['name', 'abnormal'],
                         source: data.map(item => ({
                             name: item.name,
+                            code: item.code,
                             abnormal: item.abnormal
                         }))
                     }
@@ -918,7 +920,7 @@
 
             myChart.setOption(option);
             myChart.on('click', function(params) {
-                window.location.href = '/mcu/program-mcu/detail?chart_type=chart_riwayat_diagnosa_non_lab&chart_value=' + params.name + '&mcu_program_id=' + program_id;
+                window.location.href = '/mcu/program-mcu/detail?chart_type=chart_riwayat_diagnosa_non_lab&chart_value=' + params.data.code + '&mcu_program_id=' + program_id;
             });
         }
 
