@@ -44,6 +44,13 @@
                                     Dari
                                     Semua Perusahaan</a>
                             @endif
+                            <button class="btn btn-warning btn-sm" id="btnImportPhoto">Import Zip
+                                Foto Pegawai</button>
+                            <form action="{{ route('employee.import-photo') }}" style="display:none" id="importPhoto"
+                                method="POST" enctype="multipart/form-data">
+                                @csrf
+                                <input type="file" accept=".zip" name="photos" id="import_photo">
+                            </form>
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
@@ -75,7 +82,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form action="{{ route('employee.store') }}" method="POST">
+                        <form action="{{ route('employee.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group">
                                 <label for="">Perusahaan</label>
@@ -103,6 +110,10 @@
                                 <input type="text" required name="phone_number" class="form-control">
                             </div>
                             <div class="form-group">
+                                <label for="">Email</label>
+                                <input type="email" required name="email" class="form-control">
+                            </div>
+                            <div class="form-group">
                                 <label for="">Tanggal Lahir</label>
                                 <input type="date" required name="dob" class="form-control">
                             </div>
@@ -119,6 +130,10 @@
                                 <select name="departement_id" id="departement_id" class="form-control" required>
                                     <option value="">-- Pilih Departement --</option>
                                 </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="">Foto</label>
+                                <input type="file" name="photo" accept="image/*" class="form-control">
                             </div>
 
                             <div class="modal-footer justify-content-between">
@@ -276,6 +291,20 @@
                         toastr.error('Kesalahan terjadi, harap hubungi Admin kami')
                     }
                 });
+            });
+
+            const btnImportPhoto = document.getElementById("btnImportPhoto");
+            const importPhotoInput = document.getElementById("import_photo");
+            const importPhotoForm = document.getElementById("importPhoto");
+
+            btnImportPhoto.addEventListener("click", function() {
+                importPhotoInput.click();
+            });
+
+            importPhotoInput.addEventListener("change", function() {
+                if (this.files.length > 0) {
+                    importPhotoForm.submit();
+                }
             });
 
             function updateSelectOptions(selectId, options) {

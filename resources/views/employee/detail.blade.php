@@ -23,7 +23,7 @@
                     <div class="card card-primary">
                         <!-- /.card-header -->
                         <!-- form start -->
-                        <form method="POST" action="{{ route('employee.update') }}">
+                        <form method="POST" action="{{ route('employee.update') }}" enctype="multipart/form-data">
                             @csrf
                             <input type="hidden" value="{{ $employee->employee_id }}" name="id">
                             <div class="card-body">
@@ -58,6 +58,11 @@
                                         name="phone_number" class="form-control">
                                 </div>
                                 <div class="form-group">
+                                    <label for="">Email</label>
+                                    <input type="email" required value="{{ $employee->email }}" name="email"
+                                        class="form-control">
+                                </div>
+                                <div class="form-group">
                                     <label for="">Tanggal Lahir</label>
                                     <input type="date" required value="{{ date('Y-m-d', strtotime($employee->dob)) }}"
                                         name="dob" class="form-control">
@@ -82,6 +87,12 @@
                                                 {{ $d->departement_name }}</option>
                                         @endforeach
                                     </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="">Foto</label><br>
+                                    <img style="width:10%" src="/uploads/employee-photo/{{ $employee->photo }}"
+                                        alt=""><br><br>
+                                    <input type="file" accept="image/*" name="photo" class="form-control">
                                 </div>
                             </div>
                             <!-- /.card-body -->
