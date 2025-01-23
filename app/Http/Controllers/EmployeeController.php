@@ -252,6 +252,7 @@ class EmployeeController extends Controller
 
     public function importPhoto(Request $request)
     {
+        $arrNik = [];
         $zipFile = $request->file('photos');
 
         $validator = Validator::make($request->all(), [
@@ -316,6 +317,9 @@ class EmployeeController extends Controller
     
                     return redirect()->route('employee');
                 }
+            } else {
+                unlink($filePath);
+                array_push($arrNik, $nik);
             }
 
         }
@@ -328,6 +332,9 @@ class EmployeeController extends Controller
         }
 
         session()->flash('success', 'Foto pegawai berhasil diimport');
+        if (!empty($arrNik)) {
+            session()->flash('swal', $arrNik);
+        }
 
         return redirect()->route('employee');
     }
