@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
+use App\Helpers\GlobalHelper;
 use App\Models\EmployeeM;
 use App\Models\CompanyM;
 use App\Models\DepartementM;
@@ -33,49 +34,21 @@ class EmployeeController extends Controller
     public function data(Request $request, $company_id)
     {
         try {
-            $model = new EmployeeM();
-            // $query = $model->select();
+            $model = new EmployeeM;
+            
             $query = $model->with('company');
-
-            if ($request->has('search') && !empty($request->search['value'])) {
-                $searchValue = $request->search['value'];
-                $query = $query->where(function ($q) use ($searchValue) {
-                    $q->where('employee_name', 'ilike', '%' . $searchValue . '%')
-                        ->orWhere('employee_code', 'ilike', '%' . $searchValue . '%');
-                });
-            }
-
-            if ($request->has('order') && is_array($request->order)) {
-                foreach ($request->order as $order) {
-                    $columnIndex = $order['column'];
-                    $columnName = $request->columns[$columnIndex]['data'];
-                    $direction = $order['dir'];
-                    $query = $query->orderBy($columnName, $direction);
-                }
-            }
-
+            
             if ($company_id !== 'A') {
                 $query->where('company_id', $company_id);
             }
-           
-            $start = $request->start ?? 0;
-            $length = $request->length ?? 10;
 
-            $data = $query->offset($start)->limit($length)->get();
-            $totalRecords = $model->count();
-            $filteredRecords = $query->count();
-
-            return response()->json([
-                'draw' => $request->draw,
-                'recordsTotal' => $totalRecords,
-                'recordsFiltered' => $filteredRecords,
-                'data' => $data
-            ]);
+            return response()->json(GlobalHelper::dataTable($request, $query));
         } catch (\Exception $e) {
             return response()->json([
                 'error' => $e->getMessage()
             ]);
         }
+
     }
 
     public function store(Request $request)
@@ -280,6 +253,17 @@ class EmployeeController extends Controller
     public function importPhoto(Request $request)
     {
         $zipFile = $request->file('photos');
+
+        $validator = Validator::make($request->all(), [
+            'photos' => 'required|file|mimes:zip|max:51200', // 50MB in KB
+        ]);
+        
+        // Check if validation fails
+        if ($validator->fails()) {
+            session()->flash('error', 'File harus berupa Zip dan tidak boleh melebihi 50MB');
+            return redirect()->route('employee');
+        }
+
         $zipPath = $zipFile->move(public_path('uploads/temp'), $zipFile->getClientOriginalName());
         $extractPath = public_path('uploads/temp-employee-photo');
         $targetPath = public_path('uploads/employee-photo');
@@ -297,7 +281,7 @@ class EmployeeController extends Controller
             $zip->extractTo($extractPath);
             $zip->close();
         } else {
-            session()->flash('success', 'Kesalahan terjadi, file zip gagal di ekstrak. Harap hubungi Admin kami.');
+            session()->flash('error', 'Kesalahan terjadi, file zip gagal di ekstrak. Harap hubungi Admin kami.');
 
             return redirect()->route('employee');
         }
@@ -316,24 +300,24 @@ class EmployeeController extends Controller
             $nik = pathinfo($file, PATHINFO_FILENAME);
             $newPath = $targetPath . '/' . $file;
 
-            if (!rename($filePath, $newPath)) {
-                session()->flash('success', 'Kesalahan terjadi, foto pegawai gagal diimport. Harap hubungi Admin kami.');
-
-                return redirect()->route('employee');
-            }
-
             $employee = EmployeeM::where('nik', $nik)->first();
             if ($employee) {
+                if (!rename($filePath, $newPath)) {
+                    session()->flash('error', 'Kesalahan terjadi, foto pegawai gagal diimport. Harap hubungi Admin kami.');
+    
+                    return redirect()->route('employee');
+                }
+
                 $employee->photo = $file;
+                if ($employee->save()) {
+    
+                } else {
+                    session()->flash('error', 'Kesalahan terjadi, foto pegawai gagal diimport. Harap hubungi Admin kami.');
+    
+                    return redirect()->route('employee');
+                }
             }
 
-            if ($employee->save()) {
-
-            } else {
-                session()->flash('success', 'Kesalahan terjadi, foto pegawai gagal diimport. Harap hubungi Admin kami.');
-
-                return redirect()->route('employee');
-            }
         }
 
         unlink($zipPath);

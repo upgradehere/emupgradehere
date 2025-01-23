@@ -109,7 +109,14 @@ class GlobalHelper {
             $searchValue = $request['search']['value'];
             $query = $query->where(function ($q) use ($search, $searchValue) {
                 foreach ($search as $column) {
-                    $q->orWhere($column, 'ilike', '%' . $searchValue . '%');
+                    if (strpos($column, '.') === false) {
+                        $q->orWhere($column, 'ilike', '%' . $searchValue . '%');
+                    } else {
+                        $arr = explode(".", $column);
+                        $q->orWhereHas($arr[0], function ($qRel) use ($arr, $searchValue) {
+                            $qRel->where($arr[1], 'ilike', '%' . $searchValue . '%');
+                        });
+                    }
                 }
             });
         }
