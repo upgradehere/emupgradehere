@@ -58,6 +58,7 @@
                                 <thead>
                                     <tr>
                                         <th style="width: 30px;">No</th>
+                                        <th>NIK</th>
                                         <th>Nama Pegawai</th>
                                         <th>Perusahaan</th>
                                         <th style="width: 80px;"><i class="fas fa-cogs"></i></th>
@@ -199,6 +200,12 @@
                             console.log(data)
                             return meta.row + 1;
                         }
+                    },
+                    {
+                        data: 'nik',
+                        name: 'nik',
+                        searchable: true,
+                        orderable: true
                     },
                     {
                         data: 'employee_name',
