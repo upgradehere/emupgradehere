@@ -51,49 +51,49 @@ BEGIN
 	AND mcu_t.deleted_at is null
 	AND anamnesis_t.deleted_at is null
     UNION ALL
-    SELECT 'rontgen' AS name, COUNT(CASE WHEN rontgen_t.is_abnormal IS NOT NULL THEN 1 END)::integer AS count
+    SELECT 'rontgen' AS name, COUNT(CASE WHEN rontgen_t.is_abnormal IS TRUE THEN 1 END)::integer AS count
     FROM mcu_t
     LEFT JOIN rontgen_t ON rontgen_t.mcu_id = mcu_t.mcu_id
     WHERE mcu_t.mcu_program_id = p_mcu_program_id
 	AND mcu_t.deleted_at is null
 	AND rontgen_t.deleted_at is null
     UNION ALL
-    SELECT 'audiometry' AS name, COUNT(CASE WHEN audiometry_t.is_abnormal IS NOT NULL THEN 1 END)::integer AS count
+    SELECT 'audiometry' AS name, COUNT(CASE WHEN audiometry_t.is_abnormal IS TRUE THEN 1 END)::integer AS count
     FROM mcu_t
     LEFT JOIN audiometry_t ON audiometry_t.mcu_id = mcu_t.mcu_id
     WHERE mcu_t.mcu_program_id = p_mcu_program_id
 	AND mcu_t.deleted_at is null
 	AND audiometry_t.deleted_at is null
     UNION ALL
-    SELECT 'spirometry' AS name, COUNT(CASE WHEN spirometry_t.is_abnormal IS NOT NULL THEN 1 END)::integer AS count
+    SELECT 'spirometry' AS name, COUNT(CASE WHEN spirometry_t.is_abnormal IS TRUE THEN 1 END)::integer AS count
     FROM mcu_t
     LEFT JOIN spirometry_t ON spirometry_t.mcu_id = mcu_t.mcu_id
     WHERE mcu_t.mcu_program_id = p_mcu_program_id
 	AND mcu_t.deleted_at is null
 	AND spirometry_t.deleted_at is null
     UNION ALL
-    SELECT 'ekg' AS name, COUNT(CASE WHEN ekg_t.is_abnormal IS NOT NULL THEN 1 END)::integer AS count
+    SELECT 'ekg' AS name, COUNT(CASE WHEN ekg_t.is_abnormal IS TRUE THEN 1 END)::integer AS count
     FROM mcu_t
     LEFT JOIN ekg_t ON ekg_t.mcu_id = mcu_t.mcu_id
     WHERE mcu_t.mcu_program_id = p_mcu_program_id
 	AND mcu_t.deleted_at is null
 	AND ekg_t.deleted_at is null
     UNION ALL
-    SELECT 'usg' AS name, COUNT(CASE WHEN usg_t.is_abnormal IS NOT NULL THEN 1 END)::integer AS count
+    SELECT 'usg' AS name, COUNT(CASE WHEN usg_t.is_abnormal IS TRUE THEN 1 END)::integer AS count
     FROM mcu_t
     LEFT JOIN usg_t ON usg_t.mcu_id = mcu_t.mcu_id
     WHERE mcu_t.mcu_program_id = p_mcu_program_id
 	AND mcu_t.deleted_at is null
 	AND usg_t.deleted_at is null
     UNION ALL
-    SELECT 'treadmill' AS name, COUNT(CASE WHEN treadmill_t.is_abnormal IS NOT NULL THEN 1 END)::integer AS count
+    SELECT 'treadmill' AS name, COUNT(CASE WHEN treadmill_t.is_abnormal IS TRUE THEN 1 END)::integer AS count
     FROM mcu_t
     LEFT JOIN treadmill_t ON treadmill_t.mcu_id = mcu_t.mcu_id
     WHERE mcu_t.mcu_program_id = p_mcu_program_id
 	AND mcu_t.deleted_at is null
 	AND treadmill_t.deleted_at is null
     UNION ALL
-    SELECT 'papsmear' AS name, COUNT(CASE WHEN papsmear_t.is_abnormal IS NOT NULL THEN 1 END)::integer AS count
+    SELECT 'papsmear' AS name, COUNT(CASE WHEN papsmear_t.is_abnormal IS TRUE THEN 1 END)::integer AS count
     FROM mcu_t
     LEFT JOIN papsmear_t ON papsmear_t.mcu_id = mcu_t.mcu_id
     WHERE mcu_t.mcu_program_id = p_mcu_program_id
