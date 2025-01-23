@@ -118,6 +118,7 @@ class PemeriksaanMcuController extends Controller
             'mcu_date'      => '',
             'mcu_code'      => '',
             'letterhead'    => '',
+            'photo'         => '',
             'anamnesis'     => [],
             'laboratorium'  => [],
             'refraksi'      => [],
@@ -148,6 +149,7 @@ class PemeriksaanMcuController extends Controller
                                             'employee_m.phone_number',
                                             'employee_m.additional_data',
                                             'employee_m.sex',
+                                            'employee_m.photo',
                                             'departement_m.departement_name')
                                         ->leftJoin('departement_m','employee_m.departement_id', 'departement_m.departement_id')
                                         ->where('employee_id', $mcu_model->employee_id)->first();
@@ -178,6 +180,7 @@ class PemeriksaanMcuController extends Controller
 
             $data = [
                 'nik' => $employee_model->nik,
+                'photo' => $employee_model->photo,
                 'sex' => $employee_model->sex == '11' ? "LAKI-LAKI" : "PEREMPUAN" ,
                 'employee_name' => $employee_model->employee_name,
                 'age' => $employee_model->getUmur(),

@@ -321,6 +321,21 @@
                     );
                 });
             }
+
+            @if (session('swal'))
+                const data = @json(session('swal'))
+
+                // Prepare SweetAlert content
+                const content = data.map((item, index) => `${index + 1}. ${item}`).join('<br>');
+
+                // Show SweetAlert
+                Swal.fire({
+                    title: 'NIK Yang Tidak Ditemukan',
+                    html: content,
+                    icon: 'warning',
+                    confirmButtonText: 'OK'
+                });
+            @endif
         });
     </script>
 @endsection
