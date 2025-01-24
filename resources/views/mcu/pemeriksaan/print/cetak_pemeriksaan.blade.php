@@ -149,7 +149,9 @@
 
     <div class="header">
         <h3>Health Screening Result</h3>
-        <img src="{{ public_path('uploads/employee-photo/' . $photo) }}" style="width:30%" alt="">
+        @if (!empty($photo) && file_exists(public_path('uploads/employee-photo/' . $photo)))
+            <img src="{{ public_path('uploads/employee-photo/' . $photo) }}" style="width:30%" alt="">
+        @endif
     </div>
     <div class="cover" style="margin-top:-50px">
         <div class="content" style="padding-left: 90px; padding-right: 90px;">
