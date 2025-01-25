@@ -19,9 +19,30 @@
             height: 20px;
             background-color: #7FFFD4;
             margin-right: 8px;
-            border-radius: 2px; /* Optional: for square corners */
+            border-radius: 2px;
+            /* Optional: for square corners */
+        }
+
+        #loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.8);
+            /* Semi-transparent white */
+            z-index: 1050;
+            /* Above other content */
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
     </style>
+    <div id="loading-overlay" class="d-none">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden"></span>
+        </div>
+    </div>
     <div class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
@@ -97,6 +118,11 @@
                                     <a data-toggle="modal" data-target="#modalConclusionSuggestion"
                                         class="btn btn-block bg-gradient-primary auto-size-btn"><i
                                             class="fas fa-edit"></i>&nbsp;&nbsp;Kesimpulan & Saran</a>
+                                </div>
+                                <div class="col-2">
+                                    <a class="btn btn-block bg-gradient-primary auto-size-btn" id="sendPdf"
+                                        data-url="{{ route('send-batch-pemeriksaan-mcu') }}"><i
+                                            class="fas fa-paper-plane"></i>&nbsp;&nbsp;Kirim Hasil Pemeriksaan</a>
                                 </div>
                             </div>
                             <br>
@@ -270,8 +296,11 @@
                         render: function(data, type, row) {
                             let mcuId = row.mcu_id;
                             let employeeId = row.employee_id;
+                            let sendPdfLink = "{{ route('send-single-pemeriksaan-mcu', ':id') }}";
+                            sendPdfLink = sendPdfLink.replace(':id', mcuId);
                             return `<a class="btn btn-primary btn-sm action-detail" href="/mcu/program-mcu/detail/pemeriksaan?mcu_id=${mcuId}&employee_id=${employeeId}"><i class="fas fa-eye"></i></a>
                                     <a class="btn btn-success btn-sm action-export" href="/mcu/program-mcu/detail/pemeriksaan/cetak-pemeriksaan?mcu_id=${mcuId}" target="_blank"><i class="fas fa-file-pdf"></i></a>
+                                    <a class="btn btn-warning btn-sm action-send-mcu" href="${sendPdfLink}"><i class="fas fa-paper-plane"></i></a>
                                     <a class="btn btn-danger btn-sm action-delete-mcu" data-mcu-id="${mcuId}"><i class="fas fa-trash"></i></a>`;
                         }
                     }
@@ -284,12 +313,52 @@
                         $(row).css('background-color', '#7FFFD4');
                     }
                 },
-                drawCallback: function(){
+                drawCallback: function() {
                     var role = @json(Auth::user()->id_role);
                     if (role == 2) {
                         $('.action-delete-mcu').hide();
                     }
                 }
+            });
+
+            $(document).on('click', '#sendPdf', function() {
+                Swal.fire({
+                    title: "Perhatian",
+                    html: "Apakah anda yakin akan mengirim semua hasil pemeriksaan pada semua karyawan di program ini?",
+                    icon: "warning",
+                    showDenyButton: true,
+                    confirmButtonText: "Ya",
+                    denyButtonText: "Tidak"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        const loadingOverlay = document.getElementById('loading-overlay');
+                        const showLoaderBtn = document.getElementById('show-loader');
+                        loadingOverlay.classList.remove('d-none');
+                        var url = $(this).attr('data-url');
+                        $.ajax({
+                            url: url,
+                            method: 'POST',
+                            data: {
+                                _token: "{{ csrf_token() }}",
+                                mcu_program_id: "{{ $mcu_program_id }}"
+                            },
+                            success: function(response) {
+                                loadingOverlay.classList.add('d-none');
+                                var data = response.data
+                                if (response.status == 'error') {
+                                    toastr.error(data)
+                                } else if (response.status == 'success') {
+                                    toastr.success(data)
+                                }
+                            },
+                            error: function(response) {
+                                loadingOverlay.classList.add('d-none');
+                                toastr.error(
+                                    'Kesalahan terjadi, harap hubungi Admin kami.')
+                            }
+                        });
+                    }
+                });
             });
 
             $('#mcuEmployeeTable tbody').on('click', '.action-delete-mcu', function() {

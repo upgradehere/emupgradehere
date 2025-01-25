@@ -26,9 +26,13 @@ use App\Traits\RontgenTrait;
 use App\Traits\SpirometriTrait;
 use App\Traits\TreadmillTrait;
 use App\Traits\UsgTrait;
+use App\Mail\SendMail;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Route;
 use Maatwebsite\Excel\Facades\Excel;
 use PDF;
 use Log;
@@ -215,5 +219,98 @@ class PemeriksaanMcuController extends Controller
         }
 
         return $pdf->stream($filename);
+    }
+
+    public function sendBatchPemeriksaanMcu(Request $request)
+    {
+        $response = [];
+        $mcu_program_id = $request->mcu_program_id;
+
+        $mcus = McuT::with(['employee', 'company', 'program'])
+                    ->where('mcu_program_id', $mcu_program_id)
+                    ->get();
+
+        if ($mcus) {
+            if ($mcus->isNotEmpty()) {
+                foreach($mcus as $mcu) {
+                    if (!empty($mcu->employee->email)){
+                        $mcu_id = Crypt::encryptString($mcu->mcu_id);
+                        $data = [
+                            'name' => $mcu->employee->employee_name,
+                            'company' => $mcu->company->company_name,
+                            'program' => $mcu->program->mcu_program_name,
+                            'link' => route('open-email-pemeriksaan-mcu',['secret' => $mcu_id])
+                        ];
+
+                        try {
+                            Mail::to($mcu->employee->email)->queue(new SendMail($data));
+                        } catch(\Exception $e){
+                            $response['status'] = 'error';
+                            $response['data'] = 'Kesalahan terjadi, harap hubungi Admin kami.';
+                            break;
+                        }
+                    }
+                }
+                $response['status'] = 'success';
+                $response['data'] = 'Hasil Pemeriksaan MCU berhasil dikirim';
+            } else {
+                $response['status'] = 'success';
+                $response['data'] = 'Belum ada data MCU untuk program ini';
+            }
+        } else {
+            $response['status'] = 'error';
+            $response['data'] = 'Kesalahan terjadi, harap hubungi Admin kami.';
+        }
+
+        return response()->json($response, 200);
+    }
+
+    public function sendSinglePemeriksaanMcu($mcuId)
+    {
+        $response = [];
+
+        $mcu = McuT::with(['employee', 'company', 'program'])
+                    ->where('mcu_id', $mcuId)
+                    ->first();
+
+        if ($mcu) {
+            $mcu_id = Crypt::encryptString($mcuId);
+    
+            $data = [
+                'name' => $mcu->employee->employee_name,
+                'company' => $mcu->company->company_name,
+                'program' => $mcu->program->mcu_program_name,
+                'link' => route('open-email-pemeriksaan-mcu',['secret' => $mcu_id])
+            ];
+    
+            try {
+                Mail::to($mcu->employee->email)->queue(new SendMail($data));
+                session()->flash('success', 'Hasil pemeriksaan berhasil dikirim');
+            } catch(\Exception $e){
+                session()->flash('error', 'Kesalahan terjadi, harap hubungi Admin kami.');
+            }
+        } else {
+            session()->flash('warning', 'Data MCU tidak ditemukan');
+        }
+
+        return redirect()->back();
+    }
+
+    public function openEmailPemeriksaan($secret)
+    {
+        try {
+            Crypt::decryptString($secret);
+            $mcu_id = Crypt::decryptString($secret);
+
+            $check = McuT::find($mcu_id);
+
+            if ($check) {
+                return redirect()->route('print-pemeriksaan-mcu', ['mcu_id' => $mcu_id]);
+            } else {
+                return view('errors.404');
+            }
+        } catch(\Exception $e){
+            return view('errors.404');
+        }
     }
 }

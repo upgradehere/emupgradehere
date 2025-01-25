@@ -6,6 +6,8 @@ use App\Helpers\GlobalHelper;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\EmployeeM;
+use App\Models\McuProgramM;
+use App\Models\CompanyM;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class McuT extends Model
@@ -57,5 +59,15 @@ class McuT extends Model
     public function employee()
     {
         return $this->hasOne(EmployeeM::class, 'employee_id', 'employee_id');
+    }
+
+    public function program()
+    {
+        return $this->hasOne(McuProgramM::class, 'mcu_program_id', 'mcu_program_id');
+    }
+
+    public function company()
+    {
+        return $this->hasOne(CompanyM::class, 'company_id', 'company_id');
     }
 }
