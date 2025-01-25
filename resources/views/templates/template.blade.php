@@ -238,7 +238,8 @@
                 });
                 const messages = {
                     success: @json(session('success')),
-                    error: @json(session('error'))
+                    error: @json(session('error')),
+                    warning: @json(session('warning'))
                 };
                 @if (session('success'))
                     toastr.success(messages.success);
@@ -250,6 +251,8 @@
                     } else {
                         toastr.error(messages.error)
                     }
+                @elseif (session('warning'))
+                    toastr.warning(messages.warning);
                 @endif
             </script>
             <!-- ChartJS -->
