@@ -426,15 +426,79 @@ class ProgramMcuController extends Controller
                         }
                         $query = $query->where('anamnesis_t.deleted_at', null);
                         break;
-                    case 'Kolesterol':
-                        break;
                     case 'Asam Urat':
+                        $query = $query->leftJoin('laboratory_t', 'laboratory_t.mcu_id', 'mcu_employee_v.mcu_id')
+                        ->leftJoin('laboratory_detail_t', 'laboratory_detail_t.laboratory_id', 'laboratory_t.laboratory_id')
+                        ->where('laboratory_detail_t.laboratory_examination_id', 56);
+                        if ($chart_additional == 'Tinggi') {
+                            $query = $query->where(function ($query) {
+                                $query->where(function ($subQuery) {
+                                    $subQuery->where(DB::raw('CAST(laboratory_detail_t.result AS NUMERIC)'), '>', 7.0)
+                                             ->where('mcu_employee_v.sex_id', '=', 11);
+                                })
+                                ->orWhere(function ($subQuery) {
+                                    $subQuery->where(DB::raw('CAST(laboratory_detail_t.result AS NUMERIC)'), '>', 6.0)
+                                             ->where('mcu_employee_v.sex_id', '=', 12);
+                                });
+                            });
+                        } else if ($chart_additional == 'Normal') {
+                            $query = $query->where(function ($query) {
+                                $query->where(function ($subQuery) {
+                                    $subQuery->where(DB::raw('CAST(laboratory_detail_t.result AS NUMERIC)'), '<=', 7.0)
+                                             ->where('mcu_employee_v.sex_id', '=', 11);
+                                })
+                                ->orWhere(function ($subQuery) {
+                                    $subQuery->where(DB::raw('CAST(laboratory_detail_t.result AS NUMERIC)'), '<=', 6.0)
+                                             ->where('mcu_employee_v.sex_id', '=', 12);
+                                });
+                            });
+                        }
+                        $query = $query->where('laboratory_t.deleted_at', null)->where('laboratory_detail_t.deleted_at', null);
+                        break;
+                    case 'Kolesterol':
+                        $query = $query->leftJoin('laboratory_t', 'laboratory_t.mcu_id', 'mcu_employee_v.mcu_id')
+                        ->leftJoin('laboratory_detail_t', 'laboratory_detail_t.laboratory_id', 'laboratory_t.laboratory_id')->where('laboratory_detail_t.laboratory_examination_id', 46);
+                        if ($chart_additional == 'Normal') {
+                            $query = $query->where(DB::raw('CAST(laboratory_detail_t.result AS NUMERIC)'), '<=', 199);
+                        } else if ($chart_additional == 'Batas Tinggi') {
+                            $query = $query->whereBetween(DB::raw('CAST(laboratory_detail_t.result AS NUMERIC)'), [200, 239]);
+                        } else if ($chart_additional == 'Tinggi') {
+                            $query = $query->where(DB::raw('CAST(laboratory_detail_t.result AS NUMERIC)'), '>=', 240);
+                        }
+                        $query = $query->where('laboratory_t.deleted_at', null)->where('laboratory_detail_t.deleted_at', null);
                         break;
                     case 'Glukosa Sewaktu':
+                        $query = $query->leftJoin('laboratory_t', 'laboratory_t.mcu_id', 'mcu_employee_v.mcu_id')
+                        ->leftJoin('laboratory_detail_t', 'laboratory_detail_t.laboratory_id', 'laboratory_t.laboratory_id')->where('laboratory_detail_t.laboratory_examination_id', 50);
+                        if ($chart_additional == 'Normal') {
+                            $query = $query->where(DB::raw('CAST(laboratory_detail_t.result AS NUMERIC)'), '<', 140);
+                        } else if ($chart_additional == 'Prediabetes') {
+                            $query = $query->whereBetween(DB::raw('CAST(laboratory_detail_t.result AS NUMERIC)'), [140, 199]);
+                        } else if ($chart_additional == 'Diabetes') {
+                            $query = $query->where(DB::raw('CAST(laboratory_detail_t.result AS NUMERIC)'), '>=', 200);
+                        }
+                        $query = $query->where('laboratory_t.deleted_at', null)->where('laboratory_detail_t.deleted_at', null);
                         break;
                     case 'Glukosa Puasa':
+                        $query = $query->leftJoin('laboratory_t', 'laboratory_t.mcu_id', 'mcu_employee_v.mcu_id')
+                        ->leftJoin('laboratory_detail_t', 'laboratory_detail_t.laboratory_id', 'laboratory_t.laboratory_id')->where('laboratory_detail_t.laboratory_examination_id', 51);
+                        if ($chart_additional == 'Normal') {
+                            $query = $query->where(DB::raw('CAST(laboratory_detail_t.result AS NUMERIC)'), '<', 100);
+                        } else if ($chart_additional == 'Prediabetes') {
+                            $query = $query->whereBetween(DB::raw('CAST(laboratory_detail_t.result AS NUMERIC)'), [100, 125]);
+                        } else if ($chart_additional == 'Diabetes') {
+                            $query = $query->where(DB::raw('CAST(laboratory_detail_t.result AS NUMERIC)'), '>=', 126);
+                        }
+                        $query = $query->where('laboratory_t.deleted_at', null)->where('laboratory_detail_t.deleted_at', null);
                         break;
                     case 'Rontgen':
+                        $query = $query->leftJoin('rontgen_t', 'rontgen_t.mcu_id', 'mcu_employee_v.mcu_id');
+                        if ($chart_additional == 'Normal') {
+                            $query = $query->where('rontgen_t.is_abnormal', false);
+                        } else if ($chart_additional == 'Abnormal') {
+                            $query = $query->where('rontgen_t.is_abnormal', true);
+                        }
+                        $query = $query->where('rontgen_t.deleted_at', null);
                         break;
                     default:
                     break;
