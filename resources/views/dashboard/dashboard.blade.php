@@ -1135,7 +1135,7 @@
 
             myChart.setOption(option);
             myChart.on('click', function(params) {
-                window.location.href = '/mcu/program-mcu/detail?chart_type=chart_gejala&chart_value=' + params.name + '&mcu_program_id=' + program_id;
+                window.location.href = '/mcu/program-mcu/detail?chart_type=chart_gejala&chart_value=' + params.name + '&chart_additional=' + params.seriesName + '&mcu_program_id=' + program_id;
             });
         }
 

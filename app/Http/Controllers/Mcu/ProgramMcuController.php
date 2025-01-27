@@ -85,6 +85,7 @@ class ProgramMcuController extends Controller
         $mcu_program_id = $request->get('mcu_program_id');
         $chart_type = $request->get('chart_type');
         $chart_value = $request->get('chart_value');
+        $chart_additional = $request->get('chart_additional');
         $employees = EmployeeM::select('employee_id', 'employee_code', 'employee_name')->where('company_id', $company_id)->get();
         $packages = PackageM::select('id', 'package_code', 'package_name')->get();
 
@@ -101,12 +102,12 @@ class ProgramMcuController extends Controller
             ->where('mcu_program_id', $mcu_program_id);
 
         if (!empty($chart_type)) {
-            $mcu_sum = self::getDataFromChart($mcu_sum, $chart_type, $chart_value, null);
-            $employee_sum = self::getDataFromChart($employee_sum, $chart_type, $chart_value, null);
+            $mcu_sum = self::getDataFromChart($mcu_sum, $chart_type, $chart_value, $chart_additional, $mcu_program_id, null);
+            $employee_sum = self::getDataFromChart($employee_sum, $chart_type, $chart_value, $chart_additional, $mcu_program_id, null);
         }
         $mcu_sum = $mcu_sum->count();
-        $employee_sum = $employee_sum->distinct('employee_id')
-        ->count('employee_id');
+        $employee_sum = $employee_sum->distinct('mcu_employee_v.employee_id')
+        ->count('mcu_employee_v.employee_id');
 
         $examination_type = LookupC::select('lookup_id as examination_type_id', 'lookup_name as examination_type_name')->where('lookup_type', ConstantsHelper::LOOKUP_EXAMINATION_TYPE)->get();
 
@@ -120,6 +121,7 @@ class ProgramMcuController extends Controller
             $mcu_program_id = $request->get('mcu_program_id');
             $chart_type = $request->get('chart_type');
             $chart_value = $request->get('chart_value');
+            $chart_additional = $request->get('chart_additional');
             $model = new McuEmployeeV();
             $query = $model->select(
                 'mcu_employee_v.mcu_id',
@@ -150,7 +152,7 @@ class ProgramMcuController extends Controller
             if (empty($chart_type)) {
                 $query = $query->where('company_id', $company_id);
             } else {
-                $query = self::getDataFromChart($query, $chart_type, $chart_value, $mcu_program_id, null);
+                $query = self::getDataFromChart($query, $chart_type, $chart_value, $chart_additional, $mcu_program_id, null);
             }
 
             return response()->json(GlobalHelper::dataTable($request, $query));
@@ -161,7 +163,7 @@ class ProgramMcuController extends Controller
         }
     }
 
-    private function getDataFromChart($query, $chart_type, $chart_value, $mcu_program_id, $additional = null) {
+    private function getDataFromChart($query, $chart_type, $chart_value, $chart_additional, $mcu_program_id, $additional = null) {
         $sex = ($additional == 'sex') ? 'sex' : 'sex_id';
         switch ($chart_type) {
             case 'chart_male':
@@ -359,13 +361,148 @@ class ProgramMcuController extends Controller
                 $query = $query->leftJoin('laboratory_detail_t', 'laboratory_detail_t.laboratory_id', 'laboratory_t.laboratory_id');
                 $query = $query->where('laboratory_detail_t.laboratory_examination_id', $chart_value);
                 $query = $query->where('laboratory_detail_t.is_abnormal', true);
+                $query = $query->where('laboratory_t.deleted_at', null);
+                $query = $query->where('laboratory_detail_t.deleted_at', null);
                 break;
             case 'chart_kategori_sindrom_metabolik':
-                // if ($chart_value == 'Normal') {
-
-                // } else if ($chart_value == 'Abnormal') {
-
-                // }
+                $query = $query->leftJoinSub(
+                    DB::table(DB::raw("fn_metabolik_normal_abnormal_all_data($mcu_program_id)")),
+                    'a',
+                    'a.mcu_id',
+                    '=',
+                    'mcu_employee_v.mcu_id'
+                );
+                if ($chart_value == 'Normal') {
+                    $query = $query->where('total_abnormal_examinations', '<', 3);
+                } else if ($chart_value == 'Abnormal') {
+                    $query = $query->where('total_abnormal_examinations', '>=', 3);
+                }
+                break;
+            case 'chart_gejala':
+                switch ($chart_value) {
+                    case 'Tekanan Darah':
+                        $query = $query->leftJoin('anamnesis_t', 'anamnesis_t.mcu_id', 'mcu_employee_v.mcu_id');
+                        if ($chart_additional == 'Normal') {
+                            $query = $query
+                            ->where('systolic', '<', 120)
+                            ->where('diastolic', '<', 80);
+                        } else if ($chart_additional == 'Elevasi') {
+                            $query = $query
+                            ->whereBetween('systolic', [119, 129])
+                            ->where('diastolic', '<', 80);
+                        } else if ($chart_additional == 'Hipertensi Derajat 1') {
+                            $query = $query
+                            ->where(function ($query) {
+                                $query->whereBetween('systolic', [130, 139])
+                                      ->orWhereBetween('diastolic', [80, 89]);
+                            });
+                        } else if ($chart_additional == 'Hipertensi Derajat 2') {
+                            $query = $query
+                            ->where(function ($query) {
+                                $query->whereBetween('systolic', [140, 179])
+                                      ->orWhereBetween('diastolic', [90, 119]);
+                            });
+                        } else if ($chart_additional == 'Krisis Hipertensi') {
+                            $query = $query
+                            ->where(function ($query) {
+                                $query->where('systolic', '>=', 180)
+                                      ->orWhere('diastolic', '>=', 120);
+                            });
+                        }
+                        $query = $query->where('anamnesis_t.deleted_at', null);
+                        break;
+                    case 'Bmi':
+                        $query = $query->leftJoin('anamnesis_t', 'anamnesis_t.mcu_id', 'mcu_employee_v.mcu_id');
+                        if ($chart_additional == 'Berat Badan Kurang') {
+                            $query = $query->where('bmi', '<', 18.5);
+                        } else if ($chart_additional == 'Normal') {
+                            $query = $query->whereBetween('bmi', [18.5, 22.9]);
+                        } else if ($chart_additional == 'Overweight') {
+                            $query = $query->whereBetween('bmi', [23, 24.9]);
+                        } else if ($chart_additional == 'Obesitas Tingkat 1') {
+                            $query = $query->whereBetween('bmi', [25, 29.9]);
+                        } else if ($chart_additional == 'Obesitas Tingkat 2') {
+                            $query = $query->where('bmi', '>=', 30);
+                        }
+                        $query = $query->where('anamnesis_t.deleted_at', null);
+                        break;
+                    case 'Asam Urat':
+                        $query = $query->leftJoin('laboratory_t', 'laboratory_t.mcu_id', 'mcu_employee_v.mcu_id')
+                        ->leftJoin('laboratory_detail_t', 'laboratory_detail_t.laboratory_id', 'laboratory_t.laboratory_id')
+                        ->where('laboratory_detail_t.laboratory_examination_id', 56);
+                        if ($chart_additional == 'Tinggi') {
+                            $query = $query->where(function ($query) {
+                                $query->where(function ($subQuery) {
+                                    $subQuery->where(DB::raw('CAST(laboratory_detail_t.result AS NUMERIC)'), '>', 7.0)
+                                             ->where('mcu_employee_v.sex_id', '=', 11);
+                                })
+                                ->orWhere(function ($subQuery) {
+                                    $subQuery->where(DB::raw('CAST(laboratory_detail_t.result AS NUMERIC)'), '>', 6.0)
+                                             ->where('mcu_employee_v.sex_id', '=', 12);
+                                });
+                            });
+                        } else if ($chart_additional == 'Normal') {
+                            $query = $query->where(function ($query) {
+                                $query->where(function ($subQuery) {
+                                    $subQuery->where(DB::raw('CAST(laboratory_detail_t.result AS NUMERIC)'), '<=', 7.0)
+                                             ->where('mcu_employee_v.sex_id', '=', 11);
+                                })
+                                ->orWhere(function ($subQuery) {
+                                    $subQuery->where(DB::raw('CAST(laboratory_detail_t.result AS NUMERIC)'), '<=', 6.0)
+                                             ->where('mcu_employee_v.sex_id', '=', 12);
+                                });
+                            });
+                        }
+                        $query = $query->where('laboratory_t.deleted_at', null)->where('laboratory_detail_t.deleted_at', null);
+                        break;
+                    case 'Kolesterol':
+                        $query = $query->leftJoin('laboratory_t', 'laboratory_t.mcu_id', 'mcu_employee_v.mcu_id')
+                        ->leftJoin('laboratory_detail_t', 'laboratory_detail_t.laboratory_id', 'laboratory_t.laboratory_id')->where('laboratory_detail_t.laboratory_examination_id', 46);
+                        if ($chart_additional == 'Normal') {
+                            $query = $query->where(DB::raw('CAST(laboratory_detail_t.result AS NUMERIC)'), '<=', 199);
+                        } else if ($chart_additional == 'Batas Tinggi') {
+                            $query = $query->whereBetween(DB::raw('CAST(laboratory_detail_t.result AS NUMERIC)'), [200, 239]);
+                        } else if ($chart_additional == 'Tinggi') {
+                            $query = $query->where(DB::raw('CAST(laboratory_detail_t.result AS NUMERIC)'), '>=', 240);
+                        }
+                        $query = $query->where('laboratory_t.deleted_at', null)->where('laboratory_detail_t.deleted_at', null);
+                        break;
+                    case 'Glukosa Sewaktu':
+                        $query = $query->leftJoin('laboratory_t', 'laboratory_t.mcu_id', 'mcu_employee_v.mcu_id')
+                        ->leftJoin('laboratory_detail_t', 'laboratory_detail_t.laboratory_id', 'laboratory_t.laboratory_id')->where('laboratory_detail_t.laboratory_examination_id', 50);
+                        if ($chart_additional == 'Normal') {
+                            $query = $query->where(DB::raw('CAST(laboratory_detail_t.result AS NUMERIC)'), '<', 140);
+                        } else if ($chart_additional == 'Prediabetes') {
+                            $query = $query->whereBetween(DB::raw('CAST(laboratory_detail_t.result AS NUMERIC)'), [140, 199]);
+                        } else if ($chart_additional == 'Diabetes') {
+                            $query = $query->where(DB::raw('CAST(laboratory_detail_t.result AS NUMERIC)'), '>=', 200);
+                        }
+                        $query = $query->where('laboratory_t.deleted_at', null)->where('laboratory_detail_t.deleted_at', null);
+                        break;
+                    case 'Glukosa Puasa':
+                        $query = $query->leftJoin('laboratory_t', 'laboratory_t.mcu_id', 'mcu_employee_v.mcu_id')
+                        ->leftJoin('laboratory_detail_t', 'laboratory_detail_t.laboratory_id', 'laboratory_t.laboratory_id')->where('laboratory_detail_t.laboratory_examination_id', 51);
+                        if ($chart_additional == 'Normal') {
+                            $query = $query->where(DB::raw('CAST(laboratory_detail_t.result AS NUMERIC)'), '<', 100);
+                        } else if ($chart_additional == 'Prediabetes') {
+                            $query = $query->whereBetween(DB::raw('CAST(laboratory_detail_t.result AS NUMERIC)'), [100, 125]);
+                        } else if ($chart_additional == 'Diabetes') {
+                            $query = $query->where(DB::raw('CAST(laboratory_detail_t.result AS NUMERIC)'), '>=', 126);
+                        }
+                        $query = $query->where('laboratory_t.deleted_at', null)->where('laboratory_detail_t.deleted_at', null);
+                        break;
+                    case 'Rontgen':
+                        $query = $query->leftJoin('rontgen_t', 'rontgen_t.mcu_id', 'mcu_employee_v.mcu_id');
+                        if ($chart_additional == 'Normal') {
+                            $query = $query->where('rontgen_t.is_abnormal', false);
+                        } else if ($chart_additional == 'Abnormal') {
+                            $query = $query->where('rontgen_t.is_abnormal', true);
+                        }
+                        $query = $query->where('rontgen_t.deleted_at', null);
+                        break;
+                    default:
+                    break;
+                }
                 break;
             default:
             break;

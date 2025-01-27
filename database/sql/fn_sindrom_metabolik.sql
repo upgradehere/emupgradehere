@@ -23,6 +23,7 @@ BEGIN
     LEFT JOIN anamnesis_t ON anamnesis_t.mcu_id = mcu_t.mcu_id
     LEFT JOIN employee_m ON employee_m.employee_id = mcu_t.employee_id
     WHERE mcu_t.mcu_program_id = p_mcu_program_id
+	and mcu_t.deleted_at is null
     and anamnesis_t.deleted_at is null
     UNION all
     -- Tekanan Darah
@@ -42,6 +43,7 @@ BEGIN
     LEFT JOIN anamnesis_t ON anamnesis_t.mcu_id = mcu_t.mcu_id
     LEFT JOIN employee_m ON employee_m.employee_id = mcu_t.employee_id
     WHERE mcu_t.mcu_program_id = p_mcu_program_id
+	and mcu_t.deleted_at is null
     and anamnesis_t.deleted_at is null
     UNION all
     -- Kolesterol
@@ -60,6 +62,8 @@ BEGIN
     LEFT JOIN mcu_t ON mcu_t.mcu_id = laboratory_t.mcu_id
     LEFT JOIN employee_m ON employee_m.employee_id = mcu_t.employee_id
     WHERE mcu_t.mcu_program_id = p_mcu_program_id
+	and mcu_t.deleted_at is null
+	and laboratory_t.deleted_at is null
     and laboratory_detail_t.deleted_at is null
     UNION ALL
     -- Asam Urat
@@ -80,14 +84,14 @@ BEGIN
                 ) THEN 1 END
         )::integer AS count_normal,
         json_build_object(
-            'normal', COUNT(
+            'tinggi', COUNT(
                 CASE WHEN laboratory_examination_id = 56
                     AND (
                         (CAST(laboratory_detail_t.result AS NUMERIC) > 7.0 AND employee_m.sex = 11) OR
                         (CAST(laboratory_detail_t.result AS NUMERIC) > 6.0 AND employee_m.sex = 12)
                     ) THEN 1 END
             )::integer,
-            'tinggi', COUNT(
+            'normal', COUNT(
                 CASE WHEN laboratory_examination_id = 56
                     AND (
                         (CAST(laboratory_detail_t.result AS NUMERIC) <= 7.0 AND employee_m.sex = 11) OR
@@ -101,6 +105,8 @@ BEGIN
     LEFT JOIN mcu_t ON mcu_t.mcu_id = laboratory_t.mcu_id
     LEFT JOIN employee_m ON employee_m.employee_id = mcu_t.employee_id
     WHERE mcu_t.mcu_program_id = p_mcu_program_id
+	and mcu_t.deleted_at is null
+	and laboratory_t.deleted_at is null
     and laboratory_detail_t.deleted_at is null
     UNION all
     -- Glukosa Sewaktu
@@ -119,6 +125,8 @@ BEGIN
     LEFT JOIN mcu_t ON mcu_t.mcu_id = laboratory_t.mcu_id
     LEFT JOIN employee_m ON employee_m.employee_id = mcu_t.employee_id
     WHERE mcu_t.mcu_program_id = p_mcu_program_id
+	and mcu_t.deleted_at is null
+	and laboratory_t.deleted_at is null
     and laboratory_detail_t.deleted_at is null
     UNION all
     -- Glukosa Puasa
@@ -137,6 +145,7 @@ BEGIN
     LEFT JOIN mcu_t ON mcu_t.mcu_id = laboratory_t.mcu_id
     LEFT JOIN employee_m ON employee_m.employee_id = mcu_t.employee_id
     WHERE mcu_t.mcu_program_id = p_mcu_program_id
+	and laboratory_t.deleted_at is null
     and laboratory_detail_t.deleted_at is null
     UNION ALL
     -- Rontgen
@@ -153,6 +162,7 @@ BEGIN
     LEFT JOIN rontgen_t ON rontgen_t.mcu_id = mcu_t.mcu_id
     LEFT JOIN employee_m ON employee_m.employee_id = mcu_t.employee_id
     WHERE mcu_t.mcu_program_id = p_mcu_program_id
+	and mcu_t.deleted_at is null
    	and rontgen_t.deleted_at is null;
 END;
 $function$
