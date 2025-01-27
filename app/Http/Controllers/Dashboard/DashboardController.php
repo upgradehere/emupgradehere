@@ -224,14 +224,15 @@ class DashboardController extends Controller
 
     public function getLabDiagnosis($id_program)
     {
-        $query_male = "
+        $query = "
             SELECT
                 laboratory_detail_t.laboratory_examination_id,
                 laboratory_examination_m.laboratory_examination_name,
                 laboratory_examination_m.laboratory_examination_id,
-                COUNT(laboratory_detail_t.laboratory_examination_id) AS count,
-                mcu_t.mcu_program_id,
-                e_m.sex
+                COUNT(laboratory_detail_t.laboratory_examination_id) as count,
+                COUNT(CASE WHEN e_m.sex = 11 THEN laboratory_detail_t.laboratory_examination_id END) as count_male,
+                COUNT(CASE WHEN e_m.sex = 12 THEN laboratory_detail_t.laboratory_examination_id END) as count_female,
+                mcu_t.mcu_program_id
             FROM laboratory_detail_t
             LEFT JOIN laboratory_examination_m
                 ON laboratory_examination_m.laboratory_examination_id = laboratory_detail_t.laboratory_examination_id
@@ -242,72 +243,22 @@ class DashboardController extends Controller
             LEFT JOIN employee_m e_m
                 ON mcu_t.employee_id = e_m.employee_id
             WHERE laboratory_detail_t.is_abnormal IS TRUE
-                AND e_m.sex = 11  -- Male
                 AND mcu_t.mcu_program_id = ?
-            GROUP BY laboratory_detail_t.laboratory_examination_id, laboratory_examination_m.laboratory_examination_name, laboratory_examination_m.laboratory_examination_id, mcu_t.mcu_program_id, e_m.sex
+            GROUP BY laboratory_detail_t.laboratory_examination_id, laboratory_examination_m.laboratory_examination_name, laboratory_examination_m.laboratory_examination_id, mcu_t.mcu_program_id
             ORDER BY count DESC
             LIMIT 10
         ";
 
-        $results_male = DB::select($query_male, [$id_program]);
-
-        $query_female = "
-            SELECT
-                laboratory_detail_t.laboratory_examination_id,
-                laboratory_examination_m.laboratory_examination_name,
-                laboratory_examination_m.laboratory_examination_id,
-                COUNT(laboratory_detail_t.laboratory_examination_id) AS count,
-                mcu_t.mcu_program_id,
-                e_m.sex
-            FROM laboratory_detail_t
-            LEFT JOIN laboratory_examination_m
-                ON laboratory_examination_m.laboratory_examination_id = laboratory_detail_t.laboratory_examination_id
-            LEFT JOIN laboratory_t
-                ON laboratory_t.laboratory_id = laboratory_detail_t.laboratory_id
-            LEFT JOIN mcu_t
-                ON mcu_t.mcu_id = laboratory_t.mcu_id
-            LEFT JOIN employee_m e_m
-                ON mcu_t.employee_id = e_m.employee_id
-            WHERE laboratory_detail_t.is_abnormal IS TRUE
-                AND e_m.sex = 12  -- Female
-                AND mcu_t.mcu_program_id = ?
-            GROUP BY laboratory_detail_t.laboratory_examination_id, laboratory_examination_m.laboratory_examination_name, laboratory_examination_m.laboratory_examination_id, mcu_t.mcu_program_id, e_m.sex
-            ORDER BY count DESC
-            LIMIT 10
-        ";
-
-        $results_female = DB::select($query_female, [$id_program]);
-
+        $result = DB::select($query, [$id_program]);
         $data = [];
 
-        foreach ($results_male as $row_male) {
-            $index = array_search($row_male->laboratory_examination_name, array_column($data, 'name'));
-
-            if ($index === false) {
-                $data[] = [
-                    'name' => $row_male->laboratory_examination_name,
-                    'id' => $row_male->laboratory_examination_id,
-                    'male' => $row_male->count,
-                    'female' => 0
-                ];
-            } else {
-                $data[$index]['male'] += $row_male->count;
-            }
-        }
-
-        foreach ($results_female as $row_female) {
-            $index = array_search($row_female->laboratory_examination_name, array_column($data, 'name'));
-
-            if ($index === false) {
-                $data[] = [
-                    'name' => $row_female->laboratory_examination_name,
-                    'id' => $row_female->laboratory_examination_id,
-                    'male' => 0,
-                    'female' => $row_female->count
-                ];
-            } else {
-                $data[$index]['female'] += $row_female->count;
-            }
+        foreach ($result as $row) {
+            $data[] = [
+                'name' => $row->laboratory_examination_name,
+                'id' => $row->laboratory_examination_id,
+                'male' => $row->count_male,
+                'female' => $row->count_female
+            ];
         }
 
         return $data;
