@@ -30,6 +30,7 @@ Route::post('/login-otp', [AuthController::class, 'otp'])->name('login.otp');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::get('/mcu/program-mcu/detail/pemeriksaan/open-email-pemeriksaan/{secret}', [PemeriksaanMcuController::class, 'openEmailPemeriksaan'])->name('open-email-pemeriksaan-mcu');
+Route::get('/mcu/program-mcu/detail/pemeriksaan/cetak-pemeriksaan', [PemeriksaanMcuController::class, 'cetakPemeriksaanMcu'])->name('print-pemeriksaan-mcu');
 
 Route::group(['middleware' => ['auth', 'role:1,2']], function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -48,7 +49,6 @@ Route::group(['middleware' => ['auth', 'role:1,2']], function () {
     Route::get('/get-data-mcu-employee',  [ProgramMcuController::class, 'getDataMcuEmployee']);
     
     Route::get('/mcu/program-mcu/detail/pemeriksaan', [PemeriksaanMcuController::class, 'index']);
-    Route::get('/mcu/program-mcu/detail/pemeriksaan/cetak-pemeriksaan', [PemeriksaanMcuController::class, 'cetakPemeriksaanMcu'])->name('print-pemeriksaan-mcu');
     Route::post('/mcu/program-mcu/detail/pemeriksaan/kirim-batch-pemeriksaan', [PemeriksaanMcuController::class, 'sendBatchPemeriksaanMcu'])->name('send-batch-pemeriksaan-mcu');
     Route::get('/mcu/program-mcu/detail/pemeriksaan/kirim-single-pemeriksaan/{mcu_id}', [PemeriksaanMcuController::class, 'sendSinglePemeriksaanMcu'])->name('send-single-pemeriksaan-mcu');
     Route::delete('/mcu/program-mcu/detail/pemeriksaan/delete-pemeriksaan', [PemeriksaanMcuController::class, 'deletePemeriksaanMcu']);
