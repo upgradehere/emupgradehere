@@ -48,7 +48,7 @@ trait RefractionTrait
                 $filename = Str::uuid().'.'.$extension;
                 $images = !empty($post['existing_images']) ? json_decode($post['existing_images'], true) : [];
                 $images[] = $filename;
-                $post['image_file'] = $images;
+                $post['image_file'] = json_encode($images);
                 $path = 'uploads/refraction/';
                 $file->move($path, $filename);
             }
