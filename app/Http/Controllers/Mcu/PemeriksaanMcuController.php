@@ -7,6 +7,7 @@ use App\Helpers\GlobalHelper;
 use App\Http\Controllers\Controller;
 use App\Imports\McuAnamnesisImport;
 use App\Models\CompanyM;
+use App\Models\DepartementM;
 use App\Models\DoctorM;
 use App\Models\EmployeeM;
 use App\Models\LookupC;
@@ -34,6 +35,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
 use Maatwebsite\Excel\Facades\Excel;
+use Milon\Barcode\Facades\DNS2DFacade;
 use PDF;
 use Log;
 
@@ -312,5 +314,97 @@ class PemeriksaanMcuController extends Controller
         } catch(\Exception $e){
             return view('errors.404');
         }
+    }
+
+    public function cetakBlankoMcu (Request $request)
+    {
+        $data = [
+            'nik' => '',
+            'employee_name' => '',
+            'company_name' => '',
+            'departement_name' => '',
+            'mcu_date' => '',
+            'mcu_code' => '',
+            'anamnesis' => '',
+            'rontgen' => '',
+            'audiometry' => '',
+            'spirometry' => '',
+            'ekg' => '',
+            'usg' => '',
+            'treadmill' => '',
+            'papsmear' => '',
+            'resume' => '',
+            'lab' => '',
+            'refraction' => ''
+        ];
+
+        try {
+            $mcu_id = $request->get('mcu_id');
+            $mcu_model = McuT::find($mcu_id);
+            $employee_model = EmployeeM::find($mcu_model->employee_id);
+            $company_model = CompanyM::find($mcu_model->company_id);
+            $departement_model = DepartementM::find($employee_model->departement_id);
+            $package = PackageM::find($mcu_model->package_id);
+
+            $data = [
+                'nik' => $employee_model->nik,
+                'employee_name' => $employee_model->employee_name,
+                'company_name' => $company_model->company_name,
+                'departement_name' => $departement_model->departement_name,
+                'mcu_date' => date('Y/m/d', strtotime($mcu_model->mcu_date)),
+                'mcu_code' => $mcu_model->mcu_code,
+                'anamnesis' => $package->anamnesis,
+                'rontgen' => $package->rontgen,
+                'audiometry' => $package->audiometry,
+                'spirometry' => $package->spirometry,
+                'ekg' => $package->ekg,
+                'usg' => $package->usg,
+                'treadmill' => $package->treadmill,
+                'papsmear' => $package->papsmear,
+                'resume' => $package->resume,
+                'lab' => $package->lab,
+                'refraction' => $package->refraction,
+            ];
+        } catch (\Exception $e) {
+            Log::error('Gagal generate blanko MCU untuk mcu_id: ' . $request->get('mcu_id') . '. Error: ' . $e->getMessage(). ' file' . $e->getFile() . ' line' . $e->getLine());
+        }
+
+        $pdf = PDF::loadView('mcu.pemeriksaan.print.cetak_blanko', $data)->setPaper('a4', 'portrait');
+        $filename = "MCU BLANKO FILE.pdf";
+        if (!empty($data['employee_name'])) {
+            $filename = "MCU BLANKO FILE - ".$data['employee_name']. " - ".$data['mcu_code'].".pdf";
+        }
+
+        return $pdf->stream($filename);
+    }
+
+    public function cetakBarcodeMcu (Request $request)
+    {
+        $data = [
+            'employee_name' => '',
+            'mcu_code' => '',
+            'barcode' => ''
+        ];
+
+        try {
+            $mcu_id = $request->get('mcu_id');
+            $mcu_model = McuT::find($mcu_id);
+            $employee_model = EmployeeM::find($mcu_model->employee_id);
+            $data = [
+                'employee_name' => $employee_model->employee_name,
+                'mcu_code' => $mcu_model->mcu_code,
+            ];
+
+        } catch (\Exception $e) {
+            Log::error('Gagal generate barcode MCU untuk mcu_id: ' . $request->get('mcu_id') . '. Error: ' . $e->getMessage(). ' file' . $e->getFile() . ' line' . $e->getLine());
+        }
+
+        $pdf = PDF::loadView('mcu.pemeriksaan.print.cetak_barcode', $data)->setPaper('a7', 'landscape');
+        $filename = "MCU BARCODE FILE.pdf";
+        if (!empty($data['employee_name'])) {
+            $filename = "MCU BARCODE FILE - ".$data['employee_name']. " - ".$data['mcu_code'].".pdf";
+        }
+
+        return $pdf->stream($filename);
     }
 }
