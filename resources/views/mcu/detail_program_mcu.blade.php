@@ -137,7 +137,7 @@
                                     <table id="mcuEmployeeTable" class="table table-bordered table-striped">
                                         <thead>
                                             <tr>
-                                                <th style="width: 30px;">No</th>
+                                                <th style="width: 10px;">No</th>
                                                 <th>No. MCU</th>
                                                 <th>NIK</th>
                                                 <th>Nama</th>
@@ -145,7 +145,7 @@
                                                 <th>Jenis Kelamin</th>
                                                 <th>Umur</th>
                                                 <th>Tanggal MCU</th>
-                                                <th style="width: 100px;">Aksi</th>
+                                                <th style="width: 200px;">Aksi</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -198,6 +198,37 @@
                 <!-- /.modal-content -->
             </div>
             <!-- /.modal-dialog -->
+        </div>
+        <div class="modal fade" id="modalPrint" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+
+                    <!-- Header Modal -->
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Cetak PDF</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <!-- Body Modal -->
+                    <div class="modal-body text-center">
+                        <a id="btnCetakQrcode" target="_blank" href="" class="btn btn-success"><i
+                                class="fas fa-qrcode"></i>
+                            Cetak QR Code</a>
+                        <a id="btnCetakBlanko" target="_blank" href="" class="btn btn-success"><i
+                                class="fas fa-file"></i> Cetak
+                            Blanko
+                            Pemeriksaan</a>
+                        <a id="btnCetakHasil" target="_blank" href="" class="btn btn-success"><i
+                                class="fas fa-file-pdf"></i>
+                            Cetak Hasil
+                            Pemeriksaan</a>
+                    </div>
+
+                </div>
+            </div>
         </div>
     </section>
     @include('mcu.partials.insert_manual')
@@ -301,7 +332,7 @@
                             let sendPdfLink = "{{ route('send-single-pemeriksaan-mcu', ':id') }}";
                             sendPdfLink = sendPdfLink.replace(':id', mcuId);
                             return `<a class="btn btn-primary btn-sm action-detail" href="/mcu/program-mcu/detail/pemeriksaan?mcu_id=${mcuId}&employee_id=${employeeId}"><i class="fas fa-eye"></i></a>
-                                    <a class="btn btn-success btn-sm action-export" href="/mcu/program-mcu/detail/pemeriksaan/cetak-pemeriksaan?mcu_id=${mcuId}" target="_blank"><i class="fas fa-file-pdf"></i></a>
+                                    <a class="btn btn-success btn-print-pdf btn-sm action-export" data-toggle="modal" data-target="#modalPrint" data-mcuid="${mcuId}" data-url="/mcu/program-mcu/detail/pemeriksaan" target="_blank"><i class="fas fa-file-pdf"></i></a>
                                     <a class="btn btn-warning btn-sm action-send-mcu" href="${sendPdfLink}"><i class="fas fa-paper-plane"></i></a>
                                     <a class="btn btn-danger btn-sm action-delete-mcu" data-mcu-id="${mcuId}"><i class="fas fa-trash"></i></a>`;
                         }
@@ -321,6 +352,15 @@
                         $('.action-delete-mcu').hide();
                     }
                 }
+            });
+
+            $(document).on('click', '.btn-print-pdf', function() {
+                var url = $(this).attr("data-url");
+                var mcuId = $(this).attr("data-mcuid");
+
+                $("#btnCetakQrcode").attr("href", url + "/cetak-barcode?mcu_id=" + mcuId);
+                $("#btnCetakBlanko").attr("href", url + "/cetak-blanko?mcu_id=" + mcuId);
+                $("#btnCetakHasil").attr("href", url + "/cetak-pemeriksaan?mcu_id=" + mcuId);
             });
 
             $(document).on('click', '#sendPdf', function() {

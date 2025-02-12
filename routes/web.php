@@ -63,6 +63,9 @@ Route::group(['middleware' => ['auth', 'role:1,2']], function () {
     Route::post('/mcu/program-mcu/detail/pemeriksaan/save-treadmill', [PemeriksaanMcuController::class, 'saveTreadmill']);
     Route::post('/mcu/program-mcu/detail/pemeriksaan/save-papsmear', [PemeriksaanMcuController::class, 'savePapsmear']);
     Route::post('/mcu/program-mcu/detail/pemeriksaan/save-resume-mcu', [PemeriksaanMcuController::class, 'saveResumeMcu']);
+    Route::get('/mcu/program-mcu/detail/pemeriksaan/cetak-blanko', [PemeriksaanMcuController::class, 'cetakBlankoMcu'])->name('print-blanko-mcu');
+    Route::get('/mcu/program-mcu/detail/pemeriksaan/cetak-barcode', [PemeriksaanMcuController::class, 'cetakBarcodeMcu'])->name('print-barcode-mcu');
+
 
     Route::get('/change-password', [PasswordController::class, 'index'])->name('change-password');
     Route::post('/change-password/store', [PasswordController::class, 'store'])->name('change-password.store');
