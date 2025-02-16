@@ -50,7 +50,10 @@
                     </div>
                     <input type="hidden" name="existing_images" value="{{ !empty($data_spirometry->image_file) ? $data_spirometry->image_file : null }}" id="">
                     @if(!empty($data_spirometry->image_file))
-                        @foreach (json_decode($data_spirometry->image_file, true) as $key => $image_file)
+                        @php
+                            $images = collect(json_decode($data_spirometry->image_file, true))->sort()->values();
+                        @endphp
+                        @foreach (json_decode($images, true) as $key => $image_file)
                             <div class="row">
                                 <div class="col-md-12">
                                     <img src="{{ asset('uploads/spirometry/'.$image_file) }}" alt="" style="width:100%;">

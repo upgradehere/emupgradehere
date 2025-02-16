@@ -49,7 +49,7 @@
 				            <tr>
 				                <td align="left" width="20%"><b>Abnormal</b></td>
 				                <td>:</td>
-				                <td align="left" width="80%">{{ $ekg->is_abnormal == 1 ? "Abnormal" : Normal }}</td>
+				                <td align="left" width="80%">{{ $ekg->is_abnormal == 1 ? "Abnormal" : "Normal" }}</td>
 				            </tr>
 				            <tr>
 				                <td align="left" width="20%"><b>Pemeriksa</b></td>
@@ -84,7 +84,10 @@
 @endif
 
 @if(!empty($ekg->image_file))
-    @foreach (json_decode($ekg->image_file,true) as $key => $image_file)
+    @php
+        $images = collect(json_decode($ekg->image_file, true))->sort()->values();
+    @endphp
+    @foreach ($images as $key => $image_file)
         <div style="text-align: center; padding-top: 20px;">
             <img src="{{ public_path('uploads/ekg/'.$image_file) }}" style="max-width: 710px; max-height: 600px;">
         </div>
