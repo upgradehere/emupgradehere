@@ -1,5 +1,5 @@
 @if (isset($refraksi->is_import) && !$refraksi->is_import)
-    @if (!empty($anamnesis))
+    @if (!empty($refraksi))
     @include('mcu.pemeriksaan.print.partials.header', ['title_header' => 'PEMERIKSAAN FISIK REFRAKSI'])
     @endif
 
@@ -143,7 +143,10 @@
 @endif
 
 @if(!empty($refraksi->image_file))
-    @foreach (json_decode($refraksi->image_file,true) as $key => $image_file)
+    @php
+        $images = collect(json_decode($refraksi->image_file, true))->sort()->values();
+    @endphp
+    @foreach ($images as $key => $image_file)
         <div style="text-align: center; padding-top: 20px;">
             <img src="{{ public_path('uploads/refraction/'.$image_file) }}" style="max-width: 710px; max-height: 600px;">
         </div>

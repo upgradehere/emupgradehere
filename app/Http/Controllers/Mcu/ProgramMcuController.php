@@ -673,7 +673,7 @@ class ProgramMcuController extends Controller
                 case ConstantsHelper::LOOKUP_EXAMINATION_TYPE_SPIROMETRY:
                     $model = new SpirometryT();
                     $extractPath = 'uploads/spirometry/extract/';
-                    $imagePath = 'uploads/epirometry/';
+                    $imagePath = 'uploads/spirometry/';
                     $category = 'spirometry';
                     break;
                 case ConstantsHelper::LOOKUP_EXAMINATION_TYPE_EKG:
@@ -690,7 +690,8 @@ class ProgramMcuController extends Controller
                     break;
                 case ConstantsHelper::LOOKUP_EXAMINATION_TYPE_TREADMILL:
                     $model = new TreadmillT();
-                    $extractPath = 'uploads/treadmill/';
+                    $extractPath = 'uploads/treadmill/extract/';
+                    $imagePath = 'uploads/treadmill/';
                     $category = 'treadmill';
                     break;
                 default:
@@ -702,6 +703,7 @@ class ProgramMcuController extends Controller
                 $zip->extractTo($extractPath);
                 $zip->close();
             } else {
+                Storage::delete($zipPath);
                 throw new \Exception('Terjadi Kesalahan!');
             }
 
@@ -729,30 +731,33 @@ class ProgramMcuController extends Controller
 
                 $extension = pathinfo($filePath, PATHINFO_EXTENSION);
                 $fileName = pathinfo($file, PATHINFO_FILENAME);
-                $pattern = '/^\d+_[A-Za-z0-9]+_' . preg_quote($category, '/') . '$/i';
+                $pattern = '/^\d+_\d+_[A-Za-z0-9]+_' . preg_quote($category, '/') . '$/i';
                 if (in_array(strtolower($extension), $allowedExtensions) && is_file($filePath) && preg_match($pattern, $fileName)) {
 
                     $filename = $fileName . '.' . $extension;
                     $storedPath = $imagePath . $filename;
 
                     $fileNameWithoutExtension = pathinfo($file, PATHINFO_FILENAME);  // Get the filename without extension
-                    $nik = explode('_', $fileNameWithoutExtension)[0];
-                    $packageCode = explode('_', $fileNameWithoutExtension)[1];
+                    $order = explode('_', $fileNameWithoutExtension)[0];
+                    $nik = explode('_', $fileNameWithoutExtension)[1];
+                    $packageCode = explode('_', $fileNameWithoutExtension)[2];
 
                     $employeeModel = EmployeeM::select('employee_id')->where('nik', $nik)->first();
                     $packageModel = PackageM::select('id')->where('package_code', $packageCode)->first();
 
                     if ($employeeModel == null) {
+                        Storage::delete($zipPath);
                         throw new \Exception('Terjadi Kesalahan! Peserta dengan nik '.$nik.' Tidak Ditemukan!');
                     }
                     if ($packageModel == null) {
+                        Storage::delete($zipPath);
                         throw new \Exception('Terjadi Kesalahan! Kode paket '.$packageCode.' Tidak Ditemukan!');
                     }
 
                     if (!is_dir($imagePath)) {
                         mkdir($imagePath, 0755, true);
                     }
-                    $filename = Str::uuid().'.'.$extension;
+                    $filename = $order . '_' . $category . '_' . Str::uuid() . '.' . $extension;
                     File::move($extractPath.$file, $imagePath . $filename);
 
                     $modelMcu = McuT::select('mcu_id')
@@ -784,20 +789,25 @@ class ProgramMcuController extends Controller
                     } else {
                         $mcu_id = $modelMcu->mcu_id;
                     }
-                    $images = [];
-                    $images[] = $filename;
+
                     $payload = [
-                        'mcu_id' => $mcu_id,
-                        'image_file' => json_encode($images),
+                        'mcu_id' => $mcu_id
                     ];
                     $existingRecord = $model->where('mcu_id', $mcu_id)->first();
                     if ($existingRecord) {
+                        $existingImages = !empty($existingRecord->image_file) ? json_decode($existingRecord->image_file) : [];
+                        array_push($existingImages, $filename);
+                        $payload['image_file'] = json_encode($existingImages);
                         $existingRecord->update($payload);
                     } else {
+                        $images = [];
+                        $images[] = $filename;
+                        $payload['image_file'] = json_encode($images);
                         $payload['is_import'] = true;
                         $model->insert($payload);
                     }
                 } else {
+                    Storage::delete($zipPath);
                     throw new \Exception('Nama file tidak sesuai!');
                 }
             }
