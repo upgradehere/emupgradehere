@@ -358,6 +358,16 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group row align-items-center mb-3">
+                                <label class="col-sm-2 col-form-label">Keterangan</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="hazard_notes" name="work_hazard_history[hazard_notes]" value="{{ isset($data_anamnesis->work_hazard_history->hazard_notes) ? $data_anamnesis->work_hazard_history->hazard_notes : '' }}" placeholder="">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
