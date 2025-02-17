@@ -133,7 +133,11 @@ class McuAnamnesisImport implements ToCollection, WithHeadingRow, SkipsEmptyRows
 
             // Riwayat hazard lingkungak kerja
             foreach ($whh as $index => $r) {
-                $riwayatHazardLingkunganKerja[$whh_en[$index]] = isset($row["riwayat_hazard_lingkungan_kerja_$r"]) && $row["riwayat_hazard_lingkungan_kerja_$r"] == 'Ya' ? 1 : 0;
+                if ($r == 'keterangan') {
+                    $riwayatHazardLingkunganKerja[$hf_en[$index]] = isset($row["riwayat_hazard_lingkungan_kerja_$r"]) ? $row["riwayat_hazard_lingkungan_kerja_$r"] : '';
+                } else {
+                    $riwayatHazardLingkunganKerja[$whh_en[$index]] = isset($row["riwayat_hazard_lingkungan_kerja_$r"]) && $row["riwayat_hazard_lingkungan_kerja_$r"] == 'Ya' ? 1 : 0;
+                }
             }
 
             // Mata
@@ -398,7 +402,8 @@ class McuAnamnesisImport implements ToCollection, WithHeadingRow, SkipsEmptyRows
                 'monitor_komputer',
                 'gerakan_berulang',
                 'mendorong_menarik',
-                'angkat_beban'
+                'angkat_beban',
+                'keterangan'
             ],
             'en' => [
                 'noise',
@@ -410,7 +415,8 @@ class McuAnamnesisImport implements ToCollection, WithHeadingRow, SkipsEmptyRows
                 'computer_monitor',
                 'repetitive_motion',
                 'push_pull',
-                'weightlifting'
+                'weightlifting',
+                'hazard_notes'
             ]
         ];
     }
