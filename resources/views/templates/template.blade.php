@@ -298,6 +298,7 @@
             <script src="{{ asset('templates/adminlte-3.2.0/plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
             <script src="{{ asset('templates/adminlte-3.2.0/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
             <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.3/xlsx.full.min.js"></script>
             @yield('content')
         </div>
     </div>

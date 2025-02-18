@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
+use App\Imports\EmployeeImport;
 use App\Helpers\GlobalHelper;
 use App\Models\EmployeeM;
 use App\Models\CompanyM;
@@ -339,7 +341,8 @@ class EmployeeController extends Controller
         return redirect()->route('employee');
     }
 
-    public function deleteFolder($folderPath) {
+    public function deleteFolder($folderPath) 
+    {
         if (is_dir($folderPath)) {
             $files = array_diff(scandir($folderPath), ['.', '..']);
             foreach ($files as $file) {
@@ -352,5 +355,41 @@ class EmployeeController extends Controller
             }
             rmdir($folderPath);
         }
+    }
+    
+    public function importEmployee(Request $request) 
+    {
+        $rules = [
+            'file' => 'required|file|mimes:xls,xlsx|max:51200',
+            'company_id' => 'required',
+        ];
+        
+        $messages = [
+            'file.required' => 'File wajib dipilih',
+            'file.file' => 'File harus file',
+            'file.mimes' => 'File harus berupa xls / xlsx',
+            'file.max' => 'File tidak boleh berukuran lebih dari 50MB',
+            'company_id.required' => 'Perusahaan wajib diisi',
+        ];
+        
+        $validator = Validator::make($request->all(), $rules, $messages);
+        
+        if ($validator->fails()) {
+            $messages = $validator->errors()->all(); 
+
+            session()->flash('error', $messages);
+
+            return redirect()->route('employee');
+        }
+
+        try {
+            Excel::import(new EmployeeImport($request->company_id), $request->file('file'));
+            
+            session()->flash('success', 'Data pegawai berhasil diimport');
+        } catch (\Exception $e) {
+            session()->flash('error', 'Data pegawai gagal diimport, '.$e->getMessage());
+        }
+        
+        return redirect()->route('employee');
     }
 }

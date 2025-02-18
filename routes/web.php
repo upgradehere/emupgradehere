@@ -96,6 +96,7 @@ Route::group(['middleware' => ['auth', 'role:1']], function () {
     Route::get('/employee/detail/{id}', [EmployeeController::class, 'detail'])->name('employee.detail');
     Route::post('/employee/update', [EmployeeController::class, 'update'])->name('employee.update');
     Route::post('/employee/import-photo', [EmployeeController::class, 'importPhoto'])->name('employee.import-photo');
+    Route::post('/employee/import-employee', [EmployeeController::class, 'importEmployee'])->name('employee.import-employee');
 
     Route::get('/doctor', [DoctorController::class, 'index'])->name('doctor');
     Route::get('/doctor/data', [DoctorController::class, 'data'])->name('doctor.data');

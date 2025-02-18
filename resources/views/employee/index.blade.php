@@ -3,15 +3,12 @@
     <style>
         .custom-hr {
             height: 3px;
-            /* Set the thickness */
             background-color: black;
-            /* Set the color */
             border: none;
-            /* Remove the default border */
             margin: 10px 0;
-            /* Optional: Adjust spacing */
         }
     </style>
+
     <div class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
@@ -51,6 +48,9 @@
                                 @csrf
                                 <input type="file" accept=".zip" name="photos" id="import_photo">
                             </form>
+                            <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modalImportExcel">Import
+                                Excel Data Pegawai</button>
+                            <a href="#" id="btnDownloadTemplate">Download Template Excel</a>
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
@@ -166,7 +166,38 @@
                 </div>
             </div>
         </div>
+        <div class="modal fade" id="modalImportExcel">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalImportExcelLabel">Import Excel Pegawai</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form method="POST" action="{{ route('employee.import-employee') }}" enctype="multipart/form-data">
+                        @csrf
+                        <div class="modal-body">
+                            <select name="company_id" required class="form-control" id="">
+                                <option value="">-- Pilih Perusahaan --</option>
+                                @foreach ($company as $c)
+                                    <option value="{{ $c->company_id }}"
+                                        {{ isset($_GET['company-id']) && $_GET['company-id'] == $c->company_id ? 'selected' : '' }}>
+                                        {{ $c->company_name }}</option>
+                                @endforeach
+                            </select>
+                            <br>
+                            <input type="file" name="file" class="form-control" required accept=".xls,.xlsx">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary" id="">Import</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </section>
+
     <script>
         $(function() {
             const urlParams = new URLSearchParams(window.location.search);
@@ -174,7 +205,7 @@
 
             if (companyId) {
                 setTimeout(function() {
-                    $('#company_id').val(companyId).trigger('change'); // Ensure 'change' is triggered
+                    $('#company_id').val(companyId).trigger('change');
                 }, 100);
             }
 
@@ -300,6 +331,26 @@
                 });
             });
 
+            $('#btnDownloadTemplate').click(function() {
+                const data = [
+                    ['Kode Pegawai', 'Nama Pegawai', 'NIK', 'Kode Departemen', 'Tanggal Lahir',
+                        'No Telp', 'Jenis Kelamin', 'Email'
+                    ],
+                    ['XX01', 'Putra', '1234567890', 'D01', '2000-12-31', '081234567890', 'Pria',
+                        'xx@xx.com'
+                    ],
+                    ['XX02', 'Putri', '1234567890', 'D02', '2000-12-31', '081234567890', 'Wanita',
+                        'xx@xx.com'
+                    ],
+                ];
+
+                const ws = XLSX.utils.aoa_to_sheet(data);
+                const wb = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(wb, ws, 'template');
+
+                XLSX.writeFile(wb, 'EM Health - Import Excel Pegawai.xlsx');
+            });
+
             const btnImportPhoto = document.getElementById("btnImportPhoto");
             const importPhotoInput = document.getElementById("import_photo");
             const importPhotoForm = document.getElementById("importPhoto");
@@ -332,10 +383,8 @@
             @if (session('swal'))
                 const data = @json(session('swal'))
 
-                // Prepare SweetAlert content
                 const content = data.map((item, index) => `${index + 1}. ${item}`).join('<br>');
 
-                // Show SweetAlert
                 Swal.fire({
                     title: 'NIK Yang Tidak Ditemukan',
                     html: content,
