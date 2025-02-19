@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Imports\McuAnamnesisImport;
 use App\Imports\McuAudiometryImport;
 use App\Imports\McuEkgImport;
+use App\Imports\McuHeaderImport;
 use App\Imports\McuLaboratoryImport;
 use App\Imports\McuPapsmearImport;
 use App\Imports\McuRefractionImport;
@@ -546,6 +547,36 @@ class ProgramMcuController extends Controller
         } catch (\Exception $e) {
             DB::rollback();
             return $e;
+        }
+    }
+
+    public function importExcelMcu(Request $request)
+    {
+        try{
+            $post = $request->post();
+            $request->validate([
+                'import_file' => [
+                    'required',
+                    'file',
+                    'mimes:xls,xlsx',
+                ],
+                'company_id' => 'required',
+                'mcu_program_id' => 'required',
+            ], [
+                'import_file.required' => 'File Excel Tidak Boleh Kosong.',
+                'import_file.file' => 'File Excel Tidak Valid.',
+                'import_file.mimes' => 'File Excel Tidak Sesuai, Silahakn Upload File Berupa xls atau xlsx',
+                'company_id.required' => 'ID Perusahaan Tidak Boleh Kosong.',
+                'mcu_program_id.required' => 'ID Program MCU Tidak Boleh Kosong.',
+            ]);
+
+            $import_model = new McuHeaderImport($post['company_id'], $post['mcu_program_id']);
+            Excel::import($import_model, $request->file('import_file'));
+            return redirect()->back()->with('success', 'Import Data MCU Berhasil');
+        } catch (ValidationException $e) {
+            return redirect()->back()->with('error', $e->getMessage());
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', $e->getMessage());
         }
     }
 

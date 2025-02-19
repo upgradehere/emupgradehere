@@ -57,12 +57,12 @@
                     </div>
                 </div>
                 <div class="modal-footer justify-content-between">
-                    <button type="submit" class="btn btn-success action-save">
-                        <i class="fas fa-save"></i>&nbsp;&nbsp;Simpan
-                    </button>
                     <a href="#" class="btn btn-danger action-export" data-dismiss="modal">
-                        <i class="fas fa-times"></i>&nbsp;&nbsp;Batal
+                        Batal
                     </a>
+                    <button type="submit" class="btn btn-primary action-save">
+                        Simpan
+                    </button>
                 </div>
             </div>
         </form>

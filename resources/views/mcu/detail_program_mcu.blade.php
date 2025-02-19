@@ -106,6 +106,11 @@
                                 </div>
                                 <div class="col-2">
                                     <a class="btn btn-block bg-gradient-primary auto-size-btn" data-toggle="modal"
+                                        data-target="#modal-import-mcu"><i class="fas fa-file-import"></i>&nbsp;&nbsp;Import
+                                        MCU</a>
+                                </div>
+                                <div class="col-2">
+                                    <a class="btn btn-block bg-gradient-primary auto-size-btn" data-toggle="modal"
                                         data-target="#modal-upload-rekap"><i
                                             class="fas fa-file-import"></i>&nbsp;&nbsp;Import Pemeriksaan</a>
                                 </div>
@@ -232,6 +237,7 @@
         </div>
     </section>
     @include('mcu.partials.insert_manual')
+    @include('mcu.partials.import_mcu')
     @include('mcu.partials.import_file_excel')
     @include('mcu.partials.upload_hasil')
     <script>

@@ -44,10 +44,11 @@ Route::group(['middleware' => ['auth', 'role:1,2']], function () {
     Route::get('/mcu/program-mcu/detail/input-manual-mcu', [ProgramMcuController::class, 'insertManualMcu'])->name('input-manual-mcu');
     Route::post('/mcu/program-mcu/detail/input-manual-mcu/save-input-manual-mcu', [ProgramMcuController::class, 'actionInsertManualMcu'])->name('save-input-manual-mcu');
     Route::post('/mcu/program-mcu/detail/import-excel-anamnesa', [ProgramMcuController::class, 'importExcelAnamnesa']);
+    Route::post('/mcu/program-mcu/detail/import-excel-mcu', [ProgramMcuController::class, 'importExcelMcu']);
     Route::post('/mcu/program-mcu/detail/upload-hasil', [ProgramMcuController::class, 'uploadHasil']);
     Route::get('/get-data-mcu-program-company/{id}',  [ProgramMcuController::class, 'getDataMcuProgramCompany']);
     Route::get('/get-data-mcu-employee',  [ProgramMcuController::class, 'getDataMcuEmployee']);
-    
+
     Route::get('/mcu/program-mcu/detail/pemeriksaan', [PemeriksaanMcuController::class, 'index']);
     Route::post('/mcu/program-mcu/detail/pemeriksaan/kirim-batch-pemeriksaan', [PemeriksaanMcuController::class, 'sendBatchPemeriksaanMcu'])->name('send-batch-pemeriksaan-mcu');
     Route::get('/mcu/program-mcu/detail/pemeriksaan/kirim-single-pemeriksaan/{mcu_id}', [PemeriksaanMcuController::class, 'sendSinglePemeriksaanMcu'])->name('send-single-pemeriksaan-mcu');
@@ -103,7 +104,7 @@ Route::group(['middleware' => ['auth', 'role:1']], function () {
     Route::get('/doctor/delete/{id}', [DoctorController::class, 'delete'])->name('doctor.delete');
     Route::get('/doctor/detail/{id}', [DoctorController::class, 'detail'])->name('doctor.detail');
     Route::post('/doctor/update', [DoctorController::class, 'update'])->name('doctor.update');
-    
+
     Route::get('/departement', [DepartementController::class, 'index'])->name('departement');
     Route::get('/departement/show/{company_id}', [DepartementController::class, 'show'])->name('departement.show');
     Route::get('/departement/data/{id}', [DepartementController::class, 'data'])->name('departement.data');
