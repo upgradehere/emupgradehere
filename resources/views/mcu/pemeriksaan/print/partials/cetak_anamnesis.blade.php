@@ -418,13 +418,14 @@
                 </th>
             </tr>
             <tr>
-                <td style="width: 50%; vertical-align: top;">
+                <td style="width: 100%; vertical-align: top;">
                     <table class="sub-table" style="border: none;">
                         <thead>
                             <tr>
                                 <th width="200px"></th>
-                                <th >Ya</th>
-                                <th>Tidak</th>
+                                <th width="50px">Ya</th>
+                                <th width="50px">Tidak</th>
+                                <th colspan="2">Jika Ya, berapa jam/hari -> dan selama berapa tahun</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -440,6 +441,12 @@
                                            {{ optional(json_decode($anamnesis['work_hazard_history'],true))['noise'] == '0' ? 'checked' : '' }}
                                            disabled>
                                 </td>
+                                <td align="center">
+                                    {{ optional(json_decode($anamnesis['work_hazard_history'], true))['noise_hours'] . '   jam/hari' ?? '' }}
+                                </td>
+                                <td align="center">
+                                    {{ optional(json_decode($anamnesis['work_hazard_history'], true))['noise_years'] . '   Tahun' ?? '' }}
+                                </td>
                             </tr>
                             <tr>
                                 <td>Getaran</td>
@@ -452,6 +459,12 @@
                                     <input type="checkbox"
                                            {{ optional(json_decode($anamnesis['work_hazard_history'],true))['vibration'] == '0' ? 'checked' : '' }}
                                            disabled>
+                                </td>
+                                <td align="center">
+                                    {{ optional(json_decode($anamnesis['work_hazard_history'], true))['vibration_hours'] . '   jam/hari' ?? '' }}
+                                </td>
+                                <td align="center">
+                                    {{ optional(json_decode($anamnesis['work_hazard_history'], true))['vibration_years'] . '   Tahun' ?? '' }}
                                 </td>
                             </tr>
                             <tr>
@@ -466,6 +479,12 @@
                                            {{ optional(json_decode($anamnesis['work_hazard_history'],true))['dust'] == '0' ? 'checked' : '' }}
                                            disabled>
                                 </td>
+                                <td align="center">
+                                    {{ optional(json_decode($anamnesis['work_hazard_history'], true))['dust_hours'] . '   jam/hari' ?? '' }}
+                                </td>
+                                <td align="center">
+                                    {{ optional(json_decode($anamnesis['work_hazard_history'], true))['dust_years'] . '   Tahun' ?? '' }}
+                                </td>
                             </tr>
                             <tr>
                                 <td>Zat Kimia</td>
@@ -479,38 +498,32 @@
                                            {{ optional(json_decode($anamnesis['work_hazard_history'],true))['chemicals'] == '0' ? 'checked' : '' }}
                                            disabled>
                                 </td>
+                                <td align="center">
+                                    {{ optional(json_decode($anamnesis['work_hazard_history'], true))['chemicals_hours'] . '   jam/hari' ?? '' }}
+                                </td>
+                                <td align="center">
+                                    {{ optional(json_decode($anamnesis['work_hazard_history'], true))['chemicals_years'] . '   Tahun' ?? '' }}
+                                </td>
                             </tr>
                             <tr>
                                 <td>Panas</td>
                                 <td align="center">
                                     <input type="checkbox"
-                                           {{ optional(json_decode($anamnesis['work_hazard_history'],true))['chemicals'] == '1' ? 'checked' : '' }}
+                                           {{ optional(json_decode($anamnesis['work_hazard_history'],true))['heat'] == '1' ? 'checked' : '' }}
                                            disabled>
                                 </td>
                                 <td align="center">
                                     <input type="checkbox"
-                                           {{ optional(json_decode($anamnesis['work_hazard_history'],true))['chemicals'] == '0' ? 'checked' : '' }}
+                                           {{ optional(json_decode($anamnesis['work_hazard_history'],true))['heat'] == '0' ? 'checked' : '' }}
                                            disabled>
                                 </td>
+                                <td align="center">
+                                    {{ optional(json_decode($anamnesis['work_hazard_history'], true))['heat_hours'] . '   jam/hari' ?? '' }}
+                                </td>
+                                <td align="center">
+                                    {{ optional(json_decode($anamnesis['work_hazard_history'], true))['heat_years'] . '   Tahun' ?? '' }}
+                                </td>
                             </tr>
-                            <br>
-                            <tr>
-                                <td width="30%">Keterangan</td>
-                                <td colspan="3" align="left" width="70%">: {{ optional(json_decode($anamnesis['work_hazard_history'], true))['hazard_notes'] ?? '' }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </td>
-                <td style="width: 50%; vertical-align: top;">
-                    <table class="sub-table" style="border: none;">
-                        <thead>
-                            <tr>
-                                <th width="200px"></th>
-                                <th>Ya</th>
-                                <th>Tidak</th>
-                            </tr>
-                        </thead>
-                        <tbody>
                             <tr>
                                 <td>Asap</td>
                                 <td align="center">
@@ -522,6 +535,12 @@
                                     <input type="checkbox"
                                            {{ optional(json_decode($anamnesis['work_hazard_history'],true))['smoke'] == '0' ? 'checked' : '' }}
                                            disabled>
+                                </td>
+                                <td align="center">
+                                    {{ optional(json_decode($anamnesis['work_hazard_history'], true))['smoke_hours'] . '   jam/hari' ?? '' }}
+                                </td>
+                                <td align="center">
+                                    {{ optional(json_decode($anamnesis['work_hazard_history'], true))['smoke_years'] . '   Tahun' ?? '' }}
                                 </td>
                             </tr>
                             <tr>
@@ -536,6 +555,12 @@
                                            {{ optional(json_decode($anamnesis['work_hazard_history'],true))['computer_monitor'] == '0' ? 'checked' : '' }}
                                            disabled>
                                 </td>
+                                <td align="center">
+                                    {{ optional(json_decode($anamnesis['work_hazard_history'], true))['computer_monitor_hours'] . '   jam/hari' ?? '' }}
+                                </td>
+                                <td align="center">
+                                    {{ optional(json_decode($anamnesis['work_hazard_history'], true))['computer_monitor_years'] . '   Tahun' ?? '' }}
+                                </td>
                             </tr>
                             <tr>
                                 <td>Gerakan Berulang</td>
@@ -548,6 +573,12 @@
                                     <input type="checkbox"
                                            {{ optional(json_decode($anamnesis['work_hazard_history'],true))['repetitive_motion'] == '0' ? 'checked' : '' }}
                                            disabled>
+                                </td>
+                                <td align="center">
+                                    {{ optional(json_decode($anamnesis['work_hazard_history'], true))['repetitive_motion_hours'] . '   jam/hari' ?? '' }}
+                                </td>
+                                <td align="center">
+                                    {{ optional(json_decode($anamnesis['work_hazard_history'], true))['repetitive_motion_years'] . '   Tahun' ?? '' }}
                                 </td>
                             </tr>
                             <tr>
@@ -562,6 +593,12 @@
                                            {{ optional(json_decode($anamnesis['work_hazard_history'],true))['push_pull'] == '0' ? 'checked' : '' }}
                                            disabled>
                                 </td>
+                                <td align="center">
+                                    {{ optional(json_decode($anamnesis['work_hazard_history'], true))['push_pull_hours'] . '   jam/hari' ?? '' }}
+                                </td>
+                                <td align="center">
+                                    {{ optional(json_decode($anamnesis['work_hazard_history'], true))['push_pull_years'] . '   Tahun' ?? '' }}
+                                </td>
                             </tr>
                             <tr>
                                 <td>Angkat Beban</td>
@@ -575,10 +612,35 @@
                                            {{ optional(json_decode($anamnesis['work_hazard_history'],true))['weightlifting'] == '0' ? 'checked' : '' }}
                                            disabled>
                                 </td>
+                                <td align="center">
+                                    {{ optional(json_decode($anamnesis['work_hazard_history'], true))['weightlifting_hours'] . '   jam/hari' ?? '' }}
+                                </td>
+                                <td align="center">
+                                    {{ optional(json_decode($anamnesis['work_hazard_history'], true))['weightlifting_years'] . '   Tahun' ?? '' }}
+                                </td>
                             </tr>
                         </tbody>
                     </table>
                 </td>
+                {{-- <td style="width: 50%; vertical-align: top;">
+                    <table class="sub-table" style="border: none;">
+                        <thead>
+                            <tr>
+                                <th colspan="2">Jika Ya, Berapa jam/hari -> berapa tahun</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td align="center">
+                                    {{ optional(json_decode($anamnesis['work_hazard_history'], true))['noise_hours'] ?? '' }}
+                                </td>
+                                <td align="center">
+                                    {{ optional(json_decode($anamnesis['work_hazard_history'], true))['noise_years'] ?? '' }}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td> --}}
             </tr>
         </tbody>
     </table>

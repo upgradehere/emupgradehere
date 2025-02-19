@@ -133,10 +133,10 @@ class McuAnamnesisImport implements ToCollection, WithHeadingRow, SkipsEmptyRows
 
             // Riwayat hazard lingkungak kerja
             foreach ($whh as $index => $r) {
-                if ($r == 'keterangan') {
-                    $riwayatHazardLingkunganKerja[$hf_en[$index]] = isset($row["riwayat_hazard_lingkungan_kerja_$r"]) ? $row["riwayat_hazard_lingkungan_kerja_$r"] : '';
-                } else {
+                if ($row["riwayat_hazard_lingkungan_kerja_$r"] == 'Ya' || $row["riwayat_hazard_lingkungan_kerja_$r"] == 'Tidak') {
                     $riwayatHazardLingkunganKerja[$whh_en[$index]] = isset($row["riwayat_hazard_lingkungan_kerja_$r"]) && $row["riwayat_hazard_lingkungan_kerja_$r"] == 'Ya' ? 1 : 0;
+                } else {
+                    $riwayatHazardLingkunganKerja[$whh_en[$index]] = isset($row["riwayat_hazard_lingkungan_kerja_$r"]) ? $row["riwayat_hazard_lingkungan_kerja_$r"] : '';
                 }
             }
 
@@ -394,29 +394,67 @@ class McuAnamnesisImport implements ToCollection, WithHeadingRow, SkipsEmptyRows
         return [
             'id' => [
                 'bising',
+                'bising_jam',
+                'bising_tahun',
                 'getaran',
+                'getaran_jam',
+                'getaran_tahun',
                 'debu',
+                'debu_jam',
+                'debu_tahun',
                 'zat_kimia',
+                'zat_kimia_jam',
+                'zat_kimia_tahun',
                 'panas',
+                'panas_jam',
+                'panas_tahun',
                 'asap',
+                'asap_jam',
+                'asap_tahun',
                 'monitor_komputer',
+                'monitor_komputer_jam',
+                'monitor_komputer_tahun',
                 'gerakan_berulang',
+                'gerakan_berulang_jam',
+                'gerakan_berulang_tahun',
                 'mendorong_menarik',
+                'mendorong_menarik_jam',
+                'mendorong_menarik_tahun',
                 'angkat_beban',
-                'keterangan'
+                'angkat_beban_jam',
+                'angkat_beban_tahun'
             ],
             'en' => [
                 'noise',
+                'noise_hours',
+                'noise_years',
                 'vibration',
+                'vibration_hours',
+                'vibration_years',
                 'dust',
+                'dust_hours',
+                'dust_years',
                 'chemicals',
+                'chemicals_hours',
+                'chemicals_years',
                 'heat',
+                'heat_hours',
+                'heat_years',
                 'smoke',
+                'smoke_hours',
+                'smoke_years',
                 'computer_monitor',
+                'computer_monitor_hours',
+                'computer_monitor_years',
                 'repetitive_motion',
+                'repetitive_motion_hours',
+                'repetitive_motion_years',
                 'push_pull',
+                'push_pull_hours',
+                'push_pull_years',
                 'weightlifting',
-                'hazard_notes'
+                'weightlifting_hours',
+                'weightlifting_years'
             ]
         ];
     }
