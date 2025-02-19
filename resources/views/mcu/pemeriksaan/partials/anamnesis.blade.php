@@ -264,6 +264,13 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-6">
+                        </div>
+                        <div class="col-md-6 d-flex justify-content-center">
+                            <p><b>Jika Ya, Berapa jam / hari -> selama berapa tahun</b></p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
                             <div class="form-group row align-items-center mb-3">
                                 <label class="col-sm-4 col-form-label">Bising</label>
                                 <div class="col-sm-8">
@@ -309,8 +316,6 @@
                                     </select>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-md-6">
                             <div class="form-group row align-items-center mb-3">
                                 <label class="col-sm-4 col-form-label">Asap</label>
                                 <div class="col-sm-8">
@@ -357,13 +362,125 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group row align-items-center mb-3">
-                                <label class="col-sm-2 col-form-label">Keterangan</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="hazard_notes" name="work_hazard_history[hazard_notes]" value="{{ isset($data_anamnesis->work_hazard_history->hazard_notes) ? $data_anamnesis->work_hazard_history->hazard_notes : '' }}" placeholder="">
+                        <div class="col-md-6">
+                            <div class="col-md-12">
+                                <div class="form-group row align-items-center mb-3">
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" id="noise_hours" name="work_hazard_history[noise_hours]" value="{{ isset($data_anamnesis->work_hazard_history->noise_hours) ? $data_anamnesis->work_hazard_history->noise_hours : '' }}" placeholder="">
+                                    </div>
+                                    <div class="col-sm-2">Jam / Hari</div>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" id="noise_years" name="work_hazard_history[noise_years]" value="{{ isset($data_anamnesis->work_hazard_history->noise_years) ? $data_anamnesis->work_hazard_history->noise_years : '' }}" placeholder="">
+                                    </div>
+                                    <div class="col-sm-2">Tahun</div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group row align-items-center mb-3">
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" id="vibration_hours" name="work_hazard_history[vibration_hours]" value="{{ isset($data_anamnesis->work_hazard_history->vibration_hours) ? $data_anamnesis->work_hazard_history->vibration_hours : '' }}" placeholder="">
+                                    </div>
+                                    <div class="col-sm-2">Jam / Hari</div>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" id="vibration_years" name="work_hazard_history[vibration_years]" value="{{ isset($data_anamnesis->work_hazard_history->vibration_years) ? $data_anamnesis->work_hazard_history->vibration_years : '' }}" placeholder="">
+                                    </div>
+                                    <div class="col-sm-2">Tahun</div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group row align-items-center mb-3">
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" id="dust_hours" name="work_hazard_history[dust_hours]" value="{{ isset($data_anamnesis->work_hazard_history->dust_hours) ? $data_anamnesis->work_hazard_history->dust_hours : '' }}" placeholder="">
+                                    </div>
+                                    <div class="col-sm-2">Jam / Hari</div>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" id="dust_years" name="work_hazard_history[dust_years]" value="{{ isset($data_anamnesis->work_hazard_history->dust_years) ? $data_anamnesis->work_hazard_history->dust_years : '' }}" placeholder="">
+                                    </div>
+                                    <div class="col-sm-2">Tahun</div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group row align-items-center mb-3">
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" id="chemicals_hours" name="work_hazard_history[chemicals_hours]" value="{{ isset($data_anamnesis->work_hazard_history->chemicals_hours) ? $data_anamnesis->work_hazard_history->chemicals_hours : '' }}" placeholder="">
+                                    </div>
+                                    <div class="col-sm-2">Jam / Hari</div>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" id="chemicals_years" name="work_hazard_history[chemicals_years]" value="{{ isset($data_anamnesis->work_hazard_history->chemicals_years) ? $data_anamnesis->work_hazard_history->chemicals_years : '' }}" placeholder="">
+                                    </div>
+                                    <div class="col-sm-2">Tahun</div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group row align-items-center mb-3">
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" id="heat_hours" name="work_hazard_history[heat_hours]" value="{{ isset($data_anamnesis->work_hazard_history->heat_hours) ? $data_anamnesis->work_hazard_history->heat_hours : '' }}" placeholder="">
+                                    </div>
+                                    <div class="col-sm-2">Jam / Hari</div>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" id="heat_years" name="work_hazard_history[heat_years]" value="{{ isset($data_anamnesis->work_hazard_history->heat_years) ? $data_anamnesis->work_hazard_history->heat_years : '' }}" placeholder="">
+                                    </div>
+                                    <div class="col-sm-2">Tahun</div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group row align-items-center mb-3">
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" id="smoke_hours" name="work_hazard_history[smoke_hours]" value="{{ isset($data_anamnesis->work_hazard_history->smoke_hours) ? $data_anamnesis->work_hazard_history->smoke_hours : '' }}" placeholder="">
+                                    </div>
+                                    <div class="col-sm-2">Jam / Hari</div>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" id="smoke_years" name="work_hazard_history[smoke_years]" value="{{ isset($data_anamnesis->work_hazard_history->smoke_years) ? $data_anamnesis->work_hazard_history->smoke_years : '' }}" placeholder="">
+                                    </div>
+                                    <div class="col-sm-2">Tahun</div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group row align-items-center mb-3">
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" id="computer_monitor_hours" name="work_hazard_history[computer_monitor_hours]" value="{{ isset($data_anamnesis->work_hazard_history->computer_monitor_hours) ? $data_anamnesis->work_hazard_history->computer_monitor_hours : '' }}" placeholder="">
+                                    </div>
+                                    <div class="col-sm-2">Jam / Hari</div>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" id="computer_monitor_years" name="work_hazard_history[computer_monitor_years]" value="{{ isset($data_anamnesis->work_hazard_history->computer_monitor_years) ? $data_anamnesis->work_hazard_history->computer_monitor_years : '' }}" placeholder="">
+                                    </div>
+                                    <div class="col-sm-2">Tahun</div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group row align-items-center mb-3">
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" id="repetitive_motion_hours" name="work_hazard_history[repetitive_motion_hours]" value="{{ isset($data_anamnesis->work_hazard_history->repetitive_motion_hours) ? $data_anamnesis->work_hazard_history->repetitive_motion_hours : '' }}" placeholder="">
+                                    </div>
+                                    <div class="col-sm-2">Jam / Hari</div>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" id="repetitive_motion_years" name="work_hazard_history[repetitive_motion_years]" value="{{ isset($data_anamnesis->work_hazard_history->repetitive_motion_years) ? $data_anamnesis->work_hazard_history->repetitive_motion_years : '' }}" placeholder="">
+                                    </div>
+                                    <div class="col-sm-2">Tahun</div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group row align-items-center mb-3">
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" id="push_pull_hours" name="work_hazard_history[push_pull_hours]" value="{{ isset($data_anamnesis->work_hazard_history->push_pull_hours) ? $data_anamnesis->work_hazard_history->push_pull_hours : '' }}" placeholder="">
+                                    </div>
+                                    <div class="col-sm-2">Jam / Hari</div>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" id="push_pull_years" name="work_hazard_history[push_pull_years]" value="{{ isset($data_anamnesis->work_hazard_history->push_pull_years) ? $data_anamnesis->work_hazard_history->push_pull_years : '' }}" placeholder="">
+                                    </div>
+                                    <div class="col-sm-2">Tahun</div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group row align-items-center mb-3">
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" id="weightlifting_hours" name="work_hazard_history[weightlifting_hours]" value="{{ isset($data_anamnesis->work_hazard_history->weightlifting_hours) ? $data_anamnesis->work_hazard_history->weightlifting_hours : '' }}" placeholder="">
+                                    </div>
+                                    <div class="col-sm-2">Jam / Hari</div>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" id="weightlifting_years" name="work_hazard_history[weightlifting_years]" value="{{ isset($data_anamnesis->work_hazard_history->weightlifting_years) ? $data_anamnesis->work_hazard_history->weightlifting_years : '' }}" placeholder="">
+                                    </div>
+                                    <div class="col-sm-2">Tahun</div>
                                 </div>
                             </div>
                         </div>
