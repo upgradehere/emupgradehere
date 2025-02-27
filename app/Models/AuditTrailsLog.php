@@ -13,4 +13,11 @@ class AuditTrailsLog extends Model
     protected $casts = [
         'created_at' => 'datetime:Y-m-d H:i:s',
     ];
+
+    public function getCreatedAtAttribute($value)
+    {
+        $date = new \DateTime($value, new \DateTimeZone('UTC')); // Assuming the timestamp is stored in UTC
+        $date->setTimezone(new \DateTimeZone('Asia/Jakarta')); // Convert to Jakarta timezone
+        return $date->format('Y-m-d H:i:s'); // Format the output
+    }
 }
