@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
+use App\Models\Base\BaseModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 
-class LaboratoryReferenceValueM extends Model
+class LaboratoryReferenceValueM extends BaseModel
 {
     use HasFactory;
     protected $table = 'laboratory_reference_value_m';

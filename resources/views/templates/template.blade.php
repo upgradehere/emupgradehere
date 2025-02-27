@@ -205,6 +205,17 @@
                                 </a>
                             </li>
                         @endif
+                        @if (Auth::user()->id_role == 1)
+                            <li class="nav-item">
+                                <a href="{{ route('audit-trails') }}"
+                                    class="nav-link {{ Route::is('audit-trails.*') || Route::is('audit-trails') ? 'active' : '' }}">
+                                    <i class="nav-icon fas fa-file-alt"></i>
+                                    <p>
+                                        Audit Trails
+                                    </p>
+                                </a>
+                            </li>
+                        @endif
 
                     </ul>
                 </nav>

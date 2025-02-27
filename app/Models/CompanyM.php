@@ -2,12 +2,12 @@
 
 namespace App\Models;
 
+use App\Models\Base\BaseModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use App\Models\McuProgramM;
 use App\Models\McuT;
 
-class CompanyM extends Model
+class CompanyM extends BaseModel
 {
     use HasFactory;
     protected $table = 'company_m';
