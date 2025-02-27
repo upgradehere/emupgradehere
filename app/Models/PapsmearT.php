@@ -3,11 +3,11 @@
 namespace App\Models;
 
 use App\Helpers\GlobalHelper;
+use App\Models\Base\BaseModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class PapsmearT extends Model
+class PapsmearT extends BaseModel
 {
     use HasFactory, SoftDeletes;
     protected $table = 'papsmear_t';

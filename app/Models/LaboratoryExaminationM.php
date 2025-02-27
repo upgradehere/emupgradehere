@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
+use App\Models\Base\BaseModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use App\Models\LaboratoryExaminationTypeM;
 
-class LaboratoryExaminationM extends Model
+class LaboratoryExaminationM extends BaseModel
 {
     use HasFactory;
     protected $table = 'laboratory_examination_m';

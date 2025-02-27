@@ -2,13 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Base\BaseModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Model;
 
 
 
-class PackageM extends Model
+class PackageM extends BaseModel
 {
     use HasFactory;
     use SoftDeletes;

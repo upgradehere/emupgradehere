@@ -3,11 +3,11 @@
 namespace App\Models;
 
 use App\Helpers\GlobalHelper;
+use App\Models\Base\BaseModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class SpirometryT extends Model
+class SpirometryT extends BaseModel
 {
     use HasFactory, SoftDeletes;
     protected $table = 'spirometry_t';

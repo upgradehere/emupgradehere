@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuditTrailsController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Mcu\PemeriksaanMcuController;
@@ -113,4 +114,7 @@ Route::group(['middleware' => ['auth', 'role:1']], function () {
     Route::get('/departement/delete/{id}', [DepartementController::class, 'delete'])->name('departement.delete');
     Route::get('/departement/detail/{id}', [DepartementController::class, 'detail'])->name('departement.detail');
     Route::post('/departement/update', [DepartementController::class, 'update'])->name('departement.update');
+
+    Route::get('/audit-trails', [AuditTrailsController::class, 'index'])->name('audit-trails');
+    Route::get('/audit-trails/get-data', [AuditTrailsController::class, 'getData'])->name('audit-trails.get-data');
 });

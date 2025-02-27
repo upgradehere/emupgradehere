@@ -2,12 +2,12 @@
 
 namespace App\Models;
 
+use App\Models\Base\BaseModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use App\Models\CompanyM;
 use Carbon\Carbon;
 
-class DepartementM extends Model
+class DepartementM extends BaseModel
 {
     use HasFactory;
 

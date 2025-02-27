@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
+use App\Models\Base\BaseModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 
-class LaboratoryExaminationTypeM extends Model
+class LaboratoryExaminationTypeM extends BaseModel
 {
     use HasFactory;
     protected $table = 'laboratory_examination_type_m';

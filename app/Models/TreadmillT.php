@@ -3,11 +3,11 @@
 namespace App\Models;
 
 use App\Helpers\GlobalHelper;
+use App\Models\Base\BaseModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class TreadmillT extends Model
+class TreadmillT extends BaseModel
 {
     use HasFactory, SoftDeletes;
     protected $table = 'treadmill_t';
