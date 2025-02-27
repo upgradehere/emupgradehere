@@ -139,8 +139,8 @@
                     {
                         data: 'created_at',
                         name: 'created_at',
-                        searchable: true,
-                        orderable: true
+                        searchable: false,
+                        orderable: false
                     },
                     {
                         data: null,
