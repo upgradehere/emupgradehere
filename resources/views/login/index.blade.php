@@ -177,7 +177,11 @@
                                 $(otp_card).show();
                             } else if (response.status == 'success|pass') {
                                 toastr.success("Login berhasil");
-                                window.location.href = "{{ route('dashboard') }}";
+                                if (response.data.role == 1 || response.data.role == 2) {
+                                    window.location.href = "{{ route('dashboard') }}";
+                                } else {
+                                    window.location.href = "{{ route('program-mcu') }}";
+                                }
                             }
                         },
                         error: function(response) {

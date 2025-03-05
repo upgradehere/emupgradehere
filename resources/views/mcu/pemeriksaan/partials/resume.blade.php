@@ -1,10 +1,11 @@
-<div class="card">
+<div class="{{ Auth::user()->id_role == 5 ? 'card disabled-div' : 'card' }}">
     <div class="card-header">
         <h3 class="card-title">Resume MCU</h3>
     </div>
     <form action="/mcu/program-mcu/detail/pemeriksaan/save-resume-mcu" method="POST">
         @csrf
-        <input type="hidden" name="resume_mcu_id" value="{{ !empty($data_resume_mcu->resume_mcu_id) ? $data_resume_mcu->resume_mcu_id : null }}" id="">
+        <input type="hidden" name="resume_mcu_id"
+            value="{{ !empty($data_resume_mcu->resume_mcu_id) ? $data_resume_mcu->resume_mcu_id : null }}" id="">
         <input type="hidden" name="mcu_id" value="{{ $mcu_id }}" id="">
         <div class="card-body">
             <div class="card">
@@ -92,11 +93,13 @@
                             <div class="form-group row align-items-center mb-3">
                                 <label class="col-sm-2 col-form-label">Kesimpulan Hasil</label>
                                 <div class="col-sm-10">
-                                    <select class="form-control select2 selectKesimpulan" name="result_conclusion" style="width: 100%;">
+                                    <select class="form-control select2 selectKesimpulan" name="result_conclusion"
+                                        style="width: 100%;">
                                         <option selected="selected" value="">- Kesimpulan Hasil MCU -</option>
                                         @if (!empty($kesimpulan_mcu_dropdown))
                                             @foreach ($kesimpulan_mcu_dropdown as $conclusion)
-                                            <option value="{{ $conclusion->lookup_id }}">{{ $conclusion->lookup_name }}</option>
+                                                <option value="{{ $conclusion->lookup_id }}">
+                                                    {{ $conclusion->lookup_name }}</option>
                                             @endforeach
                                         @endif
                                     </select>
@@ -113,11 +116,13 @@
                             <div class="form-group row align-items-center mb-3">
                                 <label class="col-sm-2 col-form-label">Pemeriksa</label>
                                 <div class="col-sm-10">
-                                    <select class="form-control select2 selectDoctorResume" name="doctor_id" style="width: 100%;">
+                                    <select class="form-control select2 selectDoctorResume" name="doctor_id"
+                                        style="width: 100%;">
                                         <option selected="selected" value="">- Dokter Pemeriksa -</option>
                                         @if (!empty($doctor_data))
                                             @foreach ($doctor_data as $doctor)
-                                            <option value="{{ $doctor->id }}">{{ $doctor->doctor_name }}</option>
+                                                <option value="{{ $doctor->id }}">{{ $doctor->doctor_name }}
+                                                </option>
                                             @endforeach
                                         @endif
                                     </select>
@@ -127,15 +132,19 @@
                     </div>
                 </div>
             </div>
-            <div class="d-flex justify-content-end">
-                <button type="submit" class="btn btn-danger action-delete" {{ empty($data_resume_mcu) ? 'disabled' : '' }}>
-                    <i class="fas fa-trash"></i>&nbsp;&nbsp;Hapus
-                </button>
-                &nbsp;&nbsp;
-                <button type="submit" class="btn btn-success action-save">
-                    <i class="fas fa-save"></i>&nbsp;&nbsp;Simpan
-                </button>
-            </div>
+
+            @if (Auth::user()->id_role == 1 || Auth::user()->id_role == 3)
+                <div class="d-flex justify-content-end">
+                    <button type="submit" class="btn btn-danger action-delete"
+                        {{ empty($data_resume_mcu) ? 'disabled' : '' }}>
+                        <i class="fas fa-trash"></i>&nbsp;&nbsp;Hapus
+                    </button>
+                    &nbsp;&nbsp;
+                    <button type="submit" class="btn btn-success action-save">
+                        <i class="fas fa-save"></i>&nbsp;&nbsp;Simpan
+                    </button>
+                </div>
+            @endif
         </div>
     </form>
 </div>

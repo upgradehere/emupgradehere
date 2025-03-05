@@ -57,8 +57,13 @@ class ProgramMcuController extends Controller
     {
         try {
             $auth = Auth::user();
-            if ($auth->id_role == 2) {
+            $employee_id = NULL;
+
+            if ($auth->id_role == 2 || $auth->id_role == 5) {
                 $company_id = $auth->id_company;
+                if ($auth->id_role == 5) {
+                    $employee_id = $auth->id_employee;
+                }
             } else {
                 if ($company_id == 'A') {
                     $company_id = NULL;
@@ -71,8 +76,22 @@ class ProgramMcuController extends Controller
             if ($company_id !== NULL) {
                 $query->where('company_id', $company_id);
             }
+            $resp = GlobalHelper::dataTable($request, $query);
+            
+            if ($auth->id_role == 5) {
+                foreach($resp['data'] as $k => $r) {
+                    $mcu_program_id = $r['mcu_program_id'];
+                    
+                    $check = McuT::where('mcu_program_id', $mcu_program_id)
+                                    ->where('employee_id', $employee_id)
+                                    ->first();
+                    if (!$check) {
+                        unset($resp['data'][$k]);
+                    }
+                }
+            }
 
-            return response()->json(GlobalHelper::dataTable($request, $query));
+            return response()->json($resp);
         } catch (\Exception $e) {
             return response()->json([
                 'error' => $e->getMessage()
@@ -150,6 +169,13 @@ class ProgramMcuController extends Controller
                 'mcu_employee_v.is_import'
             );
             $query = $query->where('mcu_program_id', $mcu_program_id)->where('mcu_employee_v.deleted_at', null);
+
+            $auth = Auth::user();
+
+            if ($auth->id_role == 5) {
+                $query = $query->where('employee_id', $auth->id_employee);
+            }
+
             if (empty($chart_type)) {
                 $query = $query->where('company_id', $company_id);
             } else {
@@ -1001,6 +1027,28 @@ class ProgramMcuController extends Controller
         } else {
             session()->flash('success', 'Kesalahan terjadi, program gagal diperbarui, harap hubungi Admin kami');
             return redirect()->route('program-mcu');
+        }
+    }
+
+    public function deleteProgram($id)
+    {
+        $program = McuProgramM::find($id);
+
+        if ($program->delete()) {
+            $data = [
+                'status' => 'success',
+                'message' => 'Delete success',
+            ];
+            
+            return response()->json($data, 200);
+        } else {
+            $data = [
+                'status' => 'error',
+                'message' => 'Delete failed',
+                'data' => 'Kesalahan terjadi, data gagal dihapus, harap hubungi Admin kami',
+            ];
+
+            return response()->json($data, 200);
         }
     }
 }

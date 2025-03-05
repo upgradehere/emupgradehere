@@ -9,7 +9,7 @@
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Beranda</a></li>
-                        <li class="breadcrumb-item"><a href={{ route('package') }}>Pegawai</a></li>
+                        <li class="breadcrumb-item"><a href={{ route('employee') }}>Pegawai</a></li>
                         <li class="breadcrumb-item active">Detail Pegawai</li>
                     </ol>
                 </div><!-- /.col -->

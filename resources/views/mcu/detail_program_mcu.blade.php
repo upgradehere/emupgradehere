@@ -98,38 +98,43 @@
                             <h3 class="card-title">Pemeriksaan MCU Peserta</h3>
                         </div>
                         <div class="card-body">
-                            <div class="row">
-                                <div class="col-2">
-                                    <a class="btn btn-block bg-gradient-primary auto-size-btn" data-toggle="modal"
-                                        data-target="#modal-insert-manual"><i class="fas fa-edit"></i>&nbsp;&nbsp;Input
-                                        Manual</a>
+                            @if (Auth::user()->id_role == 1 || Auth::user()->id_role == 4)
+                                <div class="row">
+                                    <div class="col-2">
+                                        <a class="btn btn-block bg-gradient-primary auto-size-btn" data-toggle="modal"
+                                            data-target="#modal-insert-manual"><i class="fas fa-edit"></i>&nbsp;&nbsp;Input
+                                            Manual</a>
+                                    </div>
+                                    @if (Auth::user()->id_role == 1)
+                                        <div class="col-2">
+                                            <a class="btn btn-block bg-gradient-primary auto-size-btn" data-toggle="modal"
+                                                data-target="#modal-import-mcu"><i class="fas fa-file-import"></i>&nbsp;&nbsp;Import
+                                                MCU</a>
+                                        </div>
+                                        <div class="col-2">
+                                            <a class="btn btn-block bg-gradient-primary auto-size-btn" data-toggle="modal"
+                                                data-target="#modal-upload-rekap"><i
+                                                    class="fas fa-file-import"></i>&nbsp;&nbsp;Import Pemeriksaan</a>
+                                        </div>
+                                        <div class="col-2">
+                                            <a class="btn btn-block bg-gradient-primary auto-size-btn" data-toggle="modal"
+                                                data-target="#modal-upload-hasil"><i
+                                                    class="fas fa-images"></i>&nbsp;&nbsp;Upload
+                                                Hasil</a>
+                                        </div>
+                                        <div class="col-2">
+                                            <a data-toggle="modal" data-target="#modalConclusionSuggestion"
+                                                class="btn btn-block bg-gradient-primary auto-size-btn"><i
+                                                    class="fas fa-edit"></i>&nbsp;&nbsp;Kesimpulan & Saran</a>
+                                        </div>
+                                        <div class="col-2">
+                                            <a class="btn btn-block bg-gradient-primary auto-size-btn" id="sendPdf"
+                                                data-url="{{ route('send-batch-pemeriksaan-mcu') }}"><i
+                                                    class="fas fa-paper-plane"></i>&nbsp;&nbsp;Kirim Hasil Pemeriksaan</a>
+                                        </div>
+                                    @endif
                                 </div>
-                                <div class="col-2">
-                                    <a class="btn btn-block bg-gradient-primary auto-size-btn" data-toggle="modal"
-                                        data-target="#modal-import-mcu"><i class="fas fa-file-import"></i>&nbsp;&nbsp;Import
-                                        MCU</a>
-                                </div>
-                                <div class="col-2">
-                                    <a class="btn btn-block bg-gradient-primary auto-size-btn" data-toggle="modal"
-                                        data-target="#modal-upload-rekap"><i
-                                            class="fas fa-file-import"></i>&nbsp;&nbsp;Import Pemeriksaan</a>
-                                </div>
-                                <div class="col-2">
-                                    <a class="btn btn-block bg-gradient-primary auto-size-btn" data-toggle="modal"
-                                        data-target="#modal-upload-hasil"><i class="fas fa-images"></i>&nbsp;&nbsp;Upload
-                                        Hasil</a>
-                                </div>
-                                <div class="col-2">
-                                    <a data-toggle="modal" data-target="#modalConclusionSuggestion"
-                                        class="btn btn-block bg-gradient-primary auto-size-btn"><i
-                                            class="fas fa-edit"></i>&nbsp;&nbsp;Kesimpulan & Saran</a>
-                                </div>
-                                <div class="col-2">
-                                    <a class="btn btn-block bg-gradient-primary auto-size-btn" id="sendPdf"
-                                        data-url="{{ route('send-batch-pemeriksaan-mcu') }}"><i
-                                            class="fas fa-paper-plane"></i>&nbsp;&nbsp;Kirim Hasil Pemeriksaan</a>
-                                </div>
-                            </div>
+                            @endif
                             <br>
                             <div class="row">
                                 <div class="col-12">
@@ -219,13 +224,15 @@
 
                     <!-- Body Modal -->
                     <div class="modal-body text-center">
-                        <a id="btnCetakQrcode" target="_blank" href="" class="btn btn-success"><i
-                                class="fas fa-qrcode"></i>
-                            Cetak QR Code</a>
-                        <a id="btnCetakBlanko" target="_blank" href="" class="btn btn-success"><i
-                                class="fas fa-file"></i> Cetak
-                            Blanko
-                            Pemeriksaan</a>
+                        @if (Auth::user()->id_role == 1 || Auth::user()->id_role == 4)
+                            <a id="btnCetakQrcode" target="_blank" href="" class="btn btn-success"><i
+                                    class="fas fa-qrcode"></i>
+                                Cetak QR Code</a>
+                            <a id="btnCetakBlanko" target="_blank" href="" class="btn btn-success"><i
+                                    class="fas fa-file"></i> Cetak
+                                Blanko
+                                Pemeriksaan</a>
+                        @endif
                         <a id="btnCetakHasil" target="_blank" href="" class="btn btn-success"><i
                                 class="fas fa-file-pdf"></i>
                             Cetak Hasil
@@ -249,6 +256,7 @@
             let chartType = "{{ $chart_type }}";
             let chartValue = "{{ $chart_value }}";
             let chartAdditional = "{{ $chart_additional }}";
+            var role = @json(Auth::user()->id_role);
 
             let table = $("#mcuEmployeeTable").DataTable({
                 responsive: true,
@@ -337,10 +345,22 @@
                             let employeeId = row.employee_id;
                             let sendPdfLink = "{{ route('send-single-pemeriksaan-mcu', ':id') }}";
                             sendPdfLink = sendPdfLink.replace(':id', mcuId);
-                            return `<a class="btn btn-primary btn-sm action-detail" href="/mcu/program-mcu/detail/pemeriksaan?mcu_id=${mcuId}&employee_id=${employeeId}"><i class="fas fa-eye"></i></a>
-                                    <a class="btn btn-success btn-print-pdf btn-sm action-export" data-toggle="modal" data-target="#modalPrint" data-mcuid="${mcuId}" data-url="/mcu/program-mcu/detail/pemeriksaan" target="_blank"><i class="fas fa-file-pdf"></i></a>
-                                    <a class="btn btn-warning btn-sm action-send-mcu" href="${sendPdfLink}"><i class="fas fa-paper-plane"></i></a>
-                                    <a class="btn btn-danger btn-sm action-delete-mcu" data-mcu-id="${mcuId}"><i class="fas fa-trash"></i></a>`;
+                            var url =
+                                "/mcu/program-mcu/detail/pemeriksaan/cetak-pemeriksaan?mcu_id=";
+                            if (role == 1) {
+                                return `<center><a class="btn btn-primary btn-sm action-detail" href="/mcu/program-mcu/detail/pemeriksaan?mcu_id=${mcuId}&employee_id=${employeeId}"><i class="fas fa-eye"></i></a>
+                                        <a class="btn btn-success btn-print-pdf btn-sm action-export" data-toggle="modal" data-target="#modalPrint" data-mcuid="${mcuId}" data-url="/mcu/program-mcu/detail/pemeriksaan" target="_blank"><i class="fas fa-file-pdf"></i></a>
+                                        <a class="btn btn-warning btn-sm action-send-mcu" href="${sendPdfLink}"><i class="fas fa-paper-plane"></i></a>
+                                        <a class="btn btn-danger btn-sm action-delete-mcu" data-mcu-id="${mcuId}"><i class="fas fa-trash"></i></a></center>`;
+                            } else if (role == 2) {
+                                return `<center><a class="btn btn-primary btn-sm action-detail" href="/mcu/program-mcu/detail/pemeriksaan?mcu_id=${mcuId}&employee_id=${employeeId}"><i class="fas fa-eye"></i></a>
+                                        <a href="${url}${mcuId}" class="btn btn-success btn-print-pdf btn-sm action-export" data-toggle="" data-target="" data-mcuid="${mcuId}" target="_blank"><i class="fas fa-file-pdf"></i></a></center>`
+                            } else if (role == 3 || role == 5) {
+                                return `<center><a class="btn btn-primary btn-sm action-detail" href="/mcu/program-mcu/detail/pemeriksaan?mcu_id=${mcuId}&employee_id=${employeeId}"><i class="fas fa-eye"></i></a></center>`
+                            } else {
+                                return `<center><a class="btn btn-primary btn-sm action-detail" href="/mcu/program-mcu/detail/pemeriksaan?mcu_id=${mcuId}&employee_id=${employeeId}"><i class="fas fa-eye"></i></a>
+                                        <a class="btn btn-success btn-print-pdf btn-sm action-export" data-toggle="modal" data-target="#modalPrint" data-mcuid="${mcuId}" data-url="/mcu/program-mcu/detail/pemeriksaan" target="_blank"><i class="fas fa-file-pdf"></i></a></center>`;
+                            }
                         }
                     }
                 ],
