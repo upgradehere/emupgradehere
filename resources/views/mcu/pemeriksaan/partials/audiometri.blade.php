@@ -1,10 +1,11 @@
-<div class="card">
+<div class="{{ Auth::user()->id_role == 5 ? 'card disabled-div' : 'card' }}">
     <div class="card-header">
         <h3 class="card-title">Audiometri</h3>
     </div>
     <form action="/mcu/program-mcu/detail/pemeriksaan/save-audiometry" method="POST" enctype="multipart/form-data">
         @csrf
-        <input type="hidden" name="audiometry_id" value="{{ !empty($data_audiometry->audiometry_id) ? $data_audiometry->audiometry_id : null }}" id="">
+        <input type="hidden" name="audiometry_id"
+            value="{{ !empty($data_audiometry->audiometry_id) ? $data_audiometry->audiometry_id : null }}" id="">
         <input type="hidden" name="mcu_id" value="{{ $mcu_id }}" id="">
         <div class="card-body">
             <div class="card">
@@ -19,9 +20,9 @@
                                 <div class="col-sm-10">
                                     <div class="form-check">
                                         <label class="form-check-label">
-                                        <input type="hidden" name="is_import" value="0">
-                                            <input type="checkbox" class="form-check-input" value="1" name="is_import"
-                                            <?php
+                                            <input type="hidden" name="is_import" value="0">
+                                            <input type="checkbox" class="form-check-input" value="1"
+                                                name="is_import" <?php
                                                 if (isset($data_audiometry->is_import)) {
                                                     if ($data_audiometry->is_import == true) {
                                                         echo 'checked';
@@ -31,7 +32,7 @@
                                                 } else {
                                                     echo 'checked';
                                                 }
-                                            ?>>
+                                                ?>>
                                             <i>*ceklis jika hasil pemeriksaan digabung dengan gambar pemeriksaan</i>
                                         </label>
                                     </div>
@@ -41,22 +42,28 @@
                                 <label class="col-sm-2 col-form-label">File Gambar</label>
                                 <div class="col-sm-10">
                                     <div class="custom-file">
-                                        <input type="file" class="custom-file-input" name="image_file" id="customFile">
+                                        <input type="file" class="custom-file-input" name="image_file"
+                                            id="customFile">
                                         <label class="custom-file-label" for="customFile">Upload File Gambar</label>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <input type="hidden" name="existing_images" value="{{ !empty($data_audiometry->image_file) ? $data_audiometry->image_file : null }}" id="">
-                    @if(!empty($data_audiometry->image_file))
+                    <input type="hidden" name="existing_images"
+                        value="{{ !empty($data_audiometry->image_file) ? $data_audiometry->image_file : null }}"
+                        id="">
+                    @if (!empty($data_audiometry->image_file))
                         @php
-                            $images = collect(json_decode($data_audiometry->image_file, true))->sort()->values();
+                            $images = collect(json_decode($data_audiometry->image_file, true))
+                                ->sort()
+                                ->values();
                         @endphp
                         @foreach (json_decode($images, true) as $key => $image_file)
                             <div class="row">
                                 <div class="col-md-12">
-                                    <img src="{{ asset('uploads/audiometry/'.$image_file) }}" alt="" style="width:100%;">
+                                    <img src="{{ asset('uploads/audiometry/' . $image_file) }}" alt=""
+                                        style="width:100%;">
                                 </div>
                             </div>
                             <br>
@@ -107,67 +114,127 @@
                             <div class="form-group row align-items-center mb-3">
                                 <label class="col-sm-2 col-form-label">Right</label>
                                 <div class="col-sm-1">
-                                    <input type="number" class="form-control" id="mcuCode" name="right_air_conduction[hz_200]" value="{{ isset($data_audiometry->right_air_conduction->hz_200) ? $data_audiometry->right_air_conduction->hz_200 : 0 }}" placeholder="">
+                                    <input type="number" class="form-control" id="mcuCode"
+                                        name="right_air_conduction[hz_200]"
+                                        value="{{ isset($data_audiometry->right_air_conduction->hz_200) ? $data_audiometry->right_air_conduction->hz_200 : 0 }}"
+                                        placeholder="">
                                 </div>
                                 <div class="col-sm-1">
-                                    <input type="number" class="form-control" id="mcuCode" name="right_air_conduction[hz_500]" value="{{ isset($data_audiometry->right_air_conduction->hz_500) ? $data_audiometry->right_air_conduction->hz_500 : 0 }}" placeholder="">
+                                    <input type="number" class="form-control" id="mcuCode"
+                                        name="right_air_conduction[hz_500]"
+                                        value="{{ isset($data_audiometry->right_air_conduction->hz_500) ? $data_audiometry->right_air_conduction->hz_500 : 0 }}"
+                                        placeholder="">
                                 </div>
                                 <div class="col-sm-1">
-                                    <input type="number" class="form-control" id="mcuCode" name="right_air_conduction[hz_750]" value="{{ isset($data_audiometry->right_air_conduction->hz_750) ? $data_audiometry->right_air_conduction->hz_750 : 0 }}" placeholder="">
+                                    <input type="number" class="form-control" id="mcuCode"
+                                        name="right_air_conduction[hz_750]"
+                                        value="{{ isset($data_audiometry->right_air_conduction->hz_750) ? $data_audiometry->right_air_conduction->hz_750 : 0 }}"
+                                        placeholder="">
                                 </div>
                                 <div class="col-sm-1">
-                                    <input type="number" class="form-control" id="mcuCode" name="right_air_conduction[hz_1000]" value="{{ isset($data_audiometry->right_air_conduction->hz_1000) ? $data_audiometry->right_air_conduction->hz_1000 : 0 }}" placeholder="">
+                                    <input type="number" class="form-control" id="mcuCode"
+                                        name="right_air_conduction[hz_1000]"
+                                        value="{{ isset($data_audiometry->right_air_conduction->hz_1000) ? $data_audiometry->right_air_conduction->hz_1000 : 0 }}"
+                                        placeholder="">
                                 </div>
                                 <div class="col-sm-1">
-                                    <input type="number" class="form-control" id="mcuCode" name="right_air_conduction[hz_1500]" value="{{ isset($data_audiometry->right_air_conduction->hz_1500) ? $data_audiometry->right_air_conduction->hz_1500 : 0 }}" placeholder="">
+                                    <input type="number" class="form-control" id="mcuCode"
+                                        name="right_air_conduction[hz_1500]"
+                                        value="{{ isset($data_audiometry->right_air_conduction->hz_1500) ? $data_audiometry->right_air_conduction->hz_1500 : 0 }}"
+                                        placeholder="">
                                 </div>
                                 <div class="col-sm-1">
-                                    <input type="number" class="form-control" id="mcuCode" name="right_air_conduction[hz_2000]" value="{{ isset($data_audiometry->right_air_conduction->hz_2000) ? $data_audiometry->right_air_conduction->hz_2000 : 0 }}" placeholder="">
+                                    <input type="number" class="form-control" id="mcuCode"
+                                        name="right_air_conduction[hz_2000]"
+                                        value="{{ isset($data_audiometry->right_air_conduction->hz_2000) ? $data_audiometry->right_air_conduction->hz_2000 : 0 }}"
+                                        placeholder="">
                                 </div>
                                 <div class="col-sm-1">
-                                    <input type="number" class="form-control" id="mcuCode" name="right_air_conduction[hz_3000]" value="{{ isset($data_audiometry->right_air_conduction->hz_3000) ? $data_audiometry->right_air_conduction->hz_3000 : 0 }}" placeholder="">
+                                    <input type="number" class="form-control" id="mcuCode"
+                                        name="right_air_conduction[hz_3000]"
+                                        value="{{ isset($data_audiometry->right_air_conduction->hz_3000) ? $data_audiometry->right_air_conduction->hz_3000 : 0 }}"
+                                        placeholder="">
                                 </div>
                                 <div class="col-sm-1">
-                                    <input type="number" class="form-control" id="mcuCode" name="right_air_conduction[hz_4000]" value="{{ isset($data_audiometry->right_air_conduction->hz_4000) ? $data_audiometry->right_air_conduction->hz_4000 : 0 }}" placeholder="">
+                                    <input type="number" class="form-control" id="mcuCode"
+                                        name="right_air_conduction[hz_4000]"
+                                        value="{{ isset($data_audiometry->right_air_conduction->hz_4000) ? $data_audiometry->right_air_conduction->hz_4000 : 0 }}"
+                                        placeholder="">
                                 </div>
                                 <div class="col-sm-1">
-                                    <input type="number" class="form-control" id="mcuCode" name="right_air_conduction[hz_6000]" value="{{ isset($data_audiometry->right_air_conduction->hz_6000) ? $data_audiometry->right_air_conduction->hz_6000 : 0 }}" placeholder="">
+                                    <input type="number" class="form-control" id="mcuCode"
+                                        name="right_air_conduction[hz_6000]"
+                                        value="{{ isset($data_audiometry->right_air_conduction->hz_6000) ? $data_audiometry->right_air_conduction->hz_6000 : 0 }}"
+                                        placeholder="">
                                 </div>
                                 <div class="col-sm-1">
-                                    <input type="number" class="form-control" id="mcuCode" name="right_air_conduction[hz_8000]" value="{{ isset($data_audiometry->right_air_conduction->hz_8000) ? $data_audiometry->right_air_conduction->hz_8000 : 0 }}" placeholder="">
+                                    <input type="number" class="form-control" id="mcuCode"
+                                        name="right_air_conduction[hz_8000]"
+                                        value="{{ isset($data_audiometry->right_air_conduction->hz_8000) ? $data_audiometry->right_air_conduction->hz_8000 : 0 }}"
+                                        placeholder="">
                                 </div>
                             </div>
                             <div class="form-group row align-items-center mb-3">
                                 <label class="col-sm-2 col-form-label">Left</label>
                                 <div class="col-sm-1">
-                                    <input type="number" class="form-control" id="mcuCode" name="left_air_conduction[hz_200]" value="{{ isset($data_audiometry->left_air_conduction->hz_200) ? $data_audiometry->left_air_conduction->hz_200 : 0 }}" placeholder="">
+                                    <input type="number" class="form-control" id="mcuCode"
+                                        name="left_air_conduction[hz_200]"
+                                        value="{{ isset($data_audiometry->left_air_conduction->hz_200) ? $data_audiometry->left_air_conduction->hz_200 : 0 }}"
+                                        placeholder="">
                                 </div>
                                 <div class="col-sm-1">
-                                    <input type="number" class="form-control" id="mcuCode" name="left_air_conduction[hz_500]" value="{{ isset($data_audiometry->left_air_conduction->hz_500) ? $data_audiometry->left_air_conduction->hz_500 : 0 }}" placeholder="">
+                                    <input type="number" class="form-control" id="mcuCode"
+                                        name="left_air_conduction[hz_500]"
+                                        value="{{ isset($data_audiometry->left_air_conduction->hz_500) ? $data_audiometry->left_air_conduction->hz_500 : 0 }}"
+                                        placeholder="">
                                 </div>
                                 <div class="col-sm-1">
-                                    <input type="number" class="form-control" id="mcuCode" name="left_air_conduction[hz_750]" value="{{ isset($data_audiometry->left_air_conduction->hz_750) ? $data_audiometry->left_air_conduction->hz_750 : 0 }}" placeholder="">
+                                    <input type="number" class="form-control" id="mcuCode"
+                                        name="left_air_conduction[hz_750]"
+                                        value="{{ isset($data_audiometry->left_air_conduction->hz_750) ? $data_audiometry->left_air_conduction->hz_750 : 0 }}"
+                                        placeholder="">
                                 </div>
                                 <div class="col-sm-1">
-                                    <input type="number" class="form-control" id="mcuCode" name="left_air_conduction[hz_1000]" value="{{ isset($data_audiometry->left_air_conduction->hz_1000) ? $data_audiometry->left_air_conduction->hz_1000 : 0 }}" placeholder="">
+                                    <input type="number" class="form-control" id="mcuCode"
+                                        name="left_air_conduction[hz_1000]"
+                                        value="{{ isset($data_audiometry->left_air_conduction->hz_1000) ? $data_audiometry->left_air_conduction->hz_1000 : 0 }}"
+                                        placeholder="">
                                 </div>
                                 <div class="col-sm-1">
-                                    <input type="number" class="form-control" id="mcuCode" name="left_air_conduction[hz_1500]" value="{{ isset($data_audiometry->left_air_conduction->hz_1500) ? $data_audiometry->left_air_conduction->hz_1500 : 0 }}" placeholder="">
+                                    <input type="number" class="form-control" id="mcuCode"
+                                        name="left_air_conduction[hz_1500]"
+                                        value="{{ isset($data_audiometry->left_air_conduction->hz_1500) ? $data_audiometry->left_air_conduction->hz_1500 : 0 }}"
+                                        placeholder="">
                                 </div>
                                 <div class="col-sm-1">
-                                    <input type="number" class="form-control" id="mcuCode" name="left_air_conduction[hz_2000]" value="{{ isset($data_audiometry->left_air_conduction->hz_2000) ? $data_audiometry->left_air_conduction->hz_2000 : 0 }}" placeholder="">
+                                    <input type="number" class="form-control" id="mcuCode"
+                                        name="left_air_conduction[hz_2000]"
+                                        value="{{ isset($data_audiometry->left_air_conduction->hz_2000) ? $data_audiometry->left_air_conduction->hz_2000 : 0 }}"
+                                        placeholder="">
                                 </div>
                                 <div class="col-sm-1">
-                                    <input type="number" class="form-control" id="mcuCode" name="left_air_conduction[hz_3000]" value="{{ isset($data_audiometry->left_air_conduction->hz_3000) ? $data_audiometry->left_air_conduction->hz_3000 : 0 }}" placeholder="">
+                                    <input type="number" class="form-control" id="mcuCode"
+                                        name="left_air_conduction[hz_3000]"
+                                        value="{{ isset($data_audiometry->left_air_conduction->hz_3000) ? $data_audiometry->left_air_conduction->hz_3000 : 0 }}"
+                                        placeholder="">
                                 </div>
                                 <div class="col-sm-1">
-                                    <input type="number" class="form-control" id="mcuCode" name="left_air_conduction[hz_4000]" value="{{ isset($data_audiometry->left_air_conduction->hz_4000) ? $data_audiometry->left_air_conduction->hz_4000 : 0 }}" placeholder="">
+                                    <input type="number" class="form-control" id="mcuCode"
+                                        name="left_air_conduction[hz_4000]"
+                                        value="{{ isset($data_audiometry->left_air_conduction->hz_4000) ? $data_audiometry->left_air_conduction->hz_4000 : 0 }}"
+                                        placeholder="">
                                 </div>
                                 <div class="col-sm-1">
-                                    <input type="number" class="form-control" id="mcuCode" name="left_air_conduction[hz_6000]" value="{{ isset($data_audiometry->left_air_conduction->hz_6000) ? $data_audiometry->left_air_conduction->hz_6000 : 0 }}" placeholder="">
+                                    <input type="number" class="form-control" id="mcuCode"
+                                        name="left_air_conduction[hz_6000]"
+                                        value="{{ isset($data_audiometry->left_air_conduction->hz_6000) ? $data_audiometry->left_air_conduction->hz_6000 : 0 }}"
+                                        placeholder="">
                                 </div>
                                 <div class="col-sm-1">
-                                    <input type="number" class="form-control" id="mcuCode" name="left_air_conduction[hz_8000]" value="{{ isset($data_audiometry->left_air_conduction->hz_8000) ? $data_audiometry->left_air_conduction->hz_8000 : 0 }}" placeholder="">
+                                    <input type="number" class="form-control" id="mcuCode"
+                                        name="left_air_conduction[hz_8000]"
+                                        value="{{ isset($data_audiometry->left_air_conduction->hz_8000) ? $data_audiometry->left_air_conduction->hz_8000 : 0 }}"
+                                        placeholder="">
                                 </div>
                             </div>
                         </div>
@@ -217,67 +284,127 @@
                             <div class="form-group row align-items-center mb-3">
                                 <label class="col-sm-2 col-form-label">Right</label>
                                 <div class="col-sm-1">
-                                    <input type="number" class="form-control" id="mcuCode" name="right_bone_conduction[hz_200]" value="{{ isset($data_audiometry->right_bone_conduction->hz_200) ? $data_audiometry->right_bone_conduction->hz_200 : 0 }}" placeholder="">
+                                    <input type="number" class="form-control" id="mcuCode"
+                                        name="right_bone_conduction[hz_200]"
+                                        value="{{ isset($data_audiometry->right_bone_conduction->hz_200) ? $data_audiometry->right_bone_conduction->hz_200 : 0 }}"
+                                        placeholder="">
                                 </div>
                                 <div class="col-sm-1">
-                                    <input type="number" class="form-control" id="mcuCode" name="right_bone_conduction[hz_500]" value="{{ isset($data_audiometry->right_bone_conduction->hz_500) ? $data_audiometry->right_bone_conduction->hz_500 : 0 }}" placeholder="">
+                                    <input type="number" class="form-control" id="mcuCode"
+                                        name="right_bone_conduction[hz_500]"
+                                        value="{{ isset($data_audiometry->right_bone_conduction->hz_500) ? $data_audiometry->right_bone_conduction->hz_500 : 0 }}"
+                                        placeholder="">
                                 </div>
                                 <div class="col-sm-1">
-                                    <input type="number" class="form-control" id="mcuCode" name="right_bone_conduction[hz_750]" value="{{ isset($data_audiometry->right_bone_conduction->hz_750) ? $data_audiometry->right_bone_conduction->hz_750 : 0 }}" placeholder="">
+                                    <input type="number" class="form-control" id="mcuCode"
+                                        name="right_bone_conduction[hz_750]"
+                                        value="{{ isset($data_audiometry->right_bone_conduction->hz_750) ? $data_audiometry->right_bone_conduction->hz_750 : 0 }}"
+                                        placeholder="">
                                 </div>
                                 <div class="col-sm-1">
-                                    <input type="number" class="form-control" id="mcuCode" name="right_bone_conduction[hz_1000]" value="{{ isset($data_audiometry->right_bone_conduction->hz_1000) ? $data_audiometry->right_bone_conduction->hz_1000 : 0 }}" placeholder="">
+                                    <input type="number" class="form-control" id="mcuCode"
+                                        name="right_bone_conduction[hz_1000]"
+                                        value="{{ isset($data_audiometry->right_bone_conduction->hz_1000) ? $data_audiometry->right_bone_conduction->hz_1000 : 0 }}"
+                                        placeholder="">
                                 </div>
                                 <div class="col-sm-1">
-                                    <input type="number" class="form-control" id="mcuCode" name="right_bone_conduction[hz_1500]" value="{{ isset($data_audiometry->right_bone_conduction->hz_1500) ? $data_audiometry->right_bone_conduction->hz_1500 : 0 }}" placeholder="">
+                                    <input type="number" class="form-control" id="mcuCode"
+                                        name="right_bone_conduction[hz_1500]"
+                                        value="{{ isset($data_audiometry->right_bone_conduction->hz_1500) ? $data_audiometry->right_bone_conduction->hz_1500 : 0 }}"
+                                        placeholder="">
                                 </div>
                                 <div class="col-sm-1">
-                                    <input type="number" class="form-control" id="mcuCode" name="right_bone_conduction[hz_2000]" value="{{ isset($data_audiometry->right_bone_conduction->hz_2000) ? $data_audiometry->right_bone_conduction->hz_2000 : 0 }}" placeholder="">
+                                    <input type="number" class="form-control" id="mcuCode"
+                                        name="right_bone_conduction[hz_2000]"
+                                        value="{{ isset($data_audiometry->right_bone_conduction->hz_2000) ? $data_audiometry->right_bone_conduction->hz_2000 : 0 }}"
+                                        placeholder="">
                                 </div>
                                 <div class="col-sm-1">
-                                    <input type="number" class="form-control" id="mcuCode" name="right_bone_conduction[hz_3000]" value="{{ isset($data_audiometry->right_bone_conduction->hz_3000) ? $data_audiometry->right_bone_conduction->hz_3000 : 0 }}" placeholder="">
+                                    <input type="number" class="form-control" id="mcuCode"
+                                        name="right_bone_conduction[hz_3000]"
+                                        value="{{ isset($data_audiometry->right_bone_conduction->hz_3000) ? $data_audiometry->right_bone_conduction->hz_3000 : 0 }}"
+                                        placeholder="">
                                 </div>
                                 <div class="col-sm-1">
-                                    <input type="number" class="form-control" id="mcuCode" name="right_bone_conduction[hz_4000]" value="{{ isset($data_audiometry->right_bone_conduction->hz_4000) ? $data_audiometry->right_bone_conduction->hz_4000 : 0 }}" placeholder="">
+                                    <input type="number" class="form-control" id="mcuCode"
+                                        name="right_bone_conduction[hz_4000]"
+                                        value="{{ isset($data_audiometry->right_bone_conduction->hz_4000) ? $data_audiometry->right_bone_conduction->hz_4000 : 0 }}"
+                                        placeholder="">
                                 </div>
                                 <div class="col-sm-1">
-                                    <input type="number" class="form-control" id="mcuCode" name="right_bone_conduction[hz_6000]" value="{{ isset($data_audiometry->right_bone_conduction->hz_6000) ? $data_audiometry->right_bone_conduction->hz_6000 : 0 }}" placeholder="">
+                                    <input type="number" class="form-control" id="mcuCode"
+                                        name="right_bone_conduction[hz_6000]"
+                                        value="{{ isset($data_audiometry->right_bone_conduction->hz_6000) ? $data_audiometry->right_bone_conduction->hz_6000 : 0 }}"
+                                        placeholder="">
                                 </div>
                                 <div class="col-sm-1">
-                                    <input type="number" class="form-control" id="mcuCode" name="right_bone_conduction[hz_8000]" value="{{ isset($data_audiometry->right_bone_conduction->hz_8000) ? $data_audiometry->right_bone_conduction->hz_8000 : 0 }}" placeholder="">
+                                    <input type="number" class="form-control" id="mcuCode"
+                                        name="right_bone_conduction[hz_8000]"
+                                        value="{{ isset($data_audiometry->right_bone_conduction->hz_8000) ? $data_audiometry->right_bone_conduction->hz_8000 : 0 }}"
+                                        placeholder="">
                                 </div>
                             </div>
                             <div class="form-group row align-items-center mb-3">
                                 <label class="col-sm-2 col-form-label">Left</label>
                                 <div class="col-sm-1">
-                                    <input type="number" class="form-control" id="mcuCode" name="left_bone_conduction[hz_200]" value="{{ isset($data_audiometry->left_bone_conduction->hz_200) ? $data_audiometry->left_bone_conduction->hz_200 : 0 }}" placeholder="">
+                                    <input type="number" class="form-control" id="mcuCode"
+                                        name="left_bone_conduction[hz_200]"
+                                        value="{{ isset($data_audiometry->left_bone_conduction->hz_200) ? $data_audiometry->left_bone_conduction->hz_200 : 0 }}"
+                                        placeholder="">
                                 </div>
                                 <div class="col-sm-1">
-                                    <input type="number" class="form-control" id="mcuCode" name="left_bone_conduction[hz_500]" value="{{ isset($data_audiometry->left_bone_conduction->hz_500) ? $data_audiometry->left_bone_conduction->hz_500 : 0 }}" placeholder="">
+                                    <input type="number" class="form-control" id="mcuCode"
+                                        name="left_bone_conduction[hz_500]"
+                                        value="{{ isset($data_audiometry->left_bone_conduction->hz_500) ? $data_audiometry->left_bone_conduction->hz_500 : 0 }}"
+                                        placeholder="">
                                 </div>
                                 <div class="col-sm-1">
-                                    <input type="number" class="form-control" id="mcuCode" name="left_bone_conduction[hz_750]" value="{{ isset($data_audiometry->left_bone_conduction->hz_750) ? $data_audiometry->left_bone_conduction->hz_750 : 0 }}" placeholder="">
+                                    <input type="number" class="form-control" id="mcuCode"
+                                        name="left_bone_conduction[hz_750]"
+                                        value="{{ isset($data_audiometry->left_bone_conduction->hz_750) ? $data_audiometry->left_bone_conduction->hz_750 : 0 }}"
+                                        placeholder="">
                                 </div>
                                 <div class="col-sm-1">
-                                    <input type="number" class="form-control" id="mcuCode" name="left_bone_conduction[hz_1000]" value="{{ isset($data_audiometry->left_bone_conduction->hz_1000) ? $data_audiometry->left_bone_conduction->hz_1000 : 0 }}" placeholder="">
+                                    <input type="number" class="form-control" id="mcuCode"
+                                        name="left_bone_conduction[hz_1000]"
+                                        value="{{ isset($data_audiometry->left_bone_conduction->hz_1000) ? $data_audiometry->left_bone_conduction->hz_1000 : 0 }}"
+                                        placeholder="">
                                 </div>
                                 <div class="col-sm-1">
-                                    <input type="number" class="form-control" id="mcuCode" name="left_bone_conduction[hz_1500]" value="{{ isset($data_audiometry->left_bone_conduction->hz_1500) ? $data_audiometry->left_bone_conduction->hz_1500 : 0 }}" placeholder="">
+                                    <input type="number" class="form-control" id="mcuCode"
+                                        name="left_bone_conduction[hz_1500]"
+                                        value="{{ isset($data_audiometry->left_bone_conduction->hz_1500) ? $data_audiometry->left_bone_conduction->hz_1500 : 0 }}"
+                                        placeholder="">
                                 </div>
                                 <div class="col-sm-1">
-                                    <input type="number" class="form-control" id="mcuCode" name="left_bone_conduction[hz_2000]" value="{{ isset($data_audiometry->left_bone_conduction->hz_2000) ? $data_audiometry->left_bone_conduction->hz_2000 : 0 }}" placeholder="">
+                                    <input type="number" class="form-control" id="mcuCode"
+                                        name="left_bone_conduction[hz_2000]"
+                                        value="{{ isset($data_audiometry->left_bone_conduction->hz_2000) ? $data_audiometry->left_bone_conduction->hz_2000 : 0 }}"
+                                        placeholder="">
                                 </div>
                                 <div class="col-sm-1">
-                                    <input type="number" class="form-control" id="mcuCode" name="left_bone_conduction[hz_3000]" value="{{ isset($data_audiometry->left_bone_conduction->hz_3000) ? $data_audiometry->left_bone_conduction->hz_3000 : 0 }}" placeholder="">
+                                    <input type="number" class="form-control" id="mcuCode"
+                                        name="left_bone_conduction[hz_3000]"
+                                        value="{{ isset($data_audiometry->left_bone_conduction->hz_3000) ? $data_audiometry->left_bone_conduction->hz_3000 : 0 }}"
+                                        placeholder="">
                                 </div>
                                 <div class="col-sm-1">
-                                    <input type="number" class="form-control" id="mcuCode" name="left_bone_conduction[hz_4000]" value="{{ isset($data_audiometry->left_bone_conduction->hz_4000) ? $data_audiometry->left_bone_conduction->hz_4000 : 0 }}" placeholder="">
+                                    <input type="number" class="form-control" id="mcuCode"
+                                        name="left_bone_conduction[hz_4000]"
+                                        value="{{ isset($data_audiometry->left_bone_conduction->hz_4000) ? $data_audiometry->left_bone_conduction->hz_4000 : 0 }}"
+                                        placeholder="">
                                 </div>
                                 <div class="col-sm-1">
-                                    <input type="number" class="form-control" id="mcuCode" name="left_bone_conduction[hz_6000]" value="{{ isset($data_audiometry->left_bone_conduction->hz_6000) ? $data_audiometry->left_bone_conduction->hz_6000 : 0 }}" placeholder="">
+                                    <input type="number" class="form-control" id="mcuCode"
+                                        name="left_bone_conduction[hz_6000]"
+                                        value="{{ isset($data_audiometry->left_bone_conduction->hz_6000) ? $data_audiometry->left_bone_conduction->hz_6000 : 0 }}"
+                                        placeholder="">
                                 </div>
                                 <div class="col-sm-1">
-                                    <input type="number" class="form-control" id="mcuCode" name="left_bone_conduction[hz_8000]" value="{{ isset($data_audiometry->left_bone_conduction->hz_8000) ? $data_audiometry->left_bone_conduction->hz_8000 : 0 }}" placeholder="">
+                                    <input type="number" class="form-control" id="mcuCode"
+                                        name="left_bone_conduction[hz_8000]"
+                                        value="{{ isset($data_audiometry->left_bone_conduction->hz_8000) ? $data_audiometry->left_bone_conduction->hz_8000 : 0 }}"
+                                        placeholder="">
                                 </div>
                             </div>
                         </div>
@@ -294,19 +421,25 @@
                             <div class="form-group row align-items-center mb-3">
                                 <label class="col-sm-4 col-form-label">Telinga Kanan</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="mcuCode" name="right_ear" value="{{ isset($data_audiometry->right_ear) ? $data_audiometry->right_ear : '' }}" placeholder="">
+                                    <input type="text" class="form-control" id="mcuCode" name="right_ear"
+                                        value="{{ isset($data_audiometry->right_ear) ? $data_audiometry->right_ear : '' }}"
+                                        placeholder="">
                                 </div>
                             </div>
                             <div class="form-group row align-items-center mb-3">
                                 <label class="col-sm-4 col-form-label">Telingan Kiri</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="mcuCode" name="left_ear" value="{{ isset($data_audiometry->left_ear) ? $data_audiometry->left_ear : '' }}" placeholder="">
+                                    <input type="text" class="form-control" id="mcuCode" name="left_ear"
+                                        value="{{ isset($data_audiometry->left_ear) ? $data_audiometry->left_ear : '' }}"
+                                        placeholder="">
                                 </div>
                             </div>
                             <div class="form-group row align-items-center mb-3">
                                 <label class="col-sm-4 col-form-label">Kesimpulan</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="mcuCode" name="conclusion" value="{{ isset($data_audiometry->conclusion) ? $data_audiometry->conclusion : '' }}" placeholder="">
+                                    <input type="text" class="form-control" id="mcuCode" name="conclusion"
+                                        value="{{ isset($data_audiometry->conclusion) ? $data_audiometry->conclusion : '' }}"
+                                        placeholder="">
                                 </div>
                             </div>
                         </div>
@@ -314,26 +447,34 @@
                             <div class="form-group row align-items-center mb-3">
                                 <label class="col-sm-4 col-form-label">Saran</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="mcuCode" name="suggestion" value="{{ isset($data_audiometry->suggestion) ? $data_audiometry->suggestion : '' }}" placeholder="">
+                                    <input type="text" class="form-control" id="mcuCode" name="suggestion"
+                                        value="{{ isset($data_audiometry->suggestion) ? $data_audiometry->suggestion : '' }}"
+                                        placeholder="">
                                 </div>
                             </div>
                             <div class="form-group row align-items-center mb-3">
                                 <label class="col-sm-4 col-form-label">Normal / Abnormal</label>
                                 <div class="col-sm-8">
                                     <select class="form-control" name="is_abnormal" style="width: 100%;">
-                                        <option value="0" {{ isset($data_audiometry->is_abnormal) && $data_audiometry->is_abnormal == 0 ? 'selected' : '' }}>Normal</option>
-                                        <option value="1" {{ isset($data_audiometry->is_abnormal) && $data_audiometry->is_abnormal == 1 ? 'selected' : '' }}>Abnormal</option>
+                                        <option value="0"
+                                            {{ isset($data_audiometry->is_abnormal) && $data_audiometry->is_abnormal == 0 ? 'selected' : '' }}>
+                                            Normal</option>
+                                        <option value="1"
+                                            {{ isset($data_audiometry->is_abnormal) && $data_audiometry->is_abnormal == 1 ? 'selected' : '' }}>
+                                            Abnormal</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="form-group row align-items-center mb-3">
                                 <label class="col-sm-4 col-form-label">Pemeriksa</label>
                                 <div class="col-sm-8">
-                                    <select class="form-control select2 selectDoctorAudiometry" name="doctor_id" style="width: 100%;">
+                                    <select class="form-control select2 selectDoctorAudiometry" name="doctor_id"
+                                        style="width: 100%;">
                                         <option selected="selected" value="">- Dokter Pemeriksa -</option>
                                         @if (!empty($doctor_data))
                                             @foreach ($doctor_data as $doctor)
-                                            <option value="{{ $doctor->id }}">{{ $doctor->doctor_name }}</option>
+                                                <option value="{{ $doctor->id }}">{{ $doctor->doctor_name }}
+                                                </option>
                                             @endforeach
                                         @endif
                                     </select>
@@ -343,15 +484,19 @@
                     </div>
                 </div>
             </div>
-            <div class="d-flex justify-content-end">
-                <button type="submit" class="btn btn-danger action-delete" {{ empty($data_audiometry) ? 'disabled' : '' }}>
-                    <i class="fas fa-trash"></i>&nbsp;&nbsp;Hapus
-                </button>
-                &nbsp;&nbsp;
-                <button type="submit" class="btn btn-success action-save">
-                    <i class="fas fa-save"></i>&nbsp;&nbsp;Simpan
-                </button>
-            </div>
+
+            @if (Auth::user()->id_role == 1 || Auth::user()->id_role == 3)
+                <div class="d-flex justify-content-end">
+                    <button type="submit" class="btn btn-danger action-delete"
+                        {{ empty($data_audiometry) ? 'disabled' : '' }}>
+                        <i class="fas fa-trash"></i>&nbsp;&nbsp;Hapus
+                    </button>
+                    &nbsp;&nbsp;
+                    <button type="submit" class="btn btn-success action-save">
+                        <i class="fas fa-save"></i>&nbsp;&nbsp;Simpan
+                    </button>
+                </div>
+            @endif
         </div>
     </form>
 </div>

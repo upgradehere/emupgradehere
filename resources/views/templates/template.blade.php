@@ -96,7 +96,31 @@
                         <li class="user-body" style="background-color:#2693a2;color:#fff">
                             <div class="row">
                                 <div class="col-12 text-center">
-                                    <p>{{ Auth::user()->id_role == 1 ? '- Admin EM Health -' : '- PIC Perusahaan -' }}
+                                    <p>
+                                        @switch(Auth::user()->id_role)
+                                            @case(1)
+                                                {{ '- Admin EM Health -' }}
+                                            @break
+
+                                            @case(2)
+                                                {{ '- PIC Perusahaan -' }}
+                                            @break
+
+                                            @case(3)
+                                                {{ '- Checker / Pemeriksa -' }}
+                                            @break
+
+                                            @case(4)
+                                                {{ '- CSO -' }}
+                                            @break
+
+                                            @case(5)
+                                                {{ '- Karyawan -' }}
+                                            @break
+
+                                            @default
+                                                {{ '- Role Not Defined -' }}
+                                        @endswitch
                                     </p>
                                 </div>
                             </div>
@@ -132,16 +156,19 @@
                         data-accordion="false">
                         <!-- Add icons to the links using the .nav-icon class
                             with font-awesome or any other icon font library -->
-                        <li class="nav-item">
-                            <a href="{{ route('dashboard') }}"
-                                class="nav-link {{ Route::is('dashboard') ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-chart-bar"></i>
-                                <p>
-                                    Dashboard
-                                </p>
-                            </a>
-                        </li>
+                        @if (Auth::user()->id_role == 1 || Auth::user()->id_role == 2)
+                            <li class="nav-item">
+                                <a href="{{ route('dashboard') }}"
+                                    class="nav-link {{ Route::is('dashboard') ? 'active' : '' }}">
+                                    <i class="nav-icon fas fa-chart-bar"></i>
+                                    <p>
+                                        Dashboard
+                                    </p>
+                                </a>
+                            </li>
+                        @endif
                         {{-- <li class="nav-header">MCU</li> --}}
+
                         <li class="nav-item menu-closed">
                             <a href="#"
                                 class="nav-link {{ Str::contains(Route::currentRouteName(), 'mcu') ? 'active' : '' }}">
@@ -161,7 +188,7 @@
                                 </li>
                             </ul>
                         </li>
-                        @if (Auth::user()->id_role == 1)
+                        @if (Auth::user()->id_role == 1 || Auth::user()->id_role == 4)
                             <li class="nav-item">
                                 <a href="{{ route('package') }}"
                                     class="nav-link {{ Route::is('package.*') || Route::is('package') ? 'active' : '' }}">
@@ -172,7 +199,7 @@
                                 </a>
                             </li>
                         @endif
-                        @if (Auth::user()->id_role == 1)
+                        @if (Auth::user()->id_role == 1 || Auth::user()->id_role == 4)
                             <li class="nav-item">
                                 <a href="{{ route('company') }}"
                                     class="nav-link {{ Route::is('company.*') || Route::is('employee.*') || Route::is('company') ? 'active' : '' }}">
@@ -183,7 +210,7 @@
                                 </a>
                             </li>
                         @endif
-                        @if (Auth::user()->id_role == 1)
+                        @if (Auth::user()->id_role == 1 || Auth::user()->id_role == 4)
                             <li class="nav-item">
                                 <a href="{{ route('departement') }}"
                                     class="nav-link {{ Route::is('departement.*') || Route::is('departement') ? 'active' : '' }}">
@@ -194,7 +221,7 @@
                                 </a>
                             </li>
                         @endif
-                        @if (Auth::user()->id_role == 1)
+                        @if (Auth::user()->id_role == 1 || Auth::user()->id_role == 4)
                             <li class="nav-item">
                                 <a href="{{ route('doctor') }}"
                                     class="nav-link {{ Route::is('doctor.*') || Route::is('doctor') ? 'active' : '' }}">

@@ -58,7 +58,9 @@ class AuthController extends Controller
 
                 $otpActive = env('APP_OTP');
 
-                if ($update->id_role == 1 || ($update->id_role == 2 && $otpActive == 0)) {
+                $rolesIgnoreOtp = [2,3,4,5];
+
+                if ($update->id_role == 1 || (in_array($update->id_role, $rolesIgnoreOtp) == 2 && $otpActive == 0)) {
                      $cred = [
                         'email'     => $email,
                         'password'  => $password,
@@ -70,7 +72,9 @@ class AuthController extends Controller
                         $data = [
                             'status' => 'success|pass',
                             'message' => 'Login success',
-                            'data' => '',
+                            'data' => [
+                                'role' => $user->id_role
+                            ],
                         ];
 
                         Session::flash('login_success', 'Selamat datang '.$user->name); 

@@ -1,5 +1,11 @@
 @extends('templates/template')
 @section('content')
+    <style>
+        .disabled-div {
+            pointer-events: none;
+            opacity: 0.8;
+        }
+    </style>
     <div class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
@@ -66,23 +72,22 @@
                     <ul class="nav nav-tabs" id="custom-content-below-tab" role="tablist">
                         @foreach ($examinations as $key => $examination)
                             <li class="nav-item">
-                                <a class="nav-link {{ $key === 0 ? 'active' : '' }}"
-                                id="{{ $examination['tab_name'] }}-tab"
-                                data-toggle="pill"
-                                href="#{{ $examination['tab_name'] }}"
-                                role="tab"
-                                aria-controls="{{ $examination['tab_name'] }}"
-                                aria-selected="{{ $key === 0 ? 'true' : 'false' }}">
+                                <a class="nav-link {{ $key === 0 ? 'active' : '' }}" id="{{ $examination['tab_name'] }}-tab"
+                                    data-toggle="pill" href="#{{ $examination['tab_name'] }}" role="tab"
+                                    aria-controls="{{ $examination['tab_name'] }}"
+                                    aria-selected="{{ $key === 0 ? 'true' : 'false' }}">
                                     {{ $examination['lookup_name'] }}
                                 </a>
                             </li>
                         @endforeach
                     </ul>
                     <div class="tab-content" id="tab-anamnesis-tab">
-                        <div class="tab-pane fade show active" id="tab-anamnesis" role="tabpanel" aria-labelledby="tab-anamnesis-tab"><br>
+                        <div class="tab-pane fade show active" id="tab-anamnesis" role="tabpanel"
+                            aria-labelledby="tab-anamnesis-tab"><br>
                             @include('mcu.pemeriksaan.partials.anamnesis')
                         </div>
-                        <div class="tab-pane fade" id="tab-refraction" role="tabpanel" aria-labelledby="tab-refraction-tab"><br>
+                        <div class="tab-pane fade" id="tab-refraction" role="tabpanel" aria-labelledby="tab-refraction-tab">
+                            <br>
                             @include('mcu.pemeriksaan.partials.refraction')
                         </div>
                         <div class="tab-pane fade" id="tab-lab" role="tabpanel" aria-labelledby="tab-lab-tab"><br>
@@ -91,10 +96,12 @@
                         <div class="tab-pane fade" id="tab-rontgen" role="tabpanel" aria-labelledby="tab-rontgen-tab"><br>
                             @include('mcu.pemeriksaan.partials.rontgen')
                         </div>
-                        <div class="tab-pane fade" id="tab-audiometri" role="tabpanel" aria-labelledby="tab-audiometri-tab"><br>
+                        <div class="tab-pane fade" id="tab-audiometri" role="tabpanel" aria-labelledby="tab-audiometri-tab">
+                            <br>
                             @include('mcu.pemeriksaan.partials.audiometri')
                         </div>
-                        <div class="tab-pane fade" id="tab-spirometri" role="tabpanel" aria-labelledby="tab-spirometri-tab"><br>
+                        <div class="tab-pane fade" id="tab-spirometri" role="tabpanel" aria-labelledby="tab-spirometri-tab">
+                            <br>
                             @include('mcu.pemeriksaan.partials.spirometri')
                         </div>
                         <div class="tab-pane fade" id="tab-ekg" role="tabpanel" aria-labelledby="tab-ekg-tab"><br>
@@ -103,7 +110,8 @@
                         <div class="tab-pane fade" id="tab-usg" role="tabpanel" aria-labelledby="tab-usg-tab"><br>
                             @include('mcu.pemeriksaan.partials.usg')
                         </div>
-                        <div class="tab-pane fade" id="tab-treadmill" role="tabpanel" aria-labelledby="tab-treadmill-tab"><br>
+                        <div class="tab-pane fade" id="tab-treadmill" role="tabpanel" aria-labelledby="tab-treadmill-tab">
+                            <br>
                             @include('mcu.pemeriksaan.partials.treadmill')
                         </div>
                         <div class="tab-pane fade" id="tab-papsmear" role="tabpanel" aria-labelledby="tab-papsmear-tab"><br>

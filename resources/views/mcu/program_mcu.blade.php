@@ -23,7 +23,7 @@
                         <div class="card-header">
                             <h3 class="card-title">Daftar Program MCU</h3><br>
                             <br>
-                            @if (Auth::user()->id_company == null)
+                            @if (Auth::user()->id_role == 1 || Auth::user()->id_role == 4)
                                 <button class="btn btn-success" data-toggle="modal" data-target="#modal_add_program">+
                                     Tambah
                                     Program Baru</button>
@@ -136,6 +136,7 @@
             var urlParams = new URLSearchParams(window.location.search);
             urlParams = urlParams.get('company-id');
             companyId = (urlParams == null) ? 'A' : urlParams;
+            var role = @json(Auth::user()->id_role);
 
             let table = $("#mcuProgramTable").DataTable({
                 responsive: true,
@@ -184,16 +185,26 @@
                         render: function(data, type, row) {
                             let companyId = row.company_id;
                             let mcuProgramId = row.mcu_program_id;
-                            return `<a class="btn btn-primary btn-sm action-detail" href="/mcu/program-mcu/detail?company_id=${companyId}&mcu_program_id=${mcuProgramId}"><i class="fas fa-eye"></i></a>
-                                    <a class="btn btn-danger btn-sm action-delete"><i class="fas fa-trash"></i></a>
-                                    <a class="btn btn-success btn-sm action-edit" data-id="${mcuProgramId}"><i class="fas fa-edit"></i></a>`;
+                            var delete_url =
+                                "{{ route('program-mcu-delete-program', ['id' => '__id__']) }}";
+                            delete_url = delete_url.replace('__id__', mcuProgramId);
+                            if (role == 1) {
+                                return `<center><a class="btn btn-primary btn-sm action-detail" href="/mcu/program-mcu/detail?company_id=${companyId}&mcu_program_id=${mcuProgramId}"><i class="fas fa-eye"></i></a>
+                                        <a class="btn btn-danger btn-sm action-delete" data-url="${delete_url}"><i class="fas fa-trash"></i></a>
+                                        <a class="btn btn-success btn-sm action-edit" data-id="${mcuProgramId}"><i class="fas fa-edit"></i></a></center>`;
+                            } else if (role == 4) {
+                                return `<center><a class="btn btn-primary btn-sm action-detail" href="/mcu/program-mcu/detail?company_id=${companyId}&mcu_program_id=${mcuProgramId}"><i class="fas fa-eye"></i></a>
+                                        <a class="btn btn-success btn-sm action-edit" data-id="${mcuProgramId}"><i class="fas fa-edit"></i></a></center>`;
+                            } else if (role == 2 || role == 3 || role == 5) {
+                                return `<center><a class="btn btn-primary btn-sm action-detail" href="/mcu/program-mcu/detail?company_id=${companyId}&mcu_program_id=${mcuProgramId}"><i class="fas fa-eye"></i></a></center>`;
+                            }
                         }
                     }
                 ],
                 order: [
                     [1, 'asc']
                 ],
-                drawCallback: function(){
+                drawCallback: function() {
                     var role = @json(Auth::user()->id_role);
                     if (role == 2) {
                         $('.action-delete').hide();
@@ -209,8 +220,30 @@
                     denyButtonText: "Tidak"
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        Swal.fire("Berhasil menghapus data!", "", "success");
-                        table.ajax.reload();
+                        var url = $(this).attr('data-url');
+                        $.ajax({
+                            url: url,
+                            method: 'GET',
+                            success: function(response) {
+                                if (response.status == 'error') {
+                                    var data = response.data
+                                    if (Array.isArray(data)) {
+                                        $.each(data, function(index, value) {
+                                            toastr.warning(value)
+                                        })
+                                    } else {
+                                        toastr.warning(data)
+                                    }
+                                } else if (response.status == 'success') {
+                                    toastr.success('Data berhasil dihapus!')
+                                    table.ajax.reload();
+                                }
+                            },
+                            error: function(response) {
+                                toastr.error(
+                                    'Kesalahan terjadi, harap hubungi Admin kami')
+                            }
+                        });
                     }
                 });
             });
