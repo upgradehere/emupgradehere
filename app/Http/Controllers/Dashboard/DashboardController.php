@@ -16,7 +16,7 @@ class DashboardController extends Controller
         $user = Auth::user();
         $id_company = null;
 
-        if ($user->id_role == 2) {
+        if ($user->id_role == 2 || $user->id_role == 5) {
             $id_company = $user->id_company;
         }
 
