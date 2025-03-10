@@ -37,6 +37,7 @@ class AuditTrailsController extends Controller
                 'audit_trails_log.created_at'
             )
             ->leftJoin('users', 'users.id', '=', 'audit_trails_log.user_id')
+            ->whereBetween('audit_trails_log.created_at', [date('Y-m-d 00:00:00', strtotime('-2 weeks')), date('Y-m-d 23:59:59')])
             ->orderBy('audit_trails_log.created_at', 'desc');
             return response()->json(GlobalHelper::dataTable($request, $query));
         } catch (\Exception $e) {
