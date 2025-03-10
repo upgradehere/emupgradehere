@@ -77,11 +77,11 @@ class ProgramMcuController extends Controller
                 $query->where('company_id', $company_id);
             }
             $resp = GlobalHelper::dataTable($request, $query);
-            
+
             if ($auth->id_role == 5) {
                 foreach($resp['data'] as $k => $r) {
                     $mcu_program_id = $r['mcu_program_id'];
-                    
+
                     $check = McuT::where('mcu_program_id', $mcu_program_id)
                                     ->where('employee_id', $employee_id)
                                     ->first();
@@ -517,15 +517,6 @@ class ProgramMcuController extends Controller
                             $query = $query->where(DB::raw('CAST(laboratory_detail_t.result AS NUMERIC)'), '>=', 126);
                         }
                         $query = $query->where('laboratory_t.deleted_at', null)->where('laboratory_detail_t.deleted_at', null);
-                        break;
-                    case 'Rontgen':
-                        $query = $query->leftJoin('rontgen_t', 'rontgen_t.mcu_id', 'mcu_employee_v.mcu_id');
-                        if ($chart_additional == 'Normal') {
-                            $query = $query->where('rontgen_t.is_abnormal', false);
-                        } else if ($chart_additional == 'Abnormal') {
-                            $query = $query->where('rontgen_t.is_abnormal', true);
-                        }
-                        $query = $query->where('rontgen_t.deleted_at', null);
                         break;
                     default:
                     break;
@@ -1039,7 +1030,7 @@ class ProgramMcuController extends Controller
                 'status' => 'success',
                 'message' => 'Delete success',
             ];
-            
+
             return response()->json($data, 200);
         } else {
             $data = [

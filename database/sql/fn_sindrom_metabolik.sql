@@ -146,24 +146,7 @@ BEGIN
     LEFT JOIN employee_m ON employee_m.employee_id = mcu_t.employee_id
     WHERE mcu_t.mcu_program_id = p_mcu_program_id
 	and laboratory_t.deleted_at is null
-    and laboratory_detail_t.deleted_at is null
-    UNION ALL
-    -- Rontgen
-    SELECT
-        'rontgen' AS name,
-        COUNT(CASE WHEN rontgen_t.is_abnormal THEN 1 END)::integer AS count_abnormal,
-        COUNT(CASE WHEN rontgen_t.is_abnormal IS NOT TRUE THEN 1 END)::integer AS count_normal,
-        json_build_object(
-            'normal', COUNT(CASE WHEN rontgen_t.is_abnormal THEN 1 END)::integer,
-            'abnormal', COUNT(CASE WHEN rontgen_t.is_abnormal THEN 1 END)::integer
-        ) AS json_data,
-        COUNT(rontgen_id)::integer as count_all
-    FROM mcu_t
-    LEFT JOIN rontgen_t ON rontgen_t.mcu_id = mcu_t.mcu_id
-    LEFT JOIN employee_m ON employee_m.employee_id = mcu_t.employee_id
-    WHERE mcu_t.mcu_program_id = p_mcu_program_id
-	and mcu_t.deleted_at is null
-   	and rontgen_t.deleted_at is null;
+    and laboratory_detail_t.deleted_at is null;
 END;
 $function$
 ;
