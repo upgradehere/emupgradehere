@@ -192,15 +192,67 @@
                 let newValues = $(this).data('newvalues');
                 let date = $(this).data('date');
 
-                //old values
+                function jsonToTable(json) {
+                    if (typeof json !== "object" || json === null) {
+                        try {
+                            let parsedJson = JSON.parse(json);
+                            if (typeof parsedJson === "object" && parsedJson !== null) {
+                                return jsonToTable(parsedJson);
+                            }
+                        } catch (error) {
+                            return json;
+                        }
+                    }
+
+                    let html = "<table table-bordered table-striped>";
+
+                    if (Array.isArray(json)) {
+                        json.forEach((item, index) => {
+                            html += `<tr style="border-bottom: 1px solid #c7c7c7;">
+                                        <td class="align-top"><strong>${index}</strong></td>
+                                        <td class="align-top">&nbsp; : &nbsp;</td>
+                                        <td class="align-top">${(typeof item === "object" && item !== null) ? jsonToTable(item) : item}</td>
+                                    </tr>`;
+                        });
+                    } else {
+                        for (let key in json) {
+                            if (json.hasOwnProperty(key)) {
+                                let value = json[key];
+
+                                if (typeof value === "string") {
+                                    try {
+                                        let parsedValue = JSON.parse(value);
+                                        if (typeof parsedValue === "object" && parsedValue !== null) {
+                                            value = jsonToTable(parsedValue);
+                                        }
+                                    } catch (error) {
+                                        // If parsing fails, keep it as a string
+                                    }
+                                }
+
+                                html += `<tr style="border-bottom: 1px solid #c7c7c7;">
+                                            <td class="align-top"><strong>${key}</strong></td>
+                                            <td class="align-top">&nbsp; : &nbsp;</td>
+                                            <td class="align-top">${(typeof value === "object" && value !== null) ? jsonToTable(value) : value}</td>
+                                        </tr>`;
+                            }
+                        }
+                    }
+
+                    html += "</table>";
+                    return html;
+                }
+
+                // old values
                 try {
                     oldValues = JSON.parse(decodeURIComponent(oldValues));
                 } catch (error) {
                     oldValues = null;
                 }
+
                 let oldValuesHtml = "";
                 if (oldValues && typeof oldValues === "object") {
-                    oldValuesHtml = JSON.stringify(oldValues);
+                    oldValuesHtml = jsonToTable(oldValues);
                 } else {
                     oldValuesHtml = "<p>No previous data</p>";
                 }
@@ -214,7 +266,7 @@
                 let newValuesHtml = "";
 
                 if (newValues && typeof newValues === "object") {
-                    newValuesHtml = JSON.stringify(newValues);
+                    newValuesHtml = jsonToTable(newValues);
                 } else {
                     newValuesHtml = "<p>No new data</p>";
                 }
@@ -223,32 +275,32 @@
                     <table>
                         <tr>
                             <td><strong>Nama User</strong></td>
-                            <td>:</td>
+                            <td>&nbsp; : &nbsp;</td>
                             <td>${name}</td>
                         </tr>
                         <tr>
                             <td><strong>Event</strong></td>
-                            <td>:</td>
+                            <td>&nbsp; : &nbsp;</td>
                             <td>${event}</td>
                         </tr>
                         <tr>
                             <td><strong>URL</strong></td>
-                            <td>:</td>
+                            <td>&nbsp; : &nbsp;</td>
                             <td>${url}</td>
                         </tr>
                         <tr>
                             <td><strong>IP Address</strong></td>
-                            <td>:</td>
+                            <td>&nbsp; : &nbsp;</td>
                             <td>${ip}</td>
                         </tr>
                         <tr>
                             <td><strong>OS</strong></td>
-                            <td>:</td>
+                            <td>&nbsp; : &nbsp;</td>
                             <td>${platform}</td>
                         </tr>
                         <tr>
                             <td><strong>Browser</strong></td>
-                            <td>:</td>
+                            <td>&nbsp; : &nbsp;</td>
                             <td>${browser}</td>
                         </tr>
                     </table>
@@ -259,8 +311,8 @@
                             <th style="width: 50%; padding: 10px; border: 1px solid #ddd;">New Values</th>
                         </tr>
                         <tr>
-                            <td style="width: 50%; padding: 10px; border: 1px solid #ddd; min-height: 50px; word-wrap: break-word; overflow: hidden;">${oldValuesHtml}</td>
-                            <td style="width: 50%; padding: 10px; border: 1px solid #ddd; min-height: 50px; word-wrap: break-word; overflow: hidden;">${newValuesHtml}</td>
+                            <td class="align-top" style="width: 50%; padding: 10px; border: 1px solid #ddd; min-height: 50px; word-wrap: break-word; overflow: hidden;">${oldValuesHtml}</td>
+                            <td class="align-top" style="width: 50%; padding: 10px; border: 1px solid #ddd; min-height: 50px; word-wrap: break-word; overflow: hidden;">${newValuesHtml}</td>
                         </tr>
                     </table>
                 `;
