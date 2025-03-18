@@ -72,15 +72,15 @@
 		    </tbody>
 		</table>
 	</div>
-	@if(isset($doctor_sign[$refraksi->doctor_id]))
+	@if(isset($doctor_sign[$spirometri->doctor_id]))
 	<div style="padding-top: 50px;">
 	    <table style="width: 100%; font-size: 13px;" cellpadding="3">
 	         <tr>
 	            <td style="width: 60%; text-align: center; vertical-align: bottom;">
 	            </td>
 	            <td style="width: 40%; text-align: center; vertical-align: bottom;">
-	                <img src="{{ public_path('uploads/doctor_sign/'.$doctor_sign[$refraksi->doctor_id]) }}" style="max-width: 150px;"><br>
-	                <b>{{ $doctor_list[$refraksi->doctor_id] ?? '' }} </b>
+	                <img src="{{ public_path('uploads/doctor_sign/'.$doctor_sign[$spirometri->doctor_id]) }}" style="max-width: 150px;"><br>
+	                <b>{{ $doctor_list[$spirometri->doctor_id] ?? '' }} </b>
 	                <p style="border-top: 1px solid black; padding-top: 10px;"></p>
 	            </td>
 	        </tr>
