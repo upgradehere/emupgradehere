@@ -771,6 +771,15 @@
                                         placeholder="">
                                 </div>
                             </div>
+                            <div class="form-group row align-items-center mb-3">
+                                <label class="col-sm-4 col-form-label">Lingkar Perut</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" id="waist_circum"
+                                        name="waist_circum"
+                                        value="{{ isset($data_anamnesis->waist_circum) ? $data_anamnesis->waist_circum : '' }}"
+                                        placeholder="">
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
