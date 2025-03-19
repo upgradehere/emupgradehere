@@ -64,6 +64,7 @@ trait AnamnesisTrait
                 'bmi' => $post['bmi'],
                 'body_temprature' => $post['body_temprature'],
                 'bmi_classification' => $post['bmi_classification'],
+                'waist_circum' => $post['waist_circum'],
                 'skin_condition' => $post['skin_condition'],
                 'medical_history' => json_encode($post['medical_history']),
                 'habit_factor' => json_encode($post['habit_factor']),
