@@ -49,7 +49,7 @@
 				            <tr>
 				                <td align="left" width="20%"><b>Abnormal</b></td>
 				                <td>:</td>
-				                <td align="left" width="80%">{{ $ekg->is_abnormal == 1 ? "Abnormal" : "Normal" }}</td>
+				                <td align="left" width="80%">{{ $ekg->is_abnormal == 1 ? 'Abnormal' : 'Normal' }}</td>
 				            </tr>
 				            <tr>
 				                <td align="left" width="20%"><b>Pemeriksa</b></td>
