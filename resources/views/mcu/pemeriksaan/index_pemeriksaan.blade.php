@@ -82,43 +82,65 @@
                         @endforeach
                     </ul>
                     <div class="tab-content" id="tab-anamnesis-tab">
-                        <div class="tab-pane fade show active" id="tab-anamnesis" role="tabpanel"
+                        <div class="tab-pane fade {{ Auth::user()->id_role != 3 ? 'show active' : '' }} {{ (Auth::user()->id_role == 3 && Auth::user()->examination_type == \App\Helpers\ConstantsHelper::LOOKUP_EXAMINATION_TYPE_ANAMNESIS) ? 'show active' : '' }}" id="tab-anamnesis" role="tabpanel"
                             aria-labelledby="tab-anamnesis-tab"><br>
-                            @include('mcu.pemeriksaan.partials.anamnesis')
+                            @if(in_array(\App\Helpers\ConstantsHelper::LOOKUP_EXAMINATION_TYPE_ANAMNESIS, array_column($examinations->toArray(), 'lookup_id')))
+                                @include('mcu.pemeriksaan.partials.anamnesis')
+                            @endif
                         </div>
-                        <div class="tab-pane fade" id="tab-refraction" role="tabpanel" aria-labelledby="tab-refraction-tab">
+                        <div class="tab-pane fade {{ (Auth::user()->id_role == 3 && Auth::user()->examination_type == \App\Helpers\ConstantsHelper::LOOKUP_EXAMINATION_TYPE_REFRACTION) ? 'show active' : '' }}" id="tab-refraction" role="tabpanel" aria-labelledby="tab-refraction-tab">
                             <br>
-                            @include('mcu.pemeriksaan.partials.refraction')
+                            @if(in_array(\App\Helpers\ConstantsHelper::LOOKUP_EXAMINATION_TYPE_REFRACTION, array_column($examinations->toArray(), 'lookup_id')))
+                                @include('mcu.pemeriksaan.partials.refraction')
+                            @endif
                         </div>
-                        <div class="tab-pane fade" id="tab-lab" role="tabpanel" aria-labelledby="tab-lab-tab"><br>
-                            @include('mcu.pemeriksaan.partials.laboratorium')
+                        <div class="tab-pane fade {{ (Auth::user()->id_role == 3 && Auth::user()->examination_type == \App\Helpers\ConstantsHelper::LOOKUP_EXAMINATION_TYPE_LAB) ? 'show active' : '' }}" id="tab-lab" role="tabpanel" aria-labelledby="tab-lab-tab"><br>
+                            @if(in_array(\App\Helpers\ConstantsHelper::LOOKUP_EXAMINATION_TYPE_LAB, array_column($examinations->toArray(), 'lookup_id')))
+                                @include('mcu.pemeriksaan.partials.laboratorium')
+                            @endif
                         </div>
-                        <div class="tab-pane fade" id="tab-rontgen" role="tabpanel" aria-labelledby="tab-rontgen-tab"><br>
-                            @include('mcu.pemeriksaan.partials.rontgen')
+                        <div class="tab-pane fade {{ (Auth::user()->id_role == 3 && Auth::user()->examination_type == \App\Helpers\ConstantsHelper::LOOKUP_EXAMINATION_TYPE_RONTGEN) ? 'show active' : '' }}" id="tab-rontgen" role="tabpanel" aria-labelledby="tab-rontgen-tab"><br>
+                            @if(in_array(\App\Helpers\ConstantsHelper::LOOKUP_EXAMINATION_TYPE_RONTGEN, array_column($examinations->toArray(), 'lookup_id')))
+                                @include('mcu.pemeriksaan.partials.rontgen')
+                            @endif
                         </div>
-                        <div class="tab-pane fade" id="tab-audiometri" role="tabpanel" aria-labelledby="tab-audiometri-tab">
+                        <div class="tab-pane fade {{ (Auth::user()->id_role == 3 && Auth::user()->examination_type == \App\Helpers\ConstantsHelper::LOOKUP_EXAMINATION_TYPE_AUDIOMETRY) ? 'show active' : '' }}" id="tab-audiometri" role="tabpanel" aria-labelledby="tab-audiometri-tab">
                             <br>
-                            @include('mcu.pemeriksaan.partials.audiometri')
+                            @if(in_array(\App\Helpers\ConstantsHelper::LOOKUP_EXAMINATION_TYPE_AUDIOMETRY, array_column($examinations->toArray(), 'lookup_id')))
+                                @include('mcu.pemeriksaan.partials.audiometri')
+                            @endif
                         </div>
-                        <div class="tab-pane fade" id="tab-spirometri" role="tabpanel" aria-labelledby="tab-spirometri-tab">
+                        <div class="tab-pane fade {{ (Auth::user()->id_role == 3 && Auth::user()->examination_type == \App\Helpers\ConstantsHelper::LOOKUP_EXAMINATION_TYPE_SPIROMETRY) ? 'show active' : '' }}" id="tab-spirometri" role="tabpanel" aria-labelledby="tab-spirometri-tab">
                             <br>
-                            @include('mcu.pemeriksaan.partials.spirometri')
+                            @if(in_array(\App\Helpers\ConstantsHelper::LOOKUP_EXAMINATION_TYPE_SPIROMETRY, array_column($examinations->toArray(), 'lookup_id')))
+                                @include('mcu.pemeriksaan.partials.spirometri')
+                            @endif
                         </div>
-                        <div class="tab-pane fade" id="tab-ekg" role="tabpanel" aria-labelledby="tab-ekg-tab"><br>
-                            @include('mcu.pemeriksaan.partials.ekg')
+                        <div class="tab-pane fade {{ (Auth::user()->id_role == 3 && Auth::user()->examination_type == \App\Helpers\ConstantsHelper::LOOKUP_EXAMINATION_TYPE_EKG) ? 'show active' : '' }}" id="tab-ekg" role="tabpanel" aria-labelledby="tab-ekg-tab"><br>
+                            @if(in_array(\App\Helpers\ConstantsHelper::LOOKUP_EXAMINATION_TYPE_EKG, array_column($examinations->toArray(), 'lookup_id')))
+                                @include('mcu.pemeriksaan.partials.ekg')
+                            @endif
                         </div>
-                        <div class="tab-pane fade" id="tab-usg" role="tabpanel" aria-labelledby="tab-usg-tab"><br>
-                            @include('mcu.pemeriksaan.partials.usg')
+                        <div class="tab-pane fade {{ (Auth::user()->id_role == 3 && Auth::user()->examination_type == \App\Helpers\ConstantsHelper::LOOKUP_EXAMINATION_TYPE_USG) ? 'show active' : '' }}" id="tab-usg" role="tabpanel" aria-labelledby="tab-usg-tab"><br>
+                            @if(in_array(\App\Helpers\ConstantsHelper::LOOKUP_EXAMINATION_TYPE_USG, array_column($examinations->toArray(), 'lookup_id')))
+                                @include('mcu.pemeriksaan.partials.usg')
+                            @endif
                         </div>
-                        <div class="tab-pane fade" id="tab-treadmill" role="tabpanel" aria-labelledby="tab-treadmill-tab">
+                        <div class="tab-pane fade {{ (Auth::user()->id_role == 3 && Auth::user()->examination_type == \App\Helpers\ConstantsHelper::LOOKUP_EXAMINATION_TYPE_TREADMILL) ? 'show active' : '' }}" id="tab-treadmill" role="tabpanel" aria-labelledby="tab-treadmill-tab">
                             <br>
-                            @include('mcu.pemeriksaan.partials.treadmill')
+                            @if(in_array(\App\Helpers\ConstantsHelper::LOOKUP_EXAMINATION_TYPE_TREADMILL, array_column($examinations->toArray(), 'lookup_id')))
+                                @include('mcu.pemeriksaan.partials.treadmill')
+                            @endif
                         </div>
-                        <div class="tab-pane fade" id="tab-papsmear" role="tabpanel" aria-labelledby="tab-papsmear-tab"><br>
-                            @include('mcu.pemeriksaan.partials.papsmear')
+                        <div class="tab-pane fade {{ (Auth::user()->id_role == 3 && Auth::user()->examination_type == \App\Helpers\ConstantsHelper::LOOKUP_EXAMINATION_TYPE_PAPSMEAR) ? 'show active' : '' }}" id="tab-papsmear" role="tabpanel" aria-labelledby="tab-papsmear-tab"><br>
+                            @if(in_array(\App\Helpers\ConstantsHelper::LOOKUP_EXAMINATION_TYPE_PAPSMEAR, array_column($examinations->toArray(), 'lookup_id')))
+                                @include('mcu.pemeriksaan.partials.papsmear')
+                            @endif
                         </div>
-                        <div class="tab-pane fade" id="tab-resume" role="tabpanel" aria-labelledby="tab-resume-tab"><br>
-                            @include('mcu.pemeriksaan.partials.resume')
+                        <div class="tab-pane fade {{ (Auth::user()->id_role == 3 && Auth::user()->examination_type == \App\Helpers\ConstantsHelper::LOOKUP_EXAMINATION_TYPE_RESUME_MCU) ? 'show active' : '' }}" id="tab-resume" role="tabpanel" aria-labelledby="tab-resume-tab"><br>
+                            @if(in_array(\App\Helpers\ConstantsHelper::LOOKUP_EXAMINATION_TYPE_RESUME_MCU, array_column($examinations->toArray(), 'lookup_id')))
+                                @include('mcu.pemeriksaan.partials.resume')
+                            @endif
                         </div>
                     </div>
                 </div>
