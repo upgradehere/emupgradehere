@@ -243,6 +243,17 @@
                                 </a>
                             </li>
                         @endif
+                        @if (Auth::user()->id_role == 1)
+                            <li class="nav-item">
+                                <a href="{{ route('internal-users') }}"
+                                    class="nav-link {{ Route::is('intetnal-users.*') || Route::is('intetnal-users') ? 'active' : '' }}">
+                                    <i class="nav-icon fas fa-users"></i>
+                                    <p>
+                                        Internal Users
+                                    </p>
+                                </a>
+                            </li>
+                        @endif
 
                     </ul>
                 </nav>

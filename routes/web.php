@@ -11,6 +11,7 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\PasswordController;
 use App\Http\Controllers\DepartementController;
+use App\Http\Controllers\InternalUsersController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -36,6 +37,16 @@ Route::get('/mcu/program-mcu/detail/pemeriksaan/cetak-pemeriksaan', [Pemeriksaan
 Route::group(['middleware' => ['auth', 'role:1,2']], function () { // Admin - Company
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/dashboard/get-all-data-chart/{program_id}', [DashboardController::class, 'getAllDataChart'])->name('get-all-data-chart');
+});
+
+Route::group(['middleware' => ['auth', 'role:1']], function () { // Admin
+    Route::get('/audit-trails', [AuditTrailsController::class, 'index'])->name('audit-trails');
+    Route::get('/audit-trails/get-data', [AuditTrailsController::class, 'getData'])->name('audit-trails.get-data');
+
+    Route::get('/internal-users', [InternalUsersController::class, 'index'])->name('internal-users');
+    Route::get('/internal-users/get-data', [InternalUsersController::class, 'data'])->name('internal-users.get-data');
+    Route::post('/internal-users/store', [InternalUsersController::class, 'store'])->name('internal-users.store');
+    Route::get('/internal-users/delete/{id}', [InternalUsersController::class, 'delete'])->name('internal-users.delete');
 });
 
 Route::group(['middleware' => ['auth', 'role:1,2,3,4,5']], function () { // ALL ROLES
@@ -97,7 +108,7 @@ Route::group(['middleware' => ['auth', 'role:1,2,3']], function () { // Admin - 
     Route::post('/mcu/program-mcu/detail/save-conclusion-suggestion', [ProgramMcuController::class, 'saveConclusionSuggestion'])->name('program-mcu-save-conclusion-suggestion');
 });
 
-Route::group(['middleware' => ['auth', 'role:1,4']], function () {
+Route::group(['middleware' => ['auth', 'role:1,4']], function () { // Admin - CSO
     Route::get('/package', [PackageController::class, 'index'])->name('package');
     Route::post('/package/store', [PackageController::class, 'store'])->name('package.store');
     Route::get('/package/delete/{id}', [PackageController::class, 'delete'])->name('package.delete');
@@ -136,7 +147,4 @@ Route::group(['middleware' => ['auth', 'role:1,4']], function () {
     Route::get('/departement/delete/{id}', [DepartementController::class, 'delete'])->name('departement.delete');
     Route::get('/departement/detail/{id}', [DepartementController::class, 'detail'])->name('departement.detail');
     Route::post('/departement/update', [DepartementController::class, 'update'])->name('departement.update');
-
-    Route::get('/audit-trails', [AuditTrailsController::class, 'index'])->name('audit-trails');
-    Route::get('/audit-trails/get-data', [AuditTrailsController::class, 'getData'])->name('audit-trails.get-data');
 });

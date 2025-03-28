@@ -5,6 +5,7 @@ use App\Models\LaboratoryExaminationM;
 use App\Models\LookupC;
 use App\Models\PackageM;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 
 class GlobalHelper {
     public static function validation($data, $rules, $messages, $attributes = null){
@@ -64,6 +65,13 @@ class GlobalHelper {
                 $examination_types[] = ConstantsHelper::LOOKUP_EXAMINATION_TYPE_RESUME_MCU;
             }
 
+            if (Auth::user()->id_role == 3) {
+                foreach($examination_types as $key => $val) {
+                    if ($val != Auth::user()->examination_type) {
+                        unset($examination_types[$key]);
+                    }
+                }
+            }
             $lookup = LookupC::select('lookup_id', 'lookup_code', 'lookup_name', 'additional_data')
                 ->whereIn('lookup_id', $examination_types)
                 ->orderBy('lookup_id', 'asc')
