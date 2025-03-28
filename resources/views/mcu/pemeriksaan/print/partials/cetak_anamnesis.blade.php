@@ -713,6 +713,11 @@
                                 <td>:</td>
                                 <td align="left">{{ $anamnesis->bmi_classification ?? '-' }}</td>
                             </tr>
+                            <tr>
+                                <td width="30%">Lingkar Perut</td>
+                                <td>:</td>
+                                <td align="left">{{ $anamnesis->waist_circum ?? '-' }}</td>
+                            </tr>
                         </tbody>
                     </table>
                 </td>
