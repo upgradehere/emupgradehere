@@ -248,32 +248,6 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>Apakah Anda Perokok</td>
-                                <td align="center">
-                                    <input type="checkbox"
-                                           {{ optional(json_decode($anamnesis['medical_history'],true))['smoker'] == '1' ? 'checked' : '' }}
-                                           disabled>
-                                </td>
-                                <td align="center">
-                                    <input type="checkbox"
-                                           {{ optional(json_decode($anamnesis['medical_history'],true))['smoker'] == '0' ? 'checked' : '' }}
-                                           disabled>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Apakah Anda Rutin Berolahraga</td>
-                                <td align="center">
-                                    <input type="checkbox"
-                                           {{ optional(json_decode($anamnesis['medical_history'],true))['exercise_regularly'] == '1' ? 'checked' : '' }}
-                                           disabled>
-                                </td>
-                                <td align="center">
-                                    <input type="checkbox"
-                                           {{ optional(json_decode($anamnesis['medical_history'],true))['exercise_regularly'] == '0' ? 'checked' : '' }}
-                                           disabled>
-                                </td>
-                            </tr>
-                            <tr>
                                 <td>Nyeri Saat Buang Air Kecil</td>
                                 <td align="center">
                                     <input type="checkbox"
