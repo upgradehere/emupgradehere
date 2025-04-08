@@ -30,7 +30,7 @@ RUN chown -R www-data:www-data /var/www/html \
 COPY . .
 
 # Install dependencies using Composer
-# RUN composer install --no-dev --optimize-autoloader
+RUN composer install
 
 # Generate Laravel application key
 RUN php artisan key:generate
