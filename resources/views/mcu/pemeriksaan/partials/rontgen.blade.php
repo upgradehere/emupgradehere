@@ -83,7 +83,7 @@
                                 <div class="col-sm-8">
                                     <input type="text" class="form-control" id="rontgen_examination_type"
                                         name="rontgen_examination_type"
-                                        value="{{ !empty($data_rontgen->rontgen_examination_type) ? $data_rontgen->rontgen_examination_type : '' }}"
+                                        value="{{ !empty($data_rontgen->rontgen_examination_type) ? $data_rontgen->rontgen_examination_type : 'Thorax' }}"
                                         placeholder="">
                                 </div>
                             </div>
