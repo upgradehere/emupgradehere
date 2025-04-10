@@ -1,31 +1,31 @@
 version: '3.8'
 
 services:
-# Nginx Service for the second instance
-  nginx_stag:
+  # Nginx Service
+  nginx:
     image: nginx:alpine
-    container_name: emhealth_nginx_stag
+    container_name: emhealth_nginx
     ports:
-      - "7070:80"  # Second instance on port 8081
+      - "80:80"
     volumes:
       - ./:/var/www/html
       - ./docker-compose/nginx/default.conf:/etc/nginx/conf.d/default.conf
     networks:
-      - laravel_network_stag
+      - laravel_network
     depends_on:
-      - php_stag
+      - php
 
-  # PHP-FPM Service for the second instance
-  php_stag:
+  # PHP-FPM Service
+  php:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: emhealth_php_stag
+    container_name: emhealth_php
     volumes:
       - ./:/var/www/html
     networks:
-      - laravel_network_stag
+      - laravel_network
 
 networks:
-  laravel_network_stag:
+  laravel_network:
     driver: bridge
