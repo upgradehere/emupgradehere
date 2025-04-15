@@ -30,15 +30,6 @@
                             <label class="custom-file-label" for="customFile">File Excel</label>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label>Tanggal MCU</label>
-                        <div class="input-group date" id="tglMcuImport" data-target-input="nearest">
-                            <input type="text" class="form-control datetimepicker-input" name="mcu_date" data-target="#tglMcuImport" />
-                            <div class="input-group-append" data-target="#tglMcuImport" data-toggle="datetimepicker">
-                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>

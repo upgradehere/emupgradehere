@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Mcu;
 
+use App\Exports\McuExport;
 use App\Helpers\ConstantsHelper;
 use App\Helpers\GlobalHelper;
 use App\Http\Controllers\Controller;
@@ -188,6 +189,14 @@ class ProgramMcuController extends Controller
                 'error' => $e->getMessage()
             ]);
         }
+    }
+
+    public function downloadTemplatePemeriksaan(Request $request)
+    {
+        $filters = $request->only(['company_id', 'mcu_program_id']);
+        $programs = McuCompanyV::where('company_id', $filters['company_id'])->where('mcu_program_id', $filters['mcu_program_id'])->first();
+        $fileName = 'Template - '. $programs->company_name . ' - ' . $programs->mcu_program_name . '.xlsx';
+        return Excel::download(new McuExport($filters), $fileName);
     }
 
     private function getDataFromChart($query, $chart_type, $chart_value, $chart_additional, $mcu_program_id, $additional = null) {
@@ -608,7 +617,6 @@ class ProgramMcuController extends Controller
                     'file',
                     'mimes:xls,xlsx',
                 ],
-                'mcu_date' => 'required',
                 'company_id' => 'required',
                 'mcu_program_id' => 'required',
             ], [
@@ -616,7 +624,6 @@ class ProgramMcuController extends Controller
                 'import_file.required' => 'File Excel Tidak Boleh Kosong.',
                 'import_file.file' => 'File Excel Tidak Valid.',
                 'import_file.mimes' => 'File Excel Tidak Sesuai, Silahakn Upload File Berupa xls atau xlsx',
-                'mcu_date.required' => 'Tanggal MCU Tidak Boleh Kosong.',
                 'company_id.required' => 'ID Perusahaan Tidak Boleh Kosong.',
                 'mcu_program_id.required' => 'ID Program MCU Tidak Boleh Kosong.',
             ]);
@@ -624,37 +631,37 @@ class ProgramMcuController extends Controller
             $import_model = null;
             switch ($request->post('examination_type')) {
                 case ConstantsHelper::LOOKUP_EXAMINATION_TYPE_ANAMNESIS:
-                    $import_model = new McuAnamnesisImport($post['mcu_date'], $post['company_id'], $post['mcu_program_id']);
+                    $import_model = new McuAnamnesisImport();
                     break;
                 case ConstantsHelper::LOOKUP_EXAMINATION_TYPE_REFRACTION:
-                    $import_model = new McuRefractionImport($post['mcu_date'], $post['company_id'], $post['mcu_program_id']);
+                    $import_model = new McuRefractionImport();
                     break;
                 case ConstantsHelper::LOOKUP_EXAMINATION_TYPE_LAB:
-                    $import_model = new McuLaboratoryImport($post['mcu_date'], $post['company_id'], $post['mcu_program_id']);
+                    $import_model = new McuLaboratoryImport();
                     break;
                 case ConstantsHelper::LOOKUP_EXAMINATION_TYPE_RONTGEN:
-                    $import_model = new McuRontgenImport($post['mcu_date'], $post['company_id'], $post['mcu_program_id']);
+                    $import_model = new McuRontgenImport();
                     break;
                 case ConstantsHelper::LOOKUP_EXAMINATION_TYPE_AUDIOMETRY:
-                    $import_model = new McuAudiometryImport($post['mcu_date'], $post['company_id'], $post['mcu_program_id']);
+                    $import_model = new McuAudiometryImport();
                     break;
                 case ConstantsHelper::LOOKUP_EXAMINATION_TYPE_SPIROMETRY:
-                    $import_model = new McuSpirometryImport($post['mcu_date'], $post['company_id'], $post['mcu_program_id']);
+                    $import_model = new McuSpirometryImport();
                     break;
                 case ConstantsHelper::LOOKUP_EXAMINATION_TYPE_EKG:
-                    $import_model = new McuEkgImport($post['mcu_date'], $post['company_id'], $post['mcu_program_id']);
+                    $import_model = new McuEkgImport();
                     break;
                 case ConstantsHelper::LOOKUP_EXAMINATION_TYPE_USG:
-                    $import_model = new McuUsgImport($post['mcu_date'], $post['company_id'], $post['mcu_program_id']);
+                    $import_model = new McuUsgImport();
                     break;
                 case ConstantsHelper::LOOKUP_EXAMINATION_TYPE_TREADMILL:
-                    $import_model = new McuTreadmillImport($post['mcu_date'], $post['company_id'], $post['mcu_program_id']);
+                    $import_model = new McuTreadmillImport();
                     break;
                 case ConstantsHelper::LOOKUP_EXAMINATION_TYPE_PAPSMEAR:
-                    $import_model = new McuPapsmearImport($post['mcu_date'], $post['company_id'], $post['mcu_program_id']);
+                    $import_model = new McuPapsmearImport();
                     break;
                 case ConstantsHelper::LOOKUP_EXAMINATION_TYPE_RESUME_MCU:
-                    $import_model = new McuResumeMcuImport($post['mcu_date'], $post['company_id'], $post['mcu_program_id']);
+                    $import_model = new McuResumeMcuImport();
                     break;
                 default:
                     return redirect()->back()->with('error', 'Jenis Pemeriksaan Salah!');

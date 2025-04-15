@@ -64,6 +64,7 @@ Route::group(['middleware' => ['auth', 'role:1,2,3,4,5']], function () { // ALL 
 
     Route::get('/mcu/program-mcu/detail', [ProgramMcuController::class, 'detailProgramMcu'])->name('detail-program-mcu');
     Route::get('/get-data-mcu-employee',  [ProgramMcuController::class, 'getDataMcuEmployee']);
+    Route::get('/mcu/program-mcu/download-template-pemeriksaan',  [ProgramMcuController::class, 'downloadTemplatePemeriksaan'])->name('download-template-pemeriksaan');
 
     Route::get('/mcu/program-mcu/detail/pemeriksaan', [PemeriksaanMcuController::class, 'index']);
     Route::post('/mcu/program-mcu/detail/pemeriksaan/kirim-batch-pemeriksaan', [PemeriksaanMcuController::class, 'sendBatchPemeriksaanMcu'])->name('send-batch-pemeriksaan-mcu');
@@ -84,7 +85,7 @@ Route::group(['middleware' => ['auth', 'role:1,2,3,4']], function () { // Admin 
 });
 
 Route::group(['middleware' => ['auth', 'role:1,2,3,5']], function () { // Admin - Company - Dokter - Karyawan
-    
+
 });
 
 Route::group(['middleware' => ['auth', 'role:1,2,3']], function () { // Admin - Company - Dokter
@@ -92,7 +93,7 @@ Route::group(['middleware' => ['auth', 'role:1,2,3']], function () { // Admin - 
     Route::post('/mcu/program-mcu/detail/input-manual-mcu/save-input-manual-mcu', [ProgramMcuController::class, 'actionInsertManualMcu'])->name('save-input-manual-mcu');
     Route::post('/mcu/program-mcu/detail/import-excel-anamnesa', [ProgramMcuController::class, 'importExcelAnamnesa']);
     Route::post('/mcu/program-mcu/detail/upload-hasil', [ProgramMcuController::class, 'uploadHasil']);
-    
+
     Route::delete('/mcu/program-mcu/detail/pemeriksaan/delete-pemeriksaan', [PemeriksaanMcuController::class, 'deletePemeriksaanMcu']);
     Route::post('/mcu/program-mcu/detail/pemeriksaan/save-anamnesis', [PemeriksaanMcuController::class, 'saveAnamnesis']);
     Route::post('/mcu/program-mcu/detail/pemeriksaan/save-lab', [PemeriksaanMcuController::class, 'saveLab']);

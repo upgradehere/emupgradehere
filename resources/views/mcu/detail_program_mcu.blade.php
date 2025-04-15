@@ -97,45 +97,20 @@
                         <div class="card-header">
                             <h3 class="card-title">Pemeriksaan MCU Peserta</h3>
                         </div>
-                        <div class="card-body">
+                        <div class="card-header">
                             @if (Auth::user()->id_role == 1 || Auth::user()->id_role == 4)
-                                <div class="row">
-                                    <div class="col-2">
-                                        <a class="btn btn-block bg-gradient-primary auto-size-btn" data-toggle="modal"
-                                            data-target="#modal-insert-manual"><i class="fas fa-edit"></i>&nbsp;&nbsp;Input
-                                            Manual</a>
-                                    </div>
-                                    @if (Auth::user()->id_role == 1)
-                                        <div class="col-2">
-                                            <a class="btn btn-block bg-gradient-primary auto-size-btn" data-toggle="modal"
-                                                data-target="#modal-import-mcu"><i class="fas fa-file-import"></i>&nbsp;&nbsp;Import
-                                                MCU</a>
-                                        </div>
-                                        <div class="col-2">
-                                            <a class="btn btn-block bg-gradient-primary auto-size-btn" data-toggle="modal"
-                                                data-target="#modal-upload-rekap"><i
-                                                    class="fas fa-file-import"></i>&nbsp;&nbsp;Import Pemeriksaan</a>
-                                        </div>
-                                        <div class="col-2">
-                                            <a class="btn btn-block bg-gradient-primary auto-size-btn" data-toggle="modal"
-                                                data-target="#modal-upload-hasil"><i
-                                                    class="fas fa-images"></i>&nbsp;&nbsp;Upload
-                                                Hasil</a>
-                                        </div>
-                                        <div class="col-2">
-                                            <a data-toggle="modal" data-target="#modalConclusionSuggestion"
-                                                class="btn btn-block bg-gradient-primary auto-size-btn"><i
-                                                    class="fas fa-edit"></i>&nbsp;&nbsp;Kesimpulan & Saran</a>
-                                        </div>
-                                        <div class="col-2">
-                                            <a class="btn btn-block bg-gradient-primary auto-size-btn" id="sendPdf"
-                                                data-url="{{ route('send-batch-pemeriksaan-mcu') }}"><i
-                                                    class="fas fa-paper-plane"></i>&nbsp;&nbsp;Kirim Hasil Pemeriksaan</a>
-                                        </div>
-                                    @endif
-                                </div>
+                                <a class="btn btn-primary btn-sm me-2 mb-2" data-toggle="modal" data-target="#modal-insert-manual"><i class="fas fa-edit"></i>&nbsp;&nbsp;Input Manual</a>
+                                @if (Auth::user()->id_role == 1)
+                                    <a class="btn btn-primary btn-sm me-2 mb-2" data-toggle="modal" data-target="#modal-import-mcu"><i class="fas fa-file-import"></i>&nbsp;&nbsp;Import MCU</a>
+                                    <a class="btn btn-primary btn-sm me-2 mb-2" data-toggle="modal" data-target="#modal-upload-rekap"><i class="fas fa-file-import"></i>&nbsp;&nbsp;Import Pemeriksaan</a>
+                                    <a class="btn btn-primary btn-sm me-2 mb-2" data-toggle="modal" data-target="#modal-upload-hasil"><i class="fas fa-images"></i>&nbsp;&nbsp;Upload Hasil</a>
+                                    <a class="btn btn-primary btn-sm me-2 mb-2" data-toggle="modal" data-target="#modalConclusionSuggestion"><i class="fas fa-edit"></i>&nbsp;&nbsp;Kesimpulan & Saran</a>
+                                    <a class="btn btn-primary btn-sm me-2 mb-2" id="sendPdf" data-url="{{ route('send-batch-pemeriksaan-mcu') }}"><i class="fas fa-paper-plane"></i>&nbsp;&nbsp;Kirim Hasil Pemeriksaan</a>
+                                    <a class="btn btn-primary btn-sm me-2 mb-2" href="/mcu/program-mcu/download-template-pemeriksaan?company_id={{$company_id}}&mcu_program_id={{$mcu_program_id}}"><i class="fas fa-download"></i>&nbsp;&nbsp;Unduh Template Excel</a>
+                                @endif
                             @endif
-                            <br>
+                        </div>
+                        <div class="card-body">
                             <div class="row">
                                 <div class="col-12">
                                     <div class="legend-container">
