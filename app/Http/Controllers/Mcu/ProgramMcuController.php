@@ -786,7 +786,7 @@ class ProgramMcuController extends Controller
 
                 $extension = pathinfo($filePath, PATHINFO_EXTENSION);
                 $fileName = pathinfo($file, PATHINFO_FILENAME);
-                $pattern = '/^\d+_\d+_[A-Za-z0-9]+_' . preg_quote($category, '/') . '$/i';
+                $pattern = '/^\d+_[A-Za-z0-9]+_' . preg_quote($category, '/') . '$/i';
                 if (in_array(strtolower($extension), $allowedExtensions) && is_file($filePath) && preg_match($pattern, $fileName)) {
 
                     $filename = $fileName . '.' . $extension;
@@ -794,56 +794,23 @@ class ProgramMcuController extends Controller
 
                     $fileNameWithoutExtension = pathinfo($file, PATHINFO_FILENAME);  // Get the filename without extension
                     $order = explode('_', $fileNameWithoutExtension)[0];
-                    $nik = explode('_', $fileNameWithoutExtension)[1];
-                    $packageCode = explode('_', $fileNameWithoutExtension)[2];
+                    $mcu_code = explode('_', $fileNameWithoutExtension)[1];
 
-                    $employeeModel = EmployeeM::select('employee_id')->where('nik', $nik)->first();
-                    $packageModel = PackageM::select('id')->where('package_code', $packageCode)->first();
+                    $modelMcu = McuT::select('mcu_id')
+                        ->where('mcu_code', $mcu_code)
+                        ->first();
 
-                    if ($employeeModel == null) {
+                    if ($modelMcu == null) {
                         Storage::delete($zipPath);
-                        throw new \Exception('Terjadi Kesalahan! Peserta dengan nik '.$nik.' Tidak Ditemukan!');
+                        throw new \Exception('Terjadi Kesalahan! Peserta dengan kode mcu '.$mcu_code.' Tidak Ditemukan!');
                     }
-                    if ($packageModel == null) {
-                        Storage::delete($zipPath);
-                        throw new \Exception('Terjadi Kesalahan! Kode paket '.$packageCode.' Tidak Ditemukan!');
-                    }
+                    $mcu_id = $modelMcu->mcu_id;
 
                     if (!is_dir($imagePath)) {
                         mkdir($imagePath, 0755, true);
                     }
                     $filename = $order . '_' . $category . '_' . Str::uuid() . '.' . $extension;
                     File::move($extractPath.$file, $imagePath . $filename);
-
-                    $modelMcu = McuT::select('mcu_id')
-                        ->where('employee_id', $employeeModel->employee_id)
-                        ->where('company_id', $post['company_id'])
-                        ->where('mcu_program_id', $post['mcu_program_id'])
-                        ->where('is_import', true)
-                        ->where('package_id', $packageModel->id)
-                        ->first();
-                    Log::info($modelMcu);
-
-                    if ($modelMcu == null) {
-                        McuT::insert([
-                            'mcu_date' => date('Y-m-d H:i:s'),
-                            'employee_id' => $employeeModel->employee_id,
-                            'company_id' => $post['company_id'],
-                            'mcu_program_id' => $post['mcu_program_id'],
-                            'is_import' => true,
-                            'package_id' => $packageModel->id
-                        ]);
-                        $modelMcuNew = McuT::select('mcu_id')
-                            ->where('employee_id', $employeeModel->employee_id)
-                            ->where('company_id', $post['company_id'])
-                            ->where('mcu_program_id', $post['mcu_program_id'])
-                            ->where('is_import', true)
-                            ->where('package_id', $packageModel->id)
-                            ->first();
-                        $mcu_id = $modelMcuNew->mcu_id;
-                    } else {
-                        $mcu_id = $modelMcu->mcu_id;
-                    }
 
                     $payload = [
                         'mcu_id' => $mcu_id
