@@ -16,13 +16,6 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 class McuTreadmillImport implements ToCollection, WithHeadingRow, SkipsEmptyRows
 {
 
-    public function __construct($mcuDate, $companyId, $mcuProgramId)
-    {
-        $this->mcuDate = $mcuDate;
-        $this->companyId = $companyId;
-        $this->mcuProgramId = $mcuProgramId;
-    }
-
     /**
     * @param Collection $collection
     */
@@ -31,42 +24,14 @@ class McuTreadmillImport implements ToCollection, WithHeadingRow, SkipsEmptyRows
         DB::beginTransaction();
         foreach ($collection as $row)
         {
-            $employeeModel = EmployeeM::select('employee_id')->where('nik', $row['nik'])->first();
-            $packageModel = PackageM::select('id')->where('package_code', $row['kode_paket'])->first();
-
-            if ($employeeModel == null) {
-                throw new \Exception('Terjadi Kesalahan! Peserta dengan nik '.$row['nik'].' Tidak Ditemukan!');
-            }
-            if ($packageModel == null) {
-                throw new \Exception('Terjadi Kesalahan! Kode paket '.$row['kode_paket'].' Tidak Ditemukan!');
-            }
             $modelMcu = McuT::select('mcu_id')
-                ->where('employee_id', $employeeModel->employee_id)
-                ->where('company_id', $this->companyId)
-                ->where('mcu_program_id', $this->mcuProgramId)
-                ->where('is_import', true)
-                ->where('package_id', $packageModel->id)
+                ->where('mcu_code', $row['mcu_code'])
                 ->first();
 
-            if ($modelMcu != null) {
-                $mcu_id = $modelMcu->mcu_id;
-            } else {
-                McuT::insert([
-                    'mcu_date' => $this->mcuDate,
-                    'employee_id' => $employeeModel->employee_id,
-                    'company_id' => $this->companyId,
-                    'mcu_program_id' => $this->mcuProgramId,
-                    'is_import' => true,
-                    'package_id' => $packageModel->id
-                ]);
-                $modelMcu = McuT::select('mcu_id')
-                    ->where('employee_id', $employeeModel->employee_id)
-                    ->where('company_id', $this->companyId)
-                    ->where('mcu_program_id', $this->mcuProgramId)
-                    ->where('package_id', $packageModel->id)
-                    ->where('is_import', true)->first();
-                $mcu_id = $modelMcu->mcu_id;
+            if ($modelMcu == null) {
+                throw new \Exception('Terjadi Kesalahan! Peserta dengan kode mcu '.$row['mcu_code'].' Tidak Ditemukan!');
             }
+            $mcu_id = $modelMcu->mcu_id;
 
             $modelTreadmill = TreadmillT::select('treadmill_id')->where('mcu_id', $mcu_id)->first();
             if ($modelTreadmill != null) {
