@@ -47,6 +47,8 @@ Route::group(['middleware' => ['auth', 'role:1']], function () { // Admin
     Route::get('/internal-users/get-data', [InternalUsersController::class, 'data'])->name('internal-users.get-data');
     Route::post('/internal-users/store', [InternalUsersController::class, 'store'])->name('internal-users.store');
     Route::get('/internal-users/delete/{id}', [InternalUsersController::class, 'delete'])->name('internal-users.delete');
+    Route::get('/internal-users/detail/{id}', [InternalUsersController::class, 'detail'])->name('internal-users.detail');
+    Route::post('/internal-users/update', [InternalUsersController::class, 'update'])->name('internal-users.update');
 });
 
 Route::group(['middleware' => ['auth', 'role:1,2,3,4,5']], function () { // ALL ROLES

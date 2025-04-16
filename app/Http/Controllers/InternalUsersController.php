@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\LookupC;
+use App\Models\CompanyM;
 use Validator;
 use Session;
 
@@ -15,7 +16,10 @@ class InternalUsersController extends Controller
     {
         $data = [];
         $examinations = LookupC::where('lookup_type', 'examination_type')->get();
+        $company = CompanyM::all();
+
         $data['examinations'] = $examinations;
+        $data['company'] = $company;
         
         return view('internal-users/index', $data);
     }
@@ -91,6 +95,7 @@ class InternalUsersController extends Controller
             'password' => 'required',
             'id_role' => 'required',
             'examination_type' => 'required_if:id_role,3',
+            'id_company' => 'required_if:id_role,11',
         ];
         
         $messages = [
@@ -100,6 +105,7 @@ class InternalUsersController extends Controller
             'password.required' => 'Password wajib diisi',
             'id_role.required' => 'Role wajib diisi',
             'examination_type.required_if' => 'Examination Type wajib diisi jika role yang dipilih adalah Checker',
+            'id_company.required_if' => 'Perusahaan wajib diisi jika role yang dipilih adalah Small Admin',
         ];
         
         $validator = Validator::make($request->all(), $rules, $messages);
@@ -109,7 +115,15 @@ class InternalUsersController extends Controller
 
             session()->flash('error', $messages);
 
-            return redirect()->route('doctor');
+            return redirect()->route('internal-users');
+        }
+
+        $check = User::withTrashed()
+                        ->where('email', $request->email)
+                        ->first();
+        if ($check) {
+            session()->flash('error', 'Email yang diinput sudah pernah terdaftar');
+            return redirect()->route('internal-users');
         }
 
         $user = new User;
@@ -121,6 +135,10 @@ class InternalUsersController extends Controller
                     $user->$k = $r;
                 }
             }
+        }
+
+        if ($user->id_role == 11) {
+            $user->id_role = 1;
         }
 
         if($user->save()) {
@@ -135,9 +153,9 @@ class InternalUsersController extends Controller
 
     public function delete($id)
     {
-        $doctor = DoctorM::find($id);
+        $user = User::find($id);
 
-        if ($doctor->delete()) {
+        if ($user->delete()) {
             $data = [
                 'status' => 'success',
                 'message' => 'Delete success',
@@ -158,12 +176,16 @@ class InternalUsersController extends Controller
     public function detail($id)
     {
         $data = [];
-        $doctor = DoctorM::find($id);
+        $user = User::find($id);
+        $examinations = LookupC::where('lookup_type', 'examination_type')->get();
+        $company = CompanyM::all();
         
-        if ($doctor) {
-            $data['doctor'] = $doctor;
-            
-            return view('doctor/detail', $data);
+        if ($user && $examinations) {
+            $data['user'] = $user;
+            $data['examinations'] = $examinations;
+            $data['company'] = $company;
+
+            return view('internal-users/detail', $data);
         } else {
             return view('errors/404');
         }
@@ -173,14 +195,22 @@ class InternalUsersController extends Controller
     {
         $rules = [
             'id' => 'required',
-            'doctor_name' => 'required',
-            'doctor_code' => 'required',
+            'name' => 'required',
+            'email' => 'required',
+            'phone_number' => 'required',
+            'id_role' => 'required',
+            'examination_type' => 'required_if:id_role,3',
+            'id_company' => 'required_if:id_role,11',
         ];
 
         $messages = [
-            'id.required' => 'Dokter tidak dipilih',
-            'doctor_name.required' => 'Nama Dokter wajib diisi',
-            'doctor_code.required' => 'Kode Dokter wajib diisi',
+            'id.required' => 'User tidak dipilih',
+            'name.required' => 'Nama wajib diisi',
+            'email.required' => 'Email wajib diisi',
+            'phone_number.required' => 'No Telp wajib diisi',
+            'id_role.required' => 'Role wajib diisi',
+            'examination_type.required_if' => 'Examination Type wajib diisi jika role yang dipilih adalah Checker',
+            'id_company.required_if' => 'Perusahaan wajib diisi jika role yang dipilih adalah Small Admin',
         ];
 
         $id = $request->id;
@@ -192,51 +222,53 @@ class InternalUsersController extends Controller
 
             session()->flash('error', $messages);
 
-            return redirect()->route('doctor.detail', ['id' => $id]);
+            return redirect()->route('internal-users.detail', ['id' => $id]);
         }
 
-        $doctor = DoctorM::find($id);
+        $user = User::find($id);
 
-        if ($doctor) {
+        if ($user) {
+            // check email duplicate
+            if ($user->email != $request->email) {
+                $check = User::withTrashed()
+                            ->where('email', $request->email)
+                            ->first();
+    
+                if ($check) {
+                    session()->flash('error', 'Email yang diinput sudah pernah terdaftar');
+                    return redirect()->route('internal-users.detail', ['id' => $id]);
+                }
+            }
+
             foreach ($request->all() as $k => $r) {
-                if ($k != '_token' && $k != 'id' && $k != 'doctor_sign') {
-                    $doctor->$k = $r;
-                }
-            }
-
-            if ($request->hasFile('doctor_sign')) {
-                $file = $request->file('doctor_sign');
-                $fileName = $file->getClientOriginalName();
-                $fileSize = $file->getSize();
-                $fileSizeInKB = $fileSize / 1024;
-                $uploadPath = public_path('uploads/doctor_sign');
-                
-                if ($fileSizeInKB > 100) {
-                    session()->flash('error', 'Ukuran file TTD Dokter maksimal 100Kb');
-                    return redirect()->route('doctor');
-                }
-
-                if (!file_exists($uploadPath)) {
-                    mkdir($uploadPath, 0755, true);
-                }
-    
-                if ($file->move($uploadPath, $fileName)) {
-                    $doctor->doctor_sign = $fileName;
-                } else {
-                    session()->flash('error', 'Kesalahan terjadi, dokter baru gagal disimpan, harap hubungi Admin kami');
-                    return redirect()->route('doctor');
+                if ($k != '_token' && $k != 'id') {
+                    if ($k == 'password') {
+                        $user->$k = Hash::make($request->password);
+                    } else {
+                        $user->$k = $r;
+                    }
                 }
             }
     
-            if($doctor->save()) {
-                session()->flash('success', 'Dokter baru berhasil disimpan');
+            if ($user->id_role != 3) {
+                $user->examination_type = NULL;
+            }
+
+            if ($user->id_role != 11) {
+                $user->id_company = NULL;
             } else {
-                session()->flash('error', 'Kesalahan terjadi, Dokter baru gagal disimpan, harap hubungi Admin kami');
+                $user->id_role = 1;
+            }
+
+            if($user->save()) {
+                session()->flash('success', 'Internal User berhasil diperbarui');
+            } else {
+                session()->flash('error', 'Kesalahan terjadi, Internal User baru gagal diperbarui, harap hubungi Admin kami');
             }
         } else {
-            session()->flash('error', 'Dokter tidak ditemukan');
+            session()->flash('error', 'Internal User tidak ditemukan');
         }
 
-        return redirect()->route('doctor');
+        return redirect()->route('internal-users');
     }
 }
