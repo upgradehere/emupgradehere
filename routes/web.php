@@ -12,6 +12,7 @@ use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\PasswordController;
 use App\Http\Controllers\DepartementController;
 use App\Http\Controllers\InternalUsersController;
+use App\Http\Controllers\SettingsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -49,6 +50,9 @@ Route::group(['middleware' => ['auth', 'role:1']], function () { // Admin
     Route::get('/internal-users/delete/{id}', [InternalUsersController::class, 'delete'])->name('internal-users.delete');
     Route::get('/internal-users/detail/{id}', [InternalUsersController::class, 'detail'])->name('internal-users.detail');
     Route::post('/internal-users/update', [InternalUsersController::class, 'update'])->name('internal-users.update');
+
+    Route::get('/settings', [SettingsController::class, 'index'])->name('settings');
+    Route::post('/settings-otp/update', [SettingsController::class, 'otpUpdate'])->name('settings-otp.update');
 });
 
 Route::group(['middleware' => ['auth', 'role:1,2,3,4,5']], function () { // ALL ROLES

@@ -6,6 +6,7 @@ use Validator;
 use Session;
 use Carbon\Carbon;
 use App\Models\User;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
@@ -13,6 +14,17 @@ use Twilio\Rest\Client;
 
 class AuthController extends Controller
 {
+    protected $otp;
+    protected $twilio_sid;
+    protected $twilio_auth_token;
+
+    public function __construct()
+    {
+        $this->otp = Setting::where("type", "otp")->first();
+        $this->twilio_sid = Setting::where("type", "twilio_sid")->first();
+        $this->twilio_auth_token = Setting::where("type", "twilio_auth_token")->first();
+    }
+
     public function index(Request $request)
     {
         $auth = Auth::user();
@@ -56,7 +68,7 @@ class AuthController extends Controller
             if (Hash::check($password, $user->password)) {
                 $update = User::find($user->id);
 
-                $otpActive = env('APP_OTP');
+                $otpActive = $this->otp;
 
                 $rolesIgnoreOtp = [2,3,4,5];
 
@@ -247,11 +259,11 @@ class AuthController extends Controller
 
     public function sendOtp($data)
     {
-        $isDev = env('APP_OTP');
+        $isDev = $this->otp;
 
         if ($isDev == 1) {
-            $sid    = env('TWILIO_SID');
-            $token  = env('TWILIO_AUTH_TOKEN');
+            $sid    = $this->twilio_sid;
+            $token  = $this->twilio_auth_token;
             $twilio = new Client($sid, $token);
             
             if (substr($data->phone_number, 0, 1) === '0') {
