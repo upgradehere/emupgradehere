@@ -208,18 +208,48 @@ class DashboardController extends Controller
 
     public function getDiseaseHistory($id_program)
     {
-        $query = 'SELECT * FROM fn_non_lab_diagnosis(?) ORDER BY count DESC LIMIT 8';
+        $data = McuT::selectRaw("
+            COUNT(CASE WHEN (anamnesis_t.medical_history::json->>'asthma') = '1' THEN 1 END)::integer as asma,
+            COUNT(CASE WHEN (anamnesis_t.medical_history::json->>'diabetes') = '1' THEN 1 END)::integer as kencing_manis,
+            COUNT(CASE WHEN (anamnesis_t.medical_history::json->>'recurrent_seizures') = '1' THEN 1 END)::integer as kejang_kejang_berulang,
+            COUNT(CASE WHEN (anamnesis_t.medical_history::json->>'heart_disease') = '1' THEN 1 END)::integer as penyakit_jantung,
+            COUNT(CASE WHEN (anamnesis_t.medical_history::json->>'haemoptysis') = '1' THEN 1 END)::integer as batuk_disertai_dahak_berdarah,
+            COUNT(CASE WHEN (anamnesis_t.medical_history::json->>'rheumatism') = '1' THEN 1 END)::integer as rheumatik,
+            COUNT(CASE WHEN (anamnesis_t.medical_history::json->>'hypertension') = '1' THEN 1 END)::integer as tekanan_darah_tinggi,
+            COUNT(CASE WHEN (anamnesis_t.medical_history::json->>'hypotension') = '1' THEN 1 END)::integer as tekanan_darah_rendah,
+            COUNT(CASE WHEN (anamnesis_t.medical_history::json->>'angioedema') = '1' THEN 1 END)::integer as sering_bengkak_di_wajah_atau_kaki,
+            COUNT(CASE WHEN (anamnesis_t.medical_history::json->>'surgical_history') = '1' THEN 1 END)::integer as riwayat_operasi,
+            COUNT(CASE WHEN (anamnesis_t.medical_history::json->>'drug_continously') = '1' THEN 1 END)::integer as obat_terus_menerus,
+            COUNT(CASE WHEN (anamnesis_t.medical_history::json->>'allergy') = '1' THEN 1 END)::integer as alergi,
+            COUNT(CASE WHEN (anamnesis_t.medical_history::json->>'hepatitis') = '1' THEN 1 END)::integer as sakit_kuning_atau_hepatitis,
+            COUNT(CASE WHEN (anamnesis_t.medical_history::json->>'drug_addiction') = '1' THEN 1 END)::integer as kecanduan_obat_obatan,
+            COUNT(CASE WHEN (anamnesis_t.medical_history::json->>'fracture') = '1' THEN 1 END)::integer as patah_tulang,
+            COUNT(CASE WHEN (anamnesis_t.medical_history::json->>'hearing_disorders') = '1' THEN 1 END)::integer as gangguan_pendengaran,
+            COUNT(CASE WHEN (anamnesis_t.medical_history::json->>'pain_when_urinating') = '1' THEN 1 END)::integer as nyeri_saat_buang_air_kecil,
+            COUNT(CASE WHEN (anamnesis_t.medical_history::json->>'white_discharge') = '1' THEN 1 END)::integer as sering_keputihan,
+            COUNT(CASE WHEN (anamnesis_t.medical_history::json->>'epilepsy') = '1' THEN 1 END)::integer as epilepsi
+        ")
+        ->leftJoin('anamnesis_t', 'anamnesis_t.mcu_id', '=', 'mcu_t.mcu_id')
+        ->where('mcu_t.mcu_program_id', $id_program)
+        ->whereNull('mcu_t.deleted_at')
+        ->whereNull('anamnesis_t.deleted_at')
+        ->first()
+        ->toArray();
 
-        $results = DB::select($query, [$id_program]);
-
-        $data = [];
-        foreach ($results as $row) {
-            $data[] = [
-                'name' =>  ucwords(str_replace("_", " ", $row->name)),
-                'diagnosis_count' => $row->count
+        $result = [];
+        foreach ($data as $key => $value) {
+            $name = ucwords(str_replace('_', ' ', $key));
+            $result[] = [
+                "name" => $name,
+                "diagnosis_count" => $value
             ];
         }
-        return $data;
+
+        usort($result, function($a, $b) {
+            return $b['diagnosis_count'] <=> $a['diagnosis_count'];
+        });
+
+        return array_slice($result, 0, 10);
     }
 
     public function getLabDiagnosis($id_program)
