@@ -152,7 +152,7 @@
                         <div class="card">
                           <div class="card-header border-0">
                             <div class="d-flex justify-content-between">
-                              <h3 class="card-title fw-700">Abnormal Pemeriksaan</h3>
+                              <h3 class="card-title fw-700">10 Riwayat Penyakit Terbanyak</h3>
                               <a href="javascript:void(0);" class="text-dark"><i class="fas fa-external-link-alt"></i></a>
                             </div>
                           </div>

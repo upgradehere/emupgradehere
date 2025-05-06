@@ -271,66 +271,65 @@ class ProgramMcuController extends Controller
                 }
                 break;
             case 'chart_riwayat_penyakit':
+                $query = $query->leftJoin('anamnesis_t', 'anamnesis_t.mcu_id', 'mcu_employee_v.mcu_id');
+                $query = $query->where('anamnesis_t.deleted_at', null);
                 switch ($chart_value) {
-                    case 'Bmi':
-                        $query = $query->leftJoin('anamnesis_t', 'anamnesis_t.mcu_id', 'mcu_employee_v.mcu_id');
-                        $query = $query->where('anamnesis_t.deleted_at', null);
-                        $query = $query->whereNotNull('bmi');
+                    case 'Asma':
+                        $query = $query->whereRaw("anamnesis_t.medical_history::json->>'asthma' = '1'");
                         break;
-                    case 'Gigi':
-                        $query = $query->leftJoin('anamnesis_t', 'anamnesis_t.mcu_id', 'mcu_employee_v.mcu_id');
-                        $query = $query->where('anamnesis_t.deleted_at', null);
-                        $query = $query->where(function ($query) {
-                            $query->whereRaw("anamnesis_t.teeth::json->>'carries_dentis' = '1'")
-                                  ->orWhereRaw("anamnesis_t.teeth::json->>'gangren_radix' = '1'")
-                                  ->orWhereRaw("anamnesis_t.teeth::json->>'gangren_pulpa' = '1'")
-                                  ->orWhereRaw("anamnesis_t.teeth::json->>'calculus_dentis' = '1'")
-                                  ->orWhereRaw("anamnesis_t.teeth::json->>'dentures' = '1'");
-                        });
+                    case 'Kencing Manis':
+                        $query = $query->whereRaw("anamnesis_t.medical_history::json->>'diabetes' = '1'");
                         break;
-                    case 'Visus Mata':
-                        $query = $query->leftJoin('anamnesis_t', 'anamnesis_t.mcu_id', 'mcu_employee_v.mcu_id');
-                        $query = $query->where('anamnesis_t.deleted_at', null);
-                        $query = $query->where(function ($query) {
-                            $query->whereRaw("anamnesis_t.eyes::json->>'color_blind' = '1'")
-                                  ->orWhereRaw("anamnesis_t.eyes::json->>'visus' = '1'")
-                                  ->orWhereRaw("anamnesis_t.eyes::json->>'strabismus' = '1'")
-                                  ->orWhereRaw("anamnesis_t.eyes::json->>'anemic_conjunctiva' = '1'")
-                                  ->orWhereRaw("anamnesis_t.eyes::json->>'icteric_sclera' = '1'")
-                                  ->orWhereRaw("anamnesis_t.eyes::json->>'pupillary_reflex' = '0'")
-                                  ->orWhereRaw("anamnesis_t.eyes::json->>'eye_gland_disorders' = '1'");
-                        });
+                    case 'Kejang Kejang Berulang':
+                        $query = $query->whereRaw("anamnesis_t.medical_history::json->>'recurrent_seizures' = '1'");
                         break;
-                    case 'Tekanan Darah':
-                        $query = $query->leftJoin('anamnesis_t', 'anamnesis_t.mcu_id', 'mcu_employee_v.mcu_id');
-                        $query = $query->where('anamnesis_t.deleted_at', null);
-                        $query = $query->where(function ($query) {
-                            $query->where('systolic', '>', 139)
-                                  ->where('diastolic', '>', 89);
-                        })->orWhere(function ($query) {
-                            $query->where('systolic', '<', 90)
-                                  ->where('diastolic', '<', 60);
-                        });
+                    case 'Penyakit Jantung':
+                        $query = $query->whereRaw("anamnesis_t.medical_history::json->>'heart_disease' = '1'");
                         break;
-                    case 'Rontgen':
-                        $query = $query->leftJoin('rontgen_t', 'rontgen_t.mcu_id', 'mcu_employee_v.mcu_id');
-                        $query = $query->where('rontgen_t.is_abnormal', 1);
-                        $query = $query->where('rontgen_t.deleted_at', null);
+                    case 'Batuk Disertai Dahak Berdarah':
+                        $query = $query->whereRaw("anamnesis_t.medical_history::json->>'haemoptysis' = '1'");
                         break;
-                    case 'Usg':
-                        $query = $query->leftJoin('usg_t', 'usg_t.mcu_id', 'mcu_employee_v.mcu_id');
-                        $query = $query->where('usg_t.is_abnormal', 1);
-                        $query = $query->where('usg_t.deleted_at', null);
+                    case 'Rheumatik':
+                        $query = $query->whereRaw("anamnesis_t.medical_history::json->>'rheumatism' = '1'");
                         break;
-                    case 'Treadmill':
-                        $query = $query->leftJoin('treadmill_t', 'treadmill_t.mcu_id', 'mcu_employee_v.mcu_id');
-                        $query = $query->where('treadmill_t.is_abnormal', 1);
-                        $query = $query->where('treadmill_t.deleted_at', null);
+                    case 'Tekanan Darah Tinggi':
+                        $query = $query->whereRaw("anamnesis_t.medical_history::json->>'hypertension' = '1'");
                         break;
-                    case 'Papsmear':
-                        $query = $query->leftJoin('papsmear_t', 'papsmear_t.mcu_id', 'mcu_employee_v.mcu_id');
-                        $query = $query->where('papsmear_t.is_abnormal', 1);
-                        $query = $query->where('papsmear_t.deleted_at', null);
+                    case 'Tekanan Darah Rendah':
+                        $query = $query->whereRaw("anamnesis_t.medical_history::json->>'hypotension' = '1'");
+                        break;
+                    case 'Sering Bengkak Di Wajah Atau Kaki':
+                        $query = $query->whereRaw("anamnesis_t.medical_history::json->>'angioedema' = '1'");
+                        break;
+                    case 'Riwayat Operasi':
+                        $query = $query->whereRaw("anamnesis_t.medical_history::json->>'surgical_history' = '1'");
+                        break;
+                    case 'Obat Terus Menerus':
+                        $query = $query->whereRaw("anamnesis_t.medical_history::json->>'drug_continously' = '1'");
+                        break;
+                    case 'Alergi':
+                        $query = $query->whereRaw("anamnesis_t.medical_history::json->>'allergy' = '1'");
+                        break;
+                    case 'Sakit Kuning Atau Hepatitis':
+                        $query = $query->whereRaw("anamnesis_t.medical_history::json->>'hepatitis' = '1'");
+                        break;
+                    case 'Kecanduan Obat Obatan':
+                        $query = $query->whereRaw("anamnesis_t.medical_history::json->>'drug_addiction' = '1'");
+                        break;
+                    case 'Patah Tulang':
+                        $query = $query->whereRaw("anamnesis_t.medical_history::json->>'fracture' = '1'");
+                        break;
+                    case 'Gangguan Pendengaran':
+                        $query = $query->whereRaw("anamnesis_t.medical_history::json->>'hearing_disorders' = '1'");
+                        break;
+                    case 'Nyeri Saat Buang Air Kecil':
+                        $query = $query->whereRaw("anamnesis_t.medical_history::json->>'pain_when_urinating' = '1'");
+                        break;
+                    case 'Sering Keputihan':
+                        $query = $query->whereRaw("anamnesis_t.medical_history::json->>'white_discharge' = '1'");
+                        break;
+                    case 'Epilepsi':
+                        $query = $query->whereRaw("anamnesis_t.medical_history::json->>'epilepsy' = '1'");
                         break;
                     default:
                     break;
