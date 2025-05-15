@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\CompanyM;
 use App\Models\User;
@@ -17,7 +18,9 @@ class CompanyController extends Controller
 {
     public function index(Request $request)
     {
-        return view('company/index');
+        $user = Auth::user();
+        $data['id_company'] = $user->id_company;
+        return view('company/index', $data);
     }
 
     public function getDataCompany(Request $request)

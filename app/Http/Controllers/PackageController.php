@@ -34,8 +34,7 @@ class PackageController extends Controller
     public function getDataPackage(Request $request)
     {
         try {
-            $model = new PackageM();
-            $query = $model->select();
+            $query = PackageM::query();
 
             if ($request->has('search') && !empty($request->search['value'])) {
                 $searchValue = $request->search['value'];
@@ -53,6 +52,12 @@ class PackageController extends Controller
                 }
             }
 
+            // Total records before filtering
+            $totalRecords = PackageM::count();
+        
+            // Total records after filtering
+            $filteredRecords = $query->count();
+
             $start = $request->start ?? 0;
             $length = $request->length ?? 10;
 
@@ -64,9 +69,6 @@ class PackageController extends Controller
         
                 return $item;
             });
-
-            $totalRecords = $model->count();
-            $filteredRecords = $query->count();
 
             return response()->json([
                 'draw' => $request->draw,
@@ -178,13 +180,48 @@ class PackageController extends Controller
             $data['laboratorium'] = $laboratorium;
 
             $lab_ids = json_decode($package->lab);
-            $lab_item_current = LaboratoryExaminationM::with('type')->whereIn('laboratory_examination_id', $lab_ids)->get();
+            $lab_item_current = LaboratoryExaminationM::with('type.group')->whereIn('laboratory_examination_id', $lab_ids)->get();
 
             $data['laboratorium_current'] = $lab_item_current;
 
             return view('package/detail', $data);
         } else {
             return view('errors/404');
+        }
+    }
+
+    public function duplicate($id)
+    {
+        $package = PackageM::find($id);
+
+        $new = new PackageM;
+        foreach ($package->getAttributes() as $idx => $val) {
+            if ($idx == 'id' || $idx == 'created_at' || $idx == 'deleted_at') {
+                continue;
+            }
+
+            if ($idx == 'package_name' || $idx == 'package_code') {
+                $new->$idx = $val.'-DUPLIKASI-'.date('dFY');
+            } else {
+                $new->$idx = $val;
+            }
+        }
+
+        if ($new->save()) {
+            $data = [
+                'status' => 'success',
+                'message' => 'Duplicate success',
+            ];
+            
+            return response()->json($data, 200);
+        } else {
+            $data = [
+                'status' => 'error',
+                'message' => 'Duplicate failed',
+                'data' => 'Kesalahan terjadi, paket gagal diduplikasi, harap hubungi Admin kami',
+            ];
+
+            return response()->json($data, 200);
         }
     }
 

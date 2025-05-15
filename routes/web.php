@@ -28,9 +28,12 @@ use Illuminate\Support\Facades\Route;
 // Authenticaton
 Route::get('/', [AuthController::class, 'index'])->name('login');
 Route::get('/login', [AuthController::class, 'index'])->name('login');
+Route::get('/login-employee', [AuthController::class, 'indexEmployee'])->name('login-employee');
 Route::post('/login-check', [AuthController::class, 'check'])->name('login.check');
+Route::post('/login-check-employee', [AuthController::class, 'checkEmployee'])->name('login.employee.check');
 Route::post('/login-otp', [AuthController::class, 'otp'])->name('login.otp');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::get('/dev-generate-user-emp/{company_id}', [EmployeeController::class, 'devGenerateUserEmp'])->name('dev-generate-user-emp');
 
 Route::get('/mcu/program-mcu/detail/pemeriksaan/open-email-pemeriksaan/{secret}', [PemeriksaanMcuController::class, 'openEmailPemeriksaan'])->name('open-email-pemeriksaan-mcu');
 Route::get('/mcu/program-mcu/detail/pemeriksaan/cetak-pemeriksaan', [PemeriksaanMcuController::class, 'cetakPemeriksaanMcu'])->name('print-pemeriksaan-mcu');
@@ -119,6 +122,7 @@ Route::group(['middleware' => ['auth', 'role:1,4']], function () { // Admin - CS
     Route::get('/package', [PackageController::class, 'index'])->name('package');
     Route::post('/package/store', [PackageController::class, 'store'])->name('package.store');
     Route::get('/package/delete/{id}', [PackageController::class, 'delete'])->name('package.delete');
+    Route::get('/package/duplicate/{id}', [PackageController::class, 'duplicate'])->name('package.duplicate');
     Route::get('/package/detail/{id}', [PackageController::class, 'detail'])->name('package.detail');
     Route::post('/package/update', [PackageController::class, 'update'])->name('package.update');
     Route::get('/get-data-package',  [PackageController::class, 'getDataPackage']);

@@ -68,13 +68,18 @@
                                                 <h5>{{ $lab->laboratory_examination_group_name }}</h5>
                                                 <hr class="custom-hr">
                                                 @foreach ($lab->examinationTypes as $key2 => $type)
-                                                    <span
-                                                        for="">{{ $type->laboratory_examination_type_name }}</span><br>
-                                                    <select name="" id="select_laboratorium_{{ $key2 }}"
+                                                    <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                                                        <span>{{ $type->laboratory_examination_type_name }}</span>
+                                                        <label>
+                                                            Pilih Semua
+                                                            <input class="select_laboratorium_all" value="{{ $lab->laboratory_examination_group_id."_".$type->laboratory_examination_type_id }}" id="checkall_{{ $lab->laboratory_examination_group_id."_".$type->laboratory_examination_type_id }}" type="checkbox">
+                                                        </label>
+                                                    </div>
+                                                    <select name="" id="select_laboratorium_{{ $lab->laboratory_examination_group_id."_".$type->laboratory_examination_type_id }}"
                                                         class="select_laboratorium form-control">
                                                         <option value="">-- Pilih Item --</option>
                                                         @foreach ($type->examinations as $key3 => $exam)
-                                                            <option value="{{ $exam->laboratory_examination_id }}">
+                                                            <option value="{{ $exam->laboratory_examination_id }}" data-parent="{{ $lab->laboratory_examination_group_id."_".$type->laboratory_examination_type_id }}">
                                                                 {{ $type->laboratory_examination_type_name . '-' . $exam->laboratory_examination_name }}
                                                             </option>
                                                         @endforeach
@@ -102,7 +107,7 @@
                                                         <td>{{ $lc->type->laboratory_examination_type_name . '-' . $lc->laboratory_examination_name }}
                                                         </td>
                                                         <td><button class="btn btn-danger btn-sm delete_item" type="button"
-                                                                data-id="{{ $lc->laboratory_examination_id }}">Hapus</button>
+                                                                data-id="{{ $lc->laboratory_examination_id }}" data-parent="{{ $lc->laboratory_examination_type_id."_".$lc->type->group->laboratory_examination_group_id }}">Hapus</button>
                                                         </td>
                                                     </tr>
                                                 @endforeach
@@ -124,7 +129,9 @@
     <script>
         $(document).on("change", ".select_laboratorium", function() {
             var value = $(this).val();
-            var text = $(this).find('option:selected').text();
+            var selected = $(this).find('option:selected');
+            var text = selected.text();
+            var parent = selected.data('parent');
             var input = $(".laboratory_item");
             var findSame = 0;
 
@@ -143,7 +150,7 @@
                         <tr>
                             <td><input type='text' name='laboratory_item[]' class="laboratory_item" readonly value='${value}'></td>
                             <td>${text}</td>
-                            <td><button class="btn btn-danger btn-sm delete_item" type="button" data-id='${value}'>Hapus</button></td>
+                            <td><button class="btn btn-danger btn-sm delete_item" type="button" data-id='${value}' data-parent='${parent}'>Hapus</button></td>
                         </tr>
                     `);
                 }
@@ -152,8 +159,48 @@
             }
         });
 
+        $(document).on("click", ".select_laboratorium_all", function() {
+            var id = $(this).val();
+            var isChecked = $(this).is(":checked");
+
+            if (isChecked) {
+                $("#select_laboratorium_"+id+" option").each(function () {
+                    var value = $(this).val();
+                    var text = $(this).text();
+                    var parent = $(this).data('parent');
+                    var input = $(".laboratory_item");
+                    var findSame = 0;
+
+                    if (value != "") {
+                        $.each(input, function (i, v) {
+                            if (findSame == 0) {
+                                if ($(v).val() == value) {
+                                    findSame = 1;
+                                }
+                            }
+                        });
+
+                        if (findSame == 0) {
+                            $('#tbody_item').append(`
+                                <tr>
+                                    <td><input type='text' name='laboratory_item[]' class="laboratory_item" readonly value='${value}'></td>
+                                    <td>${text}</td>
+                                    <td><button class="btn btn-danger btn-sm delete_item" type="button" data-id='${value}' data-parent='${parent}'>Hapus</button></td>
+                                </tr>
+                            `);
+                        }
+                    }
+                });
+            }
+        });
+
         $(document).on("click", ".delete_item", function() {
             var id = $(this).attr("data-id");
+            var parent = $(this).attr("data-parent");
+
+            var check = $("#checkall_"+parent);
+            $(check).prop("checked", false);
+
             $('#tbody_item tr').filter(function() {
                 return $(this).find('td:first input').val() === id;
             }).remove();

@@ -3,13 +3,16 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use App\Imports\EmployeeImport;
 use App\Helpers\GlobalHelper;
+use App\Models\User;
 use App\Models\EmployeeM;
 use App\Models\CompanyM;
 use App\Models\DepartementM;
+use Carbon\Carbon;
 use Validator;
 use Session;
 use ZipArchive;
@@ -122,7 +125,23 @@ class EmployeeController extends Controller
         }
 
         if($employee->save()) {
-            session()->flash('success', 'Pegawai baru berhasil disimpan');
+            $pw = Carbon::parse($employee->dob)->format('Y-m-d');
+    
+            $user = new User;
+            $user->name = $employee->employee_name;
+            $user->email = $employee->email;
+            $user->phone_number = $employee->phone_number;
+            $user->password = Hash::make($pw);
+            $user->otp = NULL;
+            $user->otp_expired = NULL;
+            $user->id_role = 5;
+            $user->id_company = $employee->company_id;
+            $user->id_employee = $employee->employee_id;
+            $user->examination_type = NULL;
+
+            if ($user->save()) {
+                session()->flash('success', 'Pegawai baru berhasil disimpan');
+            }
         } else {
             session()->flash('error', 'Kesalahan terjadi, pegawai gagal disimpan, harap hubungi Admin kami');
         }
@@ -391,5 +410,46 @@ class EmployeeController extends Controller
         }
 
         return redirect()->route('employee');
+    }
+
+    public function devGenerateUserEmp($company_id)
+    {
+        $employee = EmployeeM::where("company_id", $company_id)->get();
+
+        // $inc = 1;
+        foreach($employee as $emp) {
+            // if ($inc == 10) {
+            //     break;
+            // }
+            $user = User::where("name", $emp->employee_name)
+                        ->where("id_role", 5)
+                        ->where("company_id", $company_id)
+                        ->first();
+            
+            if (!$user) {
+                $new = new User;
+
+                $pw = Carbon::parse($emp->dob)->format('Y-m-d');
+
+                $new->name = $emp->employee_name;
+                $new->email = (!empty($emp->email)) ? $emp->email : $emp->employee_name;
+                $new->phone_number = $emp->phone_number;
+                $new->password = Hash::make($pw);
+                $new->otp = NULL;
+                $new->otp_expired = NULL;
+                $new->id_role = 5;
+                $new->id_company = $emp->company_id;
+                $new->id_employee = $emp->employee_id;
+                $new->examination_type = NULL;
+
+                if ($new->save()) {
+                    echo 'SUCCESS : employee id : '.$emp->id.'<br>'.$new->id.'<br><br>';
+                } else {
+                    echo 'FAILED : employee id : '.$emp->id.'<br>'.$new->id.'<br><br>';
+                }
+            }
+
+            // $inc++;
+        }
     }
 }

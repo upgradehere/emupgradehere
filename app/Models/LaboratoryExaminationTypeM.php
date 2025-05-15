@@ -21,6 +21,11 @@ class LaboratoryExaminationTypeM extends BaseModel
         'updated_at',
     ];
 
+    public function group()
+    {
+        return $this->hasOne(LaboratoryExaminationGroupM::class, 'laboratory_examination_group_id', 'laboratory_examination_group_id');
+    }
+    
     public function examinations()
     {
         return $this->hasMany(LaboratoryExaminationM::class, 'laboratory_examination_type_id', 'laboratory_examination_type_id');

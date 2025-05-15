@@ -27,8 +27,7 @@ class InternalUsersController extends Controller
     public function data(Request $request)
     {
         try {
-            $model = new User();
-            $query = $model->select();
+            $query = User::query();
 
             if ($request->has('search') && !empty($request->search['value'])) {
                 $searchValue = $request->search['value'];
@@ -49,6 +48,12 @@ class InternalUsersController extends Controller
                 }
             }
            
+            // Total records before filtering
+            $totalRecords = User::count();
+        
+            // Total records after filtering
+            $filteredRecords = $query->count();
+
             $start = $request->start ?? 0;
             $length = $request->length ?? 10;
 
@@ -69,9 +74,6 @@ class InternalUsersController extends Controller
 
                 return $item;
             });
-
-            $totalRecords = $model->count();
-            $filteredRecords = $query->count();
 
             return response()->json([
                 'draw' => $request->draw,
