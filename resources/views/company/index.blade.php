@@ -1,5 +1,14 @@
 @extends('templates/template')
 @section('content')
+    <style>
+        .disabled-link {
+            pointer-events: none;
+            color: white;
+            border-color: gray;
+            background-color: gray;
+            text-decoration: none;
+        }
+    </style>
     <div class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
@@ -201,6 +210,8 @@
     </section>
     <script>
         $(function() {
+            var id_company = "<?php echo $id_company; ?>";
+
             $('#modal-panduan').on('hidden.bs.modal', function() {
                 $('body').removeClass('modal-open');
                 $('body').css('overflow', 'auto');
@@ -360,7 +371,11 @@
                         searchable: false,
                         render: function(data, type, row) {
                             var company_id = row.company_id;
-                            return `<a class="btn btn-success btn-sm" href="/departement?company-id=${company_id}"><i class="fas fa-list"></i> List</a>`;
+                            if (id_company == company_id) {
+                                return `<a class="btn btn-success btn-sm" href="/departement?company-id=${company_id}"><i class="fas fa-list"></i> List</a>`;
+                            } else {
+                                return `<a class="btn btn-success btn-sm disabled-link" href=""><i class="fas fa-list"></i> List</a>`;
+                            }
                         }
                     },
                     {
@@ -369,7 +384,11 @@
                         searchable: false,
                         render: function(data, type, row) {
                             var company_id = row.company_id;
-                            return `<a class="btn btn-success btn-sm" href="/mcu/program-mcu?company-id=${company_id}"><i class="fas fa-list"></i> List</a>`;
+                            if (id_company == company_id) {
+                                return `<a class="btn btn-success btn-sm" href="/mcu/program-mcu?company-id=${company_id}"><i class="fas fa-list"></i> List</a>`;
+                            } else {
+                                return `<a class="btn btn-success btn-sm disabled-link" href=""><i class="fas fa-list"></i> List</a>`;
+                            }
                         }
                     },
                     {

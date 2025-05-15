@@ -60,7 +60,7 @@ class ProgramMcuController extends Controller
             $auth = Auth::user();
             $employee_id = NULL;
 
-            if ($auth->id_role == 2 || $auth->id_role == 5) {
+            if ($auth->id_role == 2 || $auth->id_role == 5 || ($auth->id_role == 1 && !empty($auth->id_company))) {
                 $company_id = $auth->id_company;
                 if ($auth->id_role == 5) {
                     $employee_id = $auth->id_employee;

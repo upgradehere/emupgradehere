@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>Login | EM Health</title>
+    <title>Login Employee | EM Health</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--===============================================================================================-->
@@ -42,7 +42,7 @@
         <div class="container-login100">
             <div class="wrap-login100">
                 <div id="cred_card">
-                    <form class="login100-form validate-form" data-action="{{ route('login.check') }}" id="cred_form"
+                    <form class="login100-form validate-form" data-action="{{ route('login.employee.check') }}" id="cred_form"
                         method="POST">
                         @csrf
                         <span class="login100-form-title p-b-43">
@@ -51,10 +51,10 @@
                         </span>
 
 
-                        <div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
-                            <input class="input100" type="email" required name="email" id="email">
+                        <div class="wrap-input100 validate-input">
+                            <input class="input100" type="text" min="16" max="16" required name="nik" id="nik">
                             <span class="focus-input100"></span>
-                            <span class="label-input100">Email</span>
+                            <span class="label-input100">NIK</span>
                         </div>
 
 
@@ -144,11 +144,11 @@
             $(cred_form).on('submit', function(event) {
                 event.preventDefault();
 
-                var email = $("#email").val();
+                var nik = $("#nik").val();
                 var password = $("#password").val();
 
-                if (email == "" || password == "") {
-                    toastr.warning('Harap isi email dan password.')
+                if (nik == "" || password == "") {
+                    toastr.warning('Harap isi nik dan password.')
                 } else {
                     var url = $(this).attr('data-action');
                     $.ajax({
@@ -202,10 +202,10 @@
                 } else {
                     var url = $(this).attr('data-action');
                     var data = new FormData(this);
-                    var email = $("#email").val();
+                    var nik = $("#nik").val();
                     var password = $("#password").val();
 
-                    data.append("email", email);
+                    data.append("nik", nik);
                     data.append("password", password);
 
                     $.ajax({
