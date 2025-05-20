@@ -4,9 +4,12 @@ namespace App\Exports;
 
 use App\Models\McuEmployeeV;
 use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\WithColumnFormatting;
+use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 
-class McuExport implements FromCollection, WithHeadings
+class McuExport implements FromCollection, WithHeadings, WithColumnFormatting, ShouldAutoSize
 {
 
     protected $filters;
@@ -34,7 +37,7 @@ class McuExport implements FromCollection, WithHeadings
             return [
                 'no' => $index + 1,
                 'mcu_code' => $item->mcu_code,
-                'nik' => $item->nik,
+                'nik' => '="' . $item->nik . '"',
                 'employee_name' => $item->employee_name,
             ];
         });
@@ -48,5 +51,12 @@ class McuExport implements FromCollection, WithHeadings
     public function headings(): array
     {
         return ['no', 'mcu_code', 'nik', 'employee_name'];
+    }
+
+    public function columnFormats(): array
+    {
+        return [
+            'C' => NumberFormat::FORMAT_TEXT
+        ];
     }
 }
