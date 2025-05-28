@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use PhpOffice\PhpSpreadsheet\Shared\Date as ExcelDate;
+use Carbon\Carbon;
 
 class McuHeaderImport implements ToCollection, WithHeadingRow, SkipsEmptyRows
 {
@@ -54,7 +56,14 @@ class McuHeaderImport implements ToCollection, WithHeadingRow, SkipsEmptyRows
                 if (empty($row['tgl_mcu'])) {
                     throw new \Exception('Terjadi Kesalahan! Tanggal MCU tidak boleh kosong!');
                 }
-                $date = date("Y-m-d", strtotime($row['tgl_mcu']));
+
+                if (is_numeric($row['tgl_mcu'])) {
+                    $carbonDate = Carbon::instance(ExcelDate::excelToDateTimeObject($row['tgl_mcu']));
+                } else {
+                    $carbonDate = Carbon::parse($row['tgl_mcu']);
+                }
+
+                $date = $carbonDate->format('Y-m-d');
                 McuT::insert([
                     'mcu_date' => $date,
                     'employee_id' => $employeeModel->employee_id,
