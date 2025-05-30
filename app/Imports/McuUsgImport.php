@@ -2,6 +2,7 @@
 
 namespace App\Imports;
 
+use App\Models\DoctorM;
 use App\Models\EmployeeM;
 use App\Models\McuT;
 use App\Models\PackageM;
@@ -33,6 +34,18 @@ class McuUsgImport implements ToCollection, WithHeadingRow, SkipsEmptyRows
             }
             $mcu_id = $modelMcu->mcu_id;
 
+            $doctor_id = null;
+            if (!empty($row['doctor_code'])) {
+                $modelDoctor = DoctorM::select('doctor_id')
+                ->where('doctor_code', $row['doctor_code'])
+                ->first();
+                $doctor_id = $modelDoctor->doctor_id;
+            }
+
+            if ($modelDoctor == null) {
+                throw new \Exception('Terjadi Kesalahan! Dokter dengan kode '.$row['doctor_code'].' Tidak Ditemukan!');
+            }
+
             $modelUsg = UsgT::select('usg_id')->where('mcu_id', $mcu_id)->first();
             if ($modelUsg != null) {
                 UsgT::where('mcu_id', $mcu_id)->delete();
@@ -51,6 +64,7 @@ class McuUsgImport implements ToCollection, WithHeadingRow, SkipsEmptyRows
                 'suggestion' => !empty($row['kesimpulan']) ? $row['kesimpulan'] : null,
                 'is_abnormal' => !empty($row['is_abnormal']) ? $row['is_abnormal'] : null,
                 'is_import' => !empty($row['is_import']) && ($row['is_import']) == true ? true : false,
+                'doctor_id' => !empty($row['doctor_code']) ? $doctor_id : null,
             ];
             UsgT::insert($data);
         }

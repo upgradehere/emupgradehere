@@ -82,6 +82,7 @@ trait AnamnesisTrait
                 'lower_extremities' => json_encode($post['lower_extremities']),
                 'additional_data' => null,
                 'notes' => $post['notes'],
+                'doctor_id' => $post['doctor_id'],
             ];
             if (!empty($anamnesis_id)) {
                 $query = $model->find($anamnesis_id);

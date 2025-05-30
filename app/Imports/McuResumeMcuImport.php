@@ -3,6 +3,7 @@
 namespace App\Imports;
 
 use App\Helpers\ConstantsHelper;
+use App\Models\DoctorM;
 use App\Models\EmployeeM;
 use App\Models\McuT;
 use App\Models\PackageM;
@@ -32,7 +33,20 @@ class McuResumeMcuImport implements ToCollection, WithHeadingRow, SkipsEmptyRows
             if ($modelMcu == null) {
                 throw new \Exception('Terjadi Kesalahan! Peserta dengan kode mcu '.$row['mcu_code'].' Tidak Ditemukan!');
             }
+
             $mcu_id = $modelMcu->mcu_id;
+
+            $doctor_id = null;
+            if (!empty($row['doctor_code'])) {
+                $modelDoctor = DoctorM::select('doctor_id')
+                ->where('doctor_code', $row['doctor_code'])
+                ->first();
+                $doctor_id = $modelDoctor->doctor_id;
+            }
+
+            if ($modelDoctor == null) {
+                throw new \Exception('Terjadi Kesalahan! Dokter dengan kode '.$row['doctor_code'].' Tidak Ditemukan!');
+            }
 
             $modelResumeMcu = ResumeMcuT::select('resume_mcu_id')->where('mcu_id', $mcu_id)->first();
             if ($modelResumeMcu != null) {
@@ -69,6 +83,7 @@ class McuResumeMcuImport implements ToCollection, WithHeadingRow, SkipsEmptyRows
                 'laboratory_impression' => !empty($row['kesan_laboratorium']) ? $row['kesan_laboratorium'] : null,
                 'result_conclusion' => $resultConclusion,
                 'suggestion' => !empty($row['saran']) ? $row['saran'] : null,
+                'doctor_id' => !empty($row['doctor_code']) ? $doctor_id : null,
             ];
             ResumeMcuT::insert($data);
         }

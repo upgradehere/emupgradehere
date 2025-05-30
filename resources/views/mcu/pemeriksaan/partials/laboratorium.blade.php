@@ -96,6 +96,40 @@
                         </div>
                     @endif
                 @endforeach
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Catatan</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group row align-items-center mb-3">
+                                            <label class="col-sm-2 col-form-label">Catatan</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control" id="notes" name="notes"
+                                                    value="{{ isset($data_header_lab->notes) ? $data_header_lab->notes : '' }}"
+                                                    placeholder="">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row align-items-center mb-3">
+                                            <label class="col-sm-2 col-form-label">Pemeriksa</label>
+                                            <div class="col-sm-10">
+                                                <select class="form-control select2 selectDoctorLab" name="doctor_id"
+                                                    style="width: 100%;">
+                                                    <option selected="selected" value="">- Dokter Pemeriksa -</option>
+                                                    @if (!empty($doctor_data))
+                                                        @foreach ($doctor_data as $doctor)
+                                                            <option value="{{ $doctor->id }}">{{ $doctor->doctor_name }}
+                                                            </option>
+                                                        @endforeach
+                                                    @endif
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
                 @if (Auth::user()->id_role == 1 || Auth::user()->id_role == 3)
                     <div class="d-flex justify-content-end">
@@ -118,7 +152,9 @@
 
 <script>
     $(function() {
-        $('.selectDoctor').select2();
+        let doctorLab = @json($data_header_lab->doctor_id ?? null);
+        $('.selectDoctorLab').select2();
+        $('.selectDoctorLab').val(doctorLab).trigger('change');
     });
 
     $(function() {

@@ -3,6 +3,7 @@
 namespace App\Imports;
 
 use App\Models\AnamnesisT;
+use App\Models\DoctorM;
 use App\Models\EmployeeM;
 use App\Models\McuT;
 use App\Models\PackageM;
@@ -241,6 +242,18 @@ class McuAnamnesisImport implements ToCollection, WithHeadingRow, SkipsEmptyRows
             }
             $mcu_id = $modelMcu->mcu_id;
 
+            $doctor_id = null;
+            if (!empty($row['doctor_code'])) {
+                $modelDoctor = DoctorM::select('doctor_id')
+                ->where('doctor_code', $row['doctor_code'])
+                ->first();
+                $doctor_id = $modelDoctor->doctor_id;
+            }
+
+            if ($modelDoctor == null) {
+                throw new \Exception('Terjadi Kesalahan! Dokter dengan kode '.$row['doctor_code'].' Tidak Ditemukan!');
+            }
+
             $modelAnamnesis = AnamnesisT::select('anamnesis_id')->where('mcu_id', $mcu_id)->first();
             if ($modelAnamnesis != null) {
                 AnamnesisT::where('mcu_id', $mcu_id)->delete();
@@ -274,7 +287,8 @@ class McuAnamnesisImport implements ToCollection, WithHeadingRow, SkipsEmptyRows
                 'spine' => json_encode($fisikTulangBelakang),
                 'upper_extremities' => json_encode($fisikEkstremitasAtas),
                 'lower_extremities' => json_encode($fisikEkstremitasBawah),
-                'notes' => !empty($row['catatan']) ? $row['catatan'] : null
+                'notes' => !empty($row['catatan']) ? $row['catatan'] : null,
+                'doctor_id' => !empty($row['doctor_code']) ? $doctor_id : null,
             ];
             AnamnesisT::insert($data);
         }

@@ -14,6 +14,12 @@ use Illuminate\Support\Facades\Log;
 
 trait LaboratoriumTrait
 {
+    private function getHeaderLab ($mcu_id) {
+        $labT = LaboratoryT::select()
+        ->where('mcu_id', $mcu_id)
+        ->first();
+        return $labT;
+    }
 
     private function getFormLab ($mcu_id, $laboratory_examintaions)
     {
@@ -109,6 +115,8 @@ trait LaboratoriumTrait
             $payload = [
                 'mcu_id' => $post['mcu_id'],
                 'laboratory_date' => date('Y-m-d H:i:s'),
+                'notes' => $post['notes'],
+                'doctor_id' => $post['doctor_id'],
             ];
             if (!empty($laboratory_id)) {
                 $query = $model->find($laboratory_id);
