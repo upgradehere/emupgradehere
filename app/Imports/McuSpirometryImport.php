@@ -2,6 +2,7 @@
 
 namespace App\Imports;
 
+use App\Models\DoctorM;
 use App\Models\EmployeeM;
 use App\Models\McuT;
 use App\Models\PackageM;
@@ -33,6 +34,18 @@ class McuSpirometryImport implements ToCollection, WithHeadingRow, SkipsEmptyRow
             }
             $mcu_id = $modelMcu->mcu_id;
 
+            $doctor_id = null;
+            if (!empty($row['doctor_code'])) {
+                $modelDoctor = DoctorM::select('doctor_id')
+                ->where('doctor_code', $row['doctor_code'])
+                ->first();
+                $doctor_id = $modelDoctor->doctor_id;
+            }
+
+            if ($modelDoctor == null) {
+                throw new \Exception('Terjadi Kesalahan! Dokter dengan kode '.$row['doctor_code'].' Tidak Ditemukan!');
+            }
+
             $modelSpirometry = SpirometryT::select('spirometry_id')->where('mcu_id', $mcu_id)->first();
             if ($modelSpirometry != null) {
                 SpirometryT::where('mcu_id', $mcu_id)->delete();
@@ -51,6 +64,7 @@ class McuSpirometryImport implements ToCollection, WithHeadingRow, SkipsEmptyRow
                 'conclusion' => !empty($row['kesimpulan']) ? $row['kesimpulan'] : null,
                 'is_abnormal' => !empty($row['is_abnormal']) ? $row['is_abnormal'] : null,
                 'is_import' => !empty($row['is_import']) && ($row['is_import']) == true ? true : false,
+                'doctor_id' => !empty($row['doctor_code']) ? $doctor_id : null,
             ];
             SpirometryT::insert($data);
         }

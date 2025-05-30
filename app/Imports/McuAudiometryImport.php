@@ -3,6 +3,7 @@
 namespace App\Imports;
 
 use App\Models\AudiometryT;
+use App\Models\DoctorM;
 use App\Models\EmployeeM;
 use App\Models\McuT;
 use App\Models\PackageM;
@@ -59,6 +60,18 @@ class McuAudiometryImport implements ToCollection, WithHeadingRow, SkipsEmptyRow
             }
             $mcu_id = $modelMcu->mcu_id;
 
+            $doctor_id = null;
+            if (!empty($row['doctor_code'])) {
+                $modelDoctor = DoctorM::select('doctor_id')
+                ->where('doctor_code', $row['doctor_code'])
+                ->first();
+                $doctor_id = $modelDoctor->doctor_id;
+            }
+
+            if ($modelDoctor == null) {
+                throw new \Exception('Terjadi Kesalahan! Dokter dengan kode '.$row['doctor_code'].' Tidak Ditemukan!');
+            }
+
             $modelAudiometry = AudiometryT::select('audiometry_id')->where('mcu_id', $mcu_id)->first();
             if ($modelAudiometry != null) {
                 AudiometryT::where('mcu_id', $mcu_id)->delete();
@@ -76,6 +89,7 @@ class McuAudiometryImport implements ToCollection, WithHeadingRow, SkipsEmptyRow
                 'suggestion' => !empty($row['saran']) ? $row['saran'] : null,
                 'is_abnormal' => !empty($row['is_abnormal']) ? $row['is_abnormal'] : null,
                 'is_import' => !empty($row['is_import']) && ($row['is_import']) == true ? true : false,
+                'doctor_id' => !empty($row['doctor_code']) ? $doctor_id : null,
             ];
             AudiometryT::insert($data);
         }

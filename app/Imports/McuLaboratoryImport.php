@@ -2,6 +2,7 @@
 
 namespace App\Imports;
 
+use App\Models\DoctorM;
 use App\Models\EmployeeM;
 use App\Models\LaboratoryDetailT;
 use App\Models\LaboratoryExaminationM;
@@ -35,6 +36,18 @@ class McuLaboratoryImport implements ToCollection, WithHeadingRow, SkipsEmptyRow
             }
             $mcu_id = $modelMcu->mcu_id;
 
+            $doctor_id = null;
+            if (!empty($row['doctor_code'])) {
+                $modelDoctor = DoctorM::select('doctor_id')
+                ->where('doctor_code', $row['doctor_code'])
+                ->first();
+                $doctor_id = $modelDoctor->doctor_id;
+            }
+
+            if ($modelDoctor == null) {
+                throw new \Exception('Terjadi Kesalahan! Dokter dengan kode '.$row['doctor_code'].' Tidak Ditemukan!');
+            }
+
             $modelLab = LaboratoryT::select('laboratory_id')->where('mcu_id', $mcu_id)->first();
             if ($modelLab != null) {
                 LaboratoryT::where('mcu_id', $mcu_id)->delete();
@@ -42,7 +55,8 @@ class McuLaboratoryImport implements ToCollection, WithHeadingRow, SkipsEmptyRow
             }
             $data = [
                 'mcu_id' => $mcu_id,
-                'laboratory_date' => date('Y-m-d H:i:s')
+                'laboratory_date' => date('Y-m-d H:i:s'),
+                'doctor_id' => !empty($row['doctor_code']) ? $doctor_id : null,
             ];
             $laboratory = LaboratoryT::create($data);
             $new_laboratory_id = $laboratory->laboratory_id;

@@ -1719,6 +1719,21 @@
                                         placeholder="">
                                 </div>
                             </div>
+                            <div class="form-group row align-items-center mb-3">
+                                <label class="col-sm-2 col-form-label">Pemeriksa</label>
+                                <div class="col-sm-10">
+                                    <select class="form-control select2 selectDoctorAnamnesis" name="doctor_id"
+                                        style="width: 100%;">
+                                        <option selected="selected" value="">- Dokter Pemeriksa -</option>
+                                        @if (!empty($doctor_data))
+                                            @foreach ($doctor_data as $doctor)
+                                                <option value="{{ $doctor->id }}">{{ $doctor->doctor_name }}
+                                                </option>
+                                            @endforeach
+                                        @endif
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1740,6 +1755,8 @@
 </form>
 <script>
     $(function() {
-
+        let doctorAnamnesis = @json($data_anamnesis->doctor_id ?? null);
+        $('.selectDoctorAnamnesis').select2();
+        $('.selectDoctorAnamnesis').val(doctorAnamnesis).trigger('change');
     });
 </script>

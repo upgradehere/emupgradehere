@@ -76,6 +76,7 @@ class PemeriksaanMcuController extends Controller
         $mcu_package_name = $getPackage['package_name'];
         $data_anamnesis = self::getDataAnamnesis($mcu_id);
         $laboratory_examintaions = !empty($getPackage['laboratory_examinations']) ? $getPackage['laboratory_examinations'] : [];
+        $data_header_lab = self::getHeaderLab($mcu_id);
         $form_lab = self::getFormLab($mcu_id, $laboratory_examintaions);
         $data_refraction = self::getDataRefraction($mcu_id);
         $data_rontgen = self::getDataRontgen($mcu_id);
@@ -277,14 +278,14 @@ class PemeriksaanMcuController extends Controller
 
         if ($mcu) {
             $mcu_id = Crypt::encryptString($mcuId);
-    
+
             $data = [
                 'name' => $mcu->employee->employee_name,
                 'company' => $mcu->company->company_name,
                 'program' => $mcu->program->mcu_program_name,
                 'link' => route('open-email-pemeriksaan-mcu',['secret' => $mcu_id])
             ];
-    
+
             try {
                 Mail::to($mcu->employee->email)->queue(new SendMail($data));
                 session()->flash('success', 'Hasil pemeriksaan berhasil dikirim');
