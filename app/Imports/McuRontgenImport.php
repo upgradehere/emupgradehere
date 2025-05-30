@@ -50,7 +50,7 @@ class McuRontgenImport implements ToCollection, WithHeadingRow, SkipsEmptyRows
                 'examination_status' => !empty($row['status_pemeriksaan']) ? $row['status_pemeriksaan'] : null,
                 'notes' => !empty($row['catatan']) ? $row['catatan'] : null,
                 'is_abnormal' => !empty($row['is_abnormal']) ? $row['is_abnormal'] : null,
-                'is_import' => !empty($row['is_import']) ? $row['is_import'] : true,
+                'is_import' => !empty($row['is_import']) && ($row['is_import']) == true ? true : false,
             ];
             RontgenT::insert($data);
         }
