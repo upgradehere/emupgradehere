@@ -59,7 +59,7 @@ class McuTreadmillImport implements ToCollection, WithHeadingRow, SkipsEmptyRows
                 'conc_normalization_after' => !empty($row['kesimpulan_normalisasi_setelah']) ? $row['kesimpulan_normalisasi_setelah'] : null,
                 'is_abnormal' => !empty($row['is_abnormal']) ? $row['is_abnormal'] : null,
                 'notes' => !empty($row['catatan']) ? $row['catatan'] : null,
-                'is_import' => !empty($row['is_import']) ? $row['is_import'] : true,
+                'is_import' => !empty($row['is_import']) && ($row['is_import']) == true ? true : false,
             ];
             TreadmillT::insert($data);
         }
