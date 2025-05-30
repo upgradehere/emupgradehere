@@ -52,7 +52,7 @@
 
 
                         <div class="wrap-input100 validate-input">
-                            <input class="input100" type="text" min="16" max="16" required name="nik" id="nik">
+                            <input class="input100" type="text" required name="nik" id="nik">
                             <span class="focus-input100"></span>
                             <span class="label-input100">NIK</span>
                         </div>

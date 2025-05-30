@@ -17,8 +17,7 @@ class DoctorController extends Controller
     public function data(Request $request)
     {
         try {
-            $model = new DoctorM();
-            $query = $model->select();
+            $query = DoctorM::query();
 
             if ($request->has('search') && !empty($request->search['value'])) {
                 $searchValue = $request->search['value'];
@@ -36,13 +35,17 @@ class DoctorController extends Controller
                     $query = $query->orderBy($columnName, $direction);
                 }
             }
-           
+
+            // Total records before filtering
+            $totalRecords = DoctorM::count();
+        
+            // Total records after filtering
+            $filteredRecords = $query->count();
+
             $start = $request->start ?? 0;
             $length = $request->length ?? 10;
 
             $data = $query->offset($start)->limit($length)->get();
-            $totalRecords = $model->count();
-            $filteredRecords = $query->count();
 
             return response()->json([
                 'draw' => $request->draw,

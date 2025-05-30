@@ -20,6 +20,7 @@ class CompanyController extends Controller
     {
         $user = Auth::user();
         $data['id_company'] = $user->id_company;
+        $data['id_role'] = $user->id_role;
         return view('company/index', $data);
     }
 

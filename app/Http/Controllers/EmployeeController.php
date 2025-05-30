@@ -423,7 +423,7 @@ class EmployeeController extends Controller
             // }
             $user = User::where("name", $emp->employee_name)
                         ->where("id_role", 5)
-                        ->where("company_id", $company_id)
+                        ->where("id_company", $company_id)
                         ->first();
             
             if (!$user) {
@@ -442,10 +442,15 @@ class EmployeeController extends Controller
                 $new->id_employee = $emp->employee_id;
                 $new->examination_type = NULL;
 
-                if ($new->save()) {
-                    echo 'SUCCESS : employee id : '.$emp->id.'<br>'.$new->id.'<br><br>';
+                $check = User::where("email", $new->email)->first();
+                if ($check) {
+                    //
                 } else {
-                    echo 'FAILED : employee id : '.$emp->id.'<br>'.$new->id.'<br><br>';
+                    if ($new->save()) {
+                        echo 'SUCCESS : employee id : '.$emp->id.'<br>'.$new->id.'<br><br>';
+                    } else {
+                        echo 'FAILED : employee id : '.$emp->id.'<br>'.$new->id.'<br><br>';
+                    }
                 }
             }
 

@@ -211,6 +211,7 @@
     <script>
         $(function() {
             var id_company = "<?php echo $id_company; ?>";
+            var id_role = "<?php echo $id_role; ?>";
 
             $('#modal-panduan').on('hidden.bs.modal', function() {
                 $('body').removeClass('modal-open');
@@ -371,11 +372,7 @@
                         searchable: false,
                         render: function(data, type, row) {
                             var company_id = row.company_id;
-                            if (id_company == company_id) {
-                                return `<a class="btn btn-success btn-sm" href="/departement?company-id=${company_id}"><i class="fas fa-list"></i> List</a>`;
-                            } else {
-                                return `<a class="btn btn-success btn-sm disabled-link" href=""><i class="fas fa-list"></i> List</a>`;
-                            }
+                            return `<a class="btn btn-success btn-sm" href="/departement?company-id=${company_id}"><i class="fas fa-list"></i> List</a>`;
                         }
                     },
                     {
@@ -384,11 +381,7 @@
                         searchable: false,
                         render: function(data, type, row) {
                             var company_id = row.company_id;
-                            if (id_company == company_id) {
-                                return `<a class="btn btn-success btn-sm" href="/mcu/program-mcu?company-id=${company_id}"><i class="fas fa-list"></i> List</a>`;
-                            } else {
-                                return `<a class="btn btn-success btn-sm disabled-link" href=""><i class="fas fa-list"></i> List</a>`;
-                            }
+                            return `<a class="btn btn-success btn-sm" href="/mcu/program-mcu?company-id=${company_id}"><i class="fas fa-list"></i> List</a>`;
                         }
                     },
                     {
@@ -397,11 +390,13 @@
                         searchable: false,
                         render: function(data, type, row) {
                             var company_id = row.company_id;
+                            var role_id = id_role;
+                            var role_disabled = (role_id == 4) ? 'disabled' : '';
                             var delete_url = "{{ route('company.delete', ['id' => '__id__']) }}";
                             delete_url = delete_url.replace('__id__', company_id);
                             return `<a class="btn btn-primary btn-sm action-detail" href="/company/detail/${company_id}"><i class="fas fa-eye"></i></a>
                                     <a class="btn btn-warning btn-sm" href="/employee?company-id=${company_id}"><i class="fas fa-users"></i></a>
-                                    <a class="btn btn-danger btn-sm action-delete" data-url="${delete_url}"><i class="fas fa-trash"></i></a>
+                                    <a class="btn btn-danger ${role_disabled} btn-sm action-delete" data-url="${delete_url}"><i class="fas fa-trash"></i></a>
                                     <a class="btn btn-success btn-sm action-reset" data-id="${company_id}"><i class="fas fa-key"></i></a>`;
                         }
                     }

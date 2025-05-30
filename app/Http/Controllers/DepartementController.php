@@ -32,8 +32,8 @@ class DepartementController extends Controller
     public function data(Request $request, $company_id)
     {
         try {
-            $model = new DepartementM();
-            $query = $model->with('company');
+            // Base query
+            $query = DepartementM::with('company'); // Eager load relations
 
             if ($request->has('search') && !empty($request->search['value'])) {
                 $searchValue = $request->search['value'];
@@ -56,12 +56,16 @@ class DepartementController extends Controller
                 $query->where('company_id', $company_id);
             }
            
+            // Total records before filtering
+            $totalRecords = DepartementM::count();
+        
+            // Total records after filtering
+            $filteredRecords = $query->count();
+
             $start = $request->start ?? 0;
             $length = $request->length ?? 10;
 
             $data = $query->offset($start)->limit($length)->get();
-            $totalRecords = $model->count();
-            $filteredRecords = $query->count();
 
             return response()->json([
                 'draw' => $request->draw,
