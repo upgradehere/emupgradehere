@@ -50,6 +50,7 @@ class McuUsgImport implements ToCollection, WithHeadingRow, SkipsEmptyRows
                 'classification' => !empty($row['kesan']) ? $row['kesan'] : null,
                 'suggestion' => !empty($row['kesimpulan']) ? $row['kesimpulan'] : null,
                 'is_abnormal' => !empty($row['is_abnormal']) ? $row['is_abnormal'] : null,
+                'is_import' => !empty($row['is_import']) ? $row['is_import'] : true,
             ];
             UsgT::insert($data);
         }

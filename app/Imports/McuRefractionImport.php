@@ -57,6 +57,7 @@ class McuRefractionImport implements ToCollection, WithHeadingRow, SkipsEmptyRow
                 'refraction_therapy_result' => !empty($row['terapi_hasil_refraksi']) ? $row['terapi_hasil_refraksi'] : null,
                 'conclusion' => !empty($row['kesimpulan']) ? $row['kesimpulan'] : null,
                 'notes' => !empty($row['catatan']) ? $row['catatan'] : null,
+                'is_import' => !empty($row['is_import']) ? $row['is_import'] : true,
             ];
             RefractionT::insert($data);
         }
