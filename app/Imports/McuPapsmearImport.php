@@ -2,6 +2,7 @@
 
 namespace App\Imports;
 
+use App\Models\DoctorM;
 use App\Models\EmployeeM;
 use App\Models\McuT;
 use App\Models\PackageM;
@@ -33,6 +34,14 @@ class McuPapsmearImport implements ToCollection, WithHeadingRow, SkipsEmptyRows
             }
             $mcu_id = $modelMcu->mcu_id;
 
+            $doctor_id = null;
+            if (!empty($row['doctor_code'])) {
+                $modelDoctor = DoctorM::select('id')
+                ->where('doctor_code', $row['doctor_code'])
+                ->first();
+                $doctor_id = $modelDoctor->id;
+            }
+
             $modelPapsmear = PapsmearT::select('papsmear_id')->where('mcu_id', $mcu_id)->first();
             if ($modelPapsmear != null) {
                 PapsmearT::where('mcu_id', $mcu_id)->delete();
@@ -46,7 +55,8 @@ class McuPapsmearImport implements ToCollection, WithHeadingRow, SkipsEmptyRows
                 'clinical_description' => !empty($row['keterangan_klinis']) ? $row['keterangan_klinis'] : null,
                 'general_category' => !empty($row['kategori_umum']) ? $row['kategori_umum'] : null,
                 'recommendations' => !empty($row['anjuran']) ? $row['anjuran'] : null,
-                'is_abnormal' => !empty($row['is_abnormal']) ? $row['is_abnormal'] : null
+                'is_abnormal' => !empty($row['is_abnormal']) ? $row['is_abnormal'] : null,
+                'doctor_id' => !empty($row['doctor_code']) ? $doctor_id : null,
             ];
             PapsmearT::insert($data);
         }

@@ -62,10 +62,10 @@ class McuAudiometryImport implements ToCollection, WithHeadingRow, SkipsEmptyRow
 
             $doctor_id = null;
             if (!empty($row['doctor_code'])) {
-                $modelDoctor = DoctorM::select('doctor_id')
+                $modelDoctor = DoctorM::select('id')
                 ->where('doctor_code', $row['doctor_code'])
                 ->first();
-                $doctor_id = $modelDoctor->doctor_id;
+                $doctor_id = $modelDoctor->id;
             }
 
             if ($modelDoctor == null) {
