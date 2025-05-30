@@ -50,7 +50,7 @@ class McuSpirometryImport implements ToCollection, WithHeadingRow, SkipsEmptyRow
                 'classification' => !empty($row['kesan']) ? $row['kesan'] : null,
                 'conclusion' => !empty($row['kesimpulan']) ? $row['kesimpulan'] : null,
                 'is_abnormal' => !empty($row['is_abnormal']) ? $row['is_abnormal'] : null,
-                'is_import' => !empty($row['is_import']) ? $row['is_import'] : true,
+                'is_import' => !empty($row['is_import']) && ($row['is_import']) == true ? true : false,
             ];
             SpirometryT::insert($data);
         }
