@@ -331,7 +331,8 @@
                                 return `<center><a class="btn btn-primary btn-sm action-detail" href="/mcu/program-mcu/detail/pemeriksaan?mcu_id=${mcuId}&employee_id=${employeeId}"><i class="fas fa-eye"></i></a>
                                         <a href="${url}${mcuId}" class="btn btn-success btn-print-pdf btn-sm action-export" data-toggle="" data-target="" data-mcuid="${mcuId}" target="_blank"><i class="fas fa-file-pdf"></i></a></center>`
                             } else if (role == 3 || role == 5) {
-                                return `<center><a class="btn btn-primary btn-sm action-detail" href="/mcu/program-mcu/detail/pemeriksaan?mcu_id=${mcuId}&employee_id=${employeeId}"><i class="fas fa-eye"></i></a></center>`
+                                return `<center><a class="btn btn-primary btn-sm action-detail" href="/mcu/program-mcu/detail/pemeriksaan?mcu_id=${mcuId}&employee_id=${employeeId}"><i class="fas fa-eye"></i></a>
+                                        <a href="${url}${mcuId}" class="btn btn-success btn-print-pdf btn-sm action-export" data-toggle="" data-target="" data-mcuid="${mcuId}" target="_blank"><i class="fas fa-file-pdf"></i></a></center>`
                             } else {
                                 return `<center><a class="btn btn-primary btn-sm action-detail" href="/mcu/program-mcu/detail/pemeriksaan?mcu_id=${mcuId}&employee_id=${employeeId}"><i class="fas fa-eye"></i></a>
                                         <a class="btn btn-success btn-print-pdf btn-sm action-export" data-toggle="modal" data-target="#modalPrint" data-mcuid="${mcuId}" data-url="/mcu/program-mcu/detail/pemeriksaan" target="_blank"><i class="fas fa-file-pdf"></i></a></center>`;
