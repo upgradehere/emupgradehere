@@ -57,6 +57,7 @@ class McuLaboratoryImport implements ToCollection, WithHeadingRow, SkipsEmptyRow
                 'mcu_id' => $mcu_id,
                 'laboratory_date' => date('Y-m-d H:i:s'),
                 'doctor_id' => !empty($row['doctor_code']) ? $doctor_id : null,
+                'notes' => !empty($row['catatan']) ? $row['catatan'] : null,
             ];
             $laboratory = LaboratoryT::create($data);
             $new_laboratory_id = $laboratory->laboratory_id;
@@ -65,6 +66,8 @@ class McuLaboratoryImport implements ToCollection, WithHeadingRow, SkipsEmptyRow
             unset($row['nama_pegawai']);
             unset($row['kode_paket']);
             unset($row['mcu_code']);
+            unset($row['doctor_id']);
+            unset($row['notes']);
 
             $detail = [];
 
