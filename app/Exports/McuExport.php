@@ -31,7 +31,7 @@ class McuExport implements FromCollection, WithHeadings, WithColumnFormatting, S
             'mcu_employee_v.nik',
             'mcu_employee_v.employee_name'
         );
-        $query = $query->where('mcu_program_id', $this->filters['mcu_program_id'])->where('company_id', $this->filters['company_id']);
+        $query = $query->where('mcu_program_id', $this->filters['mcu_program_id'])->where('company_id', $this->filters['company_id'])->orderBy('mcu_id', 'ASC');
         $records = $query->get();
         return $records->map(function ($item, $index) {
             return [
