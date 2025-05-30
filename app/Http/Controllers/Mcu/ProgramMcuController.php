@@ -80,7 +80,7 @@ class ProgramMcuController extends Controller
             $resp = GlobalHelper::dataTable($request, $query);
 
             if ($auth->id_role == 5) {
-                foreach($resp['data'] as $k => $r) {
+                foreach ($resp['data'] as $k => $r) {
                     $mcu_program_id = $r['mcu_program_id'];
 
                     $check = McuT::where('mcu_program_id', $mcu_program_id)
@@ -90,6 +90,8 @@ class ProgramMcuController extends Controller
                         unset($resp['data'][$k]);
                     }
                 }
+
+                $resp['data'] = collect($resp['data'])->values();
             }
 
             return response()->json($resp);
