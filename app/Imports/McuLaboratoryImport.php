@@ -67,7 +67,7 @@ class McuLaboratoryImport implements ToCollection, WithHeadingRow, SkipsEmptyRow
             unset($row['kode_paket']);
             unset($row['mcu_code']);
             unset($row['doctor_code']);
-            unset($row['notes']);
+            unset($row['catatan']);
 
             $detail = [];
 

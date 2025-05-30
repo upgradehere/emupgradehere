@@ -18,6 +18,8 @@ class LaboratoryT extends BaseModel
         'laboratory_date',
         'image_file',
         'additional_data',
+        'doctor_id',
+        'notes',
         'deleted_at',
         'created_at',
         'updated_at',
@@ -36,7 +38,9 @@ class LaboratoryT extends BaseModel
     public $attributes = [
         // 'laboratory_id' => 'Lab ID',
         'mcu_id' => 'MCU ID',
-        'laboratory_date' => 'Lab Date'
+        'laboratory_date' => 'Lab Date',
+        'doctor_id' => 'Dokter ID',
+        'notes' => 'Catatan',
     ];
 
     public function validate(){
