@@ -44,7 +44,7 @@
                                     <select name="id_role" required class="form-control" id="id_role">
                                         <option value="">-- Pilih Role --</option>
                                         <option {{ ($user->id_role == 1) ? 'selected' : ''}}  value="1">Super Admin</option>
-                                        <option {{ ($user->id_role == 1 && !empty($user->id_company)) ? 'selected' : ''}}  value="11">Small Admin</option>
+                                        {{-- <option {{ ($user->id_role == 1 && !empty($user->id_company)) ? 'selected' : ''}}  value="11">Small Admin</option> --}}
                                         <option {{ ($user->id_role == 3) ? 'selected' : ''}}  value="3">Checker</option>
                                         <option {{ ($user->id_role == 4) ? 'selected' : ''}}  value="4">CSO</option>
                                     </select>

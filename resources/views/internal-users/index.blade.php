@@ -89,7 +89,7 @@
                                 <select name="id_role" required class="form-control" id="id_role">
                                     <option value="">-- Pilih Role --</option>
                                     <option value="1">Super Admin</option>
-                                    <option value="11">Small Admin</option>
+                                    {{-- <option value="11">Small Admin</option> --}}
                                     <option value="3">Checker</option>
                                     <option value="4">CSO</option>
                                 </select>

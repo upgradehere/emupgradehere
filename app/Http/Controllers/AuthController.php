@@ -176,14 +176,12 @@ class AuthController extends Controller
     public function checkEmployee(Request $request)
     {
         $rules = [
-            'nik' => 'required|string|size:16|regex:/^[0-9]+$/',
+            'nik' => 'required',
             'password' => 'required',
         ];
 
         $messages = [
             'nik.required' => 'NIK wajib diisi.',
-            'nik.size' => 'NIK harus tepat 16 digit.',
-            'nik.regex' => 'NIK hanya boleh berisi angka.',
             'password.required' => 'Password wajib diisi',
         ];
         $validator = Validator::make($request->all(), $rules, $messages);
