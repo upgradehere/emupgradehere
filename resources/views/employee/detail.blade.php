@@ -44,7 +44,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="">Kode Pegawai</label>
-                                    <input type="text" value="{{ $employee->employee_code }}"
+                                    <input type="text" required value="{{ $employee->employee_code }}"
                                         name="employee_code" class="form-control">
                                 </div>
                                 <div class="form-group">

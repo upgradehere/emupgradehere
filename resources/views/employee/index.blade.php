@@ -100,7 +100,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="">Kode Pegawai</label>
-                                <input type="text" name="employee_code" class="form-control">
+                                <input type="text" required name="employee_code" class="form-control">
                             </div>
                             <div class="form-group">
                                 <label for="">NIK</label>
