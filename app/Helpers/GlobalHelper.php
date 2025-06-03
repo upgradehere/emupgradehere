@@ -67,8 +67,10 @@ class GlobalHelper {
 
             if (Auth::user()->id_role == 3) {
                 foreach($examination_types as $key => $val) {
-                    if ($val != Auth::user()->examination_type) {
-                        unset($examination_types[$key]);
+                    if (Auth::user()->examination_type != 30) {
+                        if ($val != Auth::user()->examination_type) {
+                            unset($examination_types[$key]);
+                        }
                     }
                 }
             }

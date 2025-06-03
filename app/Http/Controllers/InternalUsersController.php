@@ -245,7 +245,9 @@ class InternalUsersController extends Controller
             foreach ($request->all() as $k => $r) {
                 if ($k != '_token' && $k != 'id') {
                     if ($k == 'password') {
-                        $user->$k = Hash::make($request->password);
+                        if (!empty($request->password)) {
+                            $user->$k = Hash::make($request->password);
+                        }
                     } else {
                         $user->$k = $r;
                     }
