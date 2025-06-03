@@ -914,7 +914,7 @@ class ProgramMcuController extends Controller
 
             session()->flash('error', $messages);
 
-            return redirect()->route('program-mcu');
+            return redirect()->route('program-mcu', ['company-id' => $request->company_id]);
         }
 
         $program = new McuProgramM;
