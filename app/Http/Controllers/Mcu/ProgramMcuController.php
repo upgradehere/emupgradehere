@@ -917,6 +917,12 @@ class ProgramMcuController extends Controller
             return redirect()->route('program-mcu', ['company-id' => $request->company_id]);
         }
 
+        $check = McuProgramM::where('mcu_program_code', $request->mcu_program_code)->get();
+        if ($check->count() > 0) {
+            session()->flash('error', 'Kode Program yang sama sudah ada');
+            return redirect()->route('program-mcu', ['company-id' => $request->company_id]);
+        }
+
         $program = new McuProgramM;
 
         foreach ($request->all() as $k => $r) {
@@ -980,7 +986,13 @@ class ProgramMcuController extends Controller
 
             session()->flash('error', $messages);
 
-            return redirect()->route('program-mcu');
+            return redirect()->route('program-mcu', ['company-id' => $request->company_id]);
+        }
+
+        $check = McuProgramM::where('mcu_program_code', $request->mcu_program_code)->get();
+        if ($check->count() > 0) {
+            session()->flash('error', 'Kode Program yang sama sudah ada');
+            return redirect()->route('program-mcu', ['company-id' => $request->company_id]);
         }
 
         $program = McuProgramM::find($request->mcu_program_id);

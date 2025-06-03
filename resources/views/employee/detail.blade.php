@@ -44,17 +44,17 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="">Kode Pegawai</label>
-                                    <input type="text" required value="{{ $employee->employee_code }}"
+                                    <input type="text" value="{{ $employee->employee_code }}"
                                         name="employee_code" class="form-control">
                                 </div>
                                 <div class="form-group">
                                     <label for="">NIK</label>
-                                    <input type="text" minlength="16" maxlength="16" required value="{{ $employee->nik }}" name="nik"
+                                    <input type="text" maxlength="16" required value="{{ $employee->nik }}" name="nik"
                                         class="form-control">
                                 </div>
                                 <div class="form-group">
                                     <label for="">No Whatsapp</label>
-                                    <input type="text" required value="{{ $employee->phone_number }}"
+                                    <input type="text" value="{{ $employee->phone_number }}"
                                         name="phone_number" class="form-control">
                                 </div>
                                 <div class="form-group">
