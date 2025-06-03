@@ -100,15 +100,15 @@
                             </div>
                             <div class="form-group">
                                 <label for="">Kode Pegawai</label>
-                                <input type="text" required name="employee_code" class="form-control">
+                                <input type="text" name="employee_code" class="form-control">
                             </div>
                             <div class="form-group">
                                 <label for="">NIK</label>
-                                <input type="text" minlength="16" maxlength="16" required name="nik" class="form-control">
+                                <input type="text" maxlength="16" required name="nik" class="form-control">
                             </div>
                             <div class="form-group">
                                 <label for="">No Whatsapp</label>
-                                <input type="text" required name="phone_number" class="form-control">
+                                <input type="text" name="phone_number" class="form-control">
                             </div>
                             <div class="form-group">
                                 <label for="">Email</label>
