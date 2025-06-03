@@ -71,7 +71,7 @@
                                 <select name="company_id" class="form-control">
                                     <option value="">-- Pilih Perusahaan --</option>
                                     @foreach ($company as $item)
-                                        <option value="{{ $item->company_id }}">{{ $item->company_name }}</option>
+                                        <option {{ ($item->company_id == $company_id) ? 'selected' : '' }} value="{{ $item->company_id }}">{{ $item->company_name }}</option>
                                     @endforeach
                                 </select>
                             </div>

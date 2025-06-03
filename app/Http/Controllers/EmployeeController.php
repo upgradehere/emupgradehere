@@ -64,7 +64,7 @@ class EmployeeController extends Controller
             'employee_code' => 'required',
             'nik' => 'required|numeric',
             'phone_number' => 'required|numeric',
-            'email' => 'required|email',
+            // 'email' => 'required|email',
             'dob' => 'required',
             'sex' => 'required',
             'departement_id' => 'required',
@@ -78,8 +78,8 @@ class EmployeeController extends Controller
             'nik.numeric' => 'NIK harus berupa angka',
             'phone_number.required' => 'No Whatsapp wajib diisi',
             'phone_number.numeric' => 'No Whatsapp harus berupa angka',
-            'email.required' => 'Email wajib diisi',
-            'email.numeric' => 'Email tidak valid',
+            // 'email.required' => 'Email wajib diisi',
+            // 'email.email' => 'Email tidak valid',
             'dob.required' => 'Tanggal Lahir wajib diisi',
             'sex.required' => 'Jenis Kelamin wajib diisi',
             'departement_id.required' => 'Departemen wajib diisi',
@@ -94,9 +94,21 @@ class EmployeeController extends Controller
             return redirect()->route('employee');
         }
 
+        if (empty($request->email)) {
+            $email = str_replace(' ', '_', $request->employee_name);
+            $request->merge(['email' => $email]);
+        }
+
         $check = EmployeeM::where('nik', $request->nik)->get();
         if ($check->count() > 0) {
             session()->flash('error', 'NIK yang sama sudah ada');
+            return redirect()->route('employee');
+        }
+
+        $check2 = EmployeeM::where('email', $request->email)->get();
+        $check3 = User::where('email', $request->email)->get();
+        if ($check2->count() > 0 || $check3->count() > 0) {
+            session()->flash('error', 'Email yang sama sudah ada');
             return redirect()->route('employee');
         }
 
@@ -146,7 +158,7 @@ class EmployeeController extends Controller
             session()->flash('error', 'Kesalahan terjadi, pegawai gagal disimpan, harap hubungi Admin kami');
         }
 
-        return redirect()->route('employee');
+        return redirect()->route('employee', ['company-id' => $employee->company_id]);
 
     }
 
@@ -199,7 +211,7 @@ class EmployeeController extends Controller
             'employee_code' => 'required',
             'nik' => 'required|numeric',
             'phone_number' => 'required|numeric',
-            'email' => 'required|email',
+            // 'email' => 'required|email',
             'dob' => 'required',
             'sex' => 'required',
             'departement_id' => 'required',
@@ -214,8 +226,8 @@ class EmployeeController extends Controller
             'nik.numeric' => 'NIK harus berupa angka',
             'phone_number.required' => 'No Whatsapp wajib diisi',
             'phone_number.numeric' => 'No Whatsapp harus berupa angka',
-            'email.required' => 'Email wajib diisi',
-            'email.email' => 'Email harus berupa angka',
+            // 'email.required' => 'Email wajib diisi',
+            // 'email.email' => 'Email tidak valid',
             'dob.required' => 'Tanggal Lahir wajib diisi',
             'sex.required' => 'Jenis Kelamin wajib diisi',
             'departement_id.required' => 'Departemen wajib diisi',
@@ -268,7 +280,7 @@ class EmployeeController extends Controller
             session()->flash('error', 'Pegawai tidak ditemukan');
         }
 
-        return redirect()->route('employee');
+        return redirect()->route('employee', ['company-id' => $employee->company_id]);
     }
 
     public function importPhoto(Request $request)
@@ -432,7 +444,7 @@ class EmployeeController extends Controller
                 $pw = Carbon::parse($emp->dob)->format('Y-m-d');
 
                 $new->name = $emp->employee_name;
-                $new->email = (!empty($emp->email)) ? $emp->email : $emp->employee_name;
+                $new->email = (!empty($emp->email)) ? $emp->email : str_replace(" ","_",$emp->employee_name);
                 $new->phone_number = $emp->phone_number;
                 $new->password = Hash::make($pw);
                 $new->otp = NULL;

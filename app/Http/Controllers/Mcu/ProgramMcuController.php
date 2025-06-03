@@ -47,10 +47,15 @@ use Validator;
 
 class ProgramMcuController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $company = CompanyM::all();
         $data['company'] = $company;
+        if ($request->get('company-id')) {
+            if (is_numeric($request->get('company-id'))) {
+                $data['company_id'] = $request->get('company-id');
+            }
+        }
         return view('/mcu/program_mcu', $data);
     }
 
@@ -924,11 +929,12 @@ class ProgramMcuController extends Controller
 
         if ($program->save()) {
             session()->flash('success', 'Program baru telah disimpan');
-            return redirect()->route('program-mcu');
         } else {
             session()->flash('success', 'Kesalahan terjadi, program gagal disimpan, harap hubungi Admin kami');
-            return redirect()->route('program-mcu');
         }
+
+        return redirect()->route('program-mcu', ['company-id' => $program->company_id]);
+
     }
 
     public function getProgramName($id)
@@ -989,11 +995,12 @@ class ProgramMcuController extends Controller
 
         if ($program->save()) {
             session()->flash('success', 'Program telah diperbarui');
-            return redirect()->route('program-mcu');
         } else {
             session()->flash('success', 'Kesalahan terjadi, program gagal diperbarui, harap hubungi Admin kami');
-            return redirect()->route('program-mcu');
         }
+
+        return redirect()->route('program-mcu', ['company-id' => $program->company_id]);
+
     }
 
     public function deleteProgram($id)
