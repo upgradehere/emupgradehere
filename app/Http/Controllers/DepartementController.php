@@ -129,13 +129,13 @@ class DepartementController extends Controller
 
             session()->flash('error', $messages);
 
-            return redirect()->route('departement');
+            return redirect()->route('departement', ['company-id' => $request->company_id]);
         }
 
         $check = DepartementM::where('departement_code', $request->departement_code)->get();
         if ($check->count() > 0) {
             session()->flash('error', 'Kode Departemen yang sama sudah ada');
-            return redirect()->route('departement');
+            return redirect()->route('departement', ['company-id' => $request->company_id]);
         }
 
         $departement = new DepartementM;

@@ -91,7 +91,7 @@ class EmployeeController extends Controller
 
             session()->flash('error', $messages);
 
-            return redirect()->route('employee');
+            return redirect()->route('employee', ['company-id' => $request->company_id]);
         }
 
         if (empty($request->email)) {
@@ -102,14 +102,14 @@ class EmployeeController extends Controller
         $check = EmployeeM::where('nik', $request->nik)->get();
         if ($check->count() > 0) {
             session()->flash('error', 'NIK yang sama sudah ada');
-            return redirect()->route('employee');
+            return redirect()->route('employee', ['company-id' => $request->company_id]);
         }
 
         $check2 = EmployeeM::where('email', $request->email)->get();
         $check3 = User::where('email', $request->email)->get();
         if ($check2->count() > 0 || $check3->count() > 0) {
             session()->flash('error', 'Email yang sama sudah ada');
-            return redirect()->route('employee');
+            return redirect()->route('employee', ['company-id' => $request->company_id]);
         }
 
         $employee = new EmployeeM;
@@ -132,7 +132,7 @@ class EmployeeController extends Controller
                 $employee->photo = $fileName;
             } else {
                 session()->flash('error', 'Kesalahan terjadi, pegawai baru gagal disimpan, harap hubungi Admin kami');
-                return redirect()->route('employee');
+                return redirect()->route('employee', ['company-id' => $employee->company_id]);
             }
         }
 
