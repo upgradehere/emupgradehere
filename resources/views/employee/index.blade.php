@@ -104,7 +104,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="">NIK</label>
-                                <input type="text" required name="nik" class="form-control">
+                                <input type="text" minlength="16" maxlength="16" required name="nik" class="form-control">
                             </div>
                             <div class="form-group">
                                 <label for="">No Whatsapp</label>
@@ -112,7 +112,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="">Email</label>
-                                <input type="email" required name="email" class="form-control">
+                                <input type="email" name="email" class="form-control">
                             </div>
                             <div class="form-group">
                                 <label for="">Tanggal Lahir</label>

@@ -83,7 +83,7 @@
                                 <select class="form-control" name="company_id" required id="">
                                     <option value="">-- Pilih Perusahaan --</option>
                                     @foreach ($company as $c)
-                                        <option value="{{ $c->company_id }}">{{ $c->company_name }}</option>
+                                        <option {{ ($c->company_id == $company_id) ? 'selected' : '' }} value="{{ $c->company_id }}">{{ $c->company_name }}</option>
                                     @endforeach
                                 </select>
                             </div>

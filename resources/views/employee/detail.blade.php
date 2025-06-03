@@ -49,7 +49,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="">NIK</label>
-                                    <input type="text" required value="{{ $employee->nik }}" name="nik"
+                                    <input type="text" minlength="16" maxlength="16" required value="{{ $employee->nik }}" name="nik"
                                         class="form-control">
                                 </div>
                                 <div class="form-group">
@@ -59,7 +59,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="">Email</label>
-                                    <input type="email" required value="{{ $employee->email }}" name="email"
+                                    <input type="email" value="{{ $employee->email }}" name="email"
                                         class="form-control">
                                 </div>
                                 <div class="form-group">

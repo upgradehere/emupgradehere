@@ -151,7 +151,7 @@ class DepartementController extends Controller
             session()->flash('error', 'Kesalahan terjadi, Departemen gagal disimpan, harap hubungi Admin kami');
         }
 
-        return redirect()->route('departement');
+        return redirect()->route('departement', ['company-id' => $departement->company_id]);
     }
 
     public function update(Request $request)
@@ -200,7 +200,7 @@ class DepartementController extends Controller
             session()->flash('error', 'Departemen tidak ditemukan');
         }
 
-        return redirect()->route('departement');
+        return redirect()->route('departement', ['company-id' => $departement->company_id]);
     }
 
     public function delete($id)
