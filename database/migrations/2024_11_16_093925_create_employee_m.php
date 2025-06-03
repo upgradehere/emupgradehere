@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('employee_m', function (Blueprint $table) {
             $table->increments('employee_id');
-            $table->string('employee_code', 8);
+            $table->string('employee_code', 100);
             $table->string('employee_name', 100)->nullable();
             $table->string('nik', 16)->nullable();
             $table->unsignedInteger('company_id')->nullable();
