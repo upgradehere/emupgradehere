@@ -61,7 +61,7 @@ class EmployeeController extends Controller
         $rules = [
             'company_id' => 'required',
             'employee_name' => 'required',
-            // 'employee_code' => 'required',
+            'employee_code' => 'required',
             'nik' => 'required|numeric',
             // 'phone_number' => 'required|numeric',
             // 'email' => 'required|email',
@@ -73,7 +73,7 @@ class EmployeeController extends Controller
         $messages = [
             'company_id.required' => 'Perusahaan wajib diisi',
             'employee_name.required' => 'Nama Pegawai wajib diisi',
-            // 'employee_code.required' => 'Kode Pegawai wajib diisi',
+            'employee_code.required' => 'Kode Pegawai wajib diisi',
             'nik.required' => 'NIK wajib diisi',
             'nik.numeric' => 'NIK harus berupa angka',
             // 'phone_number.required' => 'No Whatsapp wajib diisi',
@@ -208,7 +208,7 @@ class EmployeeController extends Controller
             'id' => 'required',
             'company_id' => 'required',
             'employee_name' => 'required',
-            // 'employee_code' => 'required',
+            'employee_code' => 'required',
             'nik' => 'required|numeric',
             // 'phone_number' => 'required|numeric',
             // 'email' => 'required|email',
