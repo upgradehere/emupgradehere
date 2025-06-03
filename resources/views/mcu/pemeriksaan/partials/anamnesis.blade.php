@@ -1,5 +1,5 @@
 <form action="/mcu/program-mcu/detail/pemeriksaan/save-anamnesis" method="POST"
-    class="{{ Auth::user()->id_role == 5 ? 'disabled-div' : '' }}">
+    class="{{ Auth::user()->id_role == 5 || (Auth::user()->id_role == 3 && Auth::user()->examination_type == 30) ? 'card disabled-div' : 'card' }}">
     @csrf
     <input type="hidden" name="anamnesis_id"
         value="{{ isset($data_anamnesis->anamnesis_id) ? $data_anamnesis->anamnesis_id : null }}">

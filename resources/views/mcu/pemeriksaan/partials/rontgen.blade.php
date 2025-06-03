@@ -1,4 +1,4 @@
-<div class="{{ Auth::user()->id_role == 5 ? 'card disabled-div' : 'card' }}">
+<div class="{{ Auth::user()->id_role == 5 || (Auth::user()->id_role == 3 && Auth::user()->examination_type == 30) ? 'card disabled-div' : 'card' }}">
     <div class="card-header">
         <h3 class="card-title">Rontgen</h3>
     </div>

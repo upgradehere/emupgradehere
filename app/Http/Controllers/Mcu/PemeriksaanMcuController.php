@@ -34,6 +34,7 @@ use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 use Milon\Barcode\Facades\DNS2DFacade;
 use PDF;
@@ -58,6 +59,7 @@ class PemeriksaanMcuController extends Controller
 
     public function index(Request $request)
     {
+        $is_resume_pic = (Auth::user()->id_role == 3 && Auth::user()->examination_type == 30) ? true : false;
         $mcu_id = $request->get('mcu_id');
         $employee_id = $request->get('employee_id');
 

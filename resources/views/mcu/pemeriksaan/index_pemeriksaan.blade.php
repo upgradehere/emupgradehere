@@ -72,7 +72,7 @@
                     <ul class="nav nav-tabs" id="custom-content-below-tab" role="tablist">
                         @foreach ($examinations as $key => $examination)
                             <li class="nav-item">
-                                <a class="nav-link {{ $key === 0 ? 'active' : '' }}" id="{{ $examination['tab_name'] }}-tab"
+                                <a class="nav-examination nav-link {{ $key === 0 ? 'active' : '' }}" id="{{ $examination['tab_name'] }}-tab"
                                     data-toggle="pill" href="#{{ $examination['tab_name'] }}" role="tab"
                                     aria-controls="{{ $examination['tab_name'] }}"
                                     aria-selected="{{ $key === 0 ? 'true' : 'false' }}">
@@ -148,6 +148,14 @@
         </div>
     </section>
     <script>
+        $(document).ready(function(){
+            var is_resume_pic = "<?php echo $is_resume_pic; ?>";
+            if (is_resume_pic == "1" || is_resume_pic == 1 || is_resume_pic == true || is_resume_pic == "true") {
+                $(".nav-examination").removeClass("active");
+                $("#tab-resume-tab").addClass("active");
+            }
+        });
+
         $(function() {
             var role = @json(Auth::user()->id_role);
             if (role == 2) {
