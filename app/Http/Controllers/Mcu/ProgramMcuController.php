@@ -51,6 +51,7 @@ class ProgramMcuController extends Controller
     {
         $company = CompanyM::all();
         $data['company'] = $company;
+        $data['company_id'] = '*';
         if ($request->get('company-id')) {
             if (is_numeric($request->get('company-id'))) {
                 $data['company_id'] = $request->get('company-id');
