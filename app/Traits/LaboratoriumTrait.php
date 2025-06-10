@@ -182,7 +182,7 @@ trait LaboratoriumTrait
 
     private function getDataPrintLaboratorium($mcu_id)
     {
-        $model = LaboratoryT::select('laboratory_id', 'laboratory_code', 'mcu_id', 'additional_data')->where('mcu_id', $mcu_id)->first();
+        $model = LaboratoryT::select('laboratory_id', 'laboratory_code', 'mcu_id', 'doctor_id', 'notes', 'additional_data')->where('mcu_id', $mcu_id)->first();
         $data = [];
         $data = $model;
         if (!empty($model)) {

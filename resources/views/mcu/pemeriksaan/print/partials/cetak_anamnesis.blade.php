@@ -1743,4 +1743,17 @@
             </tr>
         </tbody>
     </table>
+    <div style="padding-top: 50px;">
+	    <table style="width: 100%; font-size: 13px;" cellpadding="3">
+	         <tr>
+	            <td style="width: 60%; text-align: center; vertical-align: bottom;">
+	            </td>
+	            <td style="width: 40%; text-align: center; vertical-align: bottom;">
+	                <img src="{{ public_path('uploads/doctor_sign/'.$doctor_sign[$anamnesis->doctor_id]) }}" style="max-width: 150px;"><br>
+	                <b>{{ $doctor_list[$anamnesis->doctor_id] ?? '' }} </b>
+	                <p style="border-top: 1px solid black; padding-top: 10px;"></p>
+	            </td>
+	        </tr>
+	    </table>
+	</div>
 @endif
