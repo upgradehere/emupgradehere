@@ -416,7 +416,7 @@ public function cetakBarcodeMcu(Request $request)
                 'mcu_code' => $mcu_model->mcu_code,
                 'nik' => $employee_model->nik ?? '-', // tambahkan ini
                 'employee_name' => $employee_model->employee_name,
-                'sex' => $employee_model->gender === 'L' ? 'L' : 'P',
+                'sex' => $employee_model->sex === 11 ? 'L' : 'P',
                 'age' => \Carbon\Carbon::parse($employee_model->dob)->age . ' thn',
                 'company_name' => $company_model->company_name ?? '-',
                 'package_name' => $package_model->package_name ?? '-', // tambahkan ini
