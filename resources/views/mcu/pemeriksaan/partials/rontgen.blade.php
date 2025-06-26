@@ -71,6 +71,9 @@
                     @endif
                 </div>
             </div>
+            <button type="button" class="btn btn-outline-info mb-3" onclick="isiNilaiNormalRontgen()">
+                Nilai Normal
+            </button>
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">Hasil Radiologi</h3>
@@ -90,7 +93,7 @@
                             <div class="form-group row align-items-center mb-3">
                                 <label class="col-sm-4 col-form-label">Diagnosa Klinis</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="mcuCode" name="clinical_diagnosis"
+                                    <input type="text" class="form-control" id="clinical_diagnosis" name="clinical_diagnosis"
                                         value="{{ !empty($data_rontgen->clinical_diagnosis) ? $data_rontgen->clinical_diagnosis : '' }}"
                                         placeholder="">
                                 </div>
@@ -98,7 +101,7 @@
                             <div class="form-group row align-items-center mb-3">
                                 <label class="col-sm-4 col-form-label">Cor</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="mcuCode" name="cor"
+                                    <input type="text" class="form-control" id="cor" name="cor"
                                         value="{{ !empty($data_rontgen->cor) ? $data_rontgen->cor : '' }}"
                                         placeholder="">
                                 </div>
@@ -106,7 +109,7 @@
                             <div class="form-group row align-items-center mb-3">
                                 <label class="col-sm-4 col-form-label">Pulmo</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="mcuCode" name="pulmo"
+                                    <input type="text" class="form-control" id="pulmo" name="pulmo"
                                         value="{{ !empty($data_rontgen->pulmo) ? $data_rontgen->pulmo : '' }}"
                                         placeholder="">
                                 </div>
@@ -114,7 +117,7 @@
                             <div class="form-group row align-items-center mb-3">
                                 <label class="col-sm-4 col-form-label">Oss Costae</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="mcuCode" name="oss_costae"
+                                    <input type="text" class="form-control" id="oss_costae" name="oss_costae"
                                         value="{{ !empty($data_rontgen->oss_costae) ? $data_rontgen->oss_costae : '' }}"
                                         placeholder="">
                                 </div>
@@ -124,7 +127,7 @@
                             <div class="form-group row align-items-center mb-3">
                                 <label class="col-sm-4 col-form-label">Sinus Diafragma</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="mcuCode"
+                                    <input type="text" class="form-control" id="diaphragmatic_sinus"
                                         name="diaphragmatic_sinus"
                                         value="{{ !empty($data_rontgen->diaphragmatic_sinus) ? $data_rontgen->diaphragmatic_sinus : '' }}"
                                         placeholder="">
@@ -133,7 +136,7 @@
                             <div class="form-group row align-items-center mb-3">
                                 <label class="col-sm-4 col-form-label">Kesimpulan</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="mcuCode" name="conclusion"
+                                    <input type="text" class="form-control" id="conclusion" name="conclusion"
                                         value="{{ !empty($data_rontgen->conclusion) ? $data_rontgen->conclusion : '' }}"
                                         placeholder="">
                                 </div>
@@ -141,7 +144,7 @@
                             <div class="form-group row align-items-center mb-3">
                                 <label class="col-sm-4 col-form-label">Status Pemeriksaan</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="mcuCode"
+                                    <input type="text" class="form-control" id="examination_status"
                                         name="examination_status"
                                         value="{{ !empty($data_rontgen->examination_status) ? $data_rontgen->examination_status : '' }}"
                                         placeholder="">
@@ -150,7 +153,7 @@
                             <div class="form-group row align-items-center mb-3">
                                 <label class="col-sm-4 col-form-label">Normal / Abnormal</label>
                                 <div class="col-sm-8">
-                                    <select class="form-control" name="is_abnormal" style="width: 100%;">
+                                    <select class="form-control" id="is_abnormal" name="is_abnormal" style="width: 100%;">
                                         <option value="0"
                                             {{ isset($data_rontgen->is_abnormal) && $data_rontgen->is_abnormal == 0 ? 'selected' : '' }}>
                                             Normal</option>
@@ -178,7 +181,7 @@
                             <div class="form-group row align-items-center mb-3">
                                 <label class="col-sm-4 col-form-label">Catatan</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="mcuCode" name="notes"
+                                    <input type="text" class="form-control" id="notes" name="notes"
                                         value="{{ !empty($data_rontgen->notes) ? $data_rontgen->notes : '' }}"
                                         placeholder="">
                                 </div>
@@ -214,4 +217,28 @@
             $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
         });
     });
+</script>
+<script>
+    function isiNilaiNormalRontgen() {
+        document.getElementById('rontgen_examination_type').value = 'Thorax';
+        document.getElementById('clinical_diagnosis').value = '';
+        document.getElementById('cor').value = 'Normal';
+        document.getElementById('pulmo').value = 'Tak tampak infiltrat';
+        document.getElementById('oss_costae').value = 'Baik';
+        document.getElementById('diaphragmatic_sinus').value = 'Baik';
+        document.getElementById('conclusion').value = 'Normal';
+        document.getElementById('examination_status').value = '';
+        document.getElementById('is_abnormal').value = '0'; // 0 = Normal
+        document.getElementById('notes').value = 'Normal Chest';
+
+        // Select doctor by name if needed (optional)
+        let doctorSelect = document.querySelector('.selectDoctorRontgen');
+        if (doctorSelect) {
+            const defaultDoctor = [...doctorSelect.options].find(opt => opt.text.includes('Rita Sibagariang'));
+            if (defaultDoctor) {
+                doctorSelect.value = defaultDoctor.value;
+                $(doctorSelect).trigger('change');
+            }
+        }
+    }
 </script>

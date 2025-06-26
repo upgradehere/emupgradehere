@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Mcu;
 
 use App\Exports\McuExport;
+use App\Exports\McuProgramExport;
 use App\Helpers\ConstantsHelper;
 use App\Helpers\GlobalHelper;
 use App\Http\Controllers\Controller;
@@ -1037,4 +1038,14 @@ class ProgramMcuController extends Controller
             return response()->json($data, 200);
         }
     }
+    public function exportExcel($program_id)
+    {
+        try {
+            return Excel::download(new McuProgramExport($program_id), 'hasil_mcu_program.xlsx');
+        } catch (\Exception $e) {
+            Log::error('Export Excel Gagal: ' . $e->getMessage());
+            return back()->with('error', 'Export gagal. Silakan coba lagi.');
+        }
+    }
+
 }

@@ -107,6 +107,8 @@
                                     <a class="btn btn-primary btn-sm me-2 mb-2" data-toggle="modal" data-target="#modalConclusionSuggestion"><i class="fas fa-edit"></i>&nbsp;&nbsp;Kesimpulan & Saran</a>
                                     <a class="btn btn-primary btn-sm me-2 mb-2" id="sendPdf" data-url="{{ route('send-batch-pemeriksaan-mcu') }}"><i class="fas fa-paper-plane"></i>&nbsp;&nbsp;Kirim Hasil Pemeriksaan</a>
                                     <a class="btn btn-primary btn-sm me-2 mb-2" href="/mcu/program-mcu/download-template-pemeriksaan?company_id={{$company_id}}&mcu_program_id={{$mcu_program_id}}"><i class="fas fa-download"></i>&nbsp;&nbsp;Unduh Template Excel</a>
+                                    <a href="{{ route('program-mcu.export-excel', ['program_id' => $mcu_program_name->mcu_program_id]) }}" class="btn btn-success"><i class="fa fa-file-excel"></i> Export Hasil MCU (.xlsx)</a>
+
                                 @endif
                             @endif
                         </div>
