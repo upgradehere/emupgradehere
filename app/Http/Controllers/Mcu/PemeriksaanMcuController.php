@@ -39,6 +39,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use Milon\Barcode\Facades\DNS2DFacade;
 use PDF;
 use Log;
+use Carbon\Carbon;
 
 
 class PemeriksaanMcuController extends Controller
@@ -381,33 +382,65 @@ class PemeriksaanMcuController extends Controller
         return $pdf->stream($filename);
     }
 
-    public function cetakBarcodeMcu (Request $request)
-    {
-        $data = [
-            'employee_name' => '',
-            'mcu_code' => '',
-            'barcode' => ''
-        ];
+public function cetakBarcodeMcu(Request $request)
+{
+    try {
+        $mcu_id = $request->get('mcu_id');
+        $mcu_model = McuT::findOrFail($mcu_id);
+        $employee_model = EmployeeM::findOrFail($mcu_model->employee_id);
+        $company_model = CompanyM::findOrFail($employee_model->company_id);
+        $package_model = PackageM::findOrFail($mcu_model->package_id);
 
-        try {
-            $mcu_id = $request->get('mcu_id');
-            $mcu_model = McuT::find($mcu_id);
-            $employee_model = EmployeeM::find($mcu_model->employee_id);
-            $data = [
-                'employee_name' => $employee_model->employee_name,
+        // Hitung umur
+        $age = $employee_model->dob ? Carbon::parse($employee_model->dob)->age . ' thn' : '-';
+
+        // Ambil list pemeriksaan dari Package
+        $exams = [];
+        if ($package_model->anamnesis) $exams[] = 'FISIK & ANAMNESA';
+        if ($package_model->lab && json_decode($package_model->lab)) $exams[] = 'LABORATORIUM';
+        if ($package_model->rontgen) $exams[] = 'RONTGEN';
+        if ($package_model->refraction) $exams[] = 'REFRAKSI';
+        if ($package_model->ekg) $exams[] = 'EKG';
+        if ($package_model->audiometry) $exams[] = 'AUDIOMETRI';
+        if ($package_model->spirometry) $exams[] = 'SPIROMETRI';
+        if ($package_model->treadmill) $exams[] = 'TREADMILL';
+        if ($package_model->usg) $exams[] = 'USG';
+        if ($package_model->papsmear) $exams[] = 'PAP SMEAR';
+
+        $pages = [];
+
+        foreach ($exams as $exam) {
+            $repeat = ($exam === 'LABORATORIUM') ? 2 : 1;
+            for ($i = 1; $i <= $repeat; $i++) {
+            $pages[] = [
                 'mcu_code' => $mcu_model->mcu_code,
+                'nik' => $employee_model->nik ?? '-', // tambahkan ini
+                'employee_name' => $employee_model->employee_name,
+                'sex' => $employee_model->sex === 11 ? 'L' : 'P',
+                'age' => \Carbon\Carbon::parse($employee_model->dob)->age . ' thn',
+                'company_name' => $company_model->company_name ?? '-',
+                'package_name' => $package_model->package_name ?? '-', // tambahkan ini
+                'mcu_date' => \Carbon\Carbon::parse($mcu_model->mcu_date)->format('d-m-Y'),
             ];
-
-        } catch (\Exception $e) {
-            Log::error('Gagal generate barcode MCU untuk mcu_id: ' . $request->get('mcu_id') . '. Error: ' . $e->getMessage(). ' file' . $e->getFile() . ' line' . $e->getLine());
+            }
         }
 
-        $pdf = PDF::loadView('mcu.pemeriksaan.print.cetak_barcode', $data)->setPaper('a7', 'landscape');
-        $filename = "MCU BARCODE FILE.pdf";
-        if (!empty($data['employee_name'])) {
-            $filename = "MCU BARCODE FILE - ".$data['employee_name']. " - ".$data['mcu_code'].".pdf";
-        }
+        $pdf = PDF::loadView('mcu.pemeriksaan.print.cetak_barcode_multi', ['pages' => $pages])
+                ->setPaper([0, 0, 141.73, 70.87], 'landscape');
 
+        $filename = "MCU BARCODE - {$employee_model->employee_name} - {$mcu_model->mcu_code}.pdf";
         return $pdf->stream($filename);
+
+    } catch (\Exception $e) {
+        \Log::error('Gagal mencetak barcode MCU: ' . $e->getMessage());
+        return response()->json([
+            'error' => 'Terjadi kesalahan saat mencetak barcode.',
+            'message' => $e->getMessage(),
+            'file' => $e->getFile(),
+            'line' => $e->getLine(),
+        ]);
     }
+}
+
+
 }

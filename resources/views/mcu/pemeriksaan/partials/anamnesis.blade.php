@@ -9,6 +9,9 @@
             <h3 class="card-title">Pemeriksaan Anamnesa</h3>
         </div>
         <div class="card-body">
+            <button type="button" class="btn btn-outline-info mb-3" onclick="isiNilaiNormalFisik()">
+                Nilai Normal
+            </button>
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">Riwayat Penyakit Sebelumnya</h3>
@@ -707,6 +710,29 @@
                                 </div>
                             </div>
                             <div class="form-group row align-items-center mb-3">
+                                <label class="col-sm-4 col-form-label">Lingkar Perut</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" id="waist_circum"
+                                        name="waist_circum"
+                                        value="{{ isset($data_anamnesis->waist_circum) ? $data_anamnesis->waist_circum : '' }}"
+                                        placeholder="">
+                                </div>
+                            </div>
+                            <div class="form-group row align-items-center mb-3">
+                                <label class="col-sm-4 col-form-label">Suhu Badan</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" id="body_temprature"
+                                        name="body_temprature"
+                                        value="{{ isset($data_anamnesis->body_temprature) ? $data_anamnesis->body_temprature : '' }}"
+                                        placeholder="">
+                                </div>
+                                <div class="col-sm-2">
+                                    <span>&#8451;</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row align-items-center mb-3">
                                 <label class="col-sm-4 col-form-label">Tinggi Badan</label>
                                 <div class="col-sm-6">
                                     <input type="text" class="form-control" id="height" name="height"
@@ -717,8 +743,6 @@
                                     cm
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-md-6">
                             <div class="form-group row align-items-center mb-3">
                                 <label class="col-sm-4 col-form-label">Berat Badan</label>
                                 <div class="col-sm-6">
@@ -751,18 +775,6 @@
                                 </div>
                             </div>
                             <div class="form-group row align-items-center mb-3">
-                                <label class="col-sm-4 col-form-label">Suhu Badan</label>
-                                <div class="col-sm-6">
-                                    <input type="text" class="form-control" id="body_temprature"
-                                        name="body_temprature"
-                                        value="{{ isset($data_anamnesis->body_temprature) ? $data_anamnesis->body_temprature : '' }}"
-                                        placeholder="">
-                                </div>
-                                <div class="col-sm-2">
-                                    <span>&#8451;</span>
-                                </div>
-                            </div>
-                            <div class="form-group row align-items-center mb-3">
                                 <label class="col-sm-4 col-form-label">Kesan BMI</label>
                                 <div class="col-sm-6">
                                     <input type="text" class="form-control" id="bmi_classification"
@@ -772,12 +784,12 @@
                                 </div>
                             </div>
                             <div class="form-group row align-items-center mb-3">
-                                <label class="col-sm-4 col-form-label">Lingkar Perut</label>
+                                <label class="col-sm-4 col-form-label">Generate BMI</label>
                                 <div class="col-sm-6">
-                                    <input type="text" class="form-control" id="waist_circum"
-                                        name="waist_circum"
-                                        value="{{ isset($data_anamnesis->waist_circum) ? $data_anamnesis->waist_circum : '' }}"
-                                        placeholder="">
+                                    <div>
+                                        <button type="button" class="btn btn-outline-primary btn-sm me-1" onclick="generateBMI('global')">WHO</button>
+                                        <button type="button" class="btn btn-outline-success btn-sm" onclick="generateBMI('asia')">ASEAN</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -1760,3 +1772,52 @@
         $('.selectDoctorAnamnesis').val(doctorAnamnesis).trigger('change');
     });
 </script>
+<script>
+    function generateBMI(standard) {
+        const berat = parseFloat(document.getElementById('weight').value);
+        const tinggi_cm = parseFloat(document.getElementById('height').value);
+
+        if (!berat || !tinggi_cm) {
+            alert('Harap isi Berat dan Tinggi Badan terlebih dahulu.');
+            return;
+        }
+
+        const tinggi_m = tinggi_cm / 100;
+        const bmi = berat / (tinggi_m * tinggi_m);
+        let target_bmi = (standard === 'asia') ? 21.5 : 22;
+        let anjuran_bb = target_bmi * tinggi_m * tinggi_m;
+        let kesan = '';
+
+        if (standard === 'asia') {
+            if (bmi < 18.5) kesan = 'Berat badan kurang';
+            else if (bmi < 23) kesan = 'Normal';
+            else if (bmi < 25) kesan = 'Overweight';
+            else if (bmi < 30) kesan = 'Obesitas tingkat 1';
+            else kesan = 'Obesitas tingkat 2';
+        } else {
+            if (bmi < 18.5) kesan = 'Berat badan kurang';
+            else if (bmi < 25) kesan = 'Normal';
+            else if (bmi < 30) kesan = 'Overweight';
+            else if (bmi < 35) kesan = 'Obesitas tingkat 1';
+            else if (bmi < 40) kesan = 'Obesitas tingkat 2';
+            else kesan = 'Obesitas tingkat 3';
+        }
+
+        // Set hasil ke input
+        document.getElementById('bmi').value = bmi.toFixed(1);
+        document.getElementById('weight_recommended').value = anjuran_bb.toFixed(1);
+        document.getElementById('bmi_classification').value = kesan;
+    }
+</script>
+<script>
+    function isiNilaiNormalFisik() {
+        // Thorax
+        document.getElementById("symmetrical").value = "1"; // Simetris = Ya
+
+        // Mata
+        document.getElementById("visus_od").value = "20/20";
+        document.getElementById("visus_os").value = "20/20";
+        document.getElementById("pupillary_reflex").value = "1"; // Reflek Pupil = Ya
+    }
+</script>
+

@@ -70,6 +70,10 @@
                     @endif
                 </div>
             </div>
+            <button type="button" class="btn btn-outline-info mb-3" onclick="isiNilaiNormalEkg()">
+                Nilai Normal
+            </button>
+
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">Hasil EKG</h3>
@@ -80,28 +84,28 @@
                             <div class="form-group row align-items-center mb-3">
                                 <label class="col-sm-4 col-form-label">Irama</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="mcuCode" name="rhythm"
+                                    <input type="text" class="form-control" id="rhythm"" name="rhythm"
                                         value="{{ !empty($data_ekg->rhythm) ? $data_ekg->rhythm : '' }}" placeholder="">
                                 </div>
                             </div>
                             <div class="form-group row align-items-center mb-3">
                                 <label class="col-sm-4 col-form-label">Rate</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="mcuCode" name="rate"
+                                    <input type="text" class="form-control" id="rate" name="rate"
                                         value="{{ !empty($data_ekg->rate) ? $data_ekg->rate : '' }}" placeholder="">
                                 </div>
                             </div>
                             <div class="form-group row align-items-center mb-3">
                                 <label class="col-sm-4 col-form-label">Axis</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="mcuCode" name="axis"
+                                    <input type="text" class="form-control" id="axis" name="axis"
                                         value="{{ !empty($data_ekg->axis) ? $data_ekg->axis : '' }}" placeholder="">
                                 </div>
                             </div>
                             <div class="form-group row align-items-center mb-3">
                                 <label class="col-sm-4 col-form-label">Kelainan</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="mcuCode" name="abnormality"
+                                    <input type="text" class="form-control" id="abnormality" name="abnormality"
                                         value="{{ !empty($data_ekg->abnormality) ? $data_ekg->abnormality : '' }}"
                                         placeholder="">
                                 </div>
@@ -111,7 +115,7 @@
                             <div class="form-group row align-items-center mb-3">
                                 <label class="col-sm-4 col-form-label">Kesimpulan</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="mcuCode" name="conclusion"
+                                    <input type="text" class="form-control" id="kesimpulan" name="conclusion"
                                         value="{{ !empty($data_ekg->conclusion) ? $data_ekg->conclusion : '' }}"
                                         placeholder="">
                                 </div>
@@ -119,7 +123,7 @@
                             <div class="form-group row align-items-center mb-3">
                                 <label class="col-sm-4 col-form-label">Saran</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="mcuCode" name="suggestion"
+                                    <input type="text" class="form-control" id="suggestion" name="suggestion"
                                         value="{{ !empty($data_ekg->suggestion) ? $data_ekg->suggestion : '' }}"
                                         placeholder="">
                                 </div>
@@ -127,7 +131,7 @@
                             <div class="form-group row align-items-center mb-3">
                                 <label class="col-sm-4 col-form-label">Abnormal</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="mcuCode" name="is_abnormal"
+                                    <input type="text" class="form-control" id="is_abnormal" name="is_abnormal"
                                         value="{{ !empty($data_ekg->is_abnormal) ? $data_ekg->is_abnormal : '' }}"
                                         placeholder="">
                                 </div>
@@ -191,4 +195,33 @@
             $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
         });
     });
+</script>
+<script>
+function isiNilaiNormalEkg() {
+    document.getElementById('rhythm').value = 'Sinus Rhythm';
+    document.getElementById('rate').value = '';
+    document.getElementById('axis').value = 'Normal';
+    document.getElementById('abnormality').value = '';
+    document.getElementById('kesimpulan').value = 'Normal';
+    document.getElementById('suggestion').value = '';
+    
+    // Set select value for is_abnormal
+    const abnormalSelect = document.querySelector("select[name='is_abnormal']");
+    if (abnormalSelect) {
+        abnormalSelect.value = '0'; // Normal
+    }
+
+    // Select doctor
+    const doctorSelect = document.querySelector('.selectDoctorEkg');
+    if (doctorSelect) {
+        const targetName = "dr. Yusak Alfrets Porotu'o, Sp. JP";
+        const match = [...doctorSelect.options].find(opt => opt.text.trim().toLowerCase() === targetName.toLowerCase());
+
+        if (match) {
+            $(doctorSelect).val(match.value).trigger('change');
+        } else {
+            console.warn('❗ Dokter tidak ditemukan:', targetName);
+        }
+    }
+}
 </script>

@@ -74,6 +74,8 @@ Route::group(['middleware' => ['auth', 'role:1,2,3,4,5']], function () { // ALL 
     Route::get('/mcu/program-mcu/detail', [ProgramMcuController::class, 'detailProgramMcu'])->name('detail-program-mcu');
     Route::get('/get-data-mcu-employee',  [ProgramMcuController::class, 'getDataMcuEmployee']);
     Route::get('/mcu/program-mcu/download-template-pemeriksaan',  [ProgramMcuController::class, 'downloadTemplatePemeriksaan'])->name('download-template-pemeriksaan');
+    Route::get('/mcu/program-mcu/{program_id}/export-excel', [ProgramMcuController::class, 'exportExcel'])->name('program-mcu.export-excel');
+
 
     Route::get('/mcu/program-mcu/detail/pemeriksaan', [PemeriksaanMcuController::class, 'index']);
     Route::post('/mcu/program-mcu/detail/pemeriksaan/kirim-batch-pemeriksaan', [PemeriksaanMcuController::class, 'sendBatchPemeriksaanMcu'])->name('send-batch-pemeriksaan-mcu');

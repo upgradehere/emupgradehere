@@ -83,6 +83,9 @@
                     </div>
                 </div>
             </div>
+            <button type="button" class="btn btn-outline-info mb-3" onclick="isiNilaiNormalResume()">
+                Nilai Normal
+            </button>
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">Kesimpulan</h3>
@@ -93,7 +96,7 @@
                             <div class="form-group row align-items-center mb-3">
                                 <label class="col-sm-2 col-form-label">Kesimpulan Hasil</label>
                                 <div class="col-sm-10">
-                                    <select class="form-control select2 selectKesimpulan" name="result_conclusion"
+                                    <select class="form-control select2 selectKesimpulan" id="result_conclusion" name="result_conclusion"
                                         style="width: 100%;">
                                         <option selected="selected" value="">- Kesimpulan Hasil MCU -</option>
                                         @if (!empty($kesimpulan_mcu_dropdown))
@@ -108,7 +111,7 @@
                             <div class="form-group row align-items-center mb-3">
                                 <label class="col-sm-2 col-form-label">Saran</label>
                                 <div class="col-sm-10">
-                                    <textarea required class="summernote" name="suggestion">
+                                    <textarea required class="summernote" name="suggestion" id="resume_suggestion">
                                         {{ !empty($data_resume_mcu->suggestion) ? $data_resume_mcu->suggestion : null }}
                                     </textarea>
                                 </div>
@@ -173,4 +176,34 @@
         $('.selectKesimpulan').select2();
         $('.selectKesimpulan').val(kesimpulan).trigger('change');
     });
+</script>
+<script>
+function isiNilaiNormalResume() {
+    // Set kesimpulan (Fit To Work)
+    const resultSelect = document.getElementById('result_conclusion');
+    const targetConclusion = "Fit To Work";
+    const matchedOption = [...resultSelect.options].find(opt => opt.text.trim().toLowerCase() === targetConclusion.toLowerCase());
+    if (matchedOption) {
+        $(resultSelect).val(matchedOption.value).trigger('change');
+    } else {
+        console.warn('❗ Kesimpulan "Fit To Work" tidak ditemukan di dropdown.');
+    }
+
+    // Set saran
+    const suggestionEditor = $('#resume_suggestion').next('.note-editor').find('.note-editable');
+    if (suggestionEditor.length) {
+        suggestionEditor.html('Jaga pola makan, lakukan olahraga secara rutin. Saat pemeriksaan kondisi baik');
+    }
+
+    // Set dokter pemeriksa
+    const doctorSelect = document.querySelector('.selectDoctorResume');
+    const targetDoctor = "dr. Boy Hidayat.S.Ked,MKK,Sp.OK";
+    const doctorMatch = [...doctorSelect.options].find(opt => opt.text.trim().toLowerCase() === targetDoctor.toLowerCase());
+
+    if (doctorMatch) {
+        $(doctorSelect).val(doctorMatch.value).trigger('change');
+    } else {
+        console.warn('❗ Dokter tidak ditemukan:', targetDoctor);
+    }
+}
 </script>
