@@ -41,7 +41,7 @@
                             <td style="padding-left: 30px; padding-right: 30px" width="240px" align="left">{{ $lab->laboratory_examination_name }}</td>
                             <td style="padding-left: 30px; padding-right: 30px" align="center">{{ $lab->result }}</td>
                             <td style="padding-left: 5px; padding-right: 30px" align="center">{{ $lab->reference_value }}</td>
-                            <td style="padding-left: 5px; padding-right: 30px" align="center">{{ ($lab->is_abnormal == ) ? 'Abnormal' : '' }}</td>
+                            <td style="padding-left: 5px; padding-right: 30px" align="center">{{ ($lab->is_abnormal == 1) ? 'Abnormal' : '' }}</td>
                         </tr>
                     @endforeach
                 @endforeach
