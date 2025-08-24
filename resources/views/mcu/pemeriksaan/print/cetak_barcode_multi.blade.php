@@ -1,64 +1,6 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Barcode Pemeriksaan MCU</title>
-    <style>
-        @page {
-            size: 50mm 25mm landscape;
-            margin: 2mm 4mm 2mm 2mm;
-        }
-
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-        }
-
-        .page {
-            width: 100%;
-            height: 100%;
-            page-break-after: always;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            align-items: center;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        .barcode img {
-            width: 100%;
-            max-height: 34px;
-            margin-top: 2mm;
-            margin-bottom: 1mm;
-        }
-
-        .text {
-            font-size: 8px;
-            text-align: center;
-            line-height: 1.3;
-        }
-    </style>
-</head>
-<body>
-@foreach($pages as $page)
-    <div class="page">
-        <div class="barcode">
-            <img src="data:image/png;base64,{{ DNS1D::getBarcodePNG($page['mcu_code'], 'C39+', 2, 34) }}" alt="barcode">
-        </div>
-        <div class="text">
-            {{ $page['mcu_code'] }} | {{ $page['nik'] }}<br>
-            {{ strtoupper($page['employee_name']) }} | {{ $page['sex'] }} | {{ $page['age'] }}<br>
-            {{ strtoupper($page['company_name']) }}<br>
-            {{ strtoupper($page['package_name']) }} | {{ $page['mcu_date'] }}
-        </div>
-    </div>
-@endforeach
-</body>
-</html> -->
-
-
+@php
+    use Milon\Barcode\DNS1D;
+@endphp
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -67,7 +9,7 @@
     <style>
         @page {
             size: 50mm 25mm landscape;
-            margin: 2mm 4mm 2mm 2mm;
+            margin: 2mm 4mm 2mm 2mm; /* keep outer printer margin */
         }
 
         body {
@@ -83,8 +25,12 @@
             flex-direction: column;
             justify-content: flex-start;
             align-items: center;
-            padding: 0;
+            /* quiet zones left/right ≥ 2.5 mm */
+            padding-left: 1mm;
+            padding-right: 1mm;
             box-sizing: border-box;
+            page-break-inside: avoid;
+            text-align: center;
         }
 
         .page:not(:last-child) {
@@ -93,34 +39,64 @@
 
         .barcode img {
             width: 100%;
-            max-height: 34px;
-            margin-top: 2mm;
+            height: auto;
+            /* ~15 mm visual bar height (scanner-friendly) */
+            max-height: 12mm;
+            margin-top: 1mm;
             margin-bottom: 1mm;
+            display: block;
         }
 
         .text {
-            font-size: 8px;
+            font-size: 5px;
             text-align: center;
-            line-height: 1.3;
+            line-height: 1;
+        }
+        .mcu-line {
+        font-size: 6pt; 
+        letter-spacing: 0.4px;
+        margin-bottom: 0.6mm;
         }
     </style>
-
 </head>
 <body>
+
 @foreach($pages as $index => $page)
     @if($index === 0)
-    <div class="page">
-        <div class="barcode">
-            <img src="data:image/png;base64,{{ DNS1D::getBarcodePNG($page['mcu_code'], 'C39+', 2, 34) }}" alt="barcode">
+        @php
+            // --- SANITIZE MCU: remove '/', keep A–Z0–9 only, uppercase, length 1..20 ---
+            $rawMcu = $page['mcu_code'] ?? '';
+            $mcu = strtoupper(preg_replace('/[^A-Z0-9]/', '', str_replace('/', '', $rawMcu)));
+            if (strlen($mcu) < 1 || strlen($mcu) > 20) {
+                $mcu = 'INVALID';
+            }
+
+            // --- BARCODE GEOMETRY ---
+            // widthFactor ≈ narrow bar width; 1.2–1.5 typical (increase to thicken bars)
+            $widthFactor = 1.8;
+            // internal raster height (px); CSS max-height (mm) above is the final limiter
+            $heightPx = 180;
+
+            // --- GENERATE CODE 128 AS PNG (dompdf-friendly) ---
+            $barcodePng = (new DNS1D)->getBarcodePNG($mcu, 'C128', $widthFactor, $heightPx);
+        @endphp
+
+        <div class="page">
+            <div class="barcode">
+                <img src="data:image/png;base64,{{ $barcodePng }}" alt="barcode">
+            </div>
+            <div class="text">
+                {{-- Human-readable MCU under the bars --}}
+                <div class="mcu-line">{{ $mcu }}</div>
+                {{-- keep your existing info lines below (optional) --}}
+                {{ $page['nik'] ?? '' }} |
+                {{ strtoupper($page['employee_name'] ?? '') }} <br>
+                {{ strtoupper($page['company_name'] ?? '') }}<br>
+                {{ strtoupper($page['package_name'] ?? '') }} | {{ $page['mcu_date'] ?? '' }} | {{ $page['sex'] ?? '' }} | {{ $page['age'] ?? '' }}<br>
+            </div>
         </div>
-        <div class="text">
-            {{ $page['mcu_code'] }} | {{ $page['nik'] }}<br>
-            {{ strtoupper($page['employee_name']) }} | {{ $page['sex'] }} | {{ $page['age'] }}<br>
-            {{ strtoupper($page['company_name']) }}<br>
-            {{ strtoupper($page['package_name']) }} | {{ $page['mcu_date'] }}
-        </div>
-    </div>
     @endif
 @endforeach
+
 </body>
 </html>
