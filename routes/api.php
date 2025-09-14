@@ -5,6 +5,7 @@ use App\Http\Controllers\PackageController;
 use App\Http\Controllers\CompanyController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\LabResultsInboxController;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,3 +36,6 @@ Route::group(['prefix' => 'package'], function () {
 Route::group(['prefix' => 'company'], function () {
     Route::get('get-data-company',  [CompanyController::class, 'getDataCompany']);
 });
+
+Route::post('/lab-results/inbox', [LabResultsInboxController::class, 'store'])
+    ->middleware(['verify.apikey','throttle:labresults']);

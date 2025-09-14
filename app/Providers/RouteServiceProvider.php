@@ -22,6 +22,17 @@ class RouteServiceProvider extends ServiceProvider
     /**
      * Define your route model bindings, pattern filters, and other route configuration.
      */
+    protected function configureRateLimiting(): void
+    {
+        RateLimiter::for('labresults', function (Request $request) {
+            // Prefer per-key limit; if header missing, fallback to client IP
+            $keyFromHeader = $request->header('X-API-Key') ?: $request->headers->get('x-api-key');
+            $identifier = $keyFromHeader ?: $request->ip();
+
+            return Limit::perMinute(60)->by($identifier);
+        });
+    }
+
     public function boot(): void
     {
         RateLimiter::for('api', function (Request $request) {
