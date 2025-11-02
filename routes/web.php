@@ -14,6 +14,7 @@ use App\Http\Controllers\DepartementController;
 use App\Http\Controllers\InternalUsersController;
 use App\Http\Controllers\SettingsController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\LabResultsPromotionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -161,3 +162,8 @@ Route::group(['middleware' => ['auth', 'role:1,4']], function () { // Admin - CS
     Route::get('/departement/detail/{id}', [DepartementController::class, 'detail'])->name('departement.detail');
     Route::post('/departement/update', [DepartementController::class, 'update'])->name('departement.update');
 });
+
+
+    Route::match(['get','post'], '/lab-results/promote/{inbox}', [LabResultsPromotionController::class, 'promote'])
+    ->name('lab-results.promote')
+    ->middleware(['web','auth']);

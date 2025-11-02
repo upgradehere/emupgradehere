@@ -22,6 +22,12 @@ class LabResultsInboxController extends Controller
      */
     public function store(Request $request)
     {
+        \Log::info('INBOX-HIT', [
+            'path'     => request()->path(),
+            'headers'  => request()->headers->all(),
+            'body_raw' => request()->getContent(),
+        ]);
+
         // Validate basic shape
         $validated = $request->validate([
             'source'       => ['required', 'string'],
@@ -44,7 +50,6 @@ class LabResultsInboxController extends Controller
 
         // Use patient_id as mcu_code if present
         $mcuCode = $validated['patient_id'] ?? null;
-
         // Store the payload VERBATIM as sent (do not mutate)
         $payload = $request->all();
 

@@ -91,6 +91,33 @@ class PemeriksaanMcuController extends Controller
         $data_resume_mcu = self::getDataResumeMcu($mcu_id);
         $data_audiometry = self::getDataAudiometry($mcu_id);
         $kesimpulan_mcu_dropdown = LookupC::select('lookup_id', 'lookup_code', 'lookup_type', 'lookup_name')->where('lookup_type', ConstantsHelper::LOOKUP_KESIMPULAN_MCU)->get();
+        // Ensure we have MCU code (adjust how you get $mcu_id if variable name differs)
+        $mcu = DB::table('mcu_t')->select('mcu_id','mcu_code')->where('mcu_id', $mcu_id)->first();
+        $mcu_code = $mcu ? $mcu->mcu_code : null;
+        $inbox = null;
+        if ($mcu) {
+            $inbox = DB::table('lab_results_inbox_t')
+                ->where('mcu_code', $mcu->mcu_code)
+                ->whereIn('status', ['new','unmatched'])   // only show button for pending items
+                ->orderByDesc('inbox_id')
+                ->first();
+        }
+
+        // ⬇️ add $inbox to the data you pass to the view
+        return view('mcu.pemeriksaan.index_pemeriksaan', [
+                // existing variables this view already uses
+                'examinations'     => $examinations,
+                'employee_data'    => $employee_data,
+                'mcu_package_name' => $mcu_package_name,
+                'form_lab'         => $form_lab,
+                'doctor_data'      => $doctor_data,
+                'mcu_id'           => $mcu_id,
+                'is_resume_pic'  => $is_resume_pic,
+                // the new ones we added
+                'mcu_code'         => $mcu_code,
+                'mcu_date'         => $mcu_date,
+                'inbox'            => $inbox,
+        ]);
 
         return view('/mcu/pemeriksaan/index_pemeriksaan', get_defined_vars());
     }
