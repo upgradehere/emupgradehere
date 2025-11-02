@@ -103,8 +103,29 @@ class LabResultsPromotionController extends Controller
 
             foreach ($obx as $o) {
                 $code = strtoupper($o['code'] ?? ($o['test_name'] ?? ''));
-                if (!$code || !isset($map[$code])) {
-                    $skipped[] = $code ?: '(empty)';
+                if (!$code) {
+                    $skipped[] = '(empty)';
+                    continue;
+                }
+
+                // --- khusus GLU: tanya paket peserta lewat fungsi DB ---
+                $examId = null;
+                if ($code === 'GLU') {
+                    // fn_pick_glu_exam(mcu_id) → akan balikin 50 / 51 / 52 sesuai package
+                    $picked = DB::selectOne('select fn_pick_glu_exam(?) as exam_id', [$row->mcu_id]);
+                    if ($picked && $picked->exam_id) {
+                        $examId = (int) $picked->exam_id;
+                    }
+                }
+
+                // kalau bukan GLU atau fungsi tidak balikin apa-apa → pakai alias biasa
+                if (!$examId && isset($map[$code])) {
+                    $examId = (int) $map[$code];
+                }
+
+                // kalau tetap tidak ketemu → skip
+                if (!$examId) {
+                    $skipped[] = $code;
                     continue;
                 }
 
@@ -112,17 +133,19 @@ class LabResultsPromotionController extends Controller
                 $isAbnormal = in_array($flag, ['H', 'HH', 'L', 'LL', 'A', 'AH', 'AL'], true) ? true : null;
 
                 DB::table('laboratory_detail_t')->insert([
-                    'laboratory_id'                   => $labId,
-                    'laboratory_examination_id'       => $map[$code],
-                    'laboratory_reference_value_id'   => null,
-                    'result'                          => $o['value'] ?? null,
-                    'is_abnormal'                     => $isAbnormal,
-                    'created_at'                      => now(),
-                    'updated_at'                      => now(),
+                    'laboratory_id'                 => $labId,
+                    'laboratory_examination_id'     => $examId,
+                    'laboratory_reference_value_id' => null,
+                    'result'                        => $o['value'] ?? null,
+                    'is_abnormal'                   => $isAbnormal,
+                    'created_at'                    => now(),
+                    'updated_at'                    => now(),
                 ]);
 
                 $inserted++;
             }
+
+
 
             // 7) If nothing mapped, rollback header and abort
             if ($inserted === 0) {
