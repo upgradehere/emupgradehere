@@ -10,6 +10,31 @@
                                 return $type->examinations->isNotEmpty();
                             })->isNotEmpty();
                     })->isNotEmpty())
+            {{-- Promote button if there is a pending inbox for this MCU --}}
+        @if(!empty($inbox))
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div class="alert alert-info py-2 px-3 mb-0">
+                    Ditemukan hasil dari <strong>{{ $inbox->source }}</strong>
+                    untuk MCU <code>{{ $inbox->mcu_code }}</code>
+                    (Inbox #{{ $inbox->inbox_id }}, status: {{ $inbox->status }}).
+                </div>
+                <form method="POST" action="{{ route('lab-results.promote', $inbox->inbox_id) }}">
+                    @csrf
+                    <button type="submit" class="btn btn-success">
+                        Promote
+                    </button>
+                </form>
+            </div>
+        @endif
+        @if (
+        !empty($form_lab) &&
+            $form_lab['groups']->filter(function ($group) {
+                    return $group->examinationTypes->filter(function ($type) {
+                            return $type->examinations->isNotEmpty();
+                        })->isNotEmpty();
+                })->isNotEmpty())   
+        @endif
+   
             <div class="row">
                 <div class="col-md-2">
                     <div class="form-group row justify-content-center align-items-center mb-3">
