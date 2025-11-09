@@ -130,7 +130,7 @@
                                                 <th>Nama</th>
                                                 <th>Departemen</th>
                                                 <th>Jenis Kelamin</th>
-                                                <th>Umur</th>
+                                                <th>Tanggal Lahir</th>
                                                 <th>Tanggal MCU</th>
                                                 <th style="width: 200px;">Aksi</th>
                                             </tr>
@@ -204,7 +204,7 @@
                         @if (Auth::user()->id_role == 1 || Auth::user()->id_role == 4)
                             <a id="btnCetakQrcode" target="_blank" href="" class="btn btn-success"><i
                                     class="fas fa-qrcode"></i>
-                                Cetak QR Code</a>
+                                Cetak  Barode</a>
                             <a id="btnCetakBlanko" target="_blank" href="" class="btn btn-success"><i
                                     class="fas fa-file"></i> Cetak
                                 Blanko
@@ -292,11 +292,27 @@
                         orderable: true
                     },
                     {
-                        data: 'age',
-                        name: 'age',
-                        searchable: false,
-                        orderable: true
+                    data: 'dob',
+                    name: 'dob',
+                    searchable: false,
+                    orderable: true,
+                    render: function (data, type, row) {
+                        if (!data) return '';
+
+                        // Handle "YYYY-MM-DD HH:MM:SS" atau "YYYY-MM-DD"
+                        var iso = data.split(' ')[0];             // ambil bagian tanggal saja
+                        var p = iso.split('-');                   // ["YYYY","MM","DD"]
+
+                        // Untuk sorting/type, kembalikan format ISO agar urutan benar
+                        if (type === 'sort' || type === 'type') return iso;
+
+                        if (p.length === 3) {
+                        return p[2].padStart(2,'0') + '-' + p[1].padStart(2,'0') + '-' + p[0];
+                        }
+                        return data; // fallback kalau format tak terduga
+                    }
                     },
+
                     {
                         data: 'mcu_date',
                         name: 'mcu_date',
@@ -325,10 +341,23 @@
                             var url =
                                 "/mcu/program-mcu/detail/pemeriksaan/cetak-pemeriksaan?mcu_id=";
                             if (role == 1) {
-                                return `<center><a class="btn btn-primary btn-sm action-detail" href="/mcu/program-mcu/detail/pemeriksaan?mcu_id=${mcuId}&employee_id=${employeeId}"><i class="fas fa-eye"></i></a>
-                                        <a class="btn btn-success btn-print-pdf btn-sm action-export" data-toggle="modal" data-target="#modalPrint" data-mcuid="${mcuId}" data-url="/mcu/program-mcu/detail/pemeriksaan" target="_blank"><i class="fas fa-file-pdf"></i></a>
-                                        <a class="btn btn-warning btn-sm action-send-mcu" href="${sendPdfLink}"><i class="fas fa-paper-plane"></i></a>
-                                        <a class="btn btn-danger btn-sm action-delete-mcu" data-mcu-id="${mcuId}"><i class="fas fa-trash"></i></a></center>`;
+                                return `<center>
+                                    <a class="btn btn-primary btn-sm action-detail" href="/mcu/program-mcu/detail/pemeriksaan?mcu_id=${mcuId}&employee_id=${employeeId}">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                    <a class="btn btn-success btn-print-pdf btn-sm action-export" data-toggle="modal" data-target="#modalPrint" data-mcuid="${mcuId}" data-url="/mcu/program-mcu/detail/pemeriksaan" target="_blank">
+                                        <i class="fas fa-file-pdf"></i>
+                                    </a>
+                                    <a class="btn btn-info btn-sm action-edit-employee" href="/employee/detail/${employeeId}">
+                                        <i class="fas fa-user-edit"></i>
+                                    </a>
+                                    <a class="btn btn-warning btn-sm action-send-mcu" href="${sendPdfLink}">
+                                        <i class="fas fa-paper-plane"></i>
+                                    </a>
+                                    <a class="btn btn-danger btn-sm action-delete-mcu" data-mcu-id="${mcuId}">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                </center>`;
                             } else if (role == 2) {
                                 return `<center><a class="btn btn-primary btn-sm action-detail" href="/mcu/program-mcu/detail/pemeriksaan?mcu_id=${mcuId}&employee_id=${employeeId}"><i class="fas fa-eye"></i></a>
                                         <a href="${url}${mcuId}" class="btn btn-success btn-print-pdf btn-sm action-export" data-toggle="" data-target="" data-mcuid="${mcuId}" target="_blank"><i class="fas fa-file-pdf"></i></a></center>`

@@ -418,8 +418,18 @@ public function cetakBarcodeMcu(Request $request)
         $company_model = CompanyM::findOrFail($employee_model->company_id);
         $package_model = PackageM::findOrFail($mcu_model->package_id);
 
-        // Hitung umur
+        // Hitung umur (optional kalau masih dipakai di tempat lain)
         $age = $employee_model->dob ? Carbon::parse($employee_model->dob)->age . ' thn' : '-';
+
+        // Format DOB untuk dikirim ke view
+        $dob = '-';
+        if (!empty($employee_model->dob)) {
+            try {
+                $dob = \Carbon\Carbon::parse($employee_model->dob)->format('d-m-Y');
+            } catch (\Throwable $e) {
+                $dob = (string) $employee_model->dob;
+            }
+        }
 
         // Ambil list pemeriksaan dari Package
         $exams = [];
@@ -439,16 +449,16 @@ public function cetakBarcodeMcu(Request $request)
         foreach ($exams as $exam) {
             $repeat = ($exam === 'LABORATORIUM') ? 2 : 1;
             for ($i = 1; $i <= $repeat; $i++) {
-            $pages[] = [
-                'mcu_code' => $mcu_model->mcu_code,
-                'nik' => $employee_model->nik ?? '-', // tambahkan ini
-                'employee_name' => $employee_model->employee_name,
-                'sex' => $employee_model->sex === 11 ? 'L' : 'P',
-                'age' => \Carbon\Carbon::parse($employee_model->dob)->age . ' thn',
-                'company_name' => $company_model->company_name ?? '-',
-                'package_name' => $package_model->package_name ?? '-', // tambahkan ini
-                'mcu_date' => \Carbon\Carbon::parse($mcu_model->mcu_date)->format('d-m-Y'),
-            ];
+                $pages[] = [
+                    'mcu_code'      => $mcu_model->mcu_code,
+                    'nik'           => $employee_model->nik ?? '-',
+                    'employee_name' => $employee_model->employee_name,
+                    'sex'           => $employee_model->sex === 11 ? 'L' : 'P',
+                    'dob'           => $dob, // ✅ Tambahkan di sini
+                    'company_name'  => $company_model->company_name ?? '-',
+                    'package_name'  => $package_model->package_name ?? '-',
+                    'mcu_date'      => \Carbon\Carbon::parse($mcu_model->mcu_date)->format('d-m-Y'),
+                ];
             }
         }
 
@@ -468,6 +478,7 @@ public function cetakBarcodeMcu(Request $request)
         ]);
     }
 }
+
 
 
 }
